@@ -12,11 +12,15 @@ Agenda Items:
 - Announcements by the team (1 min)
 - Approval of the agenda - Does anyone have any additions? (1 min)
 - Announcements by the TA (? min)
+- Questions for the TA:
+    - Should we do MR for agendas? (1 min)
+    - When is the draft for the Code of Conduct due? (1 min)
 
 - Talking Points: (Inform/ brainstorm/ decision making/ discuss)
     - Discuss our progress on the Code of Conduct (10 min)
     - Discuss checkstyle rules (10 min)
     - Ensure everyone understands Git (5 min)
+    - Check if everyone's project is running correctly (5 min)
     - Create a planning for the coming week (10 min)
 - Summarize action points: Who , what , when? (2 min)
 
