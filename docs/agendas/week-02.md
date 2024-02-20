@@ -29,6 +29,36 @@ Agenda Items:
 - Question round: Does anyone have anything to add before the meeting closes? (2 min)
 - Closure (1 min)
 
+  
+Notes week 2:  
 
-Notes:
+TA announcements:
+- Finish git assignment before this friday
 
+Code of conduct:
+- Y. Xing has been selected as project manager 
+=> this means that he'll be responsible for submitting files on time into brightspace
+- Agreed upon extending the summary at the end of the meeting to add points the minutetaker might have forgotten
+- Agreed upon being precise in the to-do list for the project i.e. not being vague in what someone should be doing
+
+Questions for the TA:
+- We don't necessarily have to merge the agenda, it is fine to add notes and agenda directly into main
+- CoC is due in week 3, but can be changed through the course of the project
+
+
+Points discussed + conclusions:
+- Code of conduct related:
+  - Clarified that we would like to have an additional meeting each thursday at ~ 14:30
+  - Whatsapp is strictly for important questions and/or announcements
+  - We should strive to be up to-date on the whatsapp on a daily basis
+  - Teammates should strive to react within a day, if this is not possible they should let other teammates know
+- Checkstyle:
+  - this was discussed after the meeting
+- Git: 
+  - Everyone understood git
+- Everyone's project was running correctly
+- Planning for the coming week:
+  - Finish the checkstyle file
+  - Refine the CoC and discuss it at the meeting of next week
+  - Creating a general outline of the project and how components should work together
+  - Meetup thursday for additional meeting
