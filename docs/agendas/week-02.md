@@ -28,3 +28,7 @@ Agenda Items:
 - Planned meeting duration != actual duration? Where/why did you mis -estimate? (2 min)
 - Question round: Does anyone have anything to add before the meeting closes? (2 min)
 - Closure (1 min)
+
+
+Notes:
+
