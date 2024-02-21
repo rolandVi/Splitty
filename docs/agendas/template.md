@@ -45,6 +45,7 @@ In italics, you will find some additional explanations of the agenda points. You
      - IDE
         - Eclipse
         - IntelliJ
+        - Microsoft Word
 
 # Action points for next week (Scrum board)
 *Every week you fill the Scrum board with new action points for that week. See the to do list for the items you should implement.*
