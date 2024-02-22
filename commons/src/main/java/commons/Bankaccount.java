@@ -1,8 +1,19 @@
 package commons;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import java.util.Objects;
 
+@Entity
 public class Bankaccount {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public long id;
+
     private String iban;
     private String holder;
     private String bic;
@@ -19,6 +30,12 @@ public class Bankaccount {
         this.bic = bic;
     }
 
+    /**
+     * default constructor (JPA requirement)
+     */
+    @SuppressWarnings("unused")
+    public Bankaccount() {
+    }
 
     /**
      * Getter method for the IBAN
