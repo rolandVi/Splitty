@@ -5,19 +5,19 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BankaccountTest {
+class BankAccountEntityTest {
 
 
-    private static Bankaccount bankaccount;
-    private static Bankaccount bankaccount1;
+    private static BankAccountEntity bankaccount;
+    private static BankAccountEntity bankaccount1;
 
     @BeforeAll
     static void init() {
         /*
          random IBAN generated via http://www.randomiban.com/?country=Netherlands
          */
-        bankaccount = new Bankaccount("NL29INGB3506581023", "testUser1", "INGBNL2A");
-        bankaccount1 = new Bankaccount("NL29INGB3506581023", "testUser1", "INGBNL2A");
+        bankaccount = new BankAccountEntity("NL29INGB3506581023", "testUser1", "INGBNL2A");
+        bankaccount1 = new BankAccountEntity("NL29INGB3506581023", "testUser1", "INGBNL2A");
     }
     @Test
     void getIban() {
@@ -51,8 +51,8 @@ class BankaccountTest {
         /*
         added these in the test themselves because the setter messed with the values so it would fail the test otherwise
          */
-        Bankaccount equalsTest = new Bankaccount("NL29INGB3506581023", "testUser1", "INGBNL2A");
-        Bankaccount equalsTest1 = new Bankaccount("NL29INGB3506581023", "testUser1", "INGBNL2A");
+        BankAccountEntity equalsTest = new BankAccountEntity("NL29INGB3506581023", "testUser1", "INGBNL2A");
+        BankAccountEntity equalsTest1 = new BankAccountEntity("NL29INGB3506581023", "testUser1", "INGBNL2A");
         assertEquals(equalsTest,equalsTest1);
     }
 
@@ -61,8 +61,8 @@ class BankaccountTest {
         /*
         added these in the test themselves because the setter messed with the values so it would fail the test otherwise
          */
-        Bankaccount hashTest = new Bankaccount("NL29INGB3506581023", "testUser1", "INGBNL2A");
-        Bankaccount hashTest1 = new Bankaccount("NL29INGB3506581023", "testUser1", "INGBNL2A");
+        BankAccountEntity hashTest = new BankAccountEntity("NL29INGB3506581023", "testUser1", "INGBNL2A");
+        BankAccountEntity hashTest1 = new BankAccountEntity("NL29INGB3506581023", "testUser1", "INGBNL2A");
         assertTrue(hashTest.equals(hashTest1) && hashTest1.equals(hashTest));
         assertEquals(hashTest.hashCode(), hashTest1.hashCode());
     }

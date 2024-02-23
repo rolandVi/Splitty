@@ -1,21 +1,22 @@
 package commons;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
 @Entity
-public class Bankaccount {
+@Table(name = "bank_accounts")
+public class BankAccountEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long id;
 
+    @Column(nullable = false, unique = true)
     private String iban;
+    @Column(nullable = false)
     private String holder;
+    @Column(unique = true)
     private String bic;
 
     /**
@@ -24,7 +25,7 @@ public class Bankaccount {
      * @param holder the username of the user who the bankaccount is from.
      * @param bic the BIC  from the bankaccount from the user.
      */
-    public Bankaccount(String iban, String holder, String bic) {
+    public BankAccountEntity(String iban, String holder, String bic) {
         this.iban = iban;
         this.holder = holder;
         this.bic = bic;
@@ -34,7 +35,7 @@ public class Bankaccount {
      * default constructor (JPA requirement)
      */
     @SuppressWarnings("unused")
-    public Bankaccount() {
+    public BankAccountEntity() {
     }
 
     /**
@@ -97,7 +98,7 @@ public class Bankaccount {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Bankaccount that = (Bankaccount) o;
+        BankAccountEntity that = (BankAccountEntity) o;
 
         if (!Objects.equals(iban, that.iban)) return false;
         if (!Objects.equals(holder, that.holder)) return false;
