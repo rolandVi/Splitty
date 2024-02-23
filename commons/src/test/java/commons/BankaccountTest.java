@@ -1,18 +1,22 @@
 package commons;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class BankaccountTest {
 
-    /*
-     random IBAN generated via http://www.randomiban.com/?country=Netherlands
-     */
 
-    Bankaccount bankaccount = new Bankaccount("NL29INGB3506581023", "testUser1", "INGBNL2A");
-    Bankaccount bankaccount1 = new Bankaccount("NL29INGB3506581023", "testUser1", "INGBNL2A");
+    private static Bankaccount bankaccount;
 
+    @BeforeAll
+    static void init() {
+        /*
+         random IBAN generated via http://www.randomiban.com/?country=Netherlands
+         */
+        bankaccount = new Bankaccount("NL29INGB3506581023", "testUser1", "INGBNL2A");
+    }
     @Test
     void getIban() {
         assertEquals("NL29INGB3506581023", bankaccount.getIban());
@@ -42,11 +46,19 @@ class BankaccountTest {
 
     @Test
     void testEquals() {
-        assertEquals(bankaccount,bankaccount1);
+        /*
+        added these in the test themselves because the setter messed with the values so it would fail the test otherwise
+         */
+        Bankaccount equalsTest = new Bankaccount("NL29INGB3506581023", "testUser1", "INGBNL2A");
+        Bankaccount equalsTest1 = new Bankaccount("NL29INGB3506581023", "testUser1", "INGBNL2A");
+        assertEquals(equalsTest,equalsTest1);
     }
 
     @Test
     void testHashCode() {
+        /*
+        added these in the test themselves because the setter messed with the values so it would fail the test otherwise
+         */
         Bankaccount hashTest = new Bankaccount("NL29INGB3506581023", "testUser1", "INGBNL2A");
         Bankaccount hashTest1 = new Bankaccount("NL29INGB3506581023", "testUser1", "INGBNL2A");
         assertTrue(hashTest.equals(hashTest1) && hashTest1.equals(hashTest));
