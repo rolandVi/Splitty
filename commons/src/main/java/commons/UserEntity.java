@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -44,7 +43,8 @@ public class UserEntity {
      * @param password the password of the user
      * @param isAdmin whether the user is an admin or not
      */
-    public UserEntity(Long id, String firstName, String lastName, String email, String password, boolean isAdmin) {
+    public UserEntity(Long id, String firstName, String lastName,
+                      String email, String password, boolean isAdmin) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
