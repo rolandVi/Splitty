@@ -64,4 +64,10 @@ class BankaccountTest {
         assertTrue(hashTest.equals(hashTest1) && hashTest1.equals(hashTest));
         assertEquals(hashTest.hashCode(), hashTest1.hashCode());
     }
+
+    @Test
+    void setHolder() {
+        bankaccount.setHolder("testUser2");
+        assertEquals("testUser2", bankaccount.getHolder());
+    }
 }
