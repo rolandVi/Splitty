@@ -4,6 +4,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.util.Objects;
+
 public class TransactionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -62,5 +64,27 @@ public class TransactionEntity {
      */
     public UserEntity getReceiver() {
         return receiver;
+    }
+
+    /**
+     * Compares this transaction to the object o
+     * @param o the object to compare if it is equal to this
+     * @return returns true if they are equal and false if not
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TransactionEntity that = (TransactionEntity) o;
+        return Double.compare(money, that.money) == 0 && Objects.equals(id, that.id) && Objects.equals(sender, that.sender) && Objects.equals(receiver, that.receiver);
+    }
+
+    /**
+     * Generates the hashcode value of this transaction
+     * @return integer hashcode value
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, money, sender, receiver);
     }
 }

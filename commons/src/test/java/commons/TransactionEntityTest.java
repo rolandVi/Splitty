@@ -33,4 +33,22 @@ class TransactionEntityTest {
         TransactionEntity t = new TransactionEntity(1234L, 19.99, sender, receiver);
         assertEquals(receiver, t.getReceiver());
     }
+
+    @Test
+    void testEquals() {
+        UserEntity sender = new UserEntity(1L, "Sender", "LastName", "email@gmail.com", "Some password", true);
+        UserEntity receiver = new UserEntity(2L, "Receiver", "LastName", "email@gmail.com", "Some password", true);
+        TransactionEntity t = new TransactionEntity(1234L, 19.99, sender, receiver);
+        TransactionEntity t2 = new TransactionEntity(1234L, 19.99, sender, receiver);
+        assertEquals(t, t2);
+    }
+
+    @Test
+    void testHashCode() {
+        UserEntity sender = new UserEntity(1L, "Sender", "LastName", "email@gmail.com", "Some password", true);
+        UserEntity receiver = new UserEntity(2L, "Receiver", "LastName", "email@gmail.com", "Some password", true);
+        TransactionEntity t = new TransactionEntity(1234L, 19.99, sender, receiver);
+        TransactionEntity t2 = new TransactionEntity(1234L, 19.99, sender, receiver);
+        assertEquals(t.hashCode(), t2.hashCode());
+    }
 }
