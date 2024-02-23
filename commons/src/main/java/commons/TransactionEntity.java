@@ -80,7 +80,10 @@ public class TransactionEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TransactionEntity that = (TransactionEntity) o;
-        return Double.compare(money, that.money) == 0 && Objects.equals(id, that.id) && Objects.equals(sender, that.sender) && Objects.equals(receiver, that.receiver);
+        return Double.compare(money, that.money) == 0
+                && Objects.equals(id, that.id)
+                && Objects.equals(sender, that.sender)
+                && Objects.equals(receiver, that.receiver);
     }
 
     /**
