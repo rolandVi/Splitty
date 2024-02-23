@@ -9,6 +9,7 @@ class BankaccountTest {
 
 
     private static Bankaccount bankaccount;
+    private static Bankaccount bankaccount1;
 
     @BeforeAll
     static void init() {
@@ -16,6 +17,7 @@ class BankaccountTest {
          random IBAN generated via http://www.randomiban.com/?country=Netherlands
          */
         bankaccount = new Bankaccount("NL29INGB3506581023", "testUser1", "INGBNL2A");
+        bankaccount1 = new Bankaccount("NL29INGB3506581023", "testUser1", "INGBNL2A");
     }
     @Test
     void getIban() {
@@ -63,5 +65,11 @@ class BankaccountTest {
         Bankaccount hashTest1 = new Bankaccount("NL29INGB3506581023", "testUser1", "INGBNL2A");
         assertTrue(hashTest.equals(hashTest1) && hashTest1.equals(hashTest));
         assertEquals(hashTest.hashCode(), hashTest1.hashCode());
+    }
+
+    @Test
+    void setHolder() {
+        bankaccount1.setHolder("testUser2");
+        assertEquals("testUser2", bankaccount1.getHolder());
     }
 }

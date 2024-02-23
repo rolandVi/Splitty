@@ -70,6 +70,15 @@ public class Bankaccount {
     }
 
     /**
+     * Setter for the new accountHolder name in case the user
+     * has to link a new bankaccount to their profile
+     * @param holder the name of the accountHolder
+     */
+    public void setHolder(String holder) {
+        this.holder = holder;
+    }
+
+    /**
      * Setter for the bic in case the user has to link a new bankaccount to their profile
      * @param bic bic related to the new bankaccount the user provides
      */
