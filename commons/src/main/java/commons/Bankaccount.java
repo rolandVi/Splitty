@@ -72,7 +72,7 @@ public class Bankaccount {
     /**
      * Setter for the new accountHolder name in case the user
      * has to link a new bankaccount to their profile
-     * @param holder
+     * @param holder the name of the accountHolder
      */
     public void setHolder(String holder) {
         this.holder = holder;
