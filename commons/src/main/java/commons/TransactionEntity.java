@@ -1,17 +1,21 @@
 package commons;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Objects;
-
+@Entity
+@Table(name = "transactions")
 public class TransactionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(nullable = false)
     private double money;
+    @ManyToOne
+    @Column(nullable = false)
     private UserEntity sender;
+    @ManyToOne
+    @Column(nullable = false)
     private UserEntity receiver;
 
     /**
