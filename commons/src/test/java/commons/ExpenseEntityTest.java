@@ -17,6 +17,12 @@ class ExpenseEntityTest {
         this.expense = new ExpenseEntity(11L, 420.69D, user, new ArrayList<>(), "Title",
                 new Date(2024 -1900, Calendar.JANUARY, 24));
     }
+
+    @Test
+    void defaultConstructor() {
+        new ExpenseEntity();
+    }
+
     @Test
     void getId() {
         assertEquals(11, this.expense.getId());
@@ -76,7 +82,10 @@ class ExpenseEntityTest {
 
     @Test
     void testEquals() {
-        assertEquals(this.expense, this.expense);
+        UserEntity user = new UserEntity(1L, "FirstName", "LastName", "email@gmail.com",
+                "Some password", true);
+        assertEquals(this.expense, new ExpenseEntity(11L, 420.69D, user, new ArrayList<>(), "Title",
+                new Date(2024 -1900, Calendar.JANUARY, 24)));
     }
 
     @Test
