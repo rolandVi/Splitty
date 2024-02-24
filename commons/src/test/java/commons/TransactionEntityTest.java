@@ -1,54 +1,50 @@
 package commons;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TransactionEntityTest {
+    private UserEntity sender;
+    private UserEntity receiver;
+    private TransactionEntity transaction;
+    @BeforeEach
+    void setup() {
+        this.sender = new UserEntity(1L, "Sender", "LastName", "email@gmail.com", "Some password", true);
+        this.receiver = new UserEntity(2L, "Receiver", "LastName", "email@gmail.com", "Some password", true);
+        this.transaction = new TransactionEntity(1234L, 19.99, sender, receiver);
+    }
 
     @Test
     void getId() {
-        TransactionEntity t = new TransactionEntity(1234L, 19.99, null, null);
-        assertEquals(1234L, t.getId());
+        assertEquals(1234L, transaction.getId());
     }
 
     @Test
     void getMoney() {
-        TransactionEntity t = new TransactionEntity(1234L, 19.99, null, null);
-        assertEquals(19.99, t.getMoney());
+        assertEquals(19.99, transaction.getMoney());
     }
 
     @Test
     void getSender() {
-        UserEntity sender = new UserEntity(1L, "Sender", "LastName", "email@gmail.com", "Some password", true);
-        UserEntity receiver = new UserEntity(2L, "Receiver", "LastName", "email@gmail.com", "Some password", true);
-        TransactionEntity t = new TransactionEntity(1234L, 19.99, sender, receiver);
-        assertEquals(sender, t.getSender());
+        assertEquals(sender, transaction.getSender());
     }
 
     @Test
     void getReceiver() {
-        UserEntity sender = new UserEntity(1L, "Sender", "LastName", "email@gmail.com", "Some password", true);
-        UserEntity receiver = new UserEntity(2L, "Receiver", "LastName", "email@gmail.com", "Some password", true);
-        TransactionEntity t = new TransactionEntity(1234L, 19.99, sender, receiver);
-        assertEquals(receiver, t.getReceiver());
+        assertEquals(receiver, transaction.getReceiver());
     }
 
     @Test
     void testEquals() {
-        UserEntity sender = new UserEntity(1L, "Sender", "LastName", "email@gmail.com", "Some password", true);
-        UserEntity receiver = new UserEntity(2L, "Receiver", "LastName", "email@gmail.com", "Some password", true);
-        TransactionEntity t = new TransactionEntity(1234L, 19.99, sender, receiver);
-        TransactionEntity t2 = new TransactionEntity(1234L, 19.99, sender, receiver);
-        assertEquals(t, t2);
+        TransactionEntity transaction2 = new TransactionEntity(1234L, 19.99, sender, receiver);
+        assertEquals(transaction, transaction2);
     }
 
     @Test
     void testHashCode() {
-        UserEntity sender = new UserEntity(1L, "Sender", "LastName", "email@gmail.com", "Some password", true);
-        UserEntity receiver = new UserEntity(2L, "Receiver", "LastName", "email@gmail.com", "Some password", true);
-        TransactionEntity t = new TransactionEntity(1234L, 19.99, sender, receiver);
-        TransactionEntity t2 = new TransactionEntity(1234L, 19.99, sender, receiver);
-        assertEquals(t.hashCode(), t2.hashCode());
+        TransactionEntity transaction2 = new TransactionEntity(1234L, 19.99, sender, receiver);
+        assertEquals(transaction.hashCode(), transaction2.hashCode());
     }
 }
