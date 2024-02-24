@@ -29,113 +29,113 @@ public class Expense {
     private Date date;
 
     /**
-     *
+     * Default constructor for JBA
      */
     public Expense() {
     }
 
     /**
-     *
-     * @param id
-     * @param money
-     * @param author
-     * @param debitors
-     * @param title
-     * @param date
+     * Regular constructor for Expense requiring all fields
+     * @param id unique ID to identify expense
+     * @param money amount of money in the expense
+     * @param author author of the expense
+     * @param debtors list of debtors
+     * @param title title summarizing the expense
+     * @param date date of the expense
      */
-    public Expense(Long id, Double money, UserEntity author, ArrayList<UserEntity> debitors, String title, Date date) {
+    public Expense(Long id, Double money, UserEntity author, ArrayList<UserEntity> debtors, String title, Date date) {
         this.id = id;
         this.money = money;
         this.author = author;
-        this.debitors = debitors;
+        this.debitors = debtors;
         this.title = title;
         this.date = date;
     }
 
     /**
-     *
-     * @return
+     * Getter for the ID of the expense
+     * @return ID of the expense as Long
      */
     public Long getId() {
         return id;
     }
 
     /**
-     *
-     * @return
+     * Getter for the amount of money for the expense
+     * @return amount of money as Double
      */
     public Double getMoney() {
         return money;
     }
 
     /**
-     *
-     * @return
+     * Getter for the author of the expense
+     * @return author as UserEntity
      */
     public UserEntity getAuthor() {
         return author;
     }
 
     /**
-     *
-     * @return
+     * Getter for the list of debtors
+     * @return list of debtors as ArrayList of UserEntity
      */
-    public ArrayList<UserEntity> getDebitors() {
+    public ArrayList<UserEntity> getDebtors() {
         return debitors;
     }
 
     /**
-     *
-     * @return
+     * Getter for the title of the expense
+     * @return title as String
      */
     public String getTitle() {
         return title;
     }
 
     /**
-     *
-     * @return
+     * Getter for the date of the expense
+     * @return date as Date
      */
     public Date getDate() {
         return date;
     }
 
     /**
-     *
-     * @param money
+     * Setter for the amount of money for the expense
+     * @param money the amount as Double
      */
     public void setMoney(Double money) {
         this.money = money;
     }
 
     /**
-     *
-     * @param title
+     * Setter for the title of the expense
+     * @param title as String
      */
     public void setTitle(String title) {
         this.title = title;
     }
 
     /**
-     *
-     * @param date
+     * Setter for the date of the expense
+     * @param date as Date
      */
     public void setDate(Date date) {
         this.date = date;
     }
 
     /**
-     *
-     * @param debitor
+     * Adds new debtor to the list of debtors
+     * @param debtor as UserEntity
      */
-    public void addDebitor(UserEntity debitor){
-        debitors.add(debitor);
+    public void addDebtor(UserEntity debtor){
+        debitors.add(debtor);
     }
 
     /**
-     *
-     * @param o
-     * @return
+     * Equals method comparing this object to object o
+     * @param o the object for comparing
+     * @return true if the object o is equal to this object, false otherwise
      */
     @Override
     public boolean equals(Object o) {
@@ -146,8 +146,8 @@ public class Expense {
     }
 
     /**
-     *
-     * @return
+     * Hashcode method for Expense
+     * @return the hashcode as int
      */
     @Override
     public int hashCode() {
