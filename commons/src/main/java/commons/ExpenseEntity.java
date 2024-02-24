@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "expenses")
-public class Expense {
+public class ExpenseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,6 +17,7 @@ public class Expense {
     @Column(nullable = false)
     private Double money;
 
+    @ManyToOne
     @Column(nullable = false)
     private UserEntity author;
 
@@ -31,7 +32,7 @@ public class Expense {
     /**
      * Default constructor for JBA
      */
-    public Expense() {
+    public ExpenseEntity() {
     }
 
     /**
@@ -43,7 +44,8 @@ public class Expense {
      * @param title title summarizing the expense
      * @param date date of the expense
      */
-    public Expense(Long id, Double money, UserEntity author, ArrayList<UserEntity> debtors, String title, Date date) {
+    public ExpenseEntity(Long id, Double money, UserEntity author,
+                         ArrayList<UserEntity> debtors, String title, Date date) {
         this.id = id;
         this.money = money;
         this.author = author;
@@ -141,8 +143,12 @@ public class Expense {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Expense expense = (Expense) o;
-        return Objects.equals(id, expense.id) && Objects.equals(money, expense.money) && Objects.equals(author, expense.author) && Objects.equals(debitors, expense.debitors) && Objects.equals(title, expense.title) && Objects.equals(date, expense.date);
+        ExpenseEntity expenseEntity = (ExpenseEntity) o;
+        return Objects.equals(id, expenseEntity.id) && Objects.equals(money, expenseEntity.money)
+                && Objects.equals(author, expenseEntity.author)
+                && Objects.equals(debitors, expenseEntity.debitors)
+                && Objects.equals(title, expenseEntity.title)
+                && Objects.equals(date, expenseEntity.date);
     }
 
     /**
