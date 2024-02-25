@@ -41,7 +41,9 @@ class ConfigManagerTest {
         }catch(IOException e){
             e.printStackTrace();
         }
+
         configManager = new ConfigManager(TEST_CONFIG_PATH);
+
         assertEquals("value1", configManager.getProperty("property1"));
         assertEquals("value2", configManager.getProperty("property2"));
         assertNull(configManager.getProperty("property3"));
@@ -117,7 +119,6 @@ class ConfigManagerTest {
         }
 
         try(Scanner scanner = new Scanner(new File(TEST_CONFIG_PATH))){
-//            System.out.println("RAH:" + scanner.next());
             assertFalse(scanner.hasNext());
         }catch(IOException e){
             e.printStackTrace();
