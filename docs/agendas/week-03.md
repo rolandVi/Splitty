@@ -13,16 +13,15 @@
     - How is everyone doing?
 - Announcements by the team (1 min)
 - Present changes of the project to the TA (3 min)
+- Present the current code of conduct to the TA (3 min)
 - Approval of the agenda (1 min)
     - Does anyone have any additions?
-- Announcements by the TA (2 min)
+- Announcements by the TA (1 min)
 - Questions for the TA:
     - _none at the moment_
-- Talking Points: (Inform/ brainstorm/ decision making/ discuss)
-    - Discuss the current Code of Conduct (8 min)
-        - Any objections or questions?
-        - Is everyone satisfied with the current CoC?
-    - Discuss about the _issue board_ (4 min)
+- Talking Points: (Inform/ brainstorm/ decision-making/ discuss)
+    - Discuss the abstract of Code of Conduct (5 min)
+    - Discuss the _issue board_ (5 min)
     - Decide what the next issues are on GitLab (5 min)
     - Create a planning for the coming week (5 min)
 - Summarize action points: Who , what , when? (8 min)
