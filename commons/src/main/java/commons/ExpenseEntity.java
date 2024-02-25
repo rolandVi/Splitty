@@ -2,8 +2,8 @@ package commons;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,16 +17,15 @@ public class ExpenseEntity {
     @Column(nullable = false)
     private Double money;
 
-    @ManyToOne
-    @Column(nullable = false)
+    @ManyToOne(optional = false)
     private UserEntity author;
 
-    @Column(nullable = false)
-    private ArrayList<UserEntity> debitors;
+    @ManyToMany
+    private List<UserEntity> debtors;
 
     private String title;
 
-    @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date date;
 
     /**
@@ -45,11 +44,11 @@ public class ExpenseEntity {
      * @param date date of the expense
      */
     public ExpenseEntity(Long id, Double money, UserEntity author,
-                         ArrayList<UserEntity> debtors, String title, Date date) {
+                         List<UserEntity> debtors, String title, Date date) {
         this.id = id;
         this.money = money;
         this.author = author;
-        this.debitors = debtors;
+        this.debtors = debtors;
         this.title = title;
         this.date = date;
     }
@@ -82,8 +81,8 @@ public class ExpenseEntity {
      * Getter for the list of debtors
      * @return list of debtors as ArrayList of UserEntity
      */
-    public ArrayList<UserEntity> getDebtors() {
-        return debitors;
+    public List<UserEntity> getDebtors() {
+        return debtors;
     }
 
     /**
@@ -131,7 +130,7 @@ public class ExpenseEntity {
      * @param debtor as UserEntity
      */
     public void addDebtor(UserEntity debtor){
-        debitors.add(debtor);
+        debtors.add(debtor);
     }
 
     /**
@@ -146,7 +145,7 @@ public class ExpenseEntity {
         ExpenseEntity expenseEntity = (ExpenseEntity) o;
         return Objects.equals(id, expenseEntity.id) && Objects.equals(money, expenseEntity.money)
                 && Objects.equals(author, expenseEntity.author)
-                && Objects.equals(debitors, expenseEntity.debitors)
+                && Objects.equals(debtors, expenseEntity.debtors)
                 && Objects.equals(title, expenseEntity.title)
                 && Objects.equals(date, expenseEntity.date);
     }
@@ -157,6 +156,6 @@ public class ExpenseEntity {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, money, author, debitors, title, date);
+        return Objects.hash(id, money, author, debtors, title, date);
     }
 }
