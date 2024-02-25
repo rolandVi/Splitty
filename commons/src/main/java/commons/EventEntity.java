@@ -18,11 +18,13 @@ public class EventEntity {
 
     private String password;
 
+    private String title;
+
     @OneToMany
     private List<ExpenseEntity> expenses;
 
     @ManyToMany
-    private List<UserEntity> users;
+    private List<UserEntity> participants;
 
     /**
      * Default constructor for JBA
@@ -35,16 +37,19 @@ public class EventEntity {
      * @param id The id of the Event
      * @param inviteCode The invite code of the event
      * @param password The password of the event
+     * @param title The title of the event
      * @param expenses The list of expenses of the event
-     * @param users The list of users of the event
+     * @param participants The list of users of the event
+     *
      */
-    public EventEntity(Long id, String inviteCode, String password,
-                       List<ExpenseEntity> expenses, List<UserEntity> users) {
+    public EventEntity(Long id, String inviteCode, String password, String title,
+                       List<ExpenseEntity> expenses, List<UserEntity> participants) {
         this.id = id;
         this.inviteCode = inviteCode;
         this.password = password;
+        this.title = title;
         this.expenses = expenses;
-        this.users = users;
+        this.participants = participants;
     }
 
     /**
@@ -73,6 +78,30 @@ public class EventEntity {
         return password;
     }
 
+    /**
+     * Sets a new password
+     * @param password The password
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * Gets the title
+     * @return The title
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * Sets the title
+     * @param title the title
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
 
     /**
      * Get the list of expenses associated with the event.
@@ -89,8 +118,8 @@ public class EventEntity {
      *
      * @return The list of users associated with the event.
      */
-    public List<UserEntity> getUsers() {
-        return users;
+    public List<UserEntity> getParticipants() {
+        return participants;
     }
 
 
@@ -123,6 +152,39 @@ public class EventEntity {
                 && Objects.equals(inviteCode, that.inviteCode)
                 && Objects.equals(password, that.password)
                 && Objects.equals(expenses, that.expenses)
-                && Objects.equals(users, that.users);
+                && Objects.equals(participants, that.participants);
+    }
+
+
+    /**
+     * Adds a new participant
+     * @param participant The new participant
+     */
+    public void addParticipant(UserEntity participant) {
+        this.participants.add(participant);
+    }
+
+    /**
+     * Removes participant
+     * @param participant The participant
+     */
+    public void removeParticipant(UserEntity participant) {
+        this.participants.remove(participant);
+    }
+
+    /**
+     * Adds new expens
+     * @param expense The expense
+     */
+    public void addExpense(ExpenseEntity expense) {
+        this.expenses.add(expense);
+    }
+
+    /**
+     * Removes expense
+     * @param expense The expense
+     */
+    public void removeExpense(ExpenseEntity expense) {
+        this.expenses.remove(expense);
     }
 }

@@ -51,7 +51,8 @@ public class UserEntityTest {
 
     @Test
     public void testEqualsWithEqualObject(){
-        UserEntity userEntity = new UserEntity(1L, "FirstName", "LastName", "email@gmail.com", "Some password", true);
+        UserEntity userEntity = new UserEntity(1L, "FirstName", "LastName",
+                "email@gmail.com", "Some password", true);
         assertEquals(this.user, userEntity);
     }
 
