@@ -5,10 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class EventEntityTest {
     private EventEntity event;
@@ -19,7 +16,7 @@ public class EventEntityTest {
     public void initEvent() {
 
         List<ExpenseEntity> expenses = new ArrayList<>();
-        List<UserEntity> users = new ArrayList<>();
+        Set<UserEntity> users = new HashSet<>();
 
         user = new UserEntity(1L, "FirstName", "LastName", "email@gmail.com",
                 "Some password", true);
@@ -60,7 +57,7 @@ public class EventEntityTest {
 
     @Test
     public void testUsersGetter() {
-        List<UserEntity> expectedUsers = new ArrayList<>();
+        Set<UserEntity> expectedUsers = new HashSet<>();
 
         assertEquals(expectedUsers, this.event.getParticipants());
     }
@@ -73,7 +70,7 @@ public class EventEntityTest {
     @Test
     public void testEqualsWithEqualObject(){
         List<ExpenseEntity> expenses = new ArrayList<>();
-        List<UserEntity> users = new ArrayList<>();
+        Set<UserEntity> users = new HashSet<>();
 
         EventEntity eventEntity = new EventEntity(1L, "test_invite_code",
                 "test_password", "title", expenses, users);
@@ -84,7 +81,7 @@ public class EventEntityTest {
     @Test
     public void testEqualsWhenNotEqual(){
         List<ExpenseEntity> expenses = new ArrayList<>();
-        List<UserEntity> users = new ArrayList<>();
+        Set<UserEntity> users = new HashSet<>();
 
         EventEntity eventEntity = new EventEntity(2L, "test_invite_code",
                 "test_password", "title", expenses, users);
@@ -95,7 +92,7 @@ public class EventEntityTest {
     @Test
     public void testSameHash(){
         List<ExpenseEntity> expenses = new ArrayList<>();
-        List<UserEntity> users = new ArrayList<>();
+        Set<UserEntity> users = new HashSet<>();
 
         EventEntity eventEntity = new EventEntity(1L, "test_invite_code",
                 "test_password", "title", expenses, users);

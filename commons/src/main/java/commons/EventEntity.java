@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "events")
@@ -24,7 +25,7 @@ public class EventEntity {
     private List<ExpenseEntity> expenses;
 
     @ManyToMany
-    private List<UserEntity> participants;
+    private Set<UserEntity> participants;
 
     /**
      * Default constructor for JBA
@@ -43,7 +44,7 @@ public class EventEntity {
      *
      */
     public EventEntity(Long id, String inviteCode, String password, String title,
-                       List<ExpenseEntity> expenses, List<UserEntity> participants) {
+                       List<ExpenseEntity> expenses, Set<UserEntity> participants) {
         this.id = id;
         this.inviteCode = inviteCode;
         this.password = password;
@@ -118,7 +119,7 @@ public class EventEntity {
      *
      * @return The list of users associated with the event.
      */
-    public List<UserEntity> getParticipants() {
+    public Set<UserEntity> getParticipants() {
         return participants;
     }
 
