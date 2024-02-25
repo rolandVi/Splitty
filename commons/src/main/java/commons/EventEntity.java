@@ -31,6 +31,23 @@ public class EventEntity {
     }
 
     /**
+     * Constructor with all parameters
+     * @param id The id of the Event
+     * @param inviteCode The invite code of the event
+     * @param password The password of the event
+     * @param expenses The list of expenses of the event
+     * @param users The list of users of the event
+     */
+    public EventEntity(Long id, String inviteCode, String password,
+                       List<ExpenseEntity> expenses, List<UserEntity> users) {
+        this.id = id;
+        this.inviteCode = inviteCode;
+        this.password = password;
+        this.expenses = expenses;
+        this.users = users;
+    }
+
+    /**
      *  Get the id of the Event
      * @return The id of the event
      */

@@ -10,7 +10,8 @@ public class UserEntityTest {
 
     @BeforeEach
     public void initUser() {
-        this.user = new UserEntity(1L, "FirstName", "LastName", "email@gmail.com", "Some password", true);
+        this.user = new UserEntity(1L, "FirstName", "LastName", "email@gmail.com",
+                "Some password", true);
     }
 
     @Test
@@ -62,7 +63,8 @@ public class UserEntityTest {
 
     @Test
     public void testSameHash(){
-        UserEntity userEntity = new UserEntity(1L, "FirstName", "LastName", "email@gmail.com", "Some password", true);
+        UserEntity userEntity = new UserEntity(1L, "FirstName", "LastName",
+                "email@gmail.com", "Some password", true);
         assertEquals(this.user.hashCode(), userEntity.hashCode());
     }
 }
