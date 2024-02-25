@@ -19,10 +19,11 @@
 - Questions for the TA:
     - _none at the moment_
 - Talking Points: (Inform/ brainstorm/ decision making/ discuss)
-    - Discuss the current Code of Conduct (10 min)
+    - Discuss the current Code of Conduct (8 min)
         - Any objections or questions?
         - Is everyone satisfied with the current CoC?
-    - Decide what the next issues are on GitLab (7 min)
+    - Discuss about the _issue board_ (4 min)
+    - Decide what the next issues are on GitLab (5 min)
     - Create a planning for the coming week (5 min)
 - Summarize action points: Who , what , when? (8 min)
 - Feedback round: What went well and what can be improved next time? (2 min)
