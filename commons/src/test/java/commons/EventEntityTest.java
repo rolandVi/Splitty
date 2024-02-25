@@ -37,20 +37,14 @@ public class EventEntityTest {
 
     @Test
     public void testExpensesGetter() {
-        // Initialize and set up some expenses
         List<ExpenseEntity> expectedExpenses = new ArrayList<>();
-        // Add expected expenses
-        // expectedExpenses.add(new ExpenseEntity(...));
 
         assertEquals(expectedExpenses, this.event.getExpenses());
     }
 
     @Test
     public void testUsersGetter() {
-        // Initialize and set up some users
         List<UserEntity> expectedUsers = new ArrayList<>();
-        // Add expected users
-        // expectedUsers.add(new UserEntity(...));
 
         assertEquals(expectedUsers, this.event.getUsers());
     }
