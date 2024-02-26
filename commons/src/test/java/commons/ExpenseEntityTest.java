@@ -92,4 +92,10 @@ class ExpenseEntityTest {
     void testHashCode() {
         assertEquals(this.expense.hashCode(), this.expense.hashCode());
     }
+
+    @Test
+    void testEmptyConstructor() {
+        ExpenseEntity emptyExpense = new ExpenseEntity();
+        assertNotNull(emptyExpense);
+    }
 }

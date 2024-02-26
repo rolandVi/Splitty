@@ -68,4 +68,10 @@ public class UserEntityTest {
                 "email@gmail.com", "Some password", true);
         assertEquals(this.user.hashCode(), userEntity.hashCode());
     }
+
+    @Test
+    void testEmptyConstructor() {
+        UserEntity emptyUser = new UserEntity();
+        assertNotNull(emptyUser);
+    }
 }

@@ -136,4 +136,10 @@ public class EventEntityTest {
         assertEquals(0, event.getParticipants().size());
     }
 
+    @Test
+    void testEmptyConstructor() {
+        EventEntity emptyEvent = new EventEntity();
+        assertNotNull(emptyEvent);
+    }
+
 }
