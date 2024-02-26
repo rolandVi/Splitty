@@ -76,4 +76,11 @@ class BankAccountEntityTest {
         bankaccount1.setHolder("testUser2");
         assertEquals("testUser2", bankaccount1.getHolder());
     }
+
+    @Test
+    void testEmptyConstructor() {
+        BankAccountEntity emptyBankAccount = new BankAccountEntity();
+        assertNotNull(emptyBankAccount);
+    }
+
 }

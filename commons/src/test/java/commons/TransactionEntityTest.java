@@ -49,4 +49,10 @@ class TransactionEntityTest {
         TransactionEntity transaction2 = new TransactionEntity(1234L, 19.99, sender, receiver);
         assertEquals(transaction.hashCode(), transaction2.hashCode());
     }
+
+    @Test
+    void testEmptyConstructor() {
+        TransactionEntity emptyTransaction = new TransactionEntity();
+        assertNotNull(emptyTransaction);
+    }
 }
