@@ -34,4 +34,16 @@ public class EventService {
     public EventEntity getById(long id) {
         return this.eventRepository.getReferenceById(id);
     }
+
+    public void removeById(long id){
+        this.eventRepository.deleteById(id);
+    }
+
+    public EventEntity updateById(long id, String title) {
+        return this.eventRepository.updateEventTitleById(id, title);
+    }
+
+    public EventEntity save(EventEntity event) {
+        return this.eventRepository.save(event);
+    }
 }
