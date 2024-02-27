@@ -12,10 +12,10 @@ public class TransactionEntity {
     @Column(nullable = false)
     private double money;
     @ManyToOne
-    @Column(nullable = false)
+    @JoinColumn(nullable = false)
     private UserEntity sender;
     @ManyToOne
-    @Column(nullable = false)
+    @JoinColumn(nullable = false)
     private UserEntity receiver;
 
     /**
