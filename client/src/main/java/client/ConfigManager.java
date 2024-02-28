@@ -10,8 +10,19 @@ import java.util.Set;
 public class ConfigManager {
 
     private String configFilePath;
+//    private final String CONFIG_FILE_PATH="client/src/main/resources/config.properties";
+
+//    private ConfigManager instance;
 
     private Properties properties;
+
+//    public ConfigManager getInstance(){
+//        if (instance==null){
+//            instance=new ConfigManager(CONFIG_FILE_PATH);
+//        }
+//
+//        return this.instance;
+//    }
 
     /**
      * default constructor
