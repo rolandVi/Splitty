@@ -58,6 +58,8 @@ public class MainCtrl {
         primaryStage.setTitle("Start Page");
         primaryStage.setScene(startPage);
 
+        startPage.setOnKeyPressed(e -> startPageCtrl.keyPressed(e));
+
         startPageCtrl.refresh();
     }
 

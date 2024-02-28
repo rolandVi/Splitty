@@ -2,6 +2,7 @@ package client.scenes;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
 import javax.inject.Inject;
@@ -36,6 +37,20 @@ public class StartPageCtrl {
             errorMessage.setOpacity(1.0d);
         } else {
             mainCtrl.showOverview();
+        }
+    }
+
+    /**
+     * Checks for key press
+     * @param e The key
+     */
+    public void keyPressed(KeyEvent e) {
+        switch (e.getCode()) {
+            case ENTER:
+                connect();
+                break;
+            default:
+                break;
         }
     }
 
