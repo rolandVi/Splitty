@@ -11,6 +11,10 @@ public class UserRestController {
     private final UserService userService;
 
 
+    /**
+     *Constructor injection
+     * @param userService the user service to inject
+     */
     public UserRestController(UserService userService) {
         this.userService = userService;
     }

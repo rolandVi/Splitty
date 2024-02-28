@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 
 @Repository
 public interface EventRepository extends JpaRepository<EventEntity, Long> {
@@ -19,7 +21,7 @@ public interface EventRepository extends JpaRepository<EventEntity, Long> {
      */
     @Modifying
     @Query("update EventEntity e set e.title=:title where e.id=:id")
-    EventEntity updateEventTitleById(@Param(value = "id") long id,
-                                     @Param(value="title") String title);
+    Optional<EventEntity> updateEventTitleById(@Param(value = "id") long id,
+                                               @Param(value="title") String title);
 
 }

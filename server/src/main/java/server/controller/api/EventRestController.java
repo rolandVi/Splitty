@@ -2,6 +2,7 @@ package server.controller.api;
 
 import commons.EventEntity;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.dto.view.EventDetailsDto;
@@ -31,10 +32,6 @@ public class EventRestController {
      */
     @GetMapping(name = "/{id}", produces = "application/json")
     public ResponseEntity<EventDetailsDto> getById(@PathVariable(name = "id") long id){
-        if (!checkIdValidity(id)){
-            return ResponseEntity.badRequest().build();
-        }
-
         return ResponseEntity.ok(this.eventService.getById(id));
     }
 
@@ -49,7 +46,7 @@ public class EventRestController {
         if (!checkIdValidity(id)){
             return ResponseEntity.badRequest().build();
         }
-
+        this.eventService.removeById(id);
         return ResponseEntity.ok().build();
     }
 
@@ -63,29 +60,42 @@ public class EventRestController {
     @PatchMapping("/{id}")
     public ResponseEntity<EventTitleDto> updateEventTitleById(@PathVariable(name = "id") long id,
                                                    @Valid @RequestBody EventTitleDto eventTitle){
-        if (!checkIdValidity(id)){
-            return ResponseEntity.badRequest().build();
-        }
-
         return ResponseEntity.ok(this.eventService.updateById(id, eventTitle));
     }
 
+    /**
+     * Creates an event with the given title
+     * @param title the title of the new event
+     * @return the newly created event title and id
+     */
     @PostMapping("/")
-    public ResponseEntity<EventTitleDto> createEvent(@RequestBody String title){
-        if (title.isBlank()){
-            return ResponseEntity.badRequest().build();
-        }
-
+    public ResponseEntity<EventTitleDto> createEvent(@NotBlank @RequestBody String title){
         return ResponseEntity.ok(this.eventService.createEvent(title));
     }
 
+    /**
+     * Adding a participant to an event
+     * @param eventId the event id
+     * @param userId the user id
+     * @return whether the operation was successful
+     */
     @PatchMapping("/{id}/add")
-    public ResponseEntity<EventParticipantsDto> addParticipant(@PathVariable(name = "id") long eventId, @RequestBody long userId){
-        if (!checkIdValidity(eventId) || !checkIdValidity(userId)){
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<Void> addParticipant(@PathVariable(name = "id") long eventId, @RequestBody long userId){
+        this.eventService.addParticipant(eventId, userId);
+        return ResponseEntity.ok().build();
+    }
 
-        return ResponseEntity.ok(this.eventService.addParticipant(eventId, userId));
+    /**
+     * Delete a participant from an event
+     * @param eventId the id of the event
+     * @param userId the id of the user
+     * @return whether the operation was successful
+     */
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<Void> deleteParticipant(@PathVariable(name = "id") long eventId,
+                                                  @RequestBody long userId){
+        this.eventService.deleteParticipant(eventId, userId);
+        return ResponseEntity.ok().build();
     }
 
     /**

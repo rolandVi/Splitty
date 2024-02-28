@@ -25,7 +25,7 @@ public class EventEntityTest {
                 new Date(2024 -1900, Calendar.JANUARY, 24));
 
         event = new EventEntity(1L, "test_invite_code",
-                "test_password", "title", expenses, users);
+                "title", expenses, users);
     }
 
     @Test
@@ -38,10 +38,6 @@ public class EventEntityTest {
         assertEquals("test_invite_code", this.event.getInviteCode());
     }
 
-    @Test
-    public void testPasswordGetter() {
-        assertEquals("test_password", this.event.getPassword());
-    }
 
     @Test
     public void testTitleGetter() {
@@ -73,7 +69,7 @@ public class EventEntityTest {
         Set<UserEntity> users = new HashSet<>();
 
         EventEntity eventEntity = new EventEntity(1L, "test_invite_code",
-                "test_password", "title", expenses, users);
+                "title", expenses, users);
 
         assertEquals(this.event, eventEntity);
     }
@@ -84,7 +80,7 @@ public class EventEntityTest {
         Set<UserEntity> users = new HashSet<>();
 
         EventEntity eventEntity = new EventEntity(2L, "test_invite_code",
-                "test_password", "title", expenses, users);
+                "title", expenses, users);
 
         assertNotEquals(this.event, eventEntity);
     }
@@ -95,7 +91,7 @@ public class EventEntityTest {
         Set<UserEntity> users = new HashSet<>();
 
         EventEntity eventEntity = new EventEntity(1L, "test_invite_code",
-                "test_password", "title", expenses, users);
+                "title", expenses, users);
 
         assertEquals(this.event.hashCode(), eventEntity.hashCode());
     }
@@ -105,13 +101,6 @@ public class EventEntityTest {
         String newTitle = "new title";
         event.setTitle(newTitle);
         assertEquals(newTitle, event.getTitle());
-    }
-
-    @Test
-    public void testSetPassword() {
-        String newPassword = "new password";
-        event.setPassword(newPassword);
-        assertEquals(newPassword, event.getPassword());
     }
 
     @Test

@@ -47,6 +47,11 @@ public class EventTitleDto {
         return this;
     }
 
+    /**
+     * Equals to check for equality
+     * @param o the object to compare to
+     * @return true if they are equal and false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,6 +60,10 @@ public class EventTitleDto {
         return Objects.equals(id, that.id) && Objects.equals(title, that.title);
     }
 
+    /**
+     * Generating hash code
+     * @return the hash code
+     */
     @Override
     public int hashCode() {
         return Objects.hash(id, title);
