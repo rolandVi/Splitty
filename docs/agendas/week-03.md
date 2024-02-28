@@ -37,3 +37,27 @@ In the 'Points of action' part you will also find some topics to cover in/after 
 - Planned meeting duration != actual duration? Where/why did you mis -estimate? (2 min)
 - Closure (1 min)
 # Notes week 3
+
+TA announcements:
+-If someone failed the GIT assignment, they need to redo it 
+    -Read the assignment carefully, check what the repository graph is supposed to look like
+
+Talking points:
+Code of Conduct:
+    - Everyone finished their part in the CoC
+    - Ensure that each point in the CoC is accompanied by an explanation of how to achieve it within our team
+
+Issue board:
+    - Issue boards are containers to differentiate issues
+    - We decided to use them instead of the to-do, in-progress and done tags
+
+Decide next week's issues & Planing for the coming week:
+    - Planing and issues for the coming week were done after the meeting
+        - Creation of scenes (Start page, Home page, Admin login page, Admin overview page)
+        - Password generation for Admin log-in
+        - Server side CRUD operation for events
+    - Check GitLab for closer information
+
+Notes to issues:
+    - An issue should conclude which user-stories it touches up on
+    - Multiple issues can be closed by one merge request
