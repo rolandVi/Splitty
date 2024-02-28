@@ -3,6 +3,8 @@ package commons;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TransactionEntityTest {
@@ -12,9 +14,9 @@ class TransactionEntityTest {
     @BeforeEach
     void setup() {
         this.sender = new UserEntity(1L, "Sender", "LastName",
-                "email@gmail.com", "Some password", true);
+                "email@gmail.com", new HashSet<>(), new BankAccountEntity());
         this.receiver = new UserEntity(2L, "Receiver", "LastName",
-                "email@gmail.com", "Some password", true);
+                "email@gmail.com", new HashSet<>(), new BankAccountEntity());
         this.transaction = new TransactionEntity(1234L, 19.99, sender, receiver);
     }
 

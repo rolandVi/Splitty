@@ -3,6 +3,7 @@ package commons;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Set;
 
 
 @Entity
@@ -21,9 +22,8 @@ public class UserEntity {
     @Column(nullable = false, unique = true)
     private String email;
 
-    private String password;
-
-    private boolean isAdmin;
+    @ManyToMany
+    private Set<EventEntity> events;
 
     @OneToOne
     private BankAccountEntity bankAccount;
@@ -35,22 +35,22 @@ public class UserEntity {
     }
 
     /**
-     * All params constuctor
+     * All params constructor
      * @param id the id of the user
      * @param firstName the first name of the user
      * @param lastName the last name of the user
      * @param email the email of the user
-     * @param password the password of the user
-     * @param isAdmin whether the user is an admin or not
+     * @param events the events
+     * @param bankAccount the events
      */
     public UserEntity(Long id, String firstName, String lastName,
-                      String email, String password, boolean isAdmin) {
+                      String email, Set<EventEntity> events, BankAccountEntity bankAccount) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = password;
-        this.isAdmin = isAdmin;
+        this.events = events;
+        this.bankAccount = bankAccount;
     }
 
     /**
@@ -86,19 +86,19 @@ public class UserEntity {
     }
 
     /**
-     * Password getter
-     * @return the password of the user
+     * Events getter
+     * @return the events of the user
      */
-    public String getPassword() {
-        return password;
+    public Set<EventEntity> getEvents() {
+        return events;
     }
 
     /**
-     * Getter for the isAdmin field
-     * @return whether the user is an admin or not
+     * BankAccount getter
+     * @return the bank account of the user
      */
-    public boolean isAdmin() {
-        return isAdmin;
+    public BankAccountEntity getBankAccount() {
+        return bankAccount;
     }
 
     /**
