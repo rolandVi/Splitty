@@ -51,8 +51,10 @@ class BankAccountEntityTest {
         /*
         added these in the test themselves because the setter messed with the values so it would fail the test otherwise
          */
-        BankAccountEntity equalsTest = new BankAccountEntity("NL29INGB3506581023", "testUser1", "INGBNL2A");
-        BankAccountEntity equalsTest1 = new BankAccountEntity("NL29INGB3506581023", "testUser1", "INGBNL2A");
+        BankAccountEntity equalsTest = new BankAccountEntity("NL29INGB3506581023",
+                "testUser1", "INGBNL2A");
+        BankAccountEntity equalsTest1 = new BankAccountEntity("NL29INGB3506581023",
+                "testUser1", "INGBNL2A");
         assertEquals(equalsTest,equalsTest1);
     }
 
@@ -61,8 +63,10 @@ class BankAccountEntityTest {
         /*
         added these in the test themselves because the setter messed with the values so it would fail the test otherwise
          */
-        BankAccountEntity hashTest = new BankAccountEntity("NL29INGB3506581023", "testUser1", "INGBNL2A");
-        BankAccountEntity hashTest1 = new BankAccountEntity("NL29INGB3506581023", "testUser1", "INGBNL2A");
+        BankAccountEntity hashTest = new BankAccountEntity("NL29INGB3506581023",
+                "testUser1", "INGBNL2A");
+        BankAccountEntity hashTest1 = new BankAccountEntity("NL29INGB3506581023",
+                "testUser1", "INGBNL2A");
         assertTrue(hashTest.equals(hashTest1) && hashTest1.equals(hashTest));
         assertEquals(hashTest.hashCode(), hashTest1.hashCode());
     }
@@ -72,4 +76,11 @@ class BankAccountEntityTest {
         bankaccount1.setHolder("testUser2");
         assertEquals("testUser2", bankaccount1.getHolder());
     }
+
+    @Test
+    void testEmptyConstructor() {
+        BankAccountEntity emptyBankAccount = new BankAccountEntity();
+        assertNotNull(emptyBankAccount);
+    }
+
 }

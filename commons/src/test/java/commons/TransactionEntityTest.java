@@ -11,8 +11,10 @@ class TransactionEntityTest {
     private TransactionEntity transaction;
     @BeforeEach
     void setup() {
-        this.sender = new UserEntity(1L, "Sender", "LastName", "email@gmail.com", "Some password", true);
-        this.receiver = new UserEntity(2L, "Receiver", "LastName", "email@gmail.com", "Some password", true);
+        this.sender = new UserEntity(1L, "Sender", "LastName",
+                "email@gmail.com", "Some password", true);
+        this.receiver = new UserEntity(2L, "Receiver", "LastName",
+                "email@gmail.com", "Some password", true);
         this.transaction = new TransactionEntity(1234L, 19.99, sender, receiver);
     }
 
@@ -46,5 +48,11 @@ class TransactionEntityTest {
     void testHashCode() {
         TransactionEntity transaction2 = new TransactionEntity(1234L, 19.99, sender, receiver);
         assertEquals(transaction.hashCode(), transaction2.hashCode());
+    }
+
+    @Test
+    void testEmptyConstructor() {
+        TransactionEntity emptyTransaction = new TransactionEntity();
+        assertNotNull(emptyTransaction);
     }
 }
