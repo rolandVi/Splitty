@@ -5,13 +5,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
+
 public class UserEntityTest {
     private UserEntity user;
 
     @BeforeEach
     public void initUser() {
+
         this.user = new UserEntity(1L, "FirstName", "LastName", "email@gmail.com",
-                "Some password", true);
+                new HashSet<>(), new BankAccountEntity());
     }
 
     @Test
@@ -35,13 +38,13 @@ public class UserEntityTest {
     }
 
     @Test
-    public void testPasswordGetter() {
-        assertEquals("Some password", this.user.getPassword());
+    public void testEventsGetter() {
+        assertEquals(new HashSet<>(), this.user.getEvents());
     }
 
     @Test
-    public void testAdminGetter() {
-        assertTrue(this.user.isAdmin());
+    public void testBankAccountGetter() {
+        assertEquals(new BankAccountEntity(), this.user.getBankAccount());
     }
 
     @Test
@@ -52,20 +55,20 @@ public class UserEntityTest {
     @Test
     public void testEqualsWithEqualObject(){
         UserEntity userEntity = new UserEntity(1L, "FirstName", "LastName",
-                "email@gmail.com", "Some password", true);
+                "email@gmail.com", new HashSet<>(), new BankAccountEntity());
         assertEquals(this.user, userEntity);
     }
 
     @Test
     public void testEqualsWhenNotEqual(){
-        UserEntity userEntity = new UserEntity(2L, "", "", "", "", true);
+        UserEntity userEntity = new UserEntity(2L, "", "", "", new HashSet<>(), new BankAccountEntity());
         assertNotEquals(this.user, userEntity);
     }
 
     @Test
     public void testSameHash(){
         UserEntity userEntity = new UserEntity(1L, "FirstName", "LastName",
-                "email@gmail.com", "Some password", true);
+                "email@gmail.com", new HashSet<>(), new BankAccountEntity());
         assertEquals(this.user.hashCode(), userEntity.hashCode());
     }
 
