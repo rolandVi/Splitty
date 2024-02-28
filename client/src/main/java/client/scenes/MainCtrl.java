@@ -15,18 +15,51 @@
  */
 package client.scenes;
 
+import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.Parent;
+import javafx.util.Pair;
 
 
 public class MainCtrl {
 
+    private StartPageCtrl startPageCtrl;
+
+    private EventOverviewCtrl eventOverviewCtrl;
+    private Scene startPage;
+
+    private Scene eventOverview;
+    private Stage primaryStage;
 
     /**
      * Initialize stage
      * @param primaryStage the primary stage
      */
-    public void initialize(Stage primaryStage) {
+    public void initialize(Stage primaryStage, Pair<StartPageCtrl, Parent> startPage,
+                           Pair<EventOverviewCtrl, Parent> eventOverview) {
+        this.primaryStage = primaryStage;
+
+        this.startPageCtrl = startPage.getKey();
+        this.eventOverviewCtrl = eventOverview.getKey();
+
+        this.startPage = new Scene(startPage.getValue());
+        this.eventOverview = new Scene(eventOverview.getValue());
+
+        showStart();
         primaryStage.show();
+    }
+
+
+    public void showStart() {
+        primaryStage.setTitle("Start Page");
+        primaryStage.setScene(startPage);
+
+        startPageCtrl.refresh();
+    }
+
+    public void showOverview(){
+        primaryStage.setTitle("Events Overview");
+        primaryStage.setScene(eventOverview);
     }
 
 
