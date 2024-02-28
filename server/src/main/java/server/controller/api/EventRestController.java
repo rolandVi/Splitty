@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.dto.view.EventDetailsDto;
+import server.dto.view.EventParticipantsDto;
 import server.dto.view.EventTitleDto;
 import server.service.EventService;
 
@@ -69,8 +70,23 @@ public class EventRestController {
         return ResponseEntity.ok(this.eventService.updateById(id, eventTitle));
     }
 
-//    @GetMapping("/user/{id}")
-//    public
+    @PostMapping("/")
+    public ResponseEntity<EventTitleDto> createEvent(@RequestBody String title){
+        if (title.isBlank()){
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok(this.eventService.createEvent(title));
+    }
+
+    @PatchMapping("/{id}/add")
+    public ResponseEntity<EventParticipantsDto> addParticipant(@PathVariable(name = "id") long eventId, @RequestBody long userId){
+        if (!checkIdValidity(eventId) || !checkIdValidity(userId)){
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok(this.eventService.addParticipant(eventId, userId));
+    }
 
     /**
      * Helper method to check if and id is valid

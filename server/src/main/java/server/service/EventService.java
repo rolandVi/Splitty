@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import server.dto.view.EventDetailsDto;
+import server.dto.view.EventParticipantsDto;
 import server.dto.view.EventTitleDto;
 import server.repository.EventRepository;
 
@@ -14,15 +15,19 @@ public class EventService {
     private final EventRepository eventRepository;
     private final ModelMapper modelMapper;
 
+    private final UserService userService;
+
     /**
      * Constructor Injection
      *
      * @param eventRepository the EventEntity repository
-     * @param modelMapper the ModelMapper injected by Spring
+     * @param modelMapper     the ModelMapper injected by Spring
+     * @param userService
      */
-    public EventService(EventRepository eventRepository, ModelMapper modelMapper) {
+    public EventService(EventRepository eventRepository, ModelMapper modelMapper, UserService userService) {
         this.eventRepository = eventRepository;
         this.modelMapper = modelMapper;
+        this.userService = userService;
     }
 
     /**
@@ -77,5 +82,19 @@ public class EventService {
     //TODO: create a method to generate Invite code
     private String generateInviteCode() {
         return "";
+    }
+
+    public EventTitleDto createEvent(String title) {
+        EventEntity newEntity=new EventEntity();
+        newEntity.setTitle(title);
+        newEntity.setInviteCode(generateInviteCode());
+        EventEntity result=this.eventRepository.save(newEntity);
+        return modelMapper.map(result, EventTitleDto.class);
+    }
+
+    public EventParticipantsDto addParticipant(long eventId, long userId) {
+        EventEntity event=this.eventRepository.getReferenceById(eventId);
+        event.getParticipants().add(this.userService.findById(userId));
+        return this.modelMapper.map(this.eventRepository.save(event), EventParticipantsDto.class);
     }
 }

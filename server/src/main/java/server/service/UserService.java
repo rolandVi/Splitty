@@ -1,5 +1,6 @@
 package server.service;
 
+import commons.UserEntity;
 import org.springframework.stereotype.Service;
 import server.dto.view.EventTitleDto;
 import server.repository.UserRepository;
@@ -18,5 +19,9 @@ public class UserService {
 
     public boolean existsById(long id) {
         return this.userRepository.existsById(id);
+    }
+
+    public UserEntity findById(long userId) {
+        return this.userRepository.getReferenceById(userId);
     }
 }
