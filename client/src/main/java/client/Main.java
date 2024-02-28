@@ -49,9 +49,9 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-
         var startPage = FXML.load(StartPageCtrl.class, "client.scenes", "startPage.fxml");
-        var eventOverview = FXML.load(EventOverviewCtrl.class, "client.scenes", "eventOverview.fxml");
+        var eventOverview = FXML.load(EventOverviewCtrl.class,
+                "client.scenes", "eventOverview.fxml");
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 

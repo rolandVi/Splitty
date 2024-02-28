@@ -17,12 +17,23 @@ import javafx.util.Pair;
 
 public class MyFXML {
 
-    private Injector injector;
+    private final Injector injector;
 
+    /**
+     * Injector constructor
+     * @param injector The injector
+     */
     public MyFXML(Injector injector) {
         this.injector = injector;
     }
 
+    /**
+     * Pair of elements to load
+     * @param c The class
+     * @param parts The parts
+     * @return The actual class
+     * @param <T> The type
+     */
     public <T> Pair<T, Parent> load(Class<T> c, String... parts) {
         try {
             var loader = new FXMLLoader(getLocation(parts), null,
@@ -35,11 +46,19 @@ public class MyFXML {
         }
     }
 
+    /**
+     * retrieves location
+     * @param parts The parts
+     * @return The URL
+     */
     private URL getLocation(String... parts) {
         var path = Path.of("", parts).toString();
         return MyFXML.class.getClassLoader().getResource(path);
     }
 
+    /**
+     * Factory Builder
+     */
     private class MyFactory implements BuilderFactory, Callback<Class<?>, Object> {
 
         @Override

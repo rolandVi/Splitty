@@ -32,8 +32,10 @@ public class MainCtrl {
     private Stage primaryStage;
 
     /**
-     * Initialize stage
-     * @param primaryStage the primary stage
+     * The initialize method
+     * @param primaryStage The primary Stage
+     * @param startPage The start Page
+     * @param eventOverview The event Overview
      */
     public void initialize(Stage primaryStage, Pair<StartPageCtrl, Parent> startPage,
                            Pair<EventOverviewCtrl, Parent> eventOverview) {
@@ -49,7 +51,9 @@ public class MainCtrl {
         primaryStage.show();
     }
 
-
+    /**
+     * Shows the start scene
+     */
     public void showStart() {
         primaryStage.setTitle("Start Page");
         primaryStage.setScene(startPage);
@@ -57,7 +61,11 @@ public class MainCtrl {
         startPageCtrl.refresh();
     }
 
+    /**
+     * Shows the overview scene
+     */
     public void showOverview(){
+
         primaryStage.setTitle("Events Overview");
         primaryStage.setScene(eventOverview);
     }
