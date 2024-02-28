@@ -132,7 +132,11 @@ public class EventDetailsDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EventDetailsDto that = (EventDetailsDto) o;
-        return Objects.equals(id, that.id) && Objects.equals(inviteCode, that.inviteCode) && Objects.equals(title, that.title) && Objects.equals(expenses, that.expenses) && Objects.equals(participants, that.participants);
+        return Objects.equals(id, that.id)
+                && Objects.equals(inviteCode, that.inviteCode)
+                && Objects.equals(title, that.title)
+                && Objects.equals(expenses, that.expenses)
+                && Objects.equals(participants, that.participants);
     }
 
     /**

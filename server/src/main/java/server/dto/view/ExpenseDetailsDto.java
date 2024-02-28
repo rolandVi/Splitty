@@ -156,7 +156,11 @@ public class ExpenseDetailsDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ExpenseDetailsDto that = (ExpenseDetailsDto) o;
-        return Objects.equals(id, that.id) && Objects.equals(money, that.money) && Objects.equals(author, that.author) && Objects.equals(title, that.title) && Objects.equals(debtors, that.debtors) && Objects.equals(date, that.date);
+        return Objects.equals(id, that.id) && Objects.equals(money, that.money)
+                && Objects.equals(author, that.author)
+                && Objects.equals(title, that.title)
+                && Objects.equals(debtors, that.debtors)
+                && Objects.equals(date, that.date);
     }
 
     /**

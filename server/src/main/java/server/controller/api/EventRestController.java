@@ -1,12 +1,10 @@
 package server.controller.api;
 
-import commons.EventEntity;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.dto.view.EventDetailsDto;
-import server.dto.view.EventParticipantsDto;
 import server.dto.view.EventTitleDto;
 import server.service.EventService;
 
@@ -80,7 +78,8 @@ public class EventRestController {
      * @return whether the operation was successful
      */
     @PatchMapping("/{id}/add")
-    public ResponseEntity<Void> addParticipant(@PathVariable(name = "id") long eventId, @RequestBody long userId){
+    public ResponseEntity<Void> addParticipant(@PathVariable(name = "id") long eventId,
+                                               @RequestBody long userId){
         this.eventService.addParticipant(eventId, userId);
         return ResponseEntity.ok().build();
     }

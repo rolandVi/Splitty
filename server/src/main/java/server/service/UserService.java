@@ -2,10 +2,7 @@ package server.service;
 
 import commons.UserEntity;
 import org.springframework.stereotype.Service;
-import server.dto.view.EventTitleDto;
 import server.repository.UserRepository;
-
-import java.util.Set;
 
 @Service
 public class UserService {

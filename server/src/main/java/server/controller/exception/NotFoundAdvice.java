@@ -12,10 +12,17 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class NotFoundAdvice extends ResponseEntityExceptionHandler {
 
+    /**
+     * ObjectNotFoundException handler
+     * @param onfe the exception
+     * @param req the request
+     * @return ResponseEntity
+     */
     @ExceptionHandler({ObjectNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<Object> handleObjectNotFound(ObjectNotFoundException onfe, WebRequest req){
+    public ResponseEntity<Object> handleObjectNotFound(ObjectNotFoundException onfe,
+                                                       WebRequest req){
         return handleExceptionInternal(onfe, "Could not found such resource",
-                new HttpHeaders(), HttpStatus.CONFLICT, req);
+                new HttpHeaders(), HttpStatus.NOT_FOUND, req);
     }
 }

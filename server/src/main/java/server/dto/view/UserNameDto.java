@@ -31,7 +31,9 @@ public class UserNameDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserNameDto that = (UserNameDto) o;
-        return Objects.equals(id, that.id) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName);
+        return Objects.equals(id, that.id)
+                && Objects.equals(firstName, that.firstName)
+                && Objects.equals(lastName, that.lastName);
     }
 
     /**

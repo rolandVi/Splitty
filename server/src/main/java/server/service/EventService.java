@@ -1,6 +1,5 @@
 package server.service;
 
-import com.sun.jdi.ObjectCollectedException;
 import commons.EventEntity;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -8,7 +7,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import server.controller.exception.ObjectNotFoundException;
 import server.dto.view.EventDetailsDto;
-import server.dto.view.EventParticipantsDto;
 import server.dto.view.EventTitleDto;
 import server.repository.EventRepository;
 
@@ -26,7 +24,8 @@ public class EventService {
      * @param modelMapper     the ModelMapper injected by Spring
      * @param userService
      */
-    public EventService(EventRepository eventRepository, ModelMapper modelMapper, UserService userService) {
+    public EventService(EventRepository eventRepository,
+                        ModelMapper modelMapper, UserService userService) {
         this.eventRepository = eventRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;

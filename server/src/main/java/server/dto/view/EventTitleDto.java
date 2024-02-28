@@ -28,10 +28,19 @@ public class EventTitleDto {
         return title;
     }
 
+    /**
+     * Id getter
+     * @return the id
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * Id setter
+     * @param id the new id
+     * @return the new event
+     */
     public EventTitleDto setId(Long id) {
         this.id = id;
         return this;
