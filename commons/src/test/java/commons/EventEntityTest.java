@@ -115,6 +115,13 @@ public class EventEntityTest {
     }
 
     @Test
+    public void testSetInviteCode(){
+        String newInvite="new invite";
+        event.setInviteCode(newInvite);
+        assertEquals(newInvite, event.getInviteCode());
+    }
+
+    @Test
     public void testAddAndRemoveExpense() {
         event.addExpense(expense);
 

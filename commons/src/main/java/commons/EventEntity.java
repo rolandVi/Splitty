@@ -71,6 +71,14 @@ public class EventEntity {
     }
 
     /**
+     * Set a new invite code
+     * @param inviteCode the invite code
+     */
+    public void setInviteCode(String inviteCode) {
+        this.inviteCode = inviteCode;
+    }
+
+    /**
      * Get the password of the event.
      *
      * @return The password of the event.
