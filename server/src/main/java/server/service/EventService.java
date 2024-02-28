@@ -5,7 +5,8 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import server.dto.EventPersistDto;
+import server.dto.view.EventDetailsDto;
+import server.dto.view.EventTitleDto;
 import server.repository.EventRepository;
 
 @Service
@@ -39,8 +40,8 @@ public class EventService {
      * @param id the id of the requested EventEntity
      * @return the requested EventEntity
      */
-    public EventEntity getById(long id) {
-        return this.eventRepository.getReferenceById(id);
+    public EventDetailsDto getById(long id) {
+        return this.modelMapper.map(this.eventRepository.getReferenceById(id), EventDetailsDto.class);
     }
 
     /**
@@ -58,8 +59,8 @@ public class EventService {
      * @return the updated event
      */
     @Transactional
-    public EventEntity updateById(long id, @Valid EventPersistDto title) {
-        return this.eventRepository.updateEventTitleById(id, title.getTitle());
+    public EventTitleDto updateById(long id, @Valid EventTitleDto title) {
+        return this.modelMapper.map(this.eventRepository.updateEventTitleById(id, title.getTitle()), EventTitleDto.class);
     }
 
     /**
@@ -67,7 +68,7 @@ public class EventService {
      * @param event the title of the event in a EventPersistDto
      * @return the created EventEntity
      */
-    public EventEntity saveEventByTitle(EventPersistDto event) {
+    public EventEntity saveEventByTitle(EventTitleDto event) {
         EventEntity entity = this.modelMapper.map(event, EventEntity.class);
         entity.setInviteCode(this.generateInviteCode());
         return this.eventRepository.save(entity);

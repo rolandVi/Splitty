@@ -21,4 +21,5 @@ public interface EventRepository extends JpaRepository<EventEntity, Long> {
     @Query("update EventEntity e set e.title=:title where e.id=:id")
     EventEntity updateEventTitleById(@Param(value = "id") long id,
                                      @Param(value="title") String title);
+
 }

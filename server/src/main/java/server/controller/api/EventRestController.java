@@ -4,7 +4,8 @@ import commons.EventEntity;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.dto.EventPersistDto;
+import server.dto.view.EventDetailsDto;
+import server.dto.view.EventTitleDto;
 import server.service.EventService;
 
 @RestController
@@ -28,7 +29,7 @@ public class EventRestController {
      *         or ResponseEntity with the requested event as body
      */
     @GetMapping(name = "/{id}", produces = "application/json")
-    public ResponseEntity<EventEntity> getById(@PathVariable(name = "id") long id){
+    public ResponseEntity<EventDetailsDto> getById(@PathVariable(name = "id") long id){
         if (!checkIdValidity(id)){
             return ResponseEntity.badRequest().build();
         }
@@ -59,14 +60,17 @@ public class EventRestController {
      *       or ResponseEntity with the requested event as body
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<EventEntity> updateEventTitleById(@PathVariable(name = "id") long id,
-                                                   @Valid @RequestBody EventPersistDto eventTitle){
+    public ResponseEntity<EventTitleDto> updateEventTitleById(@PathVariable(name = "id") long id,
+                                                   @Valid @RequestBody EventTitleDto eventTitle){
         if (!checkIdValidity(id)){
             return ResponseEntity.badRequest().build();
         }
 
         return ResponseEntity.ok(this.eventService.updateById(id, eventTitle));
     }
+
+//    @GetMapping("/user/{id}")
+//    public
 
     /**
      * Helper method to check if and id is valid
