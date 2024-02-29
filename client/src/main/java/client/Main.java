@@ -15,16 +15,21 @@
  */
 package client;
 
-import client.scenes.MainCtrl;
+import static com.google.inject.Guice.createInjector;
+
+
+import client.scenes.EventOverviewCtrl;
+import client.scenes.StartPageCtrl;
 import com.google.inject.Injector;
+
+import client.scenes.MainCtrl;
 import javafx.application.Application;
 import javafx.stage.Stage;
-
-import static com.google.inject.Guice.createInjector;
 
 public class Main extends Application {
 
     private static final Injector INJECTOR = createInjector(new MyModule());
+    private static final MyFXML FXML = new MyFXML(INJECTOR);
 
     /**
      * Main function
@@ -44,7 +49,12 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
 
+        var startPage = FXML.load(StartPageCtrl.class, "client.scenes", "startPage.fxml");
+        var eventOverview = FXML.load(EventOverviewCtrl.class,
+                "client.scenes", "eventOverview.fxml");
+
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage);
+
+        mainCtrl.initialize(primaryStage, startPage, eventOverview);
     }
 }

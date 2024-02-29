@@ -1,0 +1,79 @@
+
+> Configure project :client
+Project :client => no module-info.java found
+
+> Task :assemble UP-TO-DATE
+> Task :check UP-TO-DATE
+> Task :build UP-TO-DATE
+> Task :commons:compileJava UP-TO-DATE
+> Task :commons:processResources NO-SOURCE
+> Task :commons:classes UP-TO-DATE
+> Task :commons:jar UP-TO-DATE
+> Task :client:compileJava UP-TO-DATE
+> Task :client:processResources UP-TO-DATE
+> Task :client:classes UP-TO-DATE
+> Task :client:jar UP-TO-DATE
+> Task :client:startScripts UP-TO-DATE
+> Task :client:distTar UP-TO-DATE
+> Task :client:distZip UP-TO-DATE
+> Task :client:assemble UP-TO-DATE
+> Task :client:checkstyleMain UP-TO-DATE
+> Task :client:compileTestJava UP-TO-DATE
+> Task :client:processTestResources UP-TO-DATE
+> Task :client:testClasses UP-TO-DATE
+> Task :client:checkstyleTest UP-TO-DATE
+> Task :client:test UP-TO-DATE
+> Task :client:jacocoTestReport UP-TO-DATE
+> Task :client:check UP-TO-DATE
+> Task :client:build UP-TO-DATE
+> Task :commons:assemble UP-TO-DATE
+> Task :commons:checkstyleMain UP-TO-DATE
+> Task :commons:compileTestJava UP-TO-DATE
+> Task :commons:processTestResources NO-SOURCE
+> Task :commons:testClasses UP-TO-DATE
+> Task :commons:checkstyleTest UP-TO-DATE
+> Task :commons:test UP-TO-DATE
+> Task :commons:jacocoTestReport UP-TO-DATE
+> Task :commons:check UP-TO-DATE
+> Task :commons:build UP-TO-DATE
+> Task :server:compileJava
+> Task :server:processResources UP-TO-DATE
+> Task :server:classes
+> Task :server:resolveMainClassName
+> Task :server:bootJar
+> Task :server:jar
+> Task :server:assemble
+> Task :server:compileTestJava UP-TO-DATE
+> Task :server:processTestResources UP-TO-DATE
+> Task :server:testClasses UP-TO-DATE
+> Task :server:test
+> Task :server:jacocoTestReport
+> Task :server:checkstyleTest
+
+> Task :server:checkstyleMain
+[ant:checkstyle] [WARN] D:\TU Delft\CSE1105 - OOPP\oopp-team-37\server\src\main\java\server\controller\exception\NotFoundAdvice.java:23: Line is longer than 100 characters (found 101). [LineLength]
+[ant:checkstyle] [WARN] D:\TU Delft\CSE1105 - OOPP\oopp-team-37\server\src\main\java\server\service\EventService.java:27: Line is longer than 100 characters (found 108). [LineLength]
+
+> Task :server:checkstyleMain FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':server:checkstyleMain'.
+> A failure occurred while executing org.gradle.api.plugins.quality.internal.CheckstyleAction
+   > Checkstyle rule violations were found. See the report at: file:///D:/TU%20Delft/CSE1105%20-%20OOPP/oopp-team-37/server/build/reports/checkstyle/main.html
+     Checkstyle files with violations: 2
+     Checkstyle violations by severity: [warning:2]
+
+
+* Try:
+> Run with --scan to get full insights.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.5/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 6s
+30 actionable tasks: 8 executed, 22 up-to-date
