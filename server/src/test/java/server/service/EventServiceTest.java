@@ -2,9 +2,6 @@ package server.service;
 
 import commons.EventEntity;
 import commons.UserEntity;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -33,19 +30,11 @@ class EventServiceTest {
     private UserService userService;
 
     private EventService eventService;
-    private ModelMapper modelMapper;
-
-    private final Validator validator;
-
-    public EventServiceTest() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        this.validator = factory.getValidator();
-    }
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
         eventService = new EventService(eventRepository, modelMapper, userService);
     }
 
@@ -207,30 +196,27 @@ class EventServiceTest {
         when(eventRepository.findById(eventId)).thenReturn(Optional.empty());
 
         // Act and Assert
-        assertThrows(ObjectNotFoundException.class, () -> {
-            eventService.addParticipant(eventId, userId);
-        });
+        assertThrows(ObjectNotFoundException.class, () -> eventService.addParticipant(eventId, userId));
 
         verify(eventRepository, never()).save(any());
     }
 
-//    @Test
-//    void addParticipant_WhenUserIsDifferent_ThrowsObjectNotFoundException() {
-//        // Arrange
-//        long eventId = 1L;
-//        long userId = 2L;
-//        EventEntity eventEntity = new EventEntity(eventId, "", "Test Event", new ArrayList<>(), new HashSet<>());
-//
-//        when(eventRepository.findById(eventId)).thenReturn(Optional.of(eventEntity));
-//        when(userService.findById(userId)).thenThrow(ObjectNotFoundException.class);
-//
-//        // Act
-//        boolean added = eventService.addParticipant(eventId, userId);
-//
-//        // Assert
-//        assertFalse(added);
-//        verify(eventRepository, never()).save(any());
-//    }
+    @Test
+    void addParticipant_WhenUserIsDifferent_ThrowsObjectNotFoundException() {
+        // Arrange
+        long eventId = 1L;
+        long userId = 2L;
+        EventEntity eventEntity = new EventEntity(eventId, "", "Test Event", new ArrayList<>(), new HashSet<>());
+
+        when(eventRepository.findById(eventId)).thenReturn(Optional.of(eventEntity));
+        when(userService.findById(userId)).thenThrow(ObjectNotFoundException.class);
+
+        // Act
+        assertThrows(ObjectNotFoundException.class, () -> eventService.addParticipant(eventId, userId));
+
+        // Assert
+        verify(eventRepository, never()).save(any());
+    }
 
     @Test
     void deleteParticipant_WhenEventAndUserExist_DeletesParticipant() {
@@ -253,36 +239,34 @@ class EventServiceTest {
         verify(eventRepository, times(1)).save(eventEntity);
     }
 
-//    @Test
-//    void deleteParticipant_WhenEventDoesNotExist_ReturnsFalse() {
-//        // Arrange
-//        long eventId = 1L;
-//        long userId = 2L;
-//        when(eventRepository.findById(eventId)).thenReturn(Optional.empty());
-//
-//        // Act
-//        boolean deleted = eventService.deleteParticipant(eventId, userId);
-//
-//        // Assert
-//        assertFalse(deleted);
-//        verify(eventRepository, never()).save(any());
-//    }
+    @Test
+    void deleteParticipant_WhenEventDoesNotExist_ThrowsIllegalArgumentException() {
+        // Arrange
+        long eventId = 1L;
+        long userId = 2L;
+        when(eventRepository.findById(eventId)).thenReturn(Optional.empty());
 
-//    @Test
-//    void deleteParticipant_WhenUserDoesNotExist_ReturnsFalse() {
-//        // Arrange
-//        long eventId = 1L;
-//        long userId = 2L;
-//        EventEntity eventEntity = new EventEntity(eventId, "", "Test Event", new ArrayList<>(), new HashSet<>());
-//
-//        when(eventRepository.findById(eventId)).thenReturn(Optional.of(eventEntity));
-//        when(userService.findById(userId)).thenThrow(ObjectNotFoundException.class);
-//
-//        // Act
-//        boolean deleted = eventService.deleteParticipant(eventId, userId);
-//
-//        // Assert
-//        assertFalse(deleted);
-//        verify(eventRepository, never()).save(any());
-//    }
+        // Act
+        assertThrows(IllegalArgumentException.class, () -> eventService.deleteParticipant(eventId, userId));
+
+        // Assert
+        verify(eventRepository, never()).save(any());
+    }
+
+    @Test
+    void deleteParticipant_WhenUserIsDifferent_ReturnsFalse() {
+        // Arrange
+        long eventId = 1L;
+        long userId = 2L;
+        EventEntity eventEntity = new EventEntity(eventId, "", "Test Event", new ArrayList<>(), new HashSet<>());
+
+        when(eventRepository.findById(eventId)).thenReturn(Optional.of(eventEntity));
+        when(userService.findById(userId)).thenThrow(ObjectNotFoundException.class);
+
+        // Act
+        assertThrows(ObjectNotFoundException.class, () -> eventService.deleteParticipant(eventId, userId));
+
+        // Assert
+        verify(eventRepository, never()).save(any());
+    }
 }
