@@ -18,6 +18,12 @@ public class ExpenseDetailsDto {
     private Date date;
 
     /**
+     * Empty constructor
+     */
+    public ExpenseDetailsDto() {
+    }
+
+    /**
      * Constructor
      * @param id the id
      * @param money the money

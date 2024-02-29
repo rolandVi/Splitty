@@ -13,6 +13,12 @@ public class EventTitleDto {
     private String title;
 
     /**
+     * Empty constructor
+     */
+    public EventTitleDto() {
+    }
+
+    /**
      * Constructor
      * @param title the title to give the new instance
      */
