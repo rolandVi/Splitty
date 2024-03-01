@@ -13,6 +13,8 @@ public class PaymentPageCtrl {
     public Button showOpenButton;
     @FXML
     public Button showAllButton;
+    @FXML
+    public Button goBackButton;
 
     /**
      * Injector for PaymentPageCtrl
@@ -28,6 +30,13 @@ public class PaymentPageCtrl {
      */
     public void showAllPayments(){
         // scene needs to be made
+    }
+
+    /**
+     * Will show event overview when the goBack button is pressed
+     */
+    public void returnToOverview(){
+        mainCtrl.showOverview();
     }
 
     /**
