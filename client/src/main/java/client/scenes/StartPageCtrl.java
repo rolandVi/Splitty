@@ -5,7 +5,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
-import javax.inject.Inject;
+import com.google.inject.Inject;
 
 public class StartPageCtrl {
 

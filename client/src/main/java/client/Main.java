@@ -19,6 +19,7 @@ import static com.google.inject.Guice.createInjector;
 
 
 import client.scenes.EventOverviewCtrl;
+import client.scenes.PaymentPageCtrl;
 import client.scenes.StartPageCtrl;
 import com.google.inject.Injector;
 
@@ -54,7 +55,8 @@ public class Main extends Application {
                 "client.scenes", "eventOverview.fxml");
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
+        var paymentPage = FXML.load(PaymentPageCtrl.class, "client.scenes", "paymentPage.fxml");
 
-        mainCtrl.initialize(primaryStage, startPage, eventOverview);
+        mainCtrl.initialize(primaryStage, startPage, eventOverview, paymentPage);
     }
 }

@@ -31,21 +31,29 @@ public class MainCtrl {
     private Scene eventOverview;
     private Stage primaryStage;
 
+    private Scene paymentPage;
+
+    private PaymentPageCtrl paymentPageCtrl;
+
     /**
      * The initialize method
      * @param primaryStage The primary Stage
      * @param startPage The start Page
      * @param eventOverview The event Overview
+     * @param paymentPage The payment page
      */
     public void initialize(Stage primaryStage, Pair<StartPageCtrl, Parent> startPage,
-                           Pair<EventOverviewCtrl, Parent> eventOverview) {
+                           Pair<EventOverviewCtrl, Parent> eventOverview, Pair<PaymentPageCtrl, Parent> paymentPage) {
         this.primaryStage = primaryStage;
 
         this.startPageCtrl = startPage.getKey();
         this.eventOverviewCtrl = eventOverview.getKey();
+        this.paymentPageCtrl = paymentPage.getKey();
 
         this.startPage = new Scene(startPage.getValue());
         this.eventOverview = new Scene(eventOverview.getValue());
+
+        this.paymentPage = new Scene(paymentPage.getValue());
 
         showStart();
         primaryStage.show();
@@ -70,6 +78,23 @@ public class MainCtrl {
 
         primaryStage.setTitle("Events Overview");
         primaryStage.setScene(eventOverview);
+    }
+
+
+    /**
+     * Shows the new event scene
+     */
+    public void showNewEvent(){
+        primaryStage.setTitle("New Event");
+//        primaryStage.setScene(newEvent);   needs to be changed accordingly to what title is given
+    }
+
+    /**
+     * Shows the payment screen to the user where they can choose to settle their debts
+     */
+    public void showPayment(){
+        primaryStage.setTitle("Payment Page");
+        primaryStage.setScene(paymentPage);
     }
 
 
