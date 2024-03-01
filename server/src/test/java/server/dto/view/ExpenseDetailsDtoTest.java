@@ -11,6 +11,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class ExpenseDetailsDtoTest {
 
     @Test
+    void testEmptyConstructor(){
+        new ExpenseDetailsDto();
+    }
+
+    @Test
     void getId() {
         Long id = 123L;
         ExpenseDetailsDto expense = new ExpenseDetailsDto(id, 100.0,

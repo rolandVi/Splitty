@@ -10,6 +10,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class EventParticipantsDtoTest {
 
     @Test
+    void testEmptyConstructor(){
+        new EventParticipantsDto();
+    }
+
+    @Test
     void getParticipants() {
         Set<UserNameDto> participants = new HashSet<>();
         participants.add(new UserNameDto(1L, "John", "Doe"));

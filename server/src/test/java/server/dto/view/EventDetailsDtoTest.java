@@ -11,6 +11,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class EventDetailsDtoTest {
 
     @Test
+    void testEmptyConstructor(){
+        new EventDetailsDto();
+    }
+
+    @Test
     void getId() {
         Long id = 123L;
         EventDetailsDto event = new EventDetailsDto(id, "invite123", "Test Event",

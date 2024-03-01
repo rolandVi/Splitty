@@ -7,6 +7,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserNameDtoTest {
 
     @Test
+    void testEmptyConstructor(){
+        new UserNameDto();
+    }
+
+    @Test
     void testEquals() {
         UserNameDto user1 = new UserNameDto(1L, "John", "Doe");
         UserNameDto user2 = new UserNameDto(1L, "John", "Doe");

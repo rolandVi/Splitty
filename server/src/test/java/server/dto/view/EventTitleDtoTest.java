@@ -7,6 +7,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class EventTitleDtoTest {
 
     @Test
+    void testEmptyConstructor(){
+        new EventTitleDto();
+    }
+
+    @Test
     void getTitle() {
         String title = "Test Event";
         EventTitleDto eventTitleDto = new EventTitleDto(title);
