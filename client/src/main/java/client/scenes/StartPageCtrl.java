@@ -2,10 +2,13 @@ package client.scenes;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
 import com.google.inject.Inject;
+
+import java.util.Objects;
 
 public class StartPageCtrl {
 
@@ -45,12 +48,8 @@ public class StartPageCtrl {
      * @param e The key
      */
     public void keyPressed(KeyEvent e) {
-        switch (e.getCode()) {
-            case ENTER:
-                connect();
-                break;
-            default:
-                break;
+        if (Objects.requireNonNull(e.getCode()) == KeyCode.ENTER) {
+            connect();
         }
     }
 

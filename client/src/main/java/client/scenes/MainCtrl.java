@@ -43,7 +43,8 @@ public class MainCtrl {
      * @param paymentPage The payment page
      */
     public void initialize(Stage primaryStage, Pair<StartPageCtrl, Parent> startPage,
-                           Pair<EventOverviewCtrl, Parent> eventOverview, Pair<PaymentPageCtrl, Parent> paymentPage) {
+                           Pair<EventOverviewCtrl, Parent> eventOverview,
+                           Pair<PaymentPageCtrl, Parent> paymentPage) {
         this.primaryStage = primaryStage;
 
         this.startPageCtrl = startPage.getKey();
