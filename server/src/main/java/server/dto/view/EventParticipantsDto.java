@@ -7,6 +7,12 @@ public class EventParticipantsDto {
     private Set<UserNameDto> participants;
 
     /**
+     * Empty constructor
+     */
+    public EventParticipantsDto() {
+    }
+
+    /**
      * Constructor
      * @param participants the participants
      */

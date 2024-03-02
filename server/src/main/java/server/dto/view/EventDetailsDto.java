@@ -14,6 +14,12 @@ public class EventDetailsDto {
     private Set<UserNameDto> participants;
 
     /**
+     * Empty constructor
+     */
+    public EventDetailsDto() {
+    }
+
+    /**
      * Constructor
      * @param id the id
      * @param inviteCode the inviteCode

@@ -22,7 +22,7 @@ public class EventService {
      *
      * @param eventRepository the EventEntity repository
      * @param modelMapper     the ModelMapper injected by Spring
-     * @param userService
+     * @param userService     the userService
      */
     public EventService(EventRepository eventRepository,
                         ModelMapper modelMapper, UserService userService) {
@@ -124,9 +124,9 @@ public class EventService {
      * @return true if it was deleted successfully and false otherwise
      */
     public boolean deleteParticipant(long eventId, long userId) {
-        if (this.eventRepository.existsById(eventId) || userService.existsById(userId)){
-            return false;
-        }
+        if (this.eventRepository.existsById(eventId) ||
+                userService.existsById(userId)) return false;
+
         EventEntity event=this.eventRepository.findById(eventId)
                         .orElseThrow(IllegalArgumentException::new);
         event.getParticipants().remove(this.userService.findById(userId));

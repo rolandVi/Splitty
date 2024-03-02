@@ -10,6 +10,12 @@ public class UserNameDto {
     private String lastName;
 
     /**
+     * Empty constructor
+     */
+    public UserNameDto() {
+    }
+
+    /**
      * Constructor
      * @param id the id
      * @param firstName the firstName
