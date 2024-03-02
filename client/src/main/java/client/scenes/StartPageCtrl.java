@@ -5,7 +5,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
-import javax.inject.Inject;
+import com.google.inject.Inject;
 
 public class StartPageCtrl {
 
@@ -20,20 +20,21 @@ public class StartPageCtrl {
 
     /**
      * The constructor
+     *
      * @param mainCtrl The main controller
      */
     @Inject
-    public StartPageCtrl(MainCtrl mainCtrl){
+    public StartPageCtrl(MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
     }
 
     /**
      * The button press activates this
      */
-    public void connect(){
+    public void connect() {
         String serverInserted = serverField.getText();
 
-        if (!serverInserted.equals("http://localhost:8080")){
+        if (!serverInserted.equals("http://localhost:8080")) {
             errorMessage.setOpacity(1.0d);
         } else {
             mainCtrl.showOverview();
@@ -42,6 +43,7 @@ public class StartPageCtrl {
 
     /**
      * Checks for key press
+     *
      * @param e The key
      */
     public void keyPressed(KeyEvent e) {
@@ -58,7 +60,7 @@ public class StartPageCtrl {
     /**
      * Refreshes the page, not needed now
      */
-    public void refresh(){
+    public void refresh() {
         //server calls missing
     }
 }
