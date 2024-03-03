@@ -2,6 +2,7 @@ package client;
 
 import client.scenes.EventOverviewCtrl;
 import client.scenes.MainCtrl;
+import client.scenes.PaymentPageCtrl;
 import client.scenes.StartPageCtrl;
 import com.google.inject.Binder;
 import com.google.inject.Module;
@@ -18,5 +19,6 @@ public class MyModule implements Module {
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
         binder.bind(StartPageCtrl.class).in(Scopes.SINGLETON);
         binder.bind(EventOverviewCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(PaymentPageCtrl.class).in(Scopes.SINGLETON);
     }
 }
