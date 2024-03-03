@@ -17,8 +17,7 @@ public class EventEntity {
     @Column(nullable = false, unique = true)
     private String inviteCode;
 
-    private String password;
-
+    @Column(nullable = false)
     private String title;
 
     @OneToMany
@@ -37,17 +36,15 @@ public class EventEntity {
      * Constructor with all parameters
      * @param id The id of the Event
      * @param inviteCode The invite code of the event
-     * @param password The password of the event
      * @param title The title of the event
      * @param expenses The list of expenses of the event
      * @param participants The list of users of the event
      *
      */
-    public EventEntity(Long id, String inviteCode, String password, String title,
+    public EventEntity(Long id, String inviteCode, String title,
                        List<ExpenseEntity> expenses, Set<UserEntity> participants) {
         this.id = id;
         this.inviteCode = inviteCode;
-        this.password = password;
         this.title = title;
         this.expenses = expenses;
         this.participants = participants;
@@ -71,20 +68,11 @@ public class EventEntity {
     }
 
     /**
-     * Get the password of the event.
-     *
-     * @return The password of the event.
+     * Set a new invite code
+     * @param inviteCode the invite code
      */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * Sets a new password
-     * @param password The password
-     */
-    public void setPassword(String password) {
-        this.password = password;
+    public void setInviteCode(String inviteCode) {
+        this.inviteCode = inviteCode;
     }
 
     /**
@@ -151,7 +139,6 @@ public class EventEntity {
         EventEntity that = (EventEntity) o;
         return Objects.equals(id, that.id)
                 && Objects.equals(inviteCode, that.inviteCode)
-                && Objects.equals(password, that.password)
                 && Objects.equals(expenses, that.expenses)
                 && Objects.equals(participants, that.participants);
     }
