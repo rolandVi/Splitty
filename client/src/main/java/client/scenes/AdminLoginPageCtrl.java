@@ -51,6 +51,7 @@ public class AdminLoginPageCtrl {
     public void login(){
         String passwordInserted = passwordField.getText();
 
+        // temporary solution. When password generation is ready, will update it
         if (passwordInserted.equals("12345")){
             adminMainCtrl.showAdminOverview();
         }else {
