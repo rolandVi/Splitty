@@ -53,8 +53,12 @@ public class Main extends Application {
         var eventOverview = FXML.load(EventOverviewCtrl.class,
                 "client.scenes", "eventOverview.fxml");
         var paymentPage = FXML.load(PaymentPageCtrl.class, "client.scenes", "paymentPage.fxml");
+        var eventPage = FXML.load(EventCtrl.class, "client.scenes", "event.fxml");
+        var eventCreationPage = FXML.load(EventCreationCtrl.class,
+                "client.scenes", "eventCreation.fxml");
 
-        mainCtrl.initialize(primaryStage, startPage, eventOverview, paymentPage);
+        mainCtrl.initialize(primaryStage, startPage,
+                eventOverview, paymentPage, eventPage, eventCreationPage);
     }
 
     /**

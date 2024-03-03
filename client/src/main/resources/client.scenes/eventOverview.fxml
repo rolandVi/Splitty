@@ -5,7 +5,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane fx:id="eventsLabel" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EventOverviewCtrl">
    <children>
       <Label layoutX="39.0" layoutY="14.0" prefHeight="54.0" prefWidth="124.0" text="Events">
@@ -18,7 +17,7 @@
             <Font size="19.0" />
          </font>
       </Label>
-      <Button fx:id="newEventButton" layoutX="51.0" layoutY="319.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="99.0" text="+">
+      <Button fx:id="newEventButton" layoutX="51.0" layoutY="319.0" mnemonicParsing="false" onAction="#newEvent" prefHeight="39.0" prefWidth="99.0" text="+">
          <font>
             <Font size="18.0" />
          </font>
@@ -33,5 +32,6 @@
             <Font size="18.0" />
          </font>
       </Button>
+      <Button fx:id="b" layoutX="384.0" layoutY="151.0" mnemonicParsing="false" onAction="#b" text="Button" />
    </children>
 </AnchorPane>
