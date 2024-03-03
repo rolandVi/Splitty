@@ -82,6 +82,8 @@ public class EventCtrl {
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(eventTitleDto);
 
+        System.out.println(requestBody);
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/api/events/1"))
                 .header("Content-Type", "application/json")

@@ -50,6 +50,9 @@ public class EventCreationCtrl {
                 .newHttpClient()
                 .send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
+        System.out.println(response.statusCode());
+        System.out.println(response.body());
+
         mainCtrl.showOverview();
     }
 
