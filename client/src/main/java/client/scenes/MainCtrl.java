@@ -35,26 +35,40 @@ public class MainCtrl {
 
     private PaymentPageCtrl paymentPageCtrl;
 
+    private EventCtrl eventCtrl;
+    private EventCreationCtrl eventCreationCtrl;
+    private Scene eventPage;
+    private Scene eventCreationPage;
+
     /**
      * The initialize method
      * @param primaryStage The primary Stage
      * @param startPage The start Page
      * @param eventOverview The event Overview
      * @param paymentPage The payment page
+     * @param eventPage The event page
+     * @param eventCreationPage The create an event page
      */
     public void initialize(Stage primaryStage, Pair<StartPageCtrl, Parent> startPage,
                            Pair<EventOverviewCtrl, Parent> eventOverview,
-                           Pair<PaymentPageCtrl, Parent> paymentPage) {
+                           Pair<PaymentPageCtrl, Parent> paymentPage,
+                           Pair<EventCtrl, Parent> eventPage,
+                           Pair<EventCreationCtrl, Parent> eventCreationPage) {
         this.primaryStage = primaryStage;
 
         this.startPageCtrl = startPage.getKey();
         this.eventOverviewCtrl = eventOverview.getKey();
         this.paymentPageCtrl = paymentPage.getKey();
+        this.eventCtrl = eventPage.getKey();
+        this.eventCreationCtrl = eventCreationPage.getKey();
 
         this.startPage = new Scene(startPage.getValue());
         this.eventOverview = new Scene(eventOverview.getValue());
 
         this.paymentPage = new Scene(paymentPage.getValue());
+
+        this.eventPage = new Scene(eventPage.getValue());
+        this.eventCreationPage = new Scene(eventCreationPage.getValue());
 
         showStart();
         primaryStage.show();
@@ -87,7 +101,7 @@ public class MainCtrl {
      */
     public void showNewEvent(){
         primaryStage.setTitle("New Event");
-//        primaryStage.setScene(newEvent);   needs to be changed accordingly to what title is given
+        primaryStage.setScene(eventCreationPage);
     }
 
     /**
@@ -96,6 +110,14 @@ public class MainCtrl {
     public void showPayment(){
         primaryStage.setTitle("Payment Page");
         primaryStage.setScene(paymentPage);
+    }
+
+    /**
+     * Shows the expense screen to add a new expense to an event
+     */
+    public void showNewExpense(){
+        primaryStage.setTitle("New Expense");
+//        primaryStage.setScene(expensePage); expense page has not been created yet
     }
 
 

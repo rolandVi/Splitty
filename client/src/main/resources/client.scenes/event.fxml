@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EventCtrl">
    <children>
       <Label fx:id="eventNameLabel" alignment="TOP_CENTER" layoutX="14.0" layoutY="14.0" text="[EVENT_NAME]" textAlignment="CENTER">
          <font>
@@ -26,9 +26,10 @@
       </Label>
       <Label fx:id="participantsLabel" layoutX="15.0" layoutY="124.0" text="[PARTICPANTS]" />
       <Label fx:id="expensesLabel" layoutX="14.0" layoutY="200.0" text="[EXPENSES]" />
-      <Button fx:id="addExpenseButton" layoutX="115.0" layoutY="177.0" mnemonicParsing="false" text="Add Expense" />
+      <Button fx:id="addExpenseButton" layoutX="115.0" layoutY="177.0" mnemonicParsing="false" onAction="#addExpense" text="Add Expense" />
       <Label fx:id="inviteCode" layoutX="115.0" layoutY="105.0" text="[INVITE_CODE]" />
       <TextField fx:id="changeTextField" layoutX="15.0" layoutY="59.0" promptText="Event name" />
-      <Button fx:id="changeButton" layoutX="173.0" layoutY="59.0" mnemonicParsing="false" text="Change" />
+      <Button fx:id="changeButton" layoutX="173.0" layoutY="59.0" mnemonicParsing="false" onAction="#changeEventName" text="Change" />
+      <Button fx:id="returnButton" layoutX="534.0" layoutY="14.0" mnemonicParsing="false" onAction="#returnToOverview" text="Return" />
    </children>
 </Pane>
