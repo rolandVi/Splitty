@@ -10,6 +10,8 @@ import server.dto.view.EventDetailsDto;
 import server.dto.view.EventTitleDto;
 import server.repository.EventRepository;
 
+import java.time.LocalTime;
+
 @Service
 public class EventService {
     private final EventRepository eventRepository;
@@ -79,13 +81,13 @@ public class EventService {
      */
     public EventEntity saveEventByTitle(EventTitleDto event) {
         EventEntity entity = this.modelMapper.map(event, EventEntity.class);
-        entity.setInviteCode(this.generateInviteCode());
+        entity.setInviteCode(this.generateInviteCode(entity.getTitle()));
         return this.eventRepository.save(entity);
     }
 
-    //TODO: create a method to generate Invite code
-    private String generateInviteCode() {
-        return "";
+    //TODO: improve generate invite code method
+    private String generateInviteCode(String title) {
+        return title + LocalTime.now().getSecond() + LocalTime.now().getNano();
     }
 
 
@@ -97,7 +99,7 @@ public class EventService {
     public EventTitleDto createEvent(String title) {
         EventEntity newEntity=new EventEntity();
         newEntity.setTitle(title);
-        newEntity.setInviteCode(generateInviteCode());
+        newEntity.setInviteCode(generateInviteCode(title));
         EventEntity result=this.eventRepository.save(newEntity);
         return modelMapper.map(result, EventTitleDto.class);
     }

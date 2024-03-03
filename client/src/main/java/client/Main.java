@@ -18,12 +18,9 @@ package client;
 import static com.google.inject.Guice.createInjector;
 
 
-import client.scenes.EventOverviewCtrl;
-import client.scenes.PaymentPageCtrl;
-import client.scenes.StartPageCtrl;
+import client.scenes.*;
 import com.google.inject.Injector;
 
-import client.scenes.MainCtrl;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -56,7 +53,11 @@ public class Main extends Application {
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
         var paymentPage = FXML.load(PaymentPageCtrl.class, "client.scenes", "paymentPage.fxml");
+        var eventPage = FXML.load(EventCtrl.class, "client.scenes", "event.fxml");
+        var eventCreationPage = FXML.load(EventCreationCtrl.class,
+                "client.scenes", "eventCreation.fxml");
 
-        mainCtrl.initialize(primaryStage, startPage, eventOverview, paymentPage);
+        mainCtrl.initialize(primaryStage, startPage,
+                eventOverview, paymentPage, eventPage, eventCreationPage);
     }
 }
