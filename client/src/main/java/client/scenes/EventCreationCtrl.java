@@ -1,6 +1,5 @@
 package client.scenes;
 
-import com.sun.javafx.binding.StringFormatter;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

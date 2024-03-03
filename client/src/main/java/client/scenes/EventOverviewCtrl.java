@@ -11,6 +11,8 @@ public class EventOverviewCtrl {
     private final MainCtrl mainCtrl;
 
     @FXML
+    public Button b; // temporary button to access event scene
+    @FXML
     public Button newEventButton;
     @FXML
     public Button paymentButton;
@@ -37,5 +39,11 @@ public class EventOverviewCtrl {
      */
     public void payment(){
         mainCtrl.showPayment();
+    }
+    /**
+     * temporary button to access event scene
+     */
+    public void b(){
+        mainCtrl.b();
     }
 }

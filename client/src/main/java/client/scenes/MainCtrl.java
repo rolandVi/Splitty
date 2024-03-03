@@ -119,6 +119,13 @@ public class MainCtrl {
         primaryStage.setTitle("New Expense");
 //        primaryStage.setScene(expensePage); expense page has not been created yet
     }
+    /**
+     * Temporary button to access event scene
+     */
+    public void b(){
+        primaryStage.setTitle(" Page");
+        primaryStage.setScene(eventPage);
+    }
 
 
 }

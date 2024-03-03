@@ -32,5 +32,6 @@
             <Font size="18.0" />
          </font>
       </Button>
+      <Button fx:id="b" layoutX="384.0" layoutY="151.0" mnemonicParsing="false" onAction="#b" text="Button" />
    </children>
 </AnchorPane>
