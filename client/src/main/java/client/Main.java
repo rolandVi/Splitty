@@ -47,11 +47,11 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
 
+        var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
+
         var startPage = FXML.load(StartPageCtrl.class, "client.scenes", "startPage.fxml");
         var eventOverview = FXML.load(EventOverviewCtrl.class,
                 "client.scenes", "eventOverview.fxml");
-
-        var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
         var paymentPage = FXML.load(PaymentPageCtrl.class, "client.scenes", "paymentPage.fxml");
         var eventPage = FXML.load(EventCtrl.class, "client.scenes", "event.fxml");
         var eventCreationPage = FXML.load(EventCreationCtrl.class,
@@ -60,4 +60,19 @@ public class Main extends Application {
         mainCtrl.initialize(primaryStage, startPage,
                 eventOverview, paymentPage, eventPage, eventCreationPage);
     }
+
+    /**
+     * Creates a new stage for admin overview
+     */
+    public static void openAdminOverview(){
+
+        Stage adminOverviewStage = new Stage();
+        var adminMainCtrl = INJECTOR.getInstance(AdminMainCtrl.class);
+
+        var adminLoginPage = FXML.load(AdminLoginPageCtrl.class,
+                "client.scenes", "adminLoginPage.fxml");
+
+        adminMainCtrl.initialize(adminOverviewStage, adminLoginPage);
+    }
+
 }

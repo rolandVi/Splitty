@@ -1,5 +1,7 @@
 package client.scenes;
 
+import client.Main;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -39,6 +41,13 @@ public class StartPageCtrl {
         } else {
             mainCtrl.showOverview();
         }
+    }
+
+    /**
+     * Open new admin overview window through Main
+     */
+    public void enterAdmin(){
+        Main.openAdminOverview();
     }
 
     /**
