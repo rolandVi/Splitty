@@ -12,7 +12,6 @@
       <Button layoutX="264.0" layoutY="167.0" mnemonicParsing="false" onAction="#connect" scaleX="3.0" scaleY="3.0" text="CONNECT" />
       <TextField fx:id="serverField" alignment="CENTER" layoutX="225.0" layoutY="250.0" promptText="http://localhost:8080" scaleX="1.5" scaleY="1.5" text="http://localhost:8080" />
       <Text fx:id="errorMessage" fill="RED" layoutX="232.0" layoutY="310.0" opacity="0.0" scaleX="1.5" scaleY="1.5" strokeType="OUTSIDE" strokeWidth="0.0" text="INCORRECT SERVER URL!" wrappingWidth="135.02446937561035" />
-      <Label layoutX="320.0" layoutY="357.0" text="Enter admin overview" />
-      <Button layoutX="454.0" layoutY="353.0" mnemonicParsing="false" onAction="#enterAdmin" text="Button" />
+      <Button layoutX="443.0" layoutY="355.0" mnemonicParsing="false" onAction="#enterAdmin" text="Open admin overview" />
    </children>
 </AnchorPane>
