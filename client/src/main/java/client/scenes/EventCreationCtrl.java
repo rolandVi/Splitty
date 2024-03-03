@@ -1,9 +1,16 @@
 package client.scenes;
 
+import com.sun.javafx.binding.StringFormatter;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 public class EventCreationCtrl {
     private final MainCtrl mainCtrl;
@@ -30,12 +37,21 @@ public class EventCreationCtrl {
         mainCtrl.showOverview();
     }
     /**
-     * Will create the event and add it to the database
+     * Creates HTTP request using the contents of text field as name of event
      */
-    public void createEvent(){
-        String eventName = eventNameTextField.getText();
-        // To be implemented
-        // todo PUT operation to the server
+    public void createEvent() throws IOException, InterruptedException {
+        String requestBody = eventNameTextField.getText();
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .uri(URI.create("http://localhost:8080/api/events/"))
+                .header("Content-Type", "text/plain")
+                .build();
+
+        HttpResponse<String> response = HttpClient
+                .newHttpClient()
+                .send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+        mainCtrl.showOverview();
     }
 
 }
