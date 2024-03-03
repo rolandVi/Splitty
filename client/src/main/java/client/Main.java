@@ -18,12 +18,9 @@ package client;
 import static com.google.inject.Guice.createInjector;
 
 
-import client.scenes.EventOverviewCtrl;
-import client.scenes.PaymentPageCtrl;
-import client.scenes.StartPageCtrl;
+import client.scenes.*;
 import com.google.inject.Injector;
 
-import client.scenes.MainCtrl;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -50,12 +47,14 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
 
+        var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
+
         var startPage = FXML.load(StartPageCtrl.class, "client.scenes", "startPage.fxml");
         var eventOverview = FXML.load(EventOverviewCtrl.class,
                 "client.scenes", "eventOverview.fxml");
-
-        var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
         var paymentPage = FXML.load(PaymentPageCtrl.class, "client.scenes", "paymentPage.fxml");
+
+        var adminMainCtrl = INJECTOR.getInstance(AdminMainCtrl.class);
 
         mainCtrl.initialize(primaryStage, startPage, eventOverview, paymentPage);
     }

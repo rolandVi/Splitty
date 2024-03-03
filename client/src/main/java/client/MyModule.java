@@ -1,9 +1,6 @@
 package client;
 
-import client.scenes.EventOverviewCtrl;
-import client.scenes.MainCtrl;
-import client.scenes.PaymentPageCtrl;
-import client.scenes.StartPageCtrl;
+import client.scenes.*;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
@@ -20,5 +17,6 @@ public class MyModule implements Module {
         binder.bind(StartPageCtrl.class).in(Scopes.SINGLETON);
         binder.bind(EventOverviewCtrl.class).in(Scopes.SINGLETON);
         binder.bind(PaymentPageCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(AdminMainCtrl.class).in(Scopes.SINGLETON);
     }
 }
