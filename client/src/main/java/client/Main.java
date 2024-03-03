@@ -54,11 +54,21 @@ public class Main extends Application {
                 "client.scenes", "eventOverview.fxml");
         var paymentPage = FXML.load(PaymentPageCtrl.class, "client.scenes", "paymentPage.fxml");
 
+        mainCtrl.initialize(primaryStage, startPage, eventOverview, paymentPage);
+    }
+
+    /**
+     * Creates a new stage for admin overview
+     */
+    public static void openAdminOverview(){
+
+        Stage adminOverviewStage = new Stage();
         var adminMainCtrl = INJECTOR.getInstance(AdminMainCtrl.class);
 
         var adminLoginPage = FXML.load(AdminLoginPageCtrl.class,
                 "client.scenes", "adminLoginPage.fxml");
 
-        mainCtrl.initialize(primaryStage, startPage, eventOverview, paymentPage);
+        adminMainCtrl.initialize(adminOverviewStage, adminLoginPage);
     }
+
 }
