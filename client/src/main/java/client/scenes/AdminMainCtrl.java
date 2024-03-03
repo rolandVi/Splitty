@@ -25,16 +25,20 @@ public class AdminMainCtrl {
 
     private Stage adminOverviewStage;
 
+    private AdminLoginPageCtrl loginPageCtrl;
+
     private Scene loginPage;
 
     /**
      * The initialize method
      * @param adminOverviewStage The admin overview Stage
-     * @param loginPage The start Page
+     * @param loginPage The login Page
      */
     public void initialize(Stage adminOverviewStage,
-                           Pair<StartPageCtrl, Parent> loginPage) {
+                           Pair<AdminLoginPageCtrl, Parent> loginPage) {
         this.adminOverviewStage = adminOverviewStage;
+
+        this.loginPageCtrl = loginPage.getKey();
 
         this.loginPage = new Scene(loginPage.getValue());
 
@@ -45,11 +49,20 @@ public class AdminMainCtrl {
 
 
     /**
-     * Shows the start scene
+     * Shows the login scene
      */
     public void showLogin() {
         adminOverviewStage.setTitle("Admin Login Page");
         adminOverviewStage.setScene(loginPage);
+
+        loginPage.setOnKeyPressed(k -> loginPageCtrl.keyPressed(k));
+    }
+
+    /**
+     * Shows the admin overview
+     */
+    public void showAdminOverview(){
+        //to be done
     }
 
 

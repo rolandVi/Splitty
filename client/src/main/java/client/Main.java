@@ -56,6 +56,9 @@ public class Main extends Application {
 
         var adminMainCtrl = INJECTOR.getInstance(AdminMainCtrl.class);
 
+        var adminLoginPage = FXML.load(AdminLoginPageCtrl.class,
+                "client.scenes", "adminLoginPage.fxml");
+
         mainCtrl.initialize(primaryStage, startPage, eventOverview, paymentPage);
     }
 }

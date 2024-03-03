@@ -18,5 +18,6 @@ public class MyModule implements Module {
         binder.bind(EventOverviewCtrl.class).in(Scopes.SINGLETON);
         binder.bind(PaymentPageCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AdminMainCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(AdminLoginPageCtrl.class).in(Scopes.SINGLETON);
     }
 }
