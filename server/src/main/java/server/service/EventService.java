@@ -70,7 +70,8 @@ public class EventService {
      */
     @Transactional
     public EventTitleDto updateById(long id, @Valid EventTitleDto title) {
-        return this.modelMapper.map(this.eventRepository.updateEventTitleById(id, title.getTitle())
+        this.eventRepository.updateEventTitleById(id, title.getTitle());
+        return this.modelMapper.map(this.eventRepository.getEventTitleById(id)
                 .orElseThrow(ObjectNotFoundException::new), EventTitleDto.class);
     }
 
