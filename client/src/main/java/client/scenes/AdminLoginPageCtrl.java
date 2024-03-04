@@ -8,9 +8,13 @@ import javafx.scene.text.Text;
 
 import com.google.inject.Inject;
 
+import client.utils.ServerUtils;
+
 public class AdminLoginPageCtrl {
 
     private final AdminMainCtrl adminMainCtrl;
+
+    private final ServerUtils serverUtils;
 
     @FXML
     public TextField passwordField;
@@ -24,10 +28,12 @@ public class AdminLoginPageCtrl {
     /**
      * The constructor
      * @param adminMainCtrl the main admin controller
+     * @param serverUtils the server utilities
      */
     @Inject
-    public AdminLoginPageCtrl(AdminMainCtrl adminMainCtrl){
+    public AdminLoginPageCtrl(AdminMainCtrl adminMainCtrl, ServerUtils serverUtils){
         this.adminMainCtrl=adminMainCtrl;
+        this.serverUtils=serverUtils;
     }
 
     /**
@@ -46,13 +52,20 @@ public class AdminLoginPageCtrl {
     }
 
     /**
+     * Prompts the server to generate a new password
+     */
+    public void generatePassword(){
+        serverUtils.generatePassword();
+    }
+
+    /**
      * Validated the password and shows the admin overview
      */
     public void login(){
         String passwordInserted = passwordField.getText();
 
         // temporary solution. When password generation is ready, will update it
-        if (passwordInserted.equals("12345")){
+        if (passwordInserted==null || serverUtils.validatePassword(passwordInserted)){
             adminMainCtrl.showAdminOverview();
         }else {
             incorrectPasswordError.setOpacity(1.0d);
