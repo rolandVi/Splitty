@@ -4,6 +4,7 @@ import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 
 import java.io.IOException;
 import java.net.URI;
@@ -56,4 +57,19 @@ public class EventCreationCtrl {
         mainCtrl.showOverview();
     }
 
+
+    /**
+     * Checks for key press
+     *
+     * @param e The key
+     */
+    public void keyPressed(KeyEvent e) throws IOException, InterruptedException {
+        switch (e.getCode()) {
+            case ENTER:
+                createEvent();
+                break;
+            default:
+                break;
+        }
+    }
 }
