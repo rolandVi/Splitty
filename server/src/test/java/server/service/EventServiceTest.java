@@ -8,8 +8,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import server.controller.exception.ObjectNotFoundException;
-import server.dto.view.EventDetailsDto;
-import server.dto.view.EventTitleDto;
+import commons.dto.view.EventDetailsDto;
+import commons.dto.view.EventTitleDto;
 import server.repository.EventRepository;
 
 import java.util.ArrayList;
@@ -110,7 +110,7 @@ class EventServiceTest {
         EventTitleDto updatedTitleDto = new EventTitleDto(newTitle);
         EventEntity eventEntity = new EventEntity(eventId, "", "Test Event", new ArrayList<>(), new HashSet<>());
 
-        when(eventRepository.updateEventTitleById(eventId, newTitle)).thenReturn(Optional.of(eventEntity));
+        when(eventRepository.getEventTitleById(eventId)).thenReturn("Test Event");
 
         // Act
         EventTitleDto result = eventService.updateById(eventId, updatedTitleDto);
@@ -127,7 +127,7 @@ class EventServiceTest {
         String newTitle = "Updated Event Title";
         EventTitleDto updatedTitleDto = new EventTitleDto(newTitle);
 
-        when(eventRepository.updateEventTitleById(eventId, newTitle)).thenReturn(Optional.empty());
+        when(eventRepository.getEventTitleById(eventId)).thenReturn(null);
 
         // Act and Assert
         assertThrows(ObjectNotFoundException.class, () -> eventService.updateById(eventId, updatedTitleDto));

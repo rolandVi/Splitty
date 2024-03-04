@@ -1,11 +1,13 @@
 package client.scenes;
 
+import commons.dto.view.EventDetailsDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 //import org.springframework.http.*;
 //import org.springframework.web.client.RestTemplate;
 //import org.springframework.util.MultiValueMap;
 
-import client.view.EventTitleDto;
+import commons.dto.view.EventTitleDto;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -17,6 +19,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Optional;
 
 public class EventCtrl {
     private final MainCtrl mainCtrl;
@@ -36,6 +39,8 @@ public class EventCtrl {
     public Label expensesLabel;
     @FXML
     public Button addExpenseButton;
+    private EventDetailsDto eventDetailsDto;
+    private final ObjectMapper objectMapper;
 
     /**
      * Injector for Event Controller
@@ -44,6 +49,7 @@ public class EventCtrl {
     @Inject
     public EventCtrl(MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
+        this.objectMapper = new ObjectMapper();
     }
 
     /**
@@ -54,47 +60,38 @@ public class EventCtrl {
     }
 
     /**
-     * Will update the event name to the server and updates the current event name
+     * Will update the event name to the server and update the current event name
+     * @return HTTP response from the server
+     * @throws JsonProcessingException when the objectMapper cannot properly
+     * turn the EventTitleDto into Json format string
      */
-    public void changeEventName() throws IOException, InterruptedException {
-        long id = 1L; // Todo: replace temporary id
+    public Optional<HttpResponse<String>> changeEventName() throws JsonProcessingException {
+        // Todo: replace temporary values with eventDetailsDto.getID() and host selected at start
+        long id = 1L;
+        String url = "http://localhost:8080";
 
-//        String apiUrl = "http://localhost:8080/api/events/1";
-//
-//        EventTitleDto eventTitleDto = new EventTitleDto(changeTextField.getText());
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//
-//        HttpEntity<EventTitleDto> requestEntity = new HttpEntity<>(eventTitleDto, headers);
-//        RestTemplate restTemplate = new RestTemplate();
-//        ResponseEntity<EventTitleDto> responseEntity = restTemplate.exchange(
-//                apiUrl,
-//                HttpMethod.PATCH,
-//                requestEntity,
-//                EventTitleDto.class
-//        );
-
-        EventTitleDto eventTitleDto = new EventTitleDto();
-        eventTitleDto.setTitle(changeTextField.getText());
-        eventTitleDto.setId(1L);
-
-        ObjectMapper objectMapper = new ObjectMapper();
+        // Create HTTP request body
+        EventTitleDto eventTitleDto = new EventTitleDto(changeTextField.getText());
         String requestBody = objectMapper.writeValueAsString(eventTitleDto);
 
-        System.out.println(requestBody);
-
+        // Create HTTP request
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/api/events/1"))
+                .uri(URI.create(url + "/api/events/" + id))
                 .header("Content-Type", "application/json")
                 .method("PATCH", HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
 
-        HttpResponse<String> response = HttpClient.newHttpClient()
-                .send(request, HttpResponse.BodyHandlers.ofString());
-
-        System.out.println(response.statusCode());
-        System.out.println(response.body());
+        // Send HTTP request to server
+        // Return HTTP response from server
+        Optional<HttpResponse<String>> response;
+        try {
+            response = Optional.of(HttpClient
+                    .newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString()));
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return response;
     }
 
     /**
@@ -104,4 +101,19 @@ public class EventCtrl {
         mainCtrl.showNewExpense();
     }
 
+    /**
+     * Getter for the eventDetailsDto
+     * @return the Data transfer object of current event showing
+     */
+    public EventDetailsDto getEventDetailsDto() {
+        return eventDetailsDto;
+    }
+
+    /**
+     * Setter for the eventDetailsDto
+     * @param eventDetailsDto the Data transfer object of current event showing
+     */
+    public void setEventDetailsDto(EventDetailsDto eventDetailsDto) {
+        this.eventDetailsDto = eventDetailsDto;
+    }
 }
