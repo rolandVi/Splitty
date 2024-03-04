@@ -1,4 +1,4 @@
-package client.view;
+package commons.dto.view;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

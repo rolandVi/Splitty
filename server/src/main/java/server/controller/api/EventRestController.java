@@ -4,8 +4,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.dto.view.EventDetailsDto;
-import server.dto.view.EventTitleDto;
+import commons.dto.view.EventDetailsDto;
+import commons.dto.view.EventTitleDto;
 import server.service.EventService;
 
 @RestController

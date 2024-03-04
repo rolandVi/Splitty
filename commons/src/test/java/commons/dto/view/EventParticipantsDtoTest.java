@@ -1,5 +1,7 @@
-package server.dto.view;
+package commons.dto.view;
 
+import commons.dto.view.EventParticipantsDto;
+import commons.dto.view.UserNameDto;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;

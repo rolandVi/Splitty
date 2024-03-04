@@ -8,8 +8,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import server.controller.exception.ObjectNotFoundException;
-import server.dto.view.EventDetailsDto;
-import server.dto.view.EventTitleDto;
+import commons.dto.view.EventDetailsDto;
+import commons.dto.view.EventTitleDto;
 import server.repository.EventRepository;
 
 import java.util.ArrayList;

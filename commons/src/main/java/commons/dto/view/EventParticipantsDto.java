@@ -1,4 +1,4 @@
-package client.view;
+package commons.dto.view;
 
 import java.util.Objects;
 import java.util.Set;
