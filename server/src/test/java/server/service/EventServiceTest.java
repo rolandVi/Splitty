@@ -110,7 +110,7 @@ class EventServiceTest {
         EventTitleDto updatedTitleDto = new EventTitleDto(newTitle);
         EventEntity eventEntity = new EventEntity(eventId, "", "Test Event", new ArrayList<>(), new HashSet<>());
 
-        when(eventRepository.getEventTitleById(eventId)).thenReturn(Optional.of(eventEntity));
+        when(eventRepository.getEventTitleById(eventId)).thenReturn("Test Event");
 
         // Act
         EventTitleDto result = eventService.updateById(eventId, updatedTitleDto);
@@ -127,7 +127,7 @@ class EventServiceTest {
         String newTitle = "Updated Event Title";
         EventTitleDto updatedTitleDto = new EventTitleDto(newTitle);
 
-        when(eventRepository.getEventTitleById(eventId)).thenReturn(Optional.empty());
+        when(eventRepository.getEventTitleById(eventId)).thenReturn(null);
 
         // Act and Assert
         assertThrows(ObjectNotFoundException.class, () -> eventService.updateById(eventId, updatedTitleDto));

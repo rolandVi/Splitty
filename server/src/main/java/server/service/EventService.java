@@ -11,6 +11,7 @@ import server.dto.view.EventTitleDto;
 import server.repository.EventRepository;
 
 import java.time.LocalTime;
+import java.util.Optional;
 
 @Service
 public class EventService {
@@ -71,8 +72,11 @@ public class EventService {
     @Transactional
     public EventTitleDto updateById(long id, @Valid EventTitleDto title) {
         this.eventRepository.updateEventTitleById(id, title.getTitle());
-        return this.modelMapper.map(this.eventRepository.getEventTitleById(id)
-                .orElseThrow(ObjectNotFoundException::new), EventTitleDto.class);
+        String eventTitleById = this.eventRepository.getEventTitleById(id);
+        if (eventTitleById == null) throw new ObjectNotFoundException();
+        Optional<EventTitleDto> eventTitleDto = Optional.of(new EventTitleDto(eventTitleById));
+        return this.modelMapper
+                .map(eventTitleDto.orElseThrow(ObjectNotFoundException::new), EventTitleDto.class);
     }
 
     /**
