@@ -1,6 +1,5 @@
 package commons.dto.view;
 
-import commons.dto.view.EventTitleDto;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

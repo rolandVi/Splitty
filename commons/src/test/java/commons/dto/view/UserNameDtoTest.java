@@ -1,6 +1,6 @@
 package commons.dto.view;
 
-import commons.dto.view.UserNameDto;
+//import commons.dto.view.UserNameDto;c
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

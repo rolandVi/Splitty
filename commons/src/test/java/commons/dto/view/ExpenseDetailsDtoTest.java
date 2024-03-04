@@ -1,7 +1,5 @@
 package commons.dto.view;
 
-import commons.dto.view.ExpenseDetailsDto;
-import commons.dto.view.UserNameDto;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
