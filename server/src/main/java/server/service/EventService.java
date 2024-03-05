@@ -6,11 +6,12 @@ import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import server.controller.exception.ObjectNotFoundException;
-import server.dto.view.EventDetailsDto;
-import server.dto.view.EventTitleDto;
+import commons.dto.view.EventDetailsDto;
+import commons.dto.view.EventTitleDto;
 import server.repository.EventRepository;
 
 import java.time.LocalTime;
+import java.util.Optional;
 
 @Service
 public class EventService {
@@ -70,8 +71,12 @@ public class EventService {
      */
     @Transactional
     public EventTitleDto updateById(long id, @Valid EventTitleDto title) {
-        return this.modelMapper.map(this.eventRepository.updateEventTitleById(id, title.getTitle())
-                .orElseThrow(ObjectNotFoundException::new), EventTitleDto.class);
+        this.eventRepository.updateEventTitleById(id, title.getTitle());
+        String eventTitleById = this.eventRepository.getEventTitleById(id);
+        if (eventTitleById == null) throw new ObjectNotFoundException();
+        Optional<EventTitleDto> eventTitleDto = Optional.of(new EventTitleDto(eventTitleById));
+        return this.modelMapper
+                .map(eventTitleDto.orElseThrow(ObjectNotFoundException::new), EventTitleDto.class);
     }
 
     /**

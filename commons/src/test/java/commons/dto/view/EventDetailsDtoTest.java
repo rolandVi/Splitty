@@ -1,4 +1,4 @@
-package server.dto.view;
+package commons.dto.view;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
