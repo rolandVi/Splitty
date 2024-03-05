@@ -2,6 +2,7 @@ package server.controller.api;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import server.controller.exception.PasswordExpiredException;
 import server.service.PasswordService;
 
 import server.service.PasswordService;
@@ -27,11 +28,16 @@ public class PasswordRestController {
      */
     @PostMapping("/validatePassword")
     public ResponseEntity<Boolean> validatePassword(@RequestBody String p){
-        if (passwordService.validatePassword(p)){
-            return ResponseEntity.ok(true);
-        }else {
-            return ResponseEntity.ok(false);
+        try {
+            if (passwordService.validatePassword(p)){
+                return ResponseEntity.ok(true);
+            }else {
+                return ResponseEntity.ok(false);
+            }
+        }catch (PasswordExpiredException e){
+            return ResponseEntity.badRequest().build();
         }
+
     }
 
     /**

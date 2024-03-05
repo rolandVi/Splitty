@@ -1,6 +1,8 @@
 package server.service;
 
 import org.springframework.stereotype.Service;
+import server.controller.exception.PasswordExpiredException;
+import server.controller.exception.PasswordNotFoundException;
 
 import java.security.SecureRandom;
 import java.util.Base64;
@@ -17,10 +19,11 @@ public class PasswordService {
     /**
      * Constructor
      */
-    public PasswordService(){}
+    public PasswordService(){
+    }
 
     /**
-     * genarates a password and prints it to the console
+     * generates a password and prints it to the console
      */
     public void generatePassword(){
         byte[] arr = new byte[LENGTH];
@@ -35,13 +38,11 @@ public class PasswordService {
      * @param p - password to validate
      * @return whether password is correct
      */
-    public boolean validatePassword(String p) {
-        if (!used){
-            used=true;
-            return p.equals(password);
-        }else {
-            return false;
-        }
+    public boolean validatePassword(String p)
+            throws PasswordNotFoundException, PasswordExpiredException {
+        if (password==null) throw new PasswordNotFoundException("No password has been generated.");
+        if (used) throw new PasswordExpiredException("The current password has expired.");
+        return p.equals(password);
 
     }
 }
