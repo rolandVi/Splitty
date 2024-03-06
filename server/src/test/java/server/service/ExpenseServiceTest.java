@@ -143,6 +143,7 @@ class ExpenseServiceTest {
     void getExpenseDetails_WhenExpenseExists_ReturnsExpenseDetailsDto() {
         // Arrange
         long expenseId = 1L;
+        ExpenseEntity expectedDto = new ExpenseEntity();
         when(expenseRepository.findById(expenseId)).thenReturn(Optional.of(expectedDto));
 
         // Act
@@ -151,7 +152,8 @@ class ExpenseServiceTest {
 
         // Assert
         assertNotNull(result);
-        assertEquals(mapExpenseEntityToDto(expectedDto), result);    }
+        assertEquals(mapExpenseEntityToDto(expectedDto), result);
+    }
 
     @Test
     void getExpenseDetails_WhenExpenseDoesNotExist_ThrowsObjectNotFoundException() {
