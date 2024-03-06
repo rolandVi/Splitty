@@ -26,7 +26,8 @@ public class UserService {
      * @param userRepository        the UserRepository injected by Spring
      * @param bankAccountRepository the BankAccountRepository injected by Spring
      */
-    public UserService(ModelMapper modelMapper, UserRepository userRepository, BankAccountRepository bankAccountRepository) {
+    public UserService(ModelMapper modelMapper, UserRepository userRepository,
+                       BankAccountRepository bankAccountRepository) {
         this.modelMapper = modelMapper;
         this.userRepository = userRepository;
         this.bankAccountRepository = bankAccountRepository;
