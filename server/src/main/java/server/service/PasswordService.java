@@ -1,11 +1,11 @@
 package server.service;
 
 import org.springframework.stereotype.Service;
-import server.controller.exception.PasswordExpiredException;
-import server.controller.exception.PasswordNotFoundException;
+import commons.exceptions.PasswordExpiredException;
 
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.Optional;
 
 @Service
 public class PasswordService {
@@ -13,13 +13,13 @@ public class PasswordService {
     private static final int LENGTH = 16;
     private static final SecureRandom random = new SecureRandom();
 
-    private String password;
-    private boolean used;
+    private Optional<String> password;
 
     /**
      * Constructor
      */
     public PasswordService(){
+        password = Optional.empty();
     }
 
     /**
@@ -28,9 +28,9 @@ public class PasswordService {
     public void generatePassword(){
         byte[] arr = new byte[LENGTH];
         random.nextBytes(arr);
-        password = Base64.getUrlEncoder().withoutPadding().encodeToString(arr).substring(0, LENGTH);
-        used=false;
-        System.out.println("Password: " + password);
+        password = Optional.of(Base64.getUrlEncoder().withoutPadding()
+                .encodeToString(arr).substring(0, LENGTH));
+        System.out.println("Password: " + password.get());
     }
 
     /**
@@ -39,10 +39,24 @@ public class PasswordService {
      * @return whether password is correct
      */
     public boolean validatePassword(String p)
-            throws PasswordNotFoundException, PasswordExpiredException {
-        if (password==null) throw new PasswordNotFoundException("No password has been generated.");
-        if (used) throw new PasswordExpiredException("The current password has expired.");
-        return p.equals(password);
+            throws PasswordExpiredException {
+        if (password.isEmpty()){
+            throw new PasswordExpiredException("Last password has expired");
+        }
 
+        if (p.equals(password.get())){
+            password=Optional.empty();
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    /**
+     * Getter for password
+     * @return
+     */
+    protected Optional<String> getPassword() {
+        return password;
     }
 }

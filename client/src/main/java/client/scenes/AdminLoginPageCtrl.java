@@ -1,8 +1,10 @@
 package client.scenes;
 
+import commons.exceptions.PasswordExpiredException;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
@@ -42,13 +44,7 @@ public class AdminLoginPageCtrl {
      * @param k The key
      */
     public void keyPressed(KeyEvent k){
-        switch (k.getCode()){
-            case ENTER:
-                login();
-                break;
-            default:
-                break;
-        }
+        if (k.getCode()== KeyCode.ENTER) login();
     }
 
     /**
@@ -63,11 +59,16 @@ public class AdminLoginPageCtrl {
      */
     public void login(){
         String passwordInserted = passwordField.getText();
-
-        // temporary solution. When password generation is ready, will update it
-        if (passwordInserted==null || serverUtils.validatePassword(passwordInserted)){
-            adminMainCtrl.showAdminOverview();
-        }else {
+        try {
+            if (serverUtils.validatePassword(passwordInserted)){
+                incorrectPasswordError.setOpacity(0.0d);
+                adminMainCtrl.showAdminOverview();
+            }else {
+                incorrectPasswordError.setText("Incorrect password. Try again...");
+                incorrectPasswordError.setOpacity(1.0d);
+            }
+        }catch (PasswordExpiredException e){
+            incorrectPasswordError.setText(e.getMessage());
             incorrectPasswordError.setOpacity(1.0d);
         }
     }

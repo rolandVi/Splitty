@@ -1,11 +1,10 @@
 package server.controller.api;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.controller.exception.PasswordExpiredException;
 import server.service.PasswordService;
-
-import server.service.PasswordService;
+import commons.exceptions.PasswordExpiredException;
 
 @RestController
 @RequestMapping("/api/password")
@@ -27,17 +26,16 @@ public class PasswordRestController {
      * @return - whether the password is valid
      */
     @PostMapping("/validatePassword")
-    public ResponseEntity<Boolean> validatePassword(@RequestBody String p){
+    public ResponseEntity<String> validatePassword(@RequestBody String p){
         try {
             if (passwordService.validatePassword(p)){
-                return ResponseEntity.ok(true);
+                return ResponseEntity.ok("Password is valid");
             }else {
-                return ResponseEntity.ok(false);
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Password is invalid");
             }
         }catch (PasswordExpiredException e){
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-
     }
 
     /**

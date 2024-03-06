@@ -25,6 +25,4 @@ public class NotFoundAdvice extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(onfe, "Could not found such resource",
                 new HttpHeaders(), HttpStatus.NOT_FOUND, req);
     }
-
-
 }
