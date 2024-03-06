@@ -72,4 +72,6 @@ public class StartPageCtrl {
     public void refresh() {
         //server calls missing
     }
+
+
 }

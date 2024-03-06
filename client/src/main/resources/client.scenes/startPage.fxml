@@ -10,12 +10,12 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StartPageCtrl">
    <children>
       <Label layoutX="278.0" layoutY="44.0" scaleX="6.0" scaleY="6.0" text="SPLITTY" textAlignment="CENTER" />
-      <Button layoutX="271.0" layoutY="284.0" mnemonicParsing="false" onAction="#connect" prefHeight="18.0" prefWidth="57.0" scaleX="3.0" scaleY="3.0" text="CONNECT">
+      <Button layoutX="271.0" layoutY="288.0" mnemonicParsing="false" onAction="#connect" prefHeight="18.0" prefWidth="57.0" scaleX="3.0" scaleY="3.0" text="CONNECT">
          <font>
             <Font size="8.0" />
          </font></Button>
       <TextField fx:id="serverField" alignment="CENTER" layoutX="225.0" layoutY="336.0" promptText="http://localhost:8080" scaleX="1.5" scaleY="1.5" text="http://localhost:8080" />
-      <Text fx:id="errorMessage" fill="RED" layoutX="232.0" layoutY="310.0" opacity="0.0" scaleX="1.5" scaleY="1.5" strokeType="OUTSIDE" strokeWidth="0.0" text="INCORRECT SERVER URL!" wrappingWidth="135.02446937561035" />
+      <Text fx:id="errorMessage" fill="RED" layoutX="235.0" layoutY="345.0" opacity="0.0" scaleX="1.5" scaleY="1.5" strokeType="OUTSIDE" strokeWidth="0.0" text="INCORRECT SERVER URL!" wrappingWidth="132.0" />
       <Button layoutX="443.0" layoutY="355.0" mnemonicParsing="false" onAction="#enterAdmin" text="Open admin overview" />
       <TextField fx:id="firstNameField" layoutX="226.0" layoutY="104.0" promptText="First name" />
       <TextField fx:id="surNameField" layoutX="226.0" layoutY="137.0" promptText="Surname" />

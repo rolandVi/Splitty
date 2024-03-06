@@ -39,6 +39,8 @@ public class EventCtrl {
     public Label expensesLabel;
     @FXML
     public Button addExpenseButton;
+    @FXML
+    public Button addParticipant;
     private EventDetailsDto eventDetailsDto;
     private final ObjectMapper objectMapper;
 
@@ -115,5 +117,12 @@ public class EventCtrl {
      */
     public void setEventDetailsDto(EventDetailsDto eventDetailsDto) {
         this.eventDetailsDto = eventDetailsDto;
+    }
+
+    /**
+     * shows the newParticipant scene
+     */
+    public void newParticipant(){
+        mainCtrl.showNewParticipant();
     }
 }
