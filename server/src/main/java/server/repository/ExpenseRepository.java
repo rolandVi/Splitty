@@ -19,5 +19,13 @@ public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long> {
      */
     @Query("SELECT e FROM ExpenseEntity e JOIN e.debtors d WHERE d.id = :userId")
     List<ExpenseEntity> findExpensesByUserId(@Param("userId") Long userId);
+
+    /**
+     * Finds sum of all expenses
+     * @return The sum of all expenses
+     */
+    @Query("SELECT SUM(e.money) FROM ExpenseEntity e")
+    Double getTotalSumOfExpenses();
+
 }
 

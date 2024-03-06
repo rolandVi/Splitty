@@ -59,15 +59,6 @@ public class ExpenseService {
     }
 
     /**
-     * Persist an expense to the database
-     * @param expense the expense to save
-     * @return the created ExpenseEntity
-     */
-    public ExpenseEntity saveExpense(@Valid ExpenseEntity expense) {
-        return this.expenseRepository.save(expense);
-    }
-
-    /**
      * Updating an existing expense
      * @param expense the updated expense
      * @return the updated expense
@@ -118,8 +109,7 @@ public class ExpenseService {
      * @return Total sum of expenses.
      */
     public Double getTotalSumOfExpenses() {
-        List<ExpenseEntity> allExpenses = expenseRepository.findAll();
-        return allExpenses.stream().mapToDouble(ExpenseEntity::getMoney).sum();
+        return expenseRepository.getTotalSumOfExpenses();
     }
 
     /**
