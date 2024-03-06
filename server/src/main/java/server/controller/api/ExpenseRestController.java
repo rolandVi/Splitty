@@ -58,6 +58,9 @@ public class ExpenseRestController {
     @PutMapping("/{id}")
     public ResponseEntity<ExpenseDetailsDto> updateExpense
     (@PathVariable(name = "id") long id, @Valid @RequestBody ExpenseDetailsDto expense) {
+        if (!checkIdValidity(id)){
+            return ResponseEntity.badRequest().build();
+        }
         expense.setId(id);
         ExpenseDetailsDto updatedExpense = expenseService.updateExpense(expense);
         return ResponseEntity.ok(updatedExpense);
@@ -109,17 +112,6 @@ public class ExpenseRestController {
         return ResponseEntity.ok(userExpenses);
     }
 
-
-    /**
-     * Get details of an expense by ID
-     * @param id the ID of the expense
-     * @return ResponseEntity containing the details of the expense
-     */
-    @GetMapping("/{id}")
-    public ResponseEntity<ExpenseDetailsDto> getExpenseDetails(@PathVariable Long id) {
-        ExpenseDetailsDto expenseDetails = expenseService.getExpenseDetails(id);
-        return ResponseEntity.ok(expenseDetails);
-    }
 
     /**
      * Helper method to check if an ID is valid

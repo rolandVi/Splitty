@@ -90,6 +90,7 @@ class ExpenseRestControllerTest {
         long expenseId = 1L;
         requestDto.setId(expenseId);
         when(expenseService.updateExpense(requestDto)).thenReturn(expectedDto);
+        when(expenseService.existsById(expenseId)).thenReturn(true);
 
         // Act
         ResponseEntity<ExpenseDetailsDto> response = expenseRestController.updateExpense(expenseId, requestDto);
@@ -172,15 +173,15 @@ class ExpenseRestControllerTest {
     void testGetExpenseDetails() {
         // Arrange
         Long expenseId = 1L;
-        when(expenseService.getExpenseDetails(expenseId)).thenReturn(expectedDto);
+        when(expenseService.getById(expenseId)).thenReturn(expectedDto);
 
         // Act
-        ResponseEntity<ExpenseDetailsDto> response = expenseRestController.getExpenseDetails(expenseId);
+        ResponseEntity<ExpenseDetailsDto> response = expenseRestController.getExpenseById(expenseId);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedDto, response.getBody());
-        verify(expenseService, times(1)).getExpenseDetails(expenseId);
+        verify(expenseService, times(1)).getById(expenseId);
     }
 
 }

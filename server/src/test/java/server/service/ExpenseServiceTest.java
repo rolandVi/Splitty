@@ -147,7 +147,7 @@ class ExpenseServiceTest {
         when(expenseRepository.findById(expenseId)).thenReturn(Optional.of(expectedDto));
 
         // Act
-        ExpenseDetailsDto result = expenseService.getExpenseDetails(expenseId);
+        ExpenseDetailsDto result = expenseService.getById(expenseId);
 
 
         // Assert
@@ -162,7 +162,7 @@ class ExpenseServiceTest {
         when(expenseRepository.findById(expenseId)).thenReturn(Optional.empty());
 
         // Act and Assert
-        assertThrows(ObjectNotFoundException.class, () -> expenseService.getExpenseDetails(expenseId));
+        assertThrows(ObjectNotFoundException.class, () -> expenseService.getById(expenseId));
     }
 
     @Test

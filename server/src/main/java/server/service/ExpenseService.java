@@ -122,17 +122,6 @@ public class ExpenseService {
         return mapToExpenseDetailsDtoList(userExpenses);
     }
 
-    /**
-     * Retrieves details of an expense by its ID.
-     * @param id The ID of the expense.
-     * @return ExpenseDetailsDto containing details of the expense.
-     * @throws ObjectNotFoundException if the expense with the given ID is not found.
-     */
-    public ExpenseDetailsDto getExpenseDetails(Long id) {
-        ExpenseEntity expense = expenseRepository.findById(id)
-                .orElseThrow(ObjectNotFoundException::new);
-        return mapToExpenseDetailsDto(expense);
-    }
 
 
 
