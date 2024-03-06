@@ -30,6 +30,6 @@
       <TextField fx:id="changeTextField" layoutX="15.0" layoutY="59.0" promptText="Event name" />
       <Button fx:id="changeButton" layoutX="173.0" layoutY="59.0" mnemonicParsing="false" onAction="#changeEventName" text="Change" />
       <Button fx:id="returnButton" layoutX="534.0" layoutY="14.0" mnemonicParsing="false" onAction="#returnToOverview" text="Return" />
-      <Button fx:id="addParticipant" layoutX="204.0" layoutY="101.0" mnemonicParsing="false" onAction="#newParticipant" text="Add participant" />
+      <Button fx:id="addParticipant" layoutX="204.0" layoutY="101.0" onAction="#newParticipant" mnemonicParsing="false" text="Add participant" />
    </children>
 </Pane>

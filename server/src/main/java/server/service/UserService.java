@@ -1,12 +1,16 @@
 package server.service;
 
+import commons.BankAccountEntity;
 import commons.EventEntity;
 import commons.UserEntity;
 import commons.dto.view.EventTitleDto;
 import commons.dto.view.UserNameDto;
+import org.apache.catalina.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import server.repository.UserRepository;
+
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -44,13 +48,32 @@ public class UserService {
                 .orElseThrow(IllegalArgumentException::new);
     }
 
-//    /**
-//     * Persist an event to the database
-//     * @param user the id of the user in a UserNameDto
-//     * @return the created EventEntity
-//     */
-//    public UserEntity saveUserByID(UserNameDto user) {
-//
-//    }
+    /**
+     * Persist a user to the database
+     * @param user the id of the user in a UserNameDto
+     * @return the created UserEntity
+     */
+    public UserEntity saveUserByID(UserNameDto user) {
+        UserEntity userEntity = this.modelMapper.map(user, UserEntity.class);
+        return this.userRepository.save(userEntity);
+    }
+
+    /**
+     * Create a new event given a title
+     * @param title the title
+     * @return the title and id of the event
+     */
+    public EventTitleDto createEvent(String title) {
+        UserEntity userEntity = new UserEntity();
+        newEntity.setTitle(title);
+        EventEntity result=this.eventRepository.save(newEntity);
+        return modelMapper.map(result, EventTitleDto.class);
+    }
+
+    /**
+     * Creating a bankaccount entity
+     */
+    public
+
 
 }

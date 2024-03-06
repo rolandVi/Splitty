@@ -22,7 +22,7 @@ public class BankAccountEntity {
     /**
      *
      * @param iban the IBAN  of the bankaccount from the user.
-     * @param holder the username of the user who the bankaccount is from.
+     * @param holder the email of the user who the bankaccount is from. Since it's unique
      * @param bic the BIC  from the bankaccount from the user.
      */
     public BankAccountEntity(String iban, String holder, String bic) {
