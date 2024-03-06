@@ -20,6 +20,8 @@ import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.util.Pair;
 
+import java.io.IOException;
+
 
 public class MainCtrl {
 
@@ -89,7 +91,15 @@ public class MainCtrl {
         primaryStage.setTitle("Start Page");
         primaryStage.setScene(startPage);
 
-        startPage.setOnKeyPressed(e -> startPageCtrl.keyPressed(e));
+        startPage.setOnKeyPressed(e -> {
+            try {
+                startPageCtrl.keyPressed(e);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         startPageCtrl.refresh();
     }

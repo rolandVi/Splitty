@@ -26,15 +26,22 @@ public class UserRestController {
     }
 
     /**
-     * Create a new user
-     *
-     * @param userDto the user data
-     * @return ResponseEntity with the created user data
+     * createse a user with the given parameters
+     * @param iban iban
+     * @param holder email of user
+     * @param bic bic
+     * @param firstName firstname
+     * @param lastName lastname
+     * @param email email
+     * @return the newly created user and id
      */
     @PostMapping("/")
-    public ResponseEntity<UserEntity> createUser(@Valid @RequestBody UserNameDto userDto) {
-        UserEntity userEntity = userService.saveUserByID(userDto);
-        return ResponseEntity.ok(userEntity);
+    public ResponseEntity<UserNameDto> createUser(@Valid @RequestBody String iban, String holder,
+                                                  String bic, String firstName, String lastName,
+                                                  String email) {
+
+        return ResponseEntity.ok(this.userService.createUser(iban, holder, bic,
+                firstName, lastName, email));
     }
 
 }

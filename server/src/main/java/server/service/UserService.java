@@ -3,14 +3,13 @@ package server.service;
 import commons.BankAccountEntity;
 import commons.EventEntity;
 import commons.UserEntity;
+import commons.dto.view.BankAccountDto;
 import commons.dto.view.EventTitleDto;
 import commons.dto.view.UserNameDto;
-import org.apache.catalina.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import server.repository.BankAccountRepository;
 import server.repository.UserRepository;
-
-import java.util.Set;
 
 @Service
 public class UserService {
@@ -18,15 +17,19 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final BankAccountRepository bankAccountRepository;
+
     /**
      * Constructor
      *
-     * @param modelMapper the ModelMapper injected by Spring
-     * @param userRepository the UserRepository injected by Spring
+     * @param modelMapper           the ModelMapper injected by Spring
+     * @param userRepository        the UserRepository injected by Spring
+     * @param bankAccountRepository the BankAccountRepository injected by Spring
      */
-    public UserService(ModelMapper modelMapper, UserRepository userRepository) {
+    public UserService(ModelMapper modelMapper, UserRepository userRepository, BankAccountRepository bankAccountRepository) {
         this.modelMapper = modelMapper;
         this.userRepository = userRepository;
+        this.bankAccountRepository = bankAccountRepository;
     }
 
     /**
@@ -59,21 +62,43 @@ public class UserService {
     }
 
     /**
-     * Create a new event given a title
-     * @param title the title
-     * @return the title and id of the event
+     * Create new user given credentials
+     * @param iban iban
+     * @param holder email of holder
+     * @param bic bic
+     * @param firstName firstName
+     * @param lastName lastName
+     * @param email email
+     * @return the user credentials
      */
-    public EventTitleDto createEvent(String title) {
+    public UserNameDto createUser(String iban, String holder, String bic, String firstName,
+                                  String lastName, String email) {
+        createBankAccount(iban, holder, bic);
+        BankAccountEntity bankAccountEntity = new BankAccountEntity(iban, holder, bic);
         UserEntity userEntity = new UserEntity();
-        newEntity.setTitle(title);
-        EventEntity result=this.eventRepository.save(newEntity);
-        return modelMapper.map(result, EventTitleDto.class);
+        userEntity.setBankAccount(bankAccountEntity);
+        userEntity.setEmail(email);
+        userEntity.setFirstName(firstName);
+        userEntity.setLastName(lastName);
+        UserEntity result = this.userRepository.save(userEntity);
+        return modelMapper.map(result, UserNameDto.class);
     }
 
     /**
-     * Creating a bankaccount entity
+     * creating new bankAccount
+     * @param iban iban
+     * @param holder holder
+     * @param bic bic
+     * @return the bankinfo of a user
      */
-    public
+    public BankAccountDto createBankAccount(String iban, String holder, String bic){
+        BankAccountEntity bankAccountEntity = new BankAccountEntity();
+        bankAccountEntity.setBic(bic);
+        bankAccountEntity.setIban(iban);
+        bankAccountEntity.setHolder(holder);
+        BankAccountEntity result = this.bankAccountRepository.save(bankAccountEntity);
+        return modelMapper.map(result, BankAccountDto.class);
+    }
 
 
 }

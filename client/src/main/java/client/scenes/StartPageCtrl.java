@@ -52,8 +52,9 @@ public class StartPageCtrl {
     /**
      * The button press activates this
      */
-    public void connect() {
+    public void connect() throws IOException, InterruptedException {
         String serverInserted = serverField.getText();
+        createUser();
 
         if (!serverInserted.equals("http://localhost:8080")) {
             errorMessage.setOpacity(1.0d);
@@ -74,7 +75,7 @@ public class StartPageCtrl {
      *
      * @param e The key
      */
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(KeyEvent e) throws IOException, InterruptedException {
         switch (e.getCode()) {
             case ENTER:
                 connect();
@@ -107,30 +108,38 @@ public class StartPageCtrl {
         String iban = ibanField.getText();
         String bic = bicField.getText();
 
-        BankAccountEntity bankAccount = new BankAccountEntity(iban, email, bic);
-
         // Create a UserEntity object
-        UserEntity user = new UserEntity(id, );
+        UserEntity user = new UserEntity();
+        user.setFirstName(firstName);
+        user.setLastName(surName);
+        user.setEmail(email);
 
+        // Create a BankAccountEntity object
+        BankAccountEntity bankAccount = new BankAccountEntity();
+        bankAccount.setIban(iban);
+        bankAccount.setHolder(email); // Assuming holder's email is the same as the user's email
+        bankAccount.setBic(bic);
 
+        user.setBankAccount(bankAccount);
 
-        // Create HTTP request body
-        String requestBody = objectMapper.writeValueAsString(user);
+        HttpRequest request = HttpRequest.newBuilder().
+                POST(HttpRequest.BodyPublishers.ofString(String.valueOf(user)))
+                .uri(URI.create(url + "/api/users/"))
+                .header("Content-Type", "text/plain")
+                .build();
 
-        // Create HTTP request
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        RequestEntity<String> request = RequestEntity
-                .post(URI.create(url + "/api/users/"))
-                .headers(headers)
-                .body(requestBody);
-
-        // Send HTTP request to server using RestTemplate
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<UserEntity> responseEntity = restTemplate.exchange(request, UserEntity.class);
-
+        // Send HTTP request to server
         // Return HTTP response from server
-        return Optional.of(responseEntity);
+        Optional<HttpResponse<String>> response;
+        try {
+            response = Optional.of(HttpClient
+                    .newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString()));
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return response;
+
     }
 
 
