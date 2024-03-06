@@ -1,6 +1,7 @@
 package server.service;
 
 import commons.ExpenseEntity;
+import commons.UserEntity;
 import commons.dto.view.ExpenseDetailsDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,12 +23,23 @@ class ExpenseServiceTest {
 
     private ExpenseService expenseService;
 
+    private ExpenseEntity expectedDto;
+    private List<ExpenseEntity> expectedExpenses;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         ModelMapper modelMapper = new ModelMapper();
 
         expenseService = new ExpenseService(expenseRepository, modelMapper);
+
+        expectedDto = new ExpenseEntity(1L, 100.0, new UserEntity(),
+                new ArrayList<>(), "Expense Title", new Date());
+
+        ExpenseEntity requestDto = new ExpenseEntity(2L, 200.0, new UserEntity(),
+                new ArrayList<>(), "Another Expense Title", new Date());
+
+        expectedExpenses = new ArrayList<>(Arrays.asList(expectedDto, requestDto));
     }
 
     @Test
@@ -60,15 +72,14 @@ class ExpenseServiceTest {
     void getById_WhenExpenseExists_ReturnsExpenseDetailsDto() {
         // Arrange
         long expenseId = 1L;
-        ExpenseEntity expenseEntity = new ExpenseEntity();
-        when(expenseRepository.findById(expenseId)).thenReturn(Optional.of(expenseEntity));
+        when(expenseRepository.findById(expenseId)).thenReturn(Optional.of(expectedDto));
 
         // Act
         ExpenseDetailsDto result = expenseService.getById(expenseId);
 
         // Assert
         assertNotNull(result);
-        assertEquals(mapExpenseEntityToDto(expenseEntity), result);
+        assertEquals(mapExpenseEntityToDto(expectedDto), result);
     }
 
 
@@ -87,8 +98,6 @@ class ExpenseServiceTest {
     @Test
     void getAllExpenses_ReturnsListOfExpenseDetailsDto() {
         // Arrange
-        List<ExpenseEntity> expectedExpenses = new ArrayList<>();
-
         when(expenseRepository.findAll()).thenReturn(expectedExpenses);
 
         // Act
@@ -96,7 +105,8 @@ class ExpenseServiceTest {
 
         // Assert
         assertNotNull(result);
-        assertEquals(expectedExpenses, result);
+        assertFalse(result.isEmpty());
+        assertEquals(expectedExpenses.size(), result.size());
     }
 
     @Test
@@ -118,8 +128,6 @@ class ExpenseServiceTest {
     void getExpensesForUser_ReturnsListOfExpenseDetailsDto() {
         // Arrange
         Long userId = 1L;
-        List<ExpenseEntity> expectedExpenses = new ArrayList<>();
-
         when(expenseRepository.findExpensesByUserId(userId)).thenReturn(expectedExpenses);
 
         // Act
@@ -127,14 +135,14 @@ class ExpenseServiceTest {
 
         // Assert
         assertNotNull(result);
-        assertEquals(expectedExpenses, result);
+        assertFalse(result.isEmpty());
+        assertEquals(expectedExpenses.size(), result.size());
     }
 
     @Test
     void getExpenseDetails_WhenExpenseExists_ReturnsExpenseDetailsDto() {
         // Arrange
         long expenseId = 1L;
-        ExpenseEntity expectedDto = new ExpenseEntity();
         when(expenseRepository.findById(expenseId)).thenReturn(Optional.of(expectedDto));
 
         // Act
