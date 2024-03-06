@@ -1,10 +1,17 @@
 package client.scenes;
 
 import com.google.inject.Inject;
+import commons.dto.view.EventTitleDto;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
 
-public class EventOverviewCtrl {
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+
+public class EventOverviewCtrl implements Initializable {
 
 
 
@@ -16,6 +23,9 @@ public class EventOverviewCtrl {
     public Button newEventButton;
     @FXML
     public Button paymentButton;
+
+    @FXML
+    private VBox eventContainer;
 
 
     /**
@@ -45,5 +55,10 @@ public class EventOverviewCtrl {
      */
     public void b(){
         mainCtrl.b();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
     }
 }
