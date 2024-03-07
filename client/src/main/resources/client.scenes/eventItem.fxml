@@ -14,7 +14,6 @@
                </HBox.margin>
             </Button>
             <Button fx:id="inviteCodeButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="42.0" text="⇲" />
-            <Label fx:id="hiddenText" prefHeight="17.0" prefWidth="0.0" text="Label" visible="false" />
          </children>
       </HBox>
    </children>

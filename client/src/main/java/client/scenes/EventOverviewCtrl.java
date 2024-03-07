@@ -83,24 +83,19 @@ public class EventOverviewCtrl {
 
             Button eventButton = (Button) currentNode.lookup("#eventTitle");
             eventButton.setText(events.get(i));
-            eventButton.getStyleClass().clear();
-
-            Label hidden=(Label) currentNode.lookup("#hiddenText");
-            hidden.setText(i+1+"");
 
             Button inviteBtn=(Button) currentNode.lookup("#inviteCodeButton");
             inviteBtn.setOnAction(e -> copyInvite());
 
-            eventButton.setOnAction(e -> showDetails(eventButton, currentNode));
+            final var id=i+1;
+
+            eventButton.setOnAction(e -> showDetails(id));
         }
         this.eventContainer.getChildren().clear();
         this.eventContainer.getChildren().addAll(nodes);
     }
 
-    private void showDetails(Button source, Node currentNode) {
-        Label hidden=(Label) currentNode.lookup("#hiddenText");
-        long id=Long.parseLong(hidden.getText());
-
+    private void showDetails(long id) {
         mainCtrl.showEventDetails(id);
     }
 

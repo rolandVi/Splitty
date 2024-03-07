@@ -14,10 +14,4 @@ public class EventItemCtrl {
     private Button eventTitle;
     @FXML
     private Button inviteCodeButton;
-
-    @FXML
-    private Label hiddenText;
-
-
-
 }
