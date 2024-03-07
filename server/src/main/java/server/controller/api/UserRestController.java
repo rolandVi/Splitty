@@ -2,7 +2,7 @@ package server.controller.api;
 
 import commons.UserEntity;
 import commons.dto.view.UserNameDto;
-import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,21 +27,14 @@ public class UserRestController {
 
     /**
      * createse a user with the given parameters
-     * @param iban iban
-     * @param holder email of user
-     * @param bic bic
-     * @param firstName firstname
-     * @param lastName lastname
-     * @param email email
+     * @param user user
      * @return the newly created user and id
      */
     @PostMapping("/")
-    public ResponseEntity<UserNameDto> createUser(@Valid @RequestBody String iban, String holder,
-                                                  String bic, String firstName, String lastName,
-                                                  String email) {
-
-        return ResponseEntity.ok(this.userService.createUser(iban, holder, bic,
-                firstName, lastName, email));
+    public ResponseEntity<UserNameDto> createUser(@NotBlank @RequestBody UserEntity user) {
+        return ResponseEntity.ok(this.userService.createUser(user.getBankAccount().getIban(),
+                user.getEmail(), user.getBankAccount().getBic(),
+                user.getFirstName(), user.getLastName(), user.getEmail()));
     }
 
 }

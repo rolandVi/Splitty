@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.Main;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.BankAccountEntity;
 import commons.UserEntity;
 import javafx.fxml.FXML;
@@ -102,6 +103,31 @@ public class StartPageCtrl {
         String url = "http://localhost:8080";
 
         // Prepare user data from text fields
+        UserEntity user = getUserEntity();
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody = objectMapper.writeValueAsString(user);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .uri(URI.create(url + "/api/users/"))
+                .header("Content-Type", "application/json")
+                .build();
+
+        // Send HTTP request to server
+        // Return HTTP response from server
+        Optional<HttpResponse<String>> response;
+        try {
+            response = Optional.of(HttpClient
+                    .newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString()));
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return response;
+
+    }
+
+    private UserEntity getUserEntity() {
         String firstName = firstNameField.getText();
         String surName = surNameField.getText();
         String email = emailField.getText();
@@ -121,25 +147,7 @@ public class StartPageCtrl {
         bankAccount.setBic(bic);
 
         user.setBankAccount(bankAccount);
-
-        HttpRequest request = HttpRequest.newBuilder().
-                POST(HttpRequest.BodyPublishers.ofString(String.valueOf(user)))
-                .uri(URI.create(url + "/api/users/"))
-                .header("Content-Type", "text/plain")
-                .build();
-
-        // Send HTTP request to server
-        // Return HTTP response from server
-        Optional<HttpResponse<String>> response;
-        try {
-            response = Optional.of(HttpClient
-                    .newHttpClient()
-                    .send(request, HttpResponse.BodyHandlers.ofString()));
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return response;
-
+        return user;
     }
 
 

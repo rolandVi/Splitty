@@ -15,7 +15,7 @@
             <Font size="8.0" />
          </font></Button>
       <TextField fx:id="serverField" alignment="CENTER" layoutX="225.0" layoutY="336.0" promptText="http://localhost:8080" scaleX="1.5" scaleY="1.5" text="http://localhost:8080" />
-      <Text fx:id="errorMessage" fill="RED" layoutX="235.0" layoutY="345.0" opacity="0.0" scaleX="1.5" scaleY="1.5" strokeType="OUTSIDE" strokeWidth="0.0" text="INCORRECT SERVER URL!" wrappingWidth="132.0" />
+      <Text fx:id="errorMessage" fill="RED" layoutX="218.0" layoutY="385.0" opacity="0.0" scaleX="1.5" scaleY="1.5" strokeType="OUTSIDE" strokeWidth="0.0" text="INCORRECT SERVER URL!" wrappingWidth="161.3333282470703" />
       <Button layoutX="443.0" layoutY="355.0" mnemonicParsing="false" onAction="#enterAdmin" text="Open admin overview" />
       <TextField fx:id="firstNameField" layoutX="226.0" layoutY="104.0" promptText="First name" />
       <TextField fx:id="surNameField" layoutX="226.0" layoutY="137.0" promptText="Surname" />
