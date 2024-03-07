@@ -20,7 +20,6 @@ import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.util.Pair;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Objects;
 
@@ -147,6 +146,10 @@ public class MainCtrl {
     }
 
 
+    /**
+     * Creates the event details page and sets it as the scene
+     * @param id the id of the event
+     */
     public void showEventDetails(long id) {
         eventCtrl.init(id);
         primaryStage.setTitle("Page");

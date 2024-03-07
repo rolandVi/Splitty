@@ -9,6 +9,11 @@ public class ServerUtils {
 
     private static final String SERVER = "http://localhost:8080/";
 
+    /**
+     * Get the event details of a specific event with the given id
+     * @param id the id of the event
+     * @return the event details
+     */
     public EventDetailsDto getEventDetails(long id){
         return ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path("/api/events/"+id)

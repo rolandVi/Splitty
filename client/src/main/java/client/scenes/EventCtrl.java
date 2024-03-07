@@ -66,6 +66,10 @@ public class EventCtrl {
     }
 
 
+    /**
+     * Updates teh view information with the details of the event with the given id
+     * @param id the id of the event
+     */
     public void init(long id) {
         var event=serverUtils.getEventDetails(id);
         eventNameLabel.setText(event.getTitle());

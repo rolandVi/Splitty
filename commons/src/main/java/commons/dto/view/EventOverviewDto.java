@@ -94,7 +94,8 @@ public class EventOverviewDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EventOverviewDto that = (EventOverviewDto) o;
-        return id == that.id && Objects.equals(title, that.title) && Objects.equals(inviteCode, that.inviteCode);
+        return id == that.id && Objects.equals(title, that.title)
+                && Objects.equals(inviteCode, that.inviteCode);
     }
 
     /**

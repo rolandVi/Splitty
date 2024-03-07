@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.VBox;
@@ -13,7 +12,6 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class EventOverviewCtrl {
 
@@ -61,6 +59,9 @@ public class EventOverviewCtrl {
         mainCtrl.b();
     }
 
+    /**
+     * Loads the events and displays them on the page
+     */
     public void loadEvents() {
         var events=new ArrayList<String>();
         for (int i = 0; i < 5; i++) {
@@ -99,6 +100,9 @@ public class EventOverviewCtrl {
         mainCtrl.showEventDetails(id);
     }
 
+    /**
+     * Event listener that copies the invite code of the selected event to the clipboard
+     */
     public void copyInvite(){
         Clipboard clipboard = Clipboard.getSystemClipboard();
         ClipboardContent content = new ClipboardContent();
