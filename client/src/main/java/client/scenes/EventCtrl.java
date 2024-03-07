@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.utils.ServerUtils;
 import commons.dto.view.EventDetailsDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,6 +24,8 @@ import java.util.Optional;
 
 public class EventCtrl {
     private final MainCtrl mainCtrl;
+
+    private final ServerUtils serverUtils;
     @FXML
     public Label eventNameLabel;
     @FXML
@@ -44,11 +47,14 @@ public class EventCtrl {
 
     /**
      * Injector for Event Controller
-     * @param mainCtrl The Main Controller
+     *
+     * @param mainCtrl    The Main Controller
+     * @param serverUtils Server utilities
      */
     @Inject
-    public EventCtrl(MainCtrl mainCtrl) {
+    public EventCtrl(MainCtrl mainCtrl, ServerUtils serverUtils) {
         this.mainCtrl = mainCtrl;
+        this.serverUtils = serverUtils;
         this.objectMapper = new ObjectMapper();
     }
 
@@ -57,6 +63,12 @@ public class EventCtrl {
      */
     public void returnToOverview(){
         mainCtrl.showOverview();
+    }
+
+
+    public void init(long id) {
+        var event=serverUtils.getEventDetails(id);
+        eventNameLabel.setText(event.getTitle());
     }
 
     /**
@@ -117,7 +129,4 @@ public class EventCtrl {
         this.eventDetailsDto = eventDetailsDto;
     }
 
-    public void init(long id) { //todo: will accept the event details
-        //todo set data to the one received
-    }
 }

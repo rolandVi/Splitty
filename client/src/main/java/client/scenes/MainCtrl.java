@@ -84,6 +84,11 @@ public class MainCtrl {
 
         this.eventItemPage=new Scene(eventItemPage.getValue());
 
+        this.eventOverview.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                        .getResource(Path.of("stylesheets", "eventOverview.css").toString()))
+                        .toExternalForm());
+
         showStart();
         primaryStage.show();
     }
@@ -143,7 +148,7 @@ public class MainCtrl {
 
 
     public void showEventDetails(long id) {
-        eventCtrl.init(id); //todo: change to th event details
+        eventCtrl.init(id);
         primaryStage.setTitle("Page");
         primaryStage.setScene(eventPage);
     }

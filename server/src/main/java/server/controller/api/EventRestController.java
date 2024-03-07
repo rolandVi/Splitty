@@ -28,8 +28,8 @@ public class EventRestController {
      * @return ResponseEntity with badRequest status if invalid id was presented
      *         or ResponseEntity with the requested event as body
      */
-    @GetMapping(name = "/{id}", produces = "application/json")
-    public ResponseEntity<EventDetailsDto> getById(@PathVariable(name = "id") long id){
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<EventDetailsDto> getById(@PathVariable("id") long id){
         return ResponseEntity.ok(this.eventService.getById(id));
     }
 
