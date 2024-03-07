@@ -35,106 +35,86 @@
       <Button fx:id="b" layoutX="458.0" layoutY="30.0" mnemonicParsing="false" onAction="#b" text="[Temporary button]" />
       <ScrollPane layoutX="39.0" layoutY="88.0" prefHeight="200.0" prefWidth="441.0">
          <content>
-            <VBox fx:id="eventContainer" prefHeight="200.0" prefWidth="394.0">
+            <VBox fx:id="eventContainer" prefHeight="199.0" prefWidth="423.0">
                <children>
-                  <AnchorPane prefHeight="41.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+                  <HBox layoutY="8.0" prefHeight="21.0" prefWidth="400.0">
                      <children>
-                        <HBox layoutY="8.0" prefHeight="21.0" prefWidth="400.0">
-                           <children>
-                              <Label prefHeight="25.0" prefWidth="350.0" text="Label">
-                                 <padding>
-                                    <Insets left="10.0" />
-                                 </padding>
-                              </Label>
-                              <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="42.0" text="⇲" />
-                           </children>
-                        </HBox>
+                        <Label prefHeight="25.0" prefWidth="350.0" text="Event title">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Label>
+                        <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="42.0" text="⇲" />
                      </children>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="41.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox layoutY="8.0" prefHeight="21.0" prefWidth="400.0">
                      <children>
-                        <HBox layoutY="8.0" prefHeight="21.0" prefWidth="400.0">
-                           <children>
-                              <Label prefHeight="25.0" prefWidth="350.0" text="Label">
-                                 <padding>
-                                    <Insets left="10.0" />
-                                 </padding>
-                              </Label>
-                              <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="42.0" text="⇲" />
-                           </children>
-                        </HBox>
+                        <Label prefHeight="25.0" prefWidth="350.0" text="Event title">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Label>
+                        <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="42.0" text="⇲" />
                      </children>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="41.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox layoutY="8.0" prefHeight="21.0" prefWidth="400.0">
                      <children>
-                        <HBox layoutY="8.0" prefHeight="21.0" prefWidth="400.0">
-                           <children>
-                              <Label prefHeight="25.0" prefWidth="350.0" text="Label">
-                                 <padding>
-                                    <Insets left="10.0" />
-                                 </padding>
-                              </Label>
-                              <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="42.0" text="⇲" />
-                           </children>
-                        </HBox>
+                        <Label prefHeight="25.0" prefWidth="350.0" text="Event title">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Label>
+                        <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="42.0" text="⇲" />
                      </children>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="41.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox layoutY="8.0" prefHeight="21.0" prefWidth="400.0">
                      <children>
-                        <HBox layoutY="8.0" prefHeight="21.0" prefWidth="400.0">
-                           <children>
-                              <Label prefHeight="25.0" prefWidth="350.0" text="Label">
-                                 <padding>
-                                    <Insets left="10.0" />
-                                 </padding>
-                              </Label>
-                              <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="42.0" text="⇲" />
-                           </children>
-                        </HBox>
+                        <Label prefHeight="25.0" prefWidth="350.0" text="Event title">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Label>
+                        <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="42.0" text="⇲" />
                      </children>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="41.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox layoutY="8.0" prefHeight="21.0" prefWidth="400.0">
                      <children>
-                        <HBox layoutY="8.0" prefHeight="21.0" prefWidth="400.0">
-                           <children>
-                              <Label prefHeight="25.0" prefWidth="350.0" text="Label">
-                                 <padding>
-                                    <Insets left="10.0" />
-                                 </padding>
-                              </Label>
-                              <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="42.0" text="⇲" />
-                           </children>
-                        </HBox>
+                        <Label prefHeight="25.0" prefWidth="350.0" text="Event title">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Label>
+                        <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="42.0" text="⇲" />
                      </children>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="41.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox layoutY="8.0" prefHeight="21.0" prefWidth="400.0">
                      <children>
-                        <HBox layoutY="8.0" prefHeight="21.0" prefWidth="400.0">
-                           <children>
-                              <Label prefHeight="25.0" prefWidth="350.0" text="Label">
-                                 <padding>
-                                    <Insets left="10.0" />
-                                 </padding>
-                              </Label>
-                              <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="42.0" text="⇲" />
-                           </children>
-                        </HBox>
+                        <Label prefHeight="25.0" prefWidth="350.0" text="Event title">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Label>
+                        <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="42.0" text="⇲" />
                      </children>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="41.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
-                     <children>
-                        <HBox layoutY="8.0" prefHeight="21.0" prefWidth="400.0">
-                           <children>
-                              <Label prefHeight="25.0" prefWidth="350.0" text="Label">
-                                 <padding>
-                                    <Insets left="10.0" />
-                                 </padding>
-                              </Label>
-                              <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="42.0" text="⇲" />
-                           </children>
-                        </HBox>
-                     </children>
-                  </AnchorPane>
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
                </children>
             </VBox>
          </content>

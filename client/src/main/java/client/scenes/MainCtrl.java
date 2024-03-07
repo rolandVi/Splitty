@@ -20,6 +20,8 @@ import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.util.Pair;
 
+import java.io.IOException;
+
 
 public class MainCtrl {
 
@@ -40,20 +42,27 @@ public class MainCtrl {
     private Scene eventPage;
     private Scene eventCreationPage;
 
+    private Scene eventItemPage;
+
+    private EventItemCtrl eventItemCtrl;
+
     /**
      * The initialize method
-     * @param primaryStage The primary Stage
-     * @param startPage The start Page
-     * @param eventOverview The event Overview
-     * @param paymentPage The payment page
-     * @param eventPage The event page
+     *
+     * @param primaryStage      The primary Stage
+     * @param startPage         The start Page
+     * @param eventOverview     The event Overview
+     * @param paymentPage       The payment page
+     * @param eventPage         The event page
      * @param eventCreationPage The create an event page
+     * @param eventItemPage
      */
     public void initialize(Stage primaryStage, Pair<StartPageCtrl, Parent> startPage,
                            Pair<EventOverviewCtrl, Parent> eventOverview,
                            Pair<PaymentPageCtrl, Parent> paymentPage,
                            Pair<EventCtrl, Parent> eventPage,
-                           Pair<EventCreationCtrl, Parent> eventCreationPage) {
+                           Pair<EventCreationCtrl, Parent> eventCreationPage,
+                           Pair<EventItemCtrl, Parent> eventItemPage) {
         this.primaryStage = primaryStage;
 
         this.startPageCtrl = startPage.getKey();
@@ -61,6 +70,7 @@ public class MainCtrl {
         this.paymentPageCtrl = paymentPage.getKey();
         this.eventCtrl = eventPage.getKey();
         this.eventCreationCtrl = eventCreationPage.getKey();
+        this.eventItemCtrl=eventItemPage.getKey();
 
         this.startPage = new Scene(startPage.getValue());
         this.eventOverview = new Scene(eventOverview.getValue());
@@ -69,6 +79,8 @@ public class MainCtrl {
 
         this.eventPage = new Scene(eventPage.getValue());
         this.eventCreationPage = new Scene(eventCreationPage.getValue());
+
+        this.eventItemPage=new Scene(eventItemPage.getValue());
 
         showStart();
         primaryStage.show();
@@ -89,10 +101,10 @@ public class MainCtrl {
     /**
      * Shows the overview scene
      */
-    public void showOverview(){
-
+    public void showOverview() {
         primaryStage.setTitle("Events Overview");
         primaryStage.setScene(eventOverview);
+        eventOverviewCtrl.loadEvents();
     }
 
 
