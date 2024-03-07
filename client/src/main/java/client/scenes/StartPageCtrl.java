@@ -25,7 +25,6 @@ public class StartPageCtrl {
 
     @FXML
     public TextField serverField;
-
     @FXML
     public Text errorMessage;
     @FXML
@@ -55,6 +54,7 @@ public class StartPageCtrl {
      */
     public void connect() throws IOException, InterruptedException {
         String serverInserted = serverField.getText();
+        createBankAccount();
         createUser();
 
         if (!serverInserted.equals("http://localhost:8080")) {
@@ -131,8 +131,8 @@ public class StartPageCtrl {
         String firstName = firstNameField.getText();
         String surName = surNameField.getText();
         String email = emailField.getText();
-        String iban = ibanField.getText();
-        String bic = bicField.getText();
+//        String iban = ibanField.getText();
+//        String bic = bicField.getText();
 
         // Create a UserEntity object
         UserEntity user = new UserEntity();
@@ -140,14 +140,47 @@ public class StartPageCtrl {
         user.setLastName(surName);
         user.setEmail(email);
 
-        // Create a BankAccountEntity object
+        return user;
+    }
+
+    /**
+     * Creates HTTP request to the server using the contents of text fields as user info
+     * @return HTTP response from the server
+     */
+    public Optional<HttpResponse<String>> createBankAccount() throws IOException, InterruptedException {
+        // Todo: replace temporary value with host selected at start
+        String url = "http://localhost:8080";
+
+        // Prepare user data from text fields
+        String email = emailField.getText();
+        String iban = ibanField.getText();
+        String bic = bicField.getText();
         BankAccountEntity bankAccount = new BankAccountEntity();
         bankAccount.setIban(iban);
         bankAccount.setHolder(email); // Assuming holder's email is the same as the user's email
         bankAccount.setBic(bic);
 
-        user.setBankAccount(bankAccount);
-        return user;
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody = objectMapper.writeValueAsString(bankAccount);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .uri(URI.create(url + "/api/bankaccounts/"))
+                .header("Content-Type", "application/json")
+                .build();
+
+        // Send HTTP request to server
+        // Return HTTP response from server
+        Optional<HttpResponse<String>> response;
+        try {
+            response = Optional.of(HttpClient
+                    .newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString()));
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return response;
+
     }
 
 

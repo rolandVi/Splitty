@@ -1,10 +1,8 @@
 package server.service;
 
 import commons.BankAccountEntity;
-import commons.EventEntity;
 import commons.UserEntity;
 import commons.dto.view.BankAccountDto;
-import commons.dto.view.EventTitleDto;
 import commons.dto.view.UserNameDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -18,6 +16,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final BankAccountRepository bankAccountRepository;
+    private final BankAccountService bankAccountService;
+
 
     /**
      * Constructor
@@ -25,12 +25,14 @@ public class UserService {
      * @param modelMapper           the ModelMapper injected by Spring
      * @param userRepository        the UserRepository injected by Spring
      * @param bankAccountRepository the BankAccountRepository injected by Spring
+     * @param bankAccountService    the BankAccountService injected by Spring
      */
     public UserService(ModelMapper modelMapper, UserRepository userRepository,
-                       BankAccountRepository bankAccountRepository) {
+                       BankAccountRepository bankAccountRepository, BankAccountService bankAccountService) {
         this.modelMapper = modelMapper;
         this.userRepository = userRepository;
         this.bankAccountRepository = bankAccountRepository;
+        this.bankAccountService = bankAccountService;
     }
 
     /**
@@ -64,20 +66,15 @@ public class UserService {
 
     /**
      * Create new user given credentials
-     * @param iban iban
-     * @param holder email of holder
-     * @param bic bic
      * @param firstName firstName
      * @param lastName lastName
      * @param email email
      * @return the user credentials
      */
-    public UserNameDto createUser(String iban, String holder, String bic, String firstName,
+    public UserNameDto createUser(String firstName,
                                   String lastName, String email) {
-        createBankAccount(iban, holder, bic);
-        BankAccountEntity bankAccountEntity = new BankAccountEntity(iban, holder, bic);
+
         UserEntity userEntity = new UserEntity();
-        userEntity.setBankAccount(bankAccountEntity);
         userEntity.setEmail(email);
         userEntity.setFirstName(firstName);
         userEntity.setLastName(lastName);
@@ -100,6 +97,8 @@ public class UserService {
         BankAccountEntity result = this.bankAccountRepository.save(bankAccountEntity);
         return modelMapper.map(result, BankAccountDto.class);
     }
+
+
 
 
 }

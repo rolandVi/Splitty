@@ -26,14 +26,13 @@ public class UserRestController {
     }
 
     /**
-     * createse a user with the given parameters
+     * creates a user with the given parameters
      * @param user user
      * @return the newly created user and id
      */
     @PostMapping("/")
-    public ResponseEntity<UserNameDto> createUser(@NotBlank @RequestBody UserEntity user) {
-        return ResponseEntity.ok(this.userService.createUser(user.getBankAccount().getIban(),
-                user.getEmail(), user.getBankAccount().getBic(),
+    public ResponseEntity<UserNameDto> createUser(@RequestBody UserEntity user) {
+        return ResponseEntity.ok(this.userService.createUser(
                 user.getFirstName(), user.getLastName(), user.getEmail()));
     }
 

@@ -10,7 +10,7 @@ public interface BankAccountRepository extends JpaRepository<BankAccountEntity, 
 
     /**
      * Gets the holderInfo using the id from the database
-     * @param id the ID of the event
+     * @param id the ID of the bankAccount
      * @return the holder of the corresponding ID as a String
      */
     @Query("select b.holder from BankAccountEntity b where b.id=:id")

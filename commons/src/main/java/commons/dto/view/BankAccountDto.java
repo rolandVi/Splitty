@@ -1,5 +1,7 @@
 package commons.dto.view;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.Objects;
 
 public class BankAccountDto {
