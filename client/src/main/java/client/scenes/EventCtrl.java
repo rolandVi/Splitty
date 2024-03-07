@@ -116,4 +116,8 @@ public class EventCtrl {
     public void setEventDetailsDto(EventDetailsDto eventDetailsDto) {
         this.eventDetailsDto = eventDetailsDto;
     }
+
+    public void init(long id) { //todo: will accept the event details
+        //todo set data to the one received
+    }
 }

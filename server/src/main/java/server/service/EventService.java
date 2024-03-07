@@ -17,7 +17,6 @@ import java.util.Optional;
 public class EventService {
     private final EventRepository eventRepository;
     private final ModelMapper modelMapper;
-
     private final UserService userService;
 
     /**

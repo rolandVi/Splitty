@@ -21,6 +21,8 @@ import javafx.scene.Parent;
 import javafx.util.Pair;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Objects;
 
 
 public class MainCtrl {
@@ -140,4 +142,9 @@ public class MainCtrl {
     }
 
 
+    public void showEventDetails(long id) {
+        eventCtrl.init(id); //todo: change to th event details
+        primaryStage.setTitle("Page");
+        primaryStage.setScene(eventPage);
+    }
 }

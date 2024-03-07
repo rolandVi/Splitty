@@ -1,14 +1,13 @@
 package client.scenes;
 
-import client.Main;
-import client.MyFXML;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -71,18 +70,46 @@ public class EventOverviewCtrl {
 
 
         for (int i = 0; i < nodes.length; i++) {
+            var loader=new FXMLLoader();
+            loader.setLocation(getClass().getClassLoader()
+                    .getResource(Path.of("client.scenes", "eventItem.fxml").toString()));
             try {
-                var loader=new FXMLLoader();
-                loader.setLocation(getClass().getClassLoader().getResource(Path.of("client.scenes", "eventItem.fxml").toString()));
-                loader.setController(EventItemCtrl.class);
                 nodes[i]=loader.load();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            Label eventLabel = (Label) nodes[i].lookup("#eventTitle");
-            eventLabel.setText(events.get(i));
+
+            Node currentNode=nodes[i];
+
+            Button eventButton = (Button) currentNode.lookup("#eventTitle");
+            eventButton.setText(events.get(i));
+            eventButton.getStyleClass().clear();
+
+            Label hidden=(Label) currentNode.lookup("#hiddenText");
+            hidden.setText(i+"");
+
+            Button inviteBtn=(Button) currentNode.lookup("#inviteCodeButton");
+            inviteBtn.setOnAction(e -> copyInvite());
+
+            eventButton.setOnAction(e -> showDetails(eventButton, currentNode));
         }
 
         this.eventContainer.getChildren().addAll(nodes);
+    }
+
+    private void showDetails(Button source, Node currentNode) {
+        //
+        Label hidden=(Label) currentNode.lookup("#hiddenText");
+        long id=Long.parseLong(hidden.getText());
+        //search with the id
+
+        mainCtrl.showEventDetails(id); //should be changed to the dto
+    }
+
+    public void copyInvite(){
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent content = new ClipboardContent();
+        content.putString("Invite code");
+        clipboard.setContent(content);
     }
 }
