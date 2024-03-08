@@ -1,13 +1,17 @@
 package server.controller.api;
 
 import commons.UserEntity;
+import commons.dto.UserCreationDto;
+import commons.dto.view.EventOverviewDto;
+import commons.dto.view.EventTitleDto;
 import commons.dto.view.UserNameDto;
+import jakarta.validation.Valid;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import server.service.UserService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -30,10 +34,13 @@ public class UserRestController {
      * @return the newly created user and id
      */
     @PostMapping("/")
-    public ResponseEntity<UserNameDto> createUser(@RequestBody UserEntity user) {
-        // Todo: make it such that @NotBlank will work and not throw an error when a request is made
-        return ResponseEntity.ok(this.userService.createUser(
-                user.getFirstName(), user.getLastName(), user.getEmail()));
+    public ResponseEntity<UserNameDto> createUser(@Valid @RequestBody UserCreationDto user) {
+        return ResponseEntity.ok(this.userService.createUser(user));
+    }
+
+    @GetMapping("/{id}/events")
+    public ResponseEntity<List<EventOverviewDto>> getUserEvents(@PathVariable(name = "id") long id){
+        return ResponseEntity.ok(this.userService.getUserEvents(id));
     }
 
 }

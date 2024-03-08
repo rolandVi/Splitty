@@ -9,7 +9,7 @@ import java.util.Objects;
 public class BankAccountEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long id;
 
     @Column(nullable = false, unique = true)

@@ -1,12 +1,11 @@
 package server.controller.api;
 
 import commons.BankAccountEntity;
+import commons.dto.BankAccountCreationDto;
 import commons.dto.view.BankAccountDto;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import server.service.BankAccountService;
 
 @RestController
@@ -29,11 +28,9 @@ public class BankAccountRestController {
      * @return newly created bankAccount + id
      */
     @PostMapping("/")
-    public ResponseEntity<BankAccountDto> createBankAccount(@RequestBody
-// Todo: make it such that @NotBlank will work and not throw an error when a request is made
-        BankAccountEntity bankAccountEntity) {
-        return ResponseEntity.ok(this.bankAccountService.createBankAccount(
-                bankAccountEntity.getIban(),
-                bankAccountEntity.getHolder(), bankAccountEntity.getBic()));
+    public ResponseEntity<BankAccountDto> createBankAccount(
+            @Valid @RequestBody BankAccountCreationDto bankAccountEntity) {
+        return ResponseEntity.ok(this.bankAccountService.createBankAccount(bankAccountEntity));
     }
+
 }

@@ -5,6 +5,8 @@ import client.Main;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.BankAccountEntity;
 import commons.UserEntity;
+import commons.dto.BankAccountCreationDto;
+import commons.dto.UserCreationDto;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -98,11 +100,10 @@ public class StartPageCtrl {
      * @return HTTP response from the server
      */
     public Optional<HttpResponse<String>> createUser() throws IOException, InterruptedException {
-        // Todo: replace temporary value with host selected at start
         String url = "http://localhost:8080";
         createBankAccount();
         // Prepare user data from text fields
-        UserEntity user = getUserEntity();
+        UserCreationDto user = getUserEntity();
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(user);
 
@@ -126,13 +127,13 @@ public class StartPageCtrl {
 
     }
 
-    private UserEntity getUserEntity() {
+    private UserCreationDto getUserEntity() {
         String firstName = firstNameField.getText();
         String surName = surNameField.getText();
         String email = emailField.getText();
 
         // Create a UserEntity object
-        UserEntity user = new UserEntity();
+        UserCreationDto user = new UserCreationDto();
         user.setFirstName(firstName);
         user.setLastName(surName);
         user.setEmail(email);
@@ -153,7 +154,7 @@ public class StartPageCtrl {
         String email = emailField.getText();
         String iban = ibanField.getText();
         String bic = bicField.getText();
-        BankAccountEntity bankAccount = new BankAccountEntity();
+        BankAccountCreationDto bankAccount = new BankAccountCreationDto();
         bankAccount.setIban(iban);
         bankAccount.setHolder(email); // Assuming holder's email is the same as the user's email
         bankAccount.setBic(bic);
@@ -178,7 +179,6 @@ public class StartPageCtrl {
             throw new RuntimeException(e);
         }
         return response;
-
     }
 
 

@@ -1,6 +1,7 @@
 package server.service;
 
 import commons.BankAccountEntity;
+import commons.dto.BankAccountCreationDto;
 import commons.dto.view.BankAccountDto;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -16,20 +17,15 @@ public class BankAccountService {
 
     private final BankAccountRepository bankAccountRepository;
 
-    private final UserRepository userRepository;
-
     /**
      *
      * @param modelMapper the ModelMapper injected by Spring
      * @param bankAccountRepository the bankAccountRepository
-     * @param userRepository the UserRepository
      */
     public BankAccountService(ModelMapper modelMapper,
-                              BankAccountRepository bankAccountRepository,
-                              UserRepository userRepository) {
+                              BankAccountRepository bankAccountRepository) {
         this.modelMapper = modelMapper;
         this.bankAccountRepository = bankAccountRepository;
-        this.userRepository = userRepository;
     }
 
     /**
@@ -60,7 +56,7 @@ public class BankAccountService {
         this.bankAccountRepository.deleteById(id);
     }
 
-//   Todo : public BankAccountDto updateById(){}
+//   todo : public BankAccountDto updateById(){}
 
     /**
      * persist bankAccount to the database
@@ -75,16 +71,11 @@ public class BankAccountService {
 
     /**
      * create a new bankAccount given credentials
-     * @param iban iban
-     * @param holder holder
-     * @param bic bic
+     * @param bankAccountEntity the bank account information
      * @return BankAccountDto + id
      */
-    public BankAccountDto createBankAccount(String iban, String holder, String bic){
-        BankAccountEntity newEntity = new BankAccountEntity();
-        newEntity.setHolder(holder);
-        newEntity.setBic(bic);
-        newEntity.setIban(iban);
+    public BankAccountDto createBankAccount(BankAccountCreationDto bankAccountEntity){
+        BankAccountEntity newEntity = this.modelMapper.map(bankAccountEntity, BankAccountEntity.class);
         BankAccountEntity result = this.bankAccountRepository.save(newEntity);
         return modelMapper.map(result, BankAccountDto.class);
     }
