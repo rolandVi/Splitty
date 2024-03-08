@@ -1,6 +1,5 @@
 package server.controller.api;
 
-import commons.BankAccountEntity;
 import commons.dto.BankAccountCreationDto;
 import commons.dto.view.BankAccountDto;
 import jakarta.validation.Valid;

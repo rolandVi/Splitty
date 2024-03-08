@@ -1,14 +1,11 @@
 package server.service;
 
-import commons.BankAccountEntity;
 import commons.UserEntity;
 import commons.dto.UserCreationDto;
-import commons.dto.view.BankAccountDto;
 import commons.dto.view.EventOverviewDto;
 import commons.dto.view.UserNameDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import server.repository.BankAccountRepository;
 import server.repository.UserRepository;
 
 import java.util.List;

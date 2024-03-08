@@ -1,12 +1,9 @@
 package server.controller.api;
 
-import commons.UserEntity;
 import commons.dto.UserCreationDto;
 import commons.dto.view.EventOverviewDto;
-import commons.dto.view.EventTitleDto;
 import commons.dto.view.UserNameDto;
 import jakarta.validation.Valid;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.service.UserService;
@@ -38,6 +35,11 @@ public class UserRestController {
         return ResponseEntity.ok(this.userService.createUser(user));
     }
 
+    /**
+     * Get teh events of a user
+     * @param id the id of the user
+     * @return the events of this user
+     */
     @GetMapping("/{id}/events")
     public ResponseEntity<List<EventOverviewDto>> getUserEvents(@PathVariable(name = "id") long id){
         return ResponseEntity.ok(this.userService.getUserEvents(id));

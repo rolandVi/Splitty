@@ -8,7 +8,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import server.controller.exception.ObjectNotFoundException;
 import server.repository.BankAccountRepository;
-import server.repository.UserRepository;
 
 @Service
 public class BankAccountService {

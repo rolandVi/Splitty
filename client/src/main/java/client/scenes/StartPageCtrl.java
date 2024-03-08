@@ -3,8 +3,6 @@ package client.scenes;
 import client.Main;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import commons.BankAccountEntity;
-import commons.UserEntity;
 import commons.dto.BankAccountCreationDto;
 import commons.dto.UserCreationDto;
 import javafx.fxml.FXML;

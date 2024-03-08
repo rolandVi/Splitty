@@ -23,6 +23,9 @@ public class EventOverviewDto {
         this.inviteCode = inviteCode;
     }
 
+    /**
+     * Empty constructor
+     */
     public EventOverviewDto() {
     }
 
