@@ -54,7 +54,6 @@ public class StartPageCtrl {
      */
     public void connect() throws IOException, InterruptedException {
         String serverInserted = serverField.getText();
-        createBankAccount();
         createUser();
 
         if (!serverInserted.equals("http://localhost:8080")) {
@@ -101,7 +100,7 @@ public class StartPageCtrl {
     public Optional<HttpResponse<String>> createUser() throws IOException, InterruptedException {
         // Todo: replace temporary value with host selected at start
         String url = "http://localhost:8080";
-
+        createBankAccount();
         // Prepare user data from text fields
         UserEntity user = getUserEntity();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -131,8 +130,6 @@ public class StartPageCtrl {
         String firstName = firstNameField.getText();
         String surName = surNameField.getText();
         String email = emailField.getText();
-//        String iban = ibanField.getText();
-//        String bic = bicField.getText();
 
         // Create a UserEntity object
         UserEntity user = new UserEntity();

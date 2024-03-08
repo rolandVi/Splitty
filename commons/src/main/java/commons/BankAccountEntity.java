@@ -16,7 +16,7 @@ public class BankAccountEntity {
     private String iban;
     @Column(nullable = false)
     private String holder;
-    @Column(unique = true)
+    @Column(nullable = false)
     private String bic;
 
     /**

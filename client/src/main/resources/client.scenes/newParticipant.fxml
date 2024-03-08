@@ -23,6 +23,6 @@
             <Font size="21.0" />
          </font>
       </Button>
-      <Button fx:id="addButton" layoutX="278.0" layoutY="328.0" mnemonicParsing="false" onAction="#showEvent" text="Add" />
+      <Button fx:id="addButton" layoutX="278.0" layoutY="328.0" mnemonicParsing="false" onAction="#createUser" text="Add" />
    </children>
 </AnchorPane>
