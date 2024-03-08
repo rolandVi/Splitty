@@ -1,16 +1,13 @@
 package client.scenes;
 
-import client.Main;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.inject.Inject;
 import commons.BankAccountEntity;
 import commons.UserEntity;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.text.Text;
-
-import com.google.inject.Inject;
 
 import java.io.IOException;
 import java.net.URI;
@@ -19,14 +16,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Optional;
 
-public class StartPageCtrl {
-
+public class NewParticipantCtrl {
     private final MainCtrl mainCtrl;
-
-    @FXML
-    public TextField serverField;
-    @FXML
-    public Text errorMessage;
     @FXML
     public TextField firstNameField;
     @FXML
@@ -37,37 +28,25 @@ public class StartPageCtrl {
     public TextField ibanField;
     @FXML
     public TextField bicField;
-
+    @FXML
+    public Button goBackButton;
+    @FXML
+    public Button addButton;
 
     /**
-     * The constructor
-     *
-     * @param mainCtrl The main controller
+     * Injector for PaymentPageCtrl
+     * @param mainCtrl The Main Controller
      */
     @Inject
-    public StartPageCtrl(MainCtrl mainCtrl) {
+    public NewParticipantCtrl(MainCtrl mainCtrl){
         this.mainCtrl = mainCtrl;
     }
 
     /**
-     * The button press activates this
+     * Will show event overview when the goBack button is pressed
      */
-    public void connect() throws IOException, InterruptedException {
-        String serverInserted = serverField.getText();
-        createUser();
-
-        if (!serverInserted.equals("http://localhost:8080")) {
-            errorMessage.setOpacity(1.0d);
-        } else {
-            mainCtrl.showOverview();
-        }
-    }
-
-    /**
-     * Open new admin overview window through Main
-     */
-    public void enterAdmin(){
-        Main.openAdminOverview();
+    public void returnToOverview(){
+        mainCtrl.showOverview();
     }
 
     /**
@@ -75,22 +54,21 @@ public class StartPageCtrl {
      *
      * @param e The key
      */
-    public void keyPressed(KeyEvent e) throws IOException, InterruptedException {
+    public void keyPressed(KeyEvent e) {
         switch (e.getCode()) {
-            case ENTER:
-                connect();
+            case BACK_SPACE:
+                returnToOverview();
                 break;
             default:
                 break;
         }
     }
 
-
     /**
-     * Refreshes the page, not needed now
+     * after new participant is added return to current event
      */
-    public void refresh() {
-        //server calls missing
+    public void showEvent(){
+        mainCtrl.b();
     }
 
     /**
@@ -111,7 +89,7 @@ public class StartPageCtrl {
                 .uri(URI.create(url + "/api/users/"))
                 .header("Content-Type", "application/json")
                 .build();
-
+        showEvent();
         // Send HTTP request to server
         // Return HTTP response from server
         Optional<HttpResponse<String>> response;
@@ -180,6 +158,5 @@ public class StartPageCtrl {
         return response;
 
     }
-
 
 }

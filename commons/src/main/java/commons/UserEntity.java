@@ -120,4 +120,36 @@ public class UserEntity {
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
     }
+
+    /**
+     *setter for firstname
+     * @param firstName firstname
+     */
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    /**
+     * setter for lastname
+     * @param lastName lastname
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    /**
+     * setter for email
+     * @param email email
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * setter for bankaccount
+     * @param bankAccount bankaccount
+     */
+    public void setBankAccount(BankAccountEntity bankAccount) {
+        this.bankAccount = bankAccount;
+    }
 }

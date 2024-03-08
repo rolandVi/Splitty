@@ -1,5 +1,10 @@
 package server.controller.api;
 
+import commons.UserEntity;
+import commons.dto.view.UserNameDto;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import server.service.UserService;
@@ -18,4 +23,17 @@ public class UserRestController {
     public UserRestController(UserService userService) {
         this.userService = userService;
     }
+
+    /**
+     * creates a user with the given parameters
+     * @param user user
+     * @return the newly created user and id
+     */
+    @PostMapping("/")
+    public ResponseEntity<UserNameDto> createUser(@RequestBody UserEntity user) {
+        // Todo: make it such that @NotBlank will work and not throw an error when a request is made
+        return ResponseEntity.ok(this.userService.createUser(
+                user.getFirstName(), user.getLastName(), user.getEmail()));
+    }
+
 }
