@@ -2,8 +2,6 @@ package server.controller.api;
 
 import commons.BankAccountEntity;
 import commons.dto.view.BankAccountDto;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +15,10 @@ public class BankAccountRestController {
 
     private final BankAccountService bankAccountService;
 
+    /**
+     * Constructor injection
+     * @param bankAccountService the service for the bankAccountEntity
+     */
     public BankAccountRestController(BankAccountService bankAccountService) {
         this.bankAccountService = bankAccountService;
     }
@@ -28,6 +30,7 @@ public class BankAccountRestController {
      */
     @PostMapping("/")
     public ResponseEntity<BankAccountDto> createBankAccount(@RequestBody
+// Todo: make it such that @NotBlank will work and not throw an error when a request is made
         BankAccountEntity bankAccountEntity) {
         return ResponseEntity.ok(this.bankAccountService.createBankAccount(
                 bankAccountEntity.getIban(),

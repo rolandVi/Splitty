@@ -122,7 +122,8 @@ public class NewParticipantCtrl {
      * Creates HTTP request to the server using the contents of text fields as user info
      * @return HTTP response from the server
      */
-    public Optional<HttpResponse<String>> createBankAccount() throws IOException, InterruptedException {
+    public Optional<HttpResponse<String>> createBankAccount()
+            throws IOException, InterruptedException {
         // Todo: replace temporary value with host selected at start
         String url = "http://localhost:8080";
 

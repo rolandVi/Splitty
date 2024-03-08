@@ -2,7 +2,6 @@ package server.controller.api;
 
 import commons.UserEntity;
 import commons.dto.view.UserNameDto;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +31,7 @@ public class UserRestController {
      */
     @PostMapping("/")
     public ResponseEntity<UserNameDto> createUser(@RequestBody UserEntity user) {
+        // Todo: make it such that @NotBlank will work and not throw an error when a request is made
         return ResponseEntity.ok(this.userService.createUser(
                 user.getFirstName(), user.getLastName(), user.getEmail()));
     }

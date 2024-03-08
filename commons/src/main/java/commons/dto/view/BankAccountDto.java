@@ -1,9 +1,5 @@
 package commons.dto.view;
 
-import jakarta.validation.constraints.NotBlank;
-
-import java.util.Objects;
-
 public class BankAccountDto {
 
     private long id;
@@ -63,34 +59,66 @@ public class BankAccountDto {
         return result;
     }
 
+    /**
+     * getter for id
+     * @return id
+     */
     public long getId() {
         return id;
     }
 
+    /**
+     * setter for id
+     * @param id id
+     */
     public void setId(long id) {
         this.id = id;
     }
 
+    /**
+     * getter for iban
+     * @return iban
+     */
     public String getIban() {
         return iban;
     }
 
+    /**
+     * setter for iban
+     * @param iban iban
+     */
     public void setIban(String iban) {
         this.iban = iban;
     }
 
+    /**
+     * getter for holder
+     * @return email of holder
+     */
     public String getHolder() {
         return holder;
     }
 
+    /**
+     * setter for holder's email
+     * @param holder email of holder
+     */
     public void setHolder(String holder) {
         this.holder = holder;
     }
 
+    /**
+     * getter for bic
+     * @return bic
+     */
     public String getBic() {
         return bic;
     }
 
+    /**
+     * setter for bic
+     * @param bic bic
+     */
     public void setBic(String bic) {
         this.bic = bic;
     }
