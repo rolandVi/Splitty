@@ -67,6 +67,7 @@ public class EventCreationCtrl {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+        this.eventNameTextField.setText("");
         return response;
     }
 

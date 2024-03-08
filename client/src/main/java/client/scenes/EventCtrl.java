@@ -1,6 +1,8 @@
 package client.scenes;
 
 import client.utils.ServerUtils;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import commons.dto.view.EventDetailsDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -107,6 +109,8 @@ public class EventCtrl {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+        this.eventNameLabel.setText(this.changeTextField.getText());
+        this.changeTextField.setText("");
         return response;
     }
 
