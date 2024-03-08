@@ -74,7 +74,8 @@ public class BankAccountService {
      * @return BankAccountDto + id
      */
     public BankAccountDto createBankAccount(BankAccountCreationDto bankAccountEntity){
-        BankAccountEntity newEntity = this.modelMapper.map(bankAccountEntity, BankAccountEntity.class);
+        BankAccountEntity newEntity = this.modelMapper
+                .map(bankAccountEntity, BankAccountEntity.class);
         BankAccountEntity result = this.bankAccountRepository.save(newEntity);
         return modelMapper.map(result, BankAccountDto.class);
     }
