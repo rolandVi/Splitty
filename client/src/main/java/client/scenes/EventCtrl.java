@@ -1,14 +1,9 @@
 package client.scenes;
 
 import client.utils.ServerUtils;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import commons.dto.view.EventDetailsDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-//import org.springframework.http.*;
-//import org.springframework.web.client.RestTemplate;
-//import org.springframework.util.MultiValueMap;
 
 import commons.dto.view.EventTitleDto;
 import jakarta.inject.Inject;

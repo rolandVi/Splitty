@@ -11,7 +11,6 @@ import commons.dto.view.EventTitleDto;
 import server.repository.EventRepository;
 
 import java.time.LocalTime;
-import java.util.Optional;
 
 @Service
 public class EventService {
