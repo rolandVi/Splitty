@@ -22,7 +22,7 @@ public class BankAccountRestController {
     }
 
     /**
-     * creates a new BankAccount with given paramers
+     * creates a new BankAccount with given parameters
      * @param bankAccountEntity bankAccount
      * @return newly created bankAccount + id
      */

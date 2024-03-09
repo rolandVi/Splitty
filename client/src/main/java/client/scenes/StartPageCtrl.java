@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.dto.BankAccountCreationDto;
 import commons.dto.UserCreationDto;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
@@ -38,6 +39,9 @@ public class StartPageCtrl {
     @FXML
     public TextField bicField;
 
+    @FXML
+    public Label incorrectData;
+
 
     /**
      * The constructor
@@ -53,8 +57,17 @@ public class StartPageCtrl {
      * The button press activates this
      */
     public void connect() throws IOException, InterruptedException {
+        this.incorrectData.setVisible(false);
+        this.errorMessage.setOpacity(0d);
+
         String serverInserted = serverField.getText();
-        createUser();
+        Optional<HttpResponse<String>> bankAccountResponse = createBankAccount();
+        Optional<HttpResponse<String>> userResponse = createUser();
+        if (userResponse.isEmpty() || bankAccountResponse.isEmpty()
+            || userResponse.get().statusCode()==400 || bankAccountResponse.get().statusCode()==400){
+            this.incorrectData.setVisible(true);
+            return;
+        }
 
         if (!serverInserted.equals("http://localhost:8080")) {
             errorMessage.setOpacity(1.0d);
@@ -99,7 +112,6 @@ public class StartPageCtrl {
      */
     public Optional<HttpResponse<String>> createUser() throws IOException, InterruptedException {
         String url = "http://localhost:8080";
-        createBankAccount();
         // Prepare user data from text fields
         UserCreationDto user = getUserEntity();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -121,6 +133,7 @@ public class StartPageCtrl {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+
         return response;
 
     }
