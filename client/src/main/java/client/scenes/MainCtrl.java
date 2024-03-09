@@ -20,6 +20,8 @@ import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.util.Pair;
 
+import java.util.ResourceBundle;
+
 
 public class MainCtrl {
 
@@ -39,6 +41,7 @@ public class MainCtrl {
     private EventCreationCtrl eventCreationCtrl;
     private Scene eventPage;
     private Scene eventCreationPage;
+    protected ResourceBundle lang;
 
     /**
      * The initialize method
@@ -54,6 +57,8 @@ public class MainCtrl {
                            Pair<PaymentPageCtrl, Parent> paymentPage,
                            Pair<EventCtrl, Parent> eventPage,
                            Pair<EventCreationCtrl, Parent> eventCreationPage) {
+        this.lang = ResourceBundle.getBundle("languages.lang");
+
         this.primaryStage = primaryStage;
 
         this.startPageCtrl = startPage.getKey();
@@ -64,14 +69,17 @@ public class MainCtrl {
 
         this.startPage = new Scene(startPage.getValue());
         this.eventOverview = new Scene(eventOverview.getValue());
-
         this.paymentPage = new Scene(paymentPage.getValue());
-
         this.eventPage = new Scene(eventPage.getValue());
         this.eventCreationPage = new Scene(eventCreationPage.getValue());
 
         showStart();
         primaryStage.show();
+        updateLanguagesOfScenes();
+    }
+
+    private void updateLanguagesOfScenes(){
+        eventCtrl.updateLanguage();
     }
 
     /**
