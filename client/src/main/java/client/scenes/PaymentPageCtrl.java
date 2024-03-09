@@ -1,10 +1,8 @@
 package client.scenes;
 
-import client.sceneUtils.LanguageComboBoxUtil;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.input.KeyEvent;
 
 import java.util.ResourceBundle;
@@ -20,8 +18,6 @@ public class PaymentPageCtrl implements MultiLanguages {
     public Button showAllButton;
     @FXML
     public Button goBackButton;
-    @FXML
-    public ComboBox<String> languageComboBox;
 
     /**
      * Injector for PaymentPageCtrl
@@ -31,15 +27,9 @@ public class PaymentPageCtrl implements MultiLanguages {
     public PaymentPageCtrl(MainCtrl mainCtrl){
         this.mainCtrl = mainCtrl;
     }
-    public void initialize() {
-        LanguageComboBoxUtil.updateLanguageComboBox(languageComboBox);
-    }
-    public void uponSelectionLanguage(){
-        String[] selection = languageComboBox.getValue().split("-");
-        LanguageComboBoxUtil.setLocaleFromConfig(selection[0], selection[1]);
-        mainCtrl.updateLanguagesOfScenes();
-    }
-
+    /**
+     * Updates the language of the scene using the resource bundle
+     */
     @Override
     public void updateLanguage() {
         try {

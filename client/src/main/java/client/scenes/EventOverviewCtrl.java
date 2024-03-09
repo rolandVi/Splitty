@@ -35,15 +35,28 @@ public class EventOverviewCtrl implements MultiLanguages {
     public EventOverviewCtrl(MainCtrl mainCtrl){
         this.mainCtrl = mainCtrl;
     }
+
+    /**
+     * Initializes the scene
+     * - Configures the ComboBox (Dropdown menu)
+     */
     public void initialize() {
         LanguageComboBoxUtil.updateLanguageComboBox(languageComboBox);
     }
-    public void uponSelectionLanguage(){
+
+    /**
+     * When a language has been selected
+     * Update the config file
+     * Update all scenes with the new languages
+     */
+    public void uponSelectionLanguage() {
         String[] selection = languageComboBox.getValue().split("-");
         LanguageComboBoxUtil.setLocaleFromConfig(selection[0], selection[1]);
         mainCtrl.updateLanguagesOfScenes();
     }
-
+    /**
+     * Updates the language of the scene using the resource bundle
+     */
     @Override
     public void updateLanguage() {
         try {
@@ -52,7 +65,7 @@ public class EventOverviewCtrl implements MultiLanguages {
             newEventLabel.setText(lang.getString("new_event"));
             paymentLabel.setText(lang.getString("payments"));
         } catch (Exception e) {
-            System.out.println("Incorrect key");
+            throw new RuntimeException();
         }
     }
 

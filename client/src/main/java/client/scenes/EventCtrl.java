@@ -1,18 +1,13 @@
 package client.scenes;
 
-import client.sceneUtils.LanguageComboBoxUtil;
 import commons.dto.view.EventDetailsDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-//import org.springframework.http.*;
-//import org.springframework.web.client.RestTemplate;
-//import org.springframework.util.MultiValueMap;
 
 import commons.dto.view.EventTitleDto;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
@@ -42,8 +37,6 @@ public class EventCtrl implements MultiLanguages{
     public Label expensesLabel;
     @FXML
     public Button addExpenseButton;
-    @FXML
-    public ComboBox<String> languageComboBox;
     private EventDetailsDto eventDetailsDto;
     private final ObjectMapper objectMapper;
 
@@ -56,15 +49,9 @@ public class EventCtrl implements MultiLanguages{
         this.mainCtrl = mainCtrl;
         this.objectMapper = new ObjectMapper();
     }
-    public void initialize() {
-        LanguageComboBoxUtil.updateLanguageComboBox(languageComboBox);
-    }
-    public void uponSelectionLanguage(){
-        String[] selection = languageComboBox.getValue().split("-");
-        LanguageComboBoxUtil.setLocaleFromConfig(selection[0], selection[1]);
-        mainCtrl.updateLanguagesOfScenes();
-    }
-
+    /**
+     * Updates the language of the scene using the resource bundle
+     */
     @Override
     public void updateLanguage() {
         try {
@@ -76,7 +63,7 @@ public class EventCtrl implements MultiLanguages{
             expensesLabel.setText(lang.getString("expenses"));
             addExpenseButton.setText(lang.getString("add_expense"));
         } catch (Exception e) {
-            System.out.println("Incorrect key");
+            throw new RuntimeException();
         }
     }
 

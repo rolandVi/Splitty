@@ -82,6 +82,10 @@ public class MainCtrl {
         Locale.setDefault(LanguageComboBoxUtil.getLocaleFromConfig());
         lang = ResourceBundle.getBundle("languages.lang");
         eventCtrl.updateLanguage();
+        eventOverviewCtrl.updateLanguage();
+        eventCreationCtrl.updateLanguage();
+        paymentPageCtrl.updateLanguage();
+        startPageCtrl.updateLanguage();
     }
 
     /**

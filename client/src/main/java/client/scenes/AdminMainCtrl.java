@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import client.ConfigManager;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
@@ -26,7 +27,7 @@ import java.util.ResourceBundle;
 
 public class AdminMainCtrl {
 
-    protected ResourceBundle config;
+    protected ConfigManager config;
     protected ResourceBundle lang;
 
     private Stage adminOverviewStage;
@@ -42,7 +43,7 @@ public class AdminMainCtrl {
      */
     public void initialize(Stage adminOverviewStage,
                            Pair<AdminLoginPageCtrl, Parent> loginPage) {
-        this.config = ResourceBundle.getBundle("config");
+        this.config = new ConfigManager("client/src/main/resources/config.properties");
 
         this.adminOverviewStage = adminOverviewStage;
 
@@ -63,8 +64,8 @@ public class AdminMainCtrl {
     }
 
     private Locale getLocalFromConfig(){
-        String language = config.getString("locale");
-        String country = config.getString("country");
+        String language = config.getProperty("locale");
+        String country = config.getProperty("country");
         return Locale.of(language, country);
     }
 
