@@ -5,7 +5,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
 
-public class PaymentPageCtrl {
+import java.util.ResourceBundle;
+
+public class PaymentPageCtrl implements MultiLanguages {
 
     private final MainCtrl mainCtrl;
     @FXML
@@ -24,6 +26,19 @@ public class PaymentPageCtrl {
     @Inject
     public PaymentPageCtrl(MainCtrl mainCtrl){
         this.mainCtrl = mainCtrl;
+    }
+
+    @Override
+    public void updateLanguage() {
+        try {
+            ResourceBundle lang = mainCtrl.lang;
+            showOpenButton.setText(lang.getString("open"));
+            showAllButton.setText(lang.getString("all"));
+            goBackButton.setText(lang.getString("return"));
+            sendButton.setText(lang.getString("send"));
+        } catch (Exception e) {
+            System.out.println("Incorrect key");
+        }
     }
 
     /**
@@ -61,7 +76,5 @@ public class PaymentPageCtrl {
                 break;
         }
     }
-
-
 
 }

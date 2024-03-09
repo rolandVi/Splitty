@@ -56,12 +56,13 @@ public class EventCtrl implements MultiLanguages{
     @Override
     public void updateLanguage() {
         try {
-            returnButton.setText(mainCtrl.lang.getString("return"));
-            changeTextField.setPromptText(mainCtrl.lang.getString("event_name"));
-            changeButton.setText(mainCtrl.lang.getString("change"));
-            participantsLabel.setText(mainCtrl.lang.getString("participants"));
-            expensesLabel.setText(mainCtrl.lang.getString("expenses"));
-            addExpenseButton.setText(mainCtrl.lang.getString("add_expense"));
+            ResourceBundle lang = mainCtrl.lang;
+            returnButton.setText(lang.getString("return"));
+            changeTextField.setPromptText(lang.getString("event_name"));
+            changeButton.setText(lang.getString("change"));
+            participantsLabel.setText(lang.getString("participants"));
+            expensesLabel.setText(lang.getString("expenses"));
+            addExpenseButton.setText(lang.getString("add_expense"));
         } catch (Exception e) {
             System.out.println("Incorrect key");
         }

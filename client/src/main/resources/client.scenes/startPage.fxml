@@ -9,9 +9,9 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StartPageCtrl">
    <children>
       <Label layoutX="278.0" layoutY="44.0" scaleX="6.0" scaleY="6.0" text="SPLITTY" textAlignment="CENTER" />
-      <Button layoutX="264.0" layoutY="167.0" mnemonicParsing="false" onAction="#connect" scaleX="3.0" scaleY="3.0" text="CONNECT" />
+      <Button fx:id="connectButton" layoutX="264.0" layoutY="167.0" mnemonicParsing="false" onAction="#connect" scaleX="3.0" scaleY="3.0" text="CONNECT" />
       <TextField fx:id="serverField" alignment="CENTER" layoutX="225.0" layoutY="250.0" promptText="http://localhost:8080" scaleX="1.5" scaleY="1.5" text="http://localhost:8080" />
       <Text fx:id="errorMessage" fill="RED" layoutX="232.0" layoutY="310.0" opacity="0.0" scaleX="1.5" scaleY="1.5" strokeType="OUTSIDE" strokeWidth="0.0" text="INCORRECT SERVER URL!" wrappingWidth="135.02446937561035" />
-      <Button layoutX="443.0" layoutY="355.0" mnemonicParsing="false" onAction="#enterAdmin" text="Open admin overview" />
+      <Button fx:id="openAdminButton" layoutX="443.0" layoutY="355.0" mnemonicParsing="false" onAction="#enterAdmin" text="Open admin overview" />
    </children>
 </AnchorPane>

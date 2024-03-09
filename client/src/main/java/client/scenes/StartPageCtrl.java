@@ -3,13 +3,16 @@ package client.scenes;
 import client.Main;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
 import com.google.inject.Inject;
 
-public class StartPageCtrl {
+import java.util.ResourceBundle;
+
+public class StartPageCtrl implements MultiLanguages{
 
     private final MainCtrl mainCtrl;
 
@@ -18,6 +21,11 @@ public class StartPageCtrl {
 
     @FXML
     public Text errorMessage;
+
+    @FXML
+    public Button connectButton;
+    @FXML
+    public Button openAdminButton;
 
 
     /**
@@ -28,6 +36,17 @@ public class StartPageCtrl {
     @Inject
     public StartPageCtrl(MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
+    }
+
+    @Override
+    public void updateLanguage() {
+        try {
+            ResourceBundle lang = mainCtrl.lang;
+            connectButton.setText(lang.getString("connect"));
+            openAdminButton.setText(lang.getString("open_admin"));
+        } catch (Exception e) {
+            System.out.println("Incorrect key");
+        }
     }
 
     /**

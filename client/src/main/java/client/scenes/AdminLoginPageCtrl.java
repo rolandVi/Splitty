@@ -1,6 +1,7 @@
 package client.scenes;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
@@ -8,7 +9,9 @@ import javafx.scene.text.Text;
 
 import com.google.inject.Inject;
 
-public class AdminLoginPageCtrl {
+import java.util.ResourceBundle;
+
+public class AdminLoginPageCtrl implements MultiLanguages {
 
     private final AdminMainCtrl adminMainCtrl;
 
@@ -21,6 +24,9 @@ public class AdminLoginPageCtrl {
     @FXML
     public Text incorrectPasswordError;
 
+    @FXML
+    public Button loginButton;
+
     /**
      * The constructor
      * @param adminMainCtrl the main admin controller
@@ -28,6 +34,18 @@ public class AdminLoginPageCtrl {
     @Inject
     public AdminLoginPageCtrl(AdminMainCtrl adminMainCtrl){
         this.adminMainCtrl=adminMainCtrl;
+    }
+
+    @Override
+    public void updateLanguage() {
+        try {
+            ResourceBundle lang = adminMainCtrl.lang;
+            passwordLabel.setText(lang.getString("enter_password"));
+            loginButton.setText(lang.getString("login"));
+            incorrectPasswordError.setText(lang.getString("incorrect_password"));
+        } catch (Exception e) {
+            System.out.println("Incorrect key");
+        }
     }
 
     /**
@@ -58,6 +76,5 @@ public class AdminLoginPageCtrl {
             incorrectPasswordError.setOpacity(1.0d);
         }
     }
-
 
 }
