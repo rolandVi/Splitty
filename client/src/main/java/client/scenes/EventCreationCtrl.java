@@ -3,6 +3,7 @@ package client.scenes;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
@@ -12,9 +13,12 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class EventCreationCtrl {
+public class EventCreationCtrl implements MultiLanguages{
     private final MainCtrl mainCtrl;
+    @FXML
+    public Label titleLabel;
     @FXML
     public TextField eventNameTextField;
     @FXML
@@ -29,6 +33,19 @@ public class EventCreationCtrl {
     @Inject
     public EventCreationCtrl(MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
+    }
+
+    @Override
+    public void updateLanguage() {
+        try {
+            ResourceBundle lang = mainCtrl.lang;
+            titleLabel.setText(lang.getString("event_creation"));
+            returnButton.setText(lang.getString("return"));
+            eventNameTextField.setPromptText(lang.getString("event_name"));
+            createButton.setText(lang.getString("create"));
+        } catch (Exception e) {
+            System.out.println("Incorrect key");
+        }
     }
 
     /**

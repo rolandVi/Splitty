@@ -7,12 +7,12 @@
 
 <AnchorPane fx:id="eventsLabel" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EventOverviewCtrl">
    <children>
-      <Label layoutX="39.0" layoutY="14.0" prefHeight="54.0" prefWidth="124.0" text="Events">
+      <Label fx:id="titleLabel" layoutX="39.0" layoutY="14.0" prefHeight="54.0" prefWidth="124.0" text="Events">
          <font>
             <Font size="40.0" />
          </font>
       </Label>
-      <Label layoutX="57.0" layoutY="359.0" text="Add event">
+      <Label fx:id="newEventLabel" layoutX="57.0" layoutY="359.0" text="Add event">
          <font>
             <Font size="19.0" />
          </font>
@@ -22,7 +22,7 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Label contentDisplay="CENTER" layoutX="173.0" layoutY="354.0" prefHeight="39.0" prefWidth="87.0" text="Payments">
+      <Label fx:id="paymentLabel" contentDisplay="CENTER" layoutX="173.0" layoutY="354.0" prefHeight="39.0" prefWidth="87.0" text="Payments">
          <font>
             <Font size="19.0" />
          </font>
