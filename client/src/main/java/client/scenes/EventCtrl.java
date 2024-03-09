@@ -21,7 +21,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Optional;
 
-public class EventCtrl {
+public class EventCtrl implements MultiLanguages{
     private final MainCtrl mainCtrl;
     @FXML
     public Label eventNameLabel;
@@ -50,6 +50,20 @@ public class EventCtrl {
     public EventCtrl(MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.objectMapper = new ObjectMapper();
+    }
+
+    @Override
+    public void updateLanguage() {
+        try {
+            returnButton.setText(mainCtrl.lang.getString("return"));
+            changeTextField.setPromptText(mainCtrl.lang.getString("event_name"));
+            changeButton.setText(mainCtrl.lang.getString("change"));
+            participantsLabel.setText(mainCtrl.lang.getString("participants"));
+            expensesLabel.setText(mainCtrl.lang.getString("expenses"));
+            addExpenseButton.setText(mainCtrl.lang.getString("add_expense"));
+        } catch (Exception e) {
+            System.out.println("Incorrect key");
+        }
     }
 
     /**
@@ -82,7 +96,7 @@ public class EventCtrl {
                 .build();
 
         // Send HTTP request to server
-        // Return HTTP response from server
+        // Receives HTTP response from server
         Optional<HttpResponse<String>> response;
         try {
             response = Optional.of(HttpClient
