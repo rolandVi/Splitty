@@ -1,9 +1,14 @@
 package client;
 
 import client.scenes.*;
+import client.scenes.admin.AdminLoginPageCtrl;
+import client.scenes.admin.AdminMainCtrl;
+import client.scenes.admin.AdminOverviewPageCtrl;
+import client.utils.ServerUtils;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
+import jakarta.ws.rs.client.Client;
 
 public class MyModule implements Module {
 
@@ -19,5 +24,8 @@ public class MyModule implements Module {
         binder.bind(PaymentPageCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AdminMainCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AdminLoginPageCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(AdminOverviewPageCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
+        binder.bind(Client.class).toProvider(ClientProvider.class);
     }
 }
