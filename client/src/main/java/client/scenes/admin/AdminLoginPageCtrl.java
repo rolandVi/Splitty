@@ -1,4 +1,4 @@
-package client.scenes;
+package client.scenes.admin;
 
 import commons.exceptions.PasswordExpiredException;
 import javafx.fxml.FXML;

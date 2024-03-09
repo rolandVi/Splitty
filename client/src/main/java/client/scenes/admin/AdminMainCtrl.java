@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package client.scenes;
+package client.scenes.admin;
 
+import client.scenes.admin.AdminLoginPageCtrl;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
@@ -26,21 +27,28 @@ public class AdminMainCtrl {
     private Stage adminOverviewStage;
 
     private AdminLoginPageCtrl loginPageCtrl;
+    private AdminOverviewPageCtrl overviewPageCtrl;
 
     private Scene loginPage;
+    private Scene overviewPage;
 
     /**
      * The initialize method
-     * @param adminOverviewStage The admin overview Stage
-     * @param loginPage The login Page
+     * @param adminOverviewStage The admin overview stage
+     * @param loginPage The login page
+     * @param overviewPage the admin overview page
+     *
      */
     public void initialize(Stage adminOverviewStage,
-                           Pair<AdminLoginPageCtrl, Parent> loginPage) {
+                           Pair<AdminLoginPageCtrl, Parent> loginPage,
+                           Pair<AdminOverviewPageCtrl, Parent> overviewPage) {
         this.adminOverviewStage = adminOverviewStage;
 
         this.loginPageCtrl = loginPage.getKey();
+        this.overviewPageCtrl = overviewPage.getKey();
 
         this.loginPage = new Scene(loginPage.getValue());
+        this.overviewPage = new Scene(overviewPage.getValue());
 
 
         showLogin();
@@ -62,7 +70,8 @@ public class AdminMainCtrl {
      * Shows the admin overview
      */
     public void showAdminOverview(){
-        //to be done
+        adminOverviewStage.setTitle("Admin Overview");
+        adminOverviewStage.setScene(overviewPage);
     }
 
 
