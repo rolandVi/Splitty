@@ -32,11 +32,6 @@ public class ServerUtils {
      */
     public Boolean validatePassword(String p) throws PasswordExpiredException {
         if (p.isEmpty()) throw new PasswordExpiredException("Password cannot be empty");
-//        Response response = ClientBuilder.newClient(new ClientConfig())
-//                .target(SERVER).path("api/password/validatePassword")
-//                .request(APPLICATION_JSON)
-//                .accept(APPLICATION_JSON)
-//                .post(Entity.entity(p, APPLICATION_JSON));
 
         Response response = client.target(SERVER).path("api/password/validatePassword")
                 .request(APPLICATION_JSON)
