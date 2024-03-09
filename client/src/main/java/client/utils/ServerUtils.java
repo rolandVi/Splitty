@@ -1,14 +1,13 @@
 package client.utils;
 
-import com.google.inject.Inject;
 import commons.exceptions.PasswordExpiredException;
+
+import com.google.inject.Inject;
+
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.Response;
-import org.glassfish.jersey.client.ClientConfig;
-
-import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
-import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class ServerUtils {
 
@@ -44,8 +43,6 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(p, APPLICATION_JSON));
 
-        System.out.println(response.getStatus());
-
         if (response.getStatus() == Response.Status.OK.getStatusCode()) {
             return true;
         } else if (response.getStatus() == Response.Status.FORBIDDEN.getStatusCode()) {
@@ -61,8 +58,7 @@ public class ServerUtils {
      * Generates new password
      */
     public void generatePassword(){
-        ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/password/generatePassword")
+        client.target(SERVER).path("api/password/generatePassword")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(null);
