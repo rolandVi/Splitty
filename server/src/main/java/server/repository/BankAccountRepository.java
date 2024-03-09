@@ -14,4 +14,11 @@ public interface BankAccountRepository extends JpaRepository<BankAccountEntity, 
      */
     @Query("select b.holder from BankAccountEntity b where b.id=:id")
     String getEventTitleById(@Param(value = "id") long id);
+
+    /**
+     * Checks if such iban exists
+     * @param iban teh iban
+     * @return true if it exits and false otherwise
+     */
+    boolean existsByIban(String iban);
 }

@@ -1,7 +1,9 @@
-package commons.dto;
+package server.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import server.dto.validations.UniqueField;
+import server.dto.validations.enums.FieldType;
 
 import java.util.Objects;
 
@@ -11,6 +13,7 @@ public class UserCreationDto {
     @NotBlank
     private String lastName;
     @Email
+    @UniqueField(fieldType = FieldType.USER_EMAIL)
     private String email;
 
     /**

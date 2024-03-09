@@ -1,8 +1,8 @@
 package server.service;
 
 import commons.BankAccountEntity;
-import commons.dto.BankAccountCreationDto;
-import commons.dto.view.BankAccountDto;
+import server.dto.BankAccountCreationDto;
+import server.dto.view.BankAccountDto;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -78,5 +78,14 @@ public class BankAccountService {
                 .map(bankAccountEntity, BankAccountEntity.class);
         BankAccountEntity result = this.bankAccountRepository.save(newEntity);
         return modelMapper.map(result, BankAccountDto.class);
+    }
+
+    /**
+     *
+     * @param iban the iban to check
+     * @return whether such an iban exists
+     */
+    public boolean ibanExists(String iban) {
+        return bankAccountRepository.existsByIban(iban);
     }
 }

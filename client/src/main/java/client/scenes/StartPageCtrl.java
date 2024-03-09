@@ -3,8 +3,8 @@ package client.scenes;
 import client.Main;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import commons.dto.BankAccountCreationDto;
-import commons.dto.UserCreationDto;
+import server.dto.BankAccountCreationDto;
+import server.dto.UserCreationDto;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;

@@ -6,7 +6,7 @@ import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import server.controller.exception.ObjectNotFoundException;
-import commons.dto.view.ExpenseDetailsDto;
+import server.dto.view.ExpenseDetailsDto;
 import server.repository.ExpenseRepository;
 
 import java.util.List;

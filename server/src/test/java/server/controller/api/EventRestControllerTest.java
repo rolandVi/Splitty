@@ -6,8 +6,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import commons.dto.view.EventDetailsDto;
-import commons.dto.view.EventTitleDto;
+import server.dto.view.EventDetailsDto;
+import server.dto.view.EventTitleDto;
 import server.service.EventService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

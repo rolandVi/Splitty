@@ -1,7 +1,7 @@
 package server.controller.api;
 
-import commons.dto.BankAccountCreationDto;
-import commons.dto.view.BankAccountDto;
+import server.dto.BankAccountCreationDto;
+import server.dto.view.BankAccountDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

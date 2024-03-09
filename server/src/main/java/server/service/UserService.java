@@ -1,9 +1,9 @@
 package server.service;
 
 import commons.UserEntity;
-import commons.dto.UserCreationDto;
-import commons.dto.view.EventOverviewDto;
-import commons.dto.view.UserNameDto;
+import server.dto.UserCreationDto;
+import server.dto.view.EventOverviewDto;
+import server.dto.view.UserNameDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import server.repository.UserRepository;
@@ -81,5 +81,14 @@ public class UserService {
         return this.userRepository.getEventsByUserId(id).stream()
                 .map(e-> this.modelMapper.map(e, EventOverviewDto.class))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Checks if such an email exists
+     * @param email the email
+     * @return true if it exists and false otherwise
+     */
+    public boolean emailExists(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

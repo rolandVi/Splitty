@@ -2,12 +2,12 @@ package client.scenes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
-import commons.BankAccountEntity;
-import commons.UserEntity;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import server.dto.BankAccountCreationDto;
+import server.dto.UserCreationDto;
 
 import java.io.IOException;
 import java.net.URI;
@@ -80,7 +80,7 @@ public class NewParticipantCtrl {
         String url = "http://localhost:8080";
         createBankAccount();
         // Prepare user data from text fields
-        UserEntity user = getUserEntity();
+        UserCreationDto user = getUserEntity();
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(user);
 
@@ -104,18 +104,17 @@ public class NewParticipantCtrl {
 
     }
 
-    private UserEntity getUserEntity() {
+    private UserCreationDto getUserEntity() {
         String firstName = firstNameField.getText();
         String surName = surNameField.getText();
         String email = emailField.getText();
 
         // Create a UserEntity object
-        UserEntity user = new UserEntity();
-        user.setFirstName(firstName);
-        user.setLastName(surName);
-        user.setEmail(email);
 
-        return user;
+        return new UserCreationDto()
+                .setFirstName(firstName)
+                .setLastName(surName)
+                .setEmail(email);
     }
 
     /**
@@ -131,10 +130,10 @@ public class NewParticipantCtrl {
         String email = emailField.getText();
         String iban = ibanField.getText();
         String bic = bicField.getText();
-        BankAccountEntity bankAccount = new BankAccountEntity();
-        bankAccount.setIban(iban);
-        bankAccount.setHolder(email); // Assuming holder's email is the same as the user's email
-        bankAccount.setBic(bic);
+        BankAccountCreationDto bankAccount = new BankAccountCreationDto()
+            .setIban(iban)
+            .setHolder(email)// Assuming holder's email is the same as the user's email
+            .setBic(bic);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(bankAccount);

@@ -1,13 +1,16 @@
-package commons.dto;
+package server.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import server.dto.validations.UniqueField;
+import server.dto.validations.enums.FieldType;
 
 import java.util.Objects;
 
 public class BankAccountCreationDto {
 
     @NotBlank
+    @UniqueField(fieldType = FieldType.BANK_ACCOUNT_IBAN)
     private String iban;
 
     @NotBlank
