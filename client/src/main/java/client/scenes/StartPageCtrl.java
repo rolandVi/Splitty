@@ -162,12 +162,12 @@ public class StartPageCtrl {
         String url = "http://localhost:8080";
 
         // Prepare user data from text fields
-        String email = emailField.getText();
+        String holder = firstNameField.getText() + " " + surNameField.getText();
         String iban = ibanField.getText();
         String bic = bicField.getText();
         BankAccountCreationDto bankAccount = new BankAccountCreationDto();
         bankAccount.setIban(iban);
-        bankAccount.setHolder(email); // Assuming holder's email is the same as the user's email
+        bankAccount.setHolder(holder); // Assuming holder's email is the same as the user's email
         bankAccount.setBic(bic);
 
         ObjectMapper objectMapper = new ObjectMapper();
