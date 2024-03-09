@@ -29,9 +29,9 @@ public class PasswordRestController {
     public ResponseEntity<String> validatePassword(@RequestBody String p){
         try {
             if (passwordService.validatePassword(p)){
-                return ResponseEntity.ok("Password is valid");
+                return ResponseEntity.ok("Password is valid.");
             }else {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Password is invalid");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Password is invalid.");
             }
         }catch (PasswordExpiredException e){
             return ResponseEntity.badRequest().body(e.getMessage());

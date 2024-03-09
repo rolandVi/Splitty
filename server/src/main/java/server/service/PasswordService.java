@@ -10,26 +10,28 @@ import java.util.Optional;
 @Service
 public class PasswordService {
 
-    private static final int LENGTH = 16;
-    private static final SecureRandom random = new SecureRandom();
+    private final int length = 16;
+    private SecureRandom random;
 
     private Optional<String> password;
 
     /**
      * Constructor
+     * @param random - injected SecureRandom instance
      */
-    public PasswordService(){
+    public PasswordService(SecureRandom random){
         password = Optional.empty();
+        this.random=random;
     }
 
     /**
      * generates a password and prints it to the console
      */
     public void generatePassword(){
-        byte[] arr = new byte[LENGTH];
+        byte[] arr = new byte[length];
         random.nextBytes(arr);
         password = Optional.of(Base64.getUrlEncoder().withoutPadding()
-                .encodeToString(arr).substring(0, LENGTH));
+                .encodeToString(arr).substring(0, length));
         System.out.println("Password: " + password.get());
     }
 
@@ -41,7 +43,7 @@ public class PasswordService {
     public boolean validatePassword(String p)
             throws PasswordExpiredException {
         if (password.isEmpty()){
-            throw new PasswordExpiredException("Last password has expired");
+            throw new PasswordExpiredException("Last password has expired. Generate a new one.");
         }
 
         if (p.equals(password.get())){
@@ -54,7 +56,7 @@ public class PasswordService {
 
     /**
      * Getter for password
-     * @return
+     * @return the password
      */
     protected Optional<String> getPassword() {
         return password;
