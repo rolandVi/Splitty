@@ -1,7 +1,9 @@
 package client.scenes;
 
+import client.sceneUtils.LanguageComboBoxUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
@@ -26,6 +28,8 @@ public class AdminLoginPageCtrl implements MultiLanguages {
 
     @FXML
     public Button loginButton;
+    @FXML
+    public ComboBox<String> languageComboBox;
 
     /**
      * The constructor
@@ -34,6 +38,14 @@ public class AdminLoginPageCtrl implements MultiLanguages {
     @Inject
     public AdminLoginPageCtrl(AdminMainCtrl adminMainCtrl){
         this.adminMainCtrl=adminMainCtrl;
+    }
+    public void initialize() {
+        LanguageComboBoxUtil.updateLanguageComboBox(languageComboBox);
+    }
+    public void uponSelectionLanguage(){
+        String[] selection = languageComboBox.getValue().split("-");
+        LanguageComboBoxUtil.setLocaleFromConfig(selection[0], selection[1]);
+        adminMainCtrl.updateLanguagesOfScenes();
     }
 
     @Override

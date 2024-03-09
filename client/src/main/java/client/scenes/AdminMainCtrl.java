@@ -56,7 +56,7 @@ public class AdminMainCtrl {
         updateLanguagesOfScenes();
     }
 
-    private void updateLanguagesOfScenes(){
+    void updateLanguagesOfScenes(){
         Locale.setDefault(getLocalFromConfig());
         lang = ResourceBundle.getBundle("languages.lang");
         loginPageCtrl.updateLanguage();

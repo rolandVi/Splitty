@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.sceneUtils.LanguageComboBoxUtil;
 import commons.dto.view.EventDetailsDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,6 +12,7 @@ import commons.dto.view.EventTitleDto;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
@@ -40,6 +42,8 @@ public class EventCtrl implements MultiLanguages{
     public Label expensesLabel;
     @FXML
     public Button addExpenseButton;
+    @FXML
+    public ComboBox<String> languageComboBox;
     private EventDetailsDto eventDetailsDto;
     private final ObjectMapper objectMapper;
 
@@ -51,6 +55,14 @@ public class EventCtrl implements MultiLanguages{
     public EventCtrl(MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.objectMapper = new ObjectMapper();
+    }
+    public void initialize() {
+        LanguageComboBoxUtil.updateLanguageComboBox(languageComboBox);
+    }
+    public void uponSelectionLanguage(){
+        String[] selection = languageComboBox.getValue().split("-");
+        LanguageComboBoxUtil.setLocaleFromConfig(selection[0], selection[1]);
+        mainCtrl.updateLanguagesOfScenes();
     }
 
     @Override

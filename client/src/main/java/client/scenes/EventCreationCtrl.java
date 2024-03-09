@@ -1,8 +1,10 @@
 package client.scenes;
 
+import client.sceneUtils.LanguageComboBoxUtil;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -25,6 +27,8 @@ public class EventCreationCtrl implements MultiLanguages{
     public Button createButton;
     @FXML
     public Button returnButton;
+    @FXML
+    public ComboBox<String> languageComboBox;
 
     /**
      * Injector for Event Controller
@@ -33,6 +37,14 @@ public class EventCreationCtrl implements MultiLanguages{
     @Inject
     public EventCreationCtrl(MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
+    }
+    public void initialize() {
+        LanguageComboBoxUtil.updateLanguageComboBox(languageComboBox);
+    }
+    public void uponSelectionLanguage(){
+        String[] selection = languageComboBox.getValue().split("-");
+        LanguageComboBoxUtil.setLocaleFromConfig(selection[0], selection[1]);
+        mainCtrl.updateLanguagesOfScenes();
     }
 
     @Override

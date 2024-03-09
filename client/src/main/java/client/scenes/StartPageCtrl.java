@@ -2,14 +2,18 @@ package client.scenes;
 
 import client.Main;
 
+import client.sceneUtils.LanguageComboBoxUtil;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
 import com.google.inject.Inject;
 
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class StartPageCtrl implements MultiLanguages{
@@ -26,6 +30,8 @@ public class StartPageCtrl implements MultiLanguages{
     public Button connectButton;
     @FXML
     public Button openAdminButton;
+    @FXML
+    public ComboBox<String> languageComboBox;
 
 
     /**
@@ -38,6 +44,14 @@ public class StartPageCtrl implements MultiLanguages{
         this.mainCtrl = mainCtrl;
     }
 
+    public void initialize() {
+        LanguageComboBoxUtil.updateLanguageComboBox(languageComboBox);
+    }
+    public void uponSelectionLanguage(){
+        String[] selection = languageComboBox.getValue().split("-");
+        LanguageComboBoxUtil.setLocaleFromConfig(selection[0], selection[1]);
+        mainCtrl.updateLanguagesOfScenes();
+    }
     @Override
     public void updateLanguage() {
         try {

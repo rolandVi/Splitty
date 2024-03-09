@@ -1,8 +1,10 @@
 package client.scenes;
 
+import client.sceneUtils.LanguageComboBoxUtil;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 
 import java.util.ResourceBundle;
@@ -21,6 +23,8 @@ public class EventOverviewCtrl implements MultiLanguages {
     public Label paymentLabel;
     @FXML
     public Button paymentButton;
+    @FXML
+    public ComboBox<String> languageComboBox;
 
 
     /**
@@ -30,6 +34,14 @@ public class EventOverviewCtrl implements MultiLanguages {
     @Inject
     public EventOverviewCtrl(MainCtrl mainCtrl){
         this.mainCtrl = mainCtrl;
+    }
+    public void initialize() {
+        LanguageComboBoxUtil.updateLanguageComboBox(languageComboBox);
+    }
+    public void uponSelectionLanguage(){
+        String[] selection = languageComboBox.getValue().split("-");
+        LanguageComboBoxUtil.setLocaleFromConfig(selection[0], selection[1]);
+        mainCtrl.updateLanguagesOfScenes();
     }
 
     @Override

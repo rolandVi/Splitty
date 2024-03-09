@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
@@ -30,5 +31,6 @@
       <TextField fx:id="changeTextField" layoutX="15.0" layoutY="59.0" promptText="Event name" />
       <Button fx:id="changeButton" layoutX="173.0" layoutY="59.0" mnemonicParsing="false" onAction="#changeEventName" text="Change" />
       <Button fx:id="returnButton" layoutX="534.0" layoutY="14.0" mnemonicParsing="false" onAction="#returnToOverview" text="Return" />
+      <ComboBox fx:id="languageComboBox" layoutX="14.0" layoutY="361.0" onAction="#uponSelectionLanguage" prefWidth="150.0" />
    </children>
 </Pane>

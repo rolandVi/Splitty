@@ -22,6 +22,7 @@ import javafx.util.Pair;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
+import client.sceneUtils.LanguageComboBoxUtil;
 
 
 public class MainCtrl {
@@ -43,7 +44,6 @@ public class MainCtrl {
     private Scene eventPage;
     private Scene eventCreationPage;
     protected ResourceBundle lang;
-    protected ResourceBundle config;
 
     /**
      * The initialize method
@@ -59,7 +59,6 @@ public class MainCtrl {
                            Pair<PaymentPageCtrl, Parent> paymentPage,
                            Pair<EventCtrl, Parent> eventPage,
                            Pair<EventCreationCtrl, Parent> eventCreationPage) {
-        this.config = ResourceBundle.getBundle("config");
         this.primaryStage = primaryStage;
 
         this.startPageCtrl = startPage.getKey();
@@ -79,16 +78,10 @@ public class MainCtrl {
         updateLanguagesOfScenes();
     }
 
-    private void updateLanguagesOfScenes(){
-        Locale.setDefault(getLocalFromConfig());
+    protected void updateLanguagesOfScenes() {
+        Locale.setDefault(LanguageComboBoxUtil.getLocaleFromConfig());
         lang = ResourceBundle.getBundle("languages.lang");
         eventCtrl.updateLanguage();
-    }
-
-    private Locale getLocalFromConfig(){
-        String language = config.getString("locale");
-        String country = config.getString("country");
-        return Locale.of(language, country);
     }
 
     /**
