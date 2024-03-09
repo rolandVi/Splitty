@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
@@ -26,7 +26,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
      * @return the events
      */
     @Query("select u.events from UserEntity u where u.id=:id")
-    List<EventEntity> getEventsByUserId(@Param(value="id") long id);
+    Set<EventEntity> getEventsByUserId(@Param(value="id") long id);
 
     /**
      * Checks if such an email exists
