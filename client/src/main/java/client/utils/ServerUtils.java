@@ -2,8 +2,6 @@ package client.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import commons.dto.view.EventTitleDto;
-import commons.exceptions.PasswordExpiredException;
 
 import com.google.inject.Inject;
 
@@ -18,6 +16,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Optional;
 
+import server.dto.view.EventTitleDto;
 import server.exceptions.PasswordExpiredException;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;

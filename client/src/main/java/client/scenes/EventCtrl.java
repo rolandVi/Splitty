@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.utils.ServerUtils;
-import commons.dto.view.EventDetailsDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 //import org.springframework.http.*;
@@ -14,7 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import server.dto.view.EventDetailsDto;
-import server.dto.view.EventTitleDto;
 
 
 public class EventCtrl {
