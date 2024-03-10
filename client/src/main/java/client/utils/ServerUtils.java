@@ -7,6 +7,15 @@ import com.google.inject.Inject;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.client.Entity;
+import javafx.scene.control.TextField;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.Optional;
+
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class ServerUtils {
@@ -58,6 +67,32 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .post(null);
 
+    }
+
+    /**
+     * Creates a new event on the database
+     * @param eventName name of event
+     * @return
+     */
+    public Optional<HttpResponse<String>> createEvent(String eventName){
+        // Create HTTP request using eventName as body
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(eventName))
+                .uri(URI.create(SERVER + "/api/events/"))
+                .header("Content-Type", "text/plain")
+                .build();
+
+        // Send HTTP request to server
+        // Receive HTTP response from server
+        Optional<HttpResponse<String>> response;
+        try {
+            response = Optional.of(HttpClient
+                    .newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString()));
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return response;
     }
 
 }

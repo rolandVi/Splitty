@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.utils.ServerUtils;
 import commons.dto.view.EventDetailsDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,6 +24,7 @@ import java.util.Optional;
 
 public class EventCtrl {
     private final MainCtrl mainCtrl;
+    private final ServerUtils serverUtils;
     @FXML
     public Label eventNameLabel;
     @FXML
@@ -47,8 +49,9 @@ public class EventCtrl {
      * @param mainCtrl The Main Controller
      */
     @Inject
-    public EventCtrl(MainCtrl mainCtrl) {
+    public EventCtrl(MainCtrl mainCtrl, ServerUtils serverUtils) {
         this.mainCtrl = mainCtrl;
+        this.serverUtils = serverUtils;
         this.objectMapper = new ObjectMapper();
     }
 
