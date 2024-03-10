@@ -16,7 +16,6 @@
 package client.scenes.admin;
 
 import client.ConfigManager;
-import client.scenes.admin.AdminLoginPageCtrl;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
