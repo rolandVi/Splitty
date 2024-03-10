@@ -10,7 +10,8 @@ import com.google.inject.Inject;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.client.Entity;
-import javafx.scene.control.TextField;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.core.MediaType;
 
 import java.io.IOException;
 import java.net.URI;
@@ -77,25 +78,11 @@ public class ServerUtils {
      * @param eventName name of event
      * @return HTTP response from the server
      */
-    public Optional<HttpResponse<String>> createEvent(String eventName){
-        // Create HTTP request using eventName as body
-        HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(eventName))
-                .uri(URI.create(SERVER + "/api/events/"))
-                .header("Content-Type", "text/plain")
-                .build();
-
-        // Send HTTP request to server
-        // Receive HTTP response from server
-        Optional<HttpResponse<String>> response;
-        try {
-            response = Optional.of(HttpClient
-                    .newHttpClient()
-                    .send(request, HttpResponse.BodyHandlers.ofString()));
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return response;
+    public Response createEvent(String eventName){
+        return client.target(SERVER).path("api/events/")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(eventName, APPLICATION_JSON));
     }
     /**
      * Updates the event name to the server and update the current event name
@@ -103,7 +90,7 @@ public class ServerUtils {
      * @throws JsonProcessingException when the objectMapper cannot properly
      * turn the EventTitleDto into Json format string
      */
-    public Optional<HttpResponse<String>> changeEventName(long id, String newEventName) throws JsonProcessingException {
+    public void changeEventName(long id, String newEventName) throws JsonProcessingException {
         // Create HTTP request body
         ObjectMapper objectMapper = new ObjectMapper();
         EventTitleDto eventTitleDto = new EventTitleDto(newEventName);
@@ -111,7 +98,7 @@ public class ServerUtils {
 
         // Create HTTP request
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(SERVER + "/api/events/" + id))
+                .uri(URI.create(SERVER + "api/events/" + id))
                 .header("Content-Type", "application/json")
                 .method("PATCH", HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
@@ -126,7 +113,12 @@ public class ServerUtils {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-        return response;
+
+//        Response response = client.target(SERVER).path("api/events/" + id)
+//                .request(APPLICATION_JSON)
+//                .accept(APPLICATION_JSON)
+//                .build("PATCH", Entity.entity(requestBody, APPLICATION_JSON))
+//                .invoke();
     }
 
 }
