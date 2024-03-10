@@ -1,12 +1,13 @@
 package client.utils;
 
-import commons.exceptions.PasswordExpiredException;
 
 import com.google.inject.Inject;
 
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.client.Entity;
+import server.exceptions.PasswordExpiredException;
+
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class ServerUtils {
