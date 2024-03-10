@@ -10,8 +10,6 @@ import com.google.inject.Inject;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.client.Entity;
-import jakarta.ws.rs.client.ClientBuilder;
-import jakarta.ws.rs.core.MediaType;
 
 import java.io.IOException;
 import java.net.URI;
@@ -86,7 +84,8 @@ public class ServerUtils {
     }
     /**
      * Updates the event name to the server and update the current event name
-     * @return HTTP response from the server
+     * @param id event ID
+     * @param newEventName the new event name to change with the corresponding ID
      * @throws JsonProcessingException when the objectMapper cannot properly
      * turn the EventTitleDto into Json format string
      */

@@ -8,19 +8,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 //import org.springframework.web.client.RestTemplate;
 //import org.springframework.util.MultiValueMap;
 
-import commons.dto.view.EventTitleDto;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.Optional;
 
 public class EventCtrl {
     private final MainCtrl mainCtrl;
@@ -47,6 +40,7 @@ public class EventCtrl {
     /**
      * Injector for Event Controller
      * @param mainCtrl The Main Controller
+     * @param serverUtils The Server Utilities
      */
     @Inject
     public EventCtrl(MainCtrl mainCtrl, ServerUtils serverUtils) {

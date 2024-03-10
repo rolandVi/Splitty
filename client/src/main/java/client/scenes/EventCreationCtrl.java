@@ -8,11 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.Optional;
+
 
 public class EventCreationCtrl {
     private final MainCtrl mainCtrl;
@@ -27,6 +23,7 @@ public class EventCreationCtrl {
     /**
      * Injector for Event Controller
      * @param mainCtrl The Main Controller
+     * @param serverUtils The Server Utilities
      */
     @Inject
     public EventCreationCtrl(MainCtrl mainCtrl, ServerUtils serverUtils) {
@@ -43,7 +40,6 @@ public class EventCreationCtrl {
 
     /**
      * Creates HTTP request to the server using the contents of text field as name of event
-     * @return HTTP response from the server
      */
     public void createEvent() {
         mainCtrl.showOverview();
