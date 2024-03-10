@@ -1,5 +1,8 @@
 package client.utils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import commons.dto.view.EventTitleDto;
 import commons.exceptions.PasswordExpiredException;
 
 import com.google.inject.Inject;
@@ -70,9 +73,9 @@ public class ServerUtils {
     }
 
     /**
-     * Creates a new event on the database
+     * Creates HTTP request to the server using the parameter as name of event
      * @param eventName name of event
-     * @return
+     * @return HTTP response from the server
      */
     public Optional<HttpResponse<String>> createEvent(String eventName){
         // Create HTTP request using eventName as body
@@ -84,6 +87,37 @@ public class ServerUtils {
 
         // Send HTTP request to server
         // Receive HTTP response from server
+        Optional<HttpResponse<String>> response;
+        try {
+            response = Optional.of(HttpClient
+                    .newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString()));
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return response;
+    }
+    /**
+     * Updates the event name to the server and update the current event name
+     * @return HTTP response from the server
+     * @throws JsonProcessingException when the objectMapper cannot properly
+     * turn the EventTitleDto into Json format string
+     */
+    public Optional<HttpResponse<String>> changeEventName(long id, String newEventName) throws JsonProcessingException {
+        // Create HTTP request body
+        ObjectMapper objectMapper = new ObjectMapper();
+        EventTitleDto eventTitleDto = new EventTitleDto(newEventName);
+        String requestBody = objectMapper.writeValueAsString(eventTitleDto);
+
+        // Create HTTP request
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(SERVER + "/api/events/" + id))
+                .header("Content-Type", "application/json")
+                .method("PATCH", HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        // Send HTTP request to server
+        // Return HTTP response from server
         Optional<HttpResponse<String>> response;
         try {
             response = Optional.of(HttpClient

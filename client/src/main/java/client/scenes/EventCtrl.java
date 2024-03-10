@@ -64,37 +64,12 @@ public class EventCtrl {
 
     /**
      * Will update the event name to the server and update the current event name
-     * @return HTTP response from the server
      * @throws JsonProcessingException when the objectMapper cannot properly
      * turn the EventTitleDto into Json format string
      */
-    public Optional<HttpResponse<String>> changeEventName() throws JsonProcessingException {
-        // Todo: replace temporary values with eventDetailsDto.getID() and host selected at start
-        long id = 1L;
-        String url = "http://localhost:8080";
-
-        // Create HTTP request body
-        EventTitleDto eventTitleDto = new EventTitleDto(changeTextField.getText());
-        String requestBody = objectMapper.writeValueAsString(eventTitleDto);
-
-        // Create HTTP request
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/api/events/" + id))
-                .header("Content-Type", "application/json")
-                .method("PATCH", HttpRequest.BodyPublishers.ofString(requestBody))
-                .build();
-
-        // Send HTTP request to server
-        // Return HTTP response from server
-        Optional<HttpResponse<String>> response;
-        try {
-            response = Optional.of(HttpClient
-                    .newHttpClient()
-                    .send(request, HttpResponse.BodyHandlers.ofString()));
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return response;
+    public void changeEventName() throws JsonProcessingException {
+        mainCtrl.showOverview();
+        serverUtils.changeEventName(1L, changeTextField.getText());
     }
 
     /**
