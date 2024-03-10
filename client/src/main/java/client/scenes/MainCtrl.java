@@ -78,6 +78,9 @@ public class MainCtrl {
         updateLanguagesOfScenes();
     }
 
+    /**
+     * Updates the languages of all scenes (except admin)
+     */
     protected void updateLanguagesOfScenes() {
         Locale.setDefault(LanguageComboBoxUtil.getLocaleFromConfig());
         lang = ResourceBundle.getBundle("languages.lang");

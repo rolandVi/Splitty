@@ -37,8 +37,7 @@ public class EventOverviewCtrl implements MultiLanguages {
     }
 
     /**
-     * Initializes the scene
-     * - Configures the ComboBox (Dropdown menu)
+     * Updates the languages of all scenes (except admin)
      */
     public void initialize() {
         LanguageComboBoxUtil.updateLanguageComboBox(languageComboBox);
