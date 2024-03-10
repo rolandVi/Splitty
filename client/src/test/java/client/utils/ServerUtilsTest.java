@@ -1,6 +1,6 @@
 package client.utils;
 
-import commons.exceptions.PasswordExpiredException;
+import server.exceptions.PasswordExpiredException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.Invocation;

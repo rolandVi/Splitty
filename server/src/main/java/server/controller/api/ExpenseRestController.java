@@ -3,7 +3,7 @@ package server.controller.api;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import commons.dto.view.ExpenseDetailsDto;
+import server.dto.view.ExpenseDetailsDto;
 import server.service.ExpenseService;
 
 import java.util.List;

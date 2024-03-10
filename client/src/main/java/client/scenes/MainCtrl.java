@@ -20,6 +20,8 @@ import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.util.Pair;
 
+import java.io.IOException;
+
 
 public class MainCtrl {
 
@@ -40,6 +42,9 @@ public class MainCtrl {
     private Scene eventPage;
     private Scene eventCreationPage;
 
+    private Scene newParticipant;
+    private NewParticipantCtrl newParticipantCtrl;
+
     /**
      * The initialize method
      * @param primaryStage The primary Stage
@@ -48,12 +53,14 @@ public class MainCtrl {
      * @param paymentPage The payment page
      * @param eventPage The event page
      * @param eventCreationPage The create an event page
+     * @param newParticipant page to add new participants to event
      */
     public void initialize(Stage primaryStage, Pair<StartPageCtrl, Parent> startPage,
                            Pair<EventOverviewCtrl, Parent> eventOverview,
                            Pair<PaymentPageCtrl, Parent> paymentPage,
                            Pair<EventCtrl, Parent> eventPage,
-                           Pair<EventCreationCtrl, Parent> eventCreationPage) {
+                           Pair<EventCreationCtrl, Parent> eventCreationPage,
+                           Pair<NewParticipantCtrl, Parent> newParticipant) {
         this.primaryStage = primaryStage;
 
         this.startPageCtrl = startPage.getKey();
@@ -61,6 +68,7 @@ public class MainCtrl {
         this.paymentPageCtrl = paymentPage.getKey();
         this.eventCtrl = eventPage.getKey();
         this.eventCreationCtrl = eventCreationPage.getKey();
+        this.newParticipantCtrl = newParticipant.getKey();
 
         this.startPage = new Scene(startPage.getValue());
         this.eventOverview = new Scene(eventOverview.getValue());
@@ -69,6 +77,9 @@ public class MainCtrl {
 
         this.eventPage = new Scene(eventPage.getValue());
         this.eventCreationPage = new Scene(eventCreationPage.getValue());
+
+        this.newParticipant = new Scene(newParticipant.getValue());
+
 
         showStart();
         primaryStage.show();
@@ -81,7 +92,15 @@ public class MainCtrl {
         primaryStage.setTitle("Start Page");
         primaryStage.setScene(startPage);
 
-        startPage.setOnKeyPressed(e -> startPageCtrl.keyPressed(e));
+        startPage.setOnKeyPressed(e -> {
+            try {
+                startPageCtrl.keyPressed(e);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         startPageCtrl.refresh();
     }
@@ -127,5 +146,11 @@ public class MainCtrl {
         primaryStage.setScene(eventPage);
     }
 
-
+    /**
+     * Shows the add new participant scene
+     */
+    public void showNewParticipant() {
+        primaryStage.setTitle("newParticipant page");
+        primaryStage.setScene(newParticipant);
+    }
 }

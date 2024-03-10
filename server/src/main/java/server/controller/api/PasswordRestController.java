@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.service.PasswordService;
-import commons.exceptions.PasswordExpiredException;
+import server.exceptions.PasswordExpiredException;
 
 @RestController
 @RequestMapping("/api/password")

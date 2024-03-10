@@ -3,15 +3,15 @@ package commons;
 import jakarta.persistence.*;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "expenses")
 public class ExpenseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -21,7 +21,7 @@ public class ExpenseEntity {
     private UserEntity author;
 
     @ManyToMany
-    private List<UserEntity> debtors;
+    private Set<UserEntity> debtors;
 
     private String title;
 
@@ -44,7 +44,7 @@ public class ExpenseEntity {
      * @param date date of the expense
      */
     public ExpenseEntity(Long id, Double money, UserEntity author,
-                         List<UserEntity> debtors, String title, Date date) {
+                         Set<UserEntity> debtors, String title, Date date) {
         this.id = id;
         this.money = money;
         this.author = author;
@@ -81,7 +81,7 @@ public class ExpenseEntity {
      * Getter for the list of debtors
      * @return list of debtors as ArrayList of UserEntity
      */
-    public List<UserEntity> getDebtors() {
+    public Set<UserEntity> getDebtors() {
         return debtors;
     }
 

@@ -2,7 +2,6 @@ package commons;
 
 import jakarta.persistence.*;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -11,7 +10,7 @@ import java.util.Set;
 public class EventEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -21,7 +20,7 @@ public class EventEntity {
     private String title;
 
     @OneToMany
-    private List<ExpenseEntity> expenses;
+    private Set<ExpenseEntity> expenses;
 
     @ManyToMany
     private Set<UserEntity> participants;
@@ -42,7 +41,7 @@ public class EventEntity {
      *
      */
     public EventEntity(Long id, String inviteCode, String title,
-                       List<ExpenseEntity> expenses, Set<UserEntity> participants) {
+                       Set<ExpenseEntity> expenses, Set<UserEntity> participants) {
         this.id = id;
         this.inviteCode = inviteCode;
         this.title = title;
@@ -97,7 +96,7 @@ public class EventEntity {
      *
      * @return The list of expenses associated with the event.
      */
-    public List<ExpenseEntity> getExpenses() {
+    public Set<ExpenseEntity> getExpenses() {
         return expenses;
     }
 

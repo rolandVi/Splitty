@@ -13,6 +13,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import server.dto.view.EventDetailsDto;
+import server.dto.view.EventTitleDto;
 
 
 public class EventCtrl {
@@ -34,6 +36,8 @@ public class EventCtrl {
     public Label expensesLabel;
     @FXML
     public Button addExpenseButton;
+    @FXML
+    public Button addParticipant;
     private EventDetailsDto eventDetailsDto;
     private final ObjectMapper objectMapper;
 
@@ -87,5 +91,12 @@ public class EventCtrl {
      */
     public void setEventDetailsDto(EventDetailsDto eventDetailsDto) {
         this.eventDetailsDto = eventDetailsDto;
+    }
+
+    /**
+     * shows the newParticipant scene
+     */
+    public void newParticipant(){
+        mainCtrl.showNewParticipant();
     }
 }

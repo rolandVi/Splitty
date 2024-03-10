@@ -1,24 +1,36 @@
 package server.service;
 
 import commons.UserEntity;
+import server.dto.UserCreationDto;
+import server.dto.view.EventOverviewDto;
+import server.dto.view.UserNameDto;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import server.repository.UserRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class UserService {
+    private final ModelMapper modelMapper;
 
     private final UserRepository userRepository;
 
+
     /**
      * Constructor
-     * @param userRepository the UserRepository injected by Spring
+     *
+     * @param modelMapper           the ModelMapper injected by Spring
+     * @param userRepository        the UserRepository injected by Spring
      */
-    public UserService(UserRepository userRepository) {
+    public UserService(ModelMapper modelMapper, UserRepository userRepository) {
+        this.modelMapper = modelMapper;
         this.userRepository = userRepository;
     }
 
     /**
-     * CHecks if entity exists by id
+     * Checks if entity exists by id
      * @param id the id
      * @return true if it exists and false otherwise
      */
@@ -36,4 +48,43 @@ public class UserService {
                 .orElseThrow(IllegalArgumentException::new);
     }
 
+    /**
+     * Persist a user to the database
+     * @param user the id of the user in a UserNameDto
+     * @return the created UserEntity
+     */
+    public UserEntity saveUserByID(UserNameDto user) {
+        UserEntity userEntity = this.modelMapper.map(user, UserEntity.class);
+        return this.userRepository.save(userEntity);
+    }
+
+    /**
+     * Create new user given credentials
+     * @param user The user details
+     * @return the user credentials
+     */
+    public UserNameDto createUser(UserCreationDto user) {
+        UserEntity result = this.userRepository.save(this.modelMapper.map(user, UserEntity.class));
+        return modelMapper.map(result, UserNameDto.class);
+    }
+
+    /**
+     * Get the events of a specific user
+     * @param id the id of the user
+     * @return the events of the user
+     */
+    public List<EventOverviewDto> getUserEvents(long id) {
+        return this.userRepository.getEventsByUserId(id).stream()
+                .map(e-> this.modelMapper.map(e, EventOverviewDto.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Checks if such an email exists
+     * @param email the email
+     * @return true if it exists and false otherwise
+     */
+    public boolean emailExists(String email) {
+        return userRepository.existsByEmail(email);
+    }
 }

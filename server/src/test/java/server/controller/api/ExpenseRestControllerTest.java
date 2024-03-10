@@ -1,13 +1,13 @@
 package server.controller.api;
 
-import commons.dto.view.UserNameDto;
+import server.dto.view.UserNameDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import commons.dto.view.ExpenseDetailsDto;
+import server.dto.view.ExpenseDetailsDto;
 import server.service.ExpenseService;
 
 import java.util.*;
