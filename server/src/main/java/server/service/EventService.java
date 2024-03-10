@@ -6,8 +6,8 @@ import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import server.controller.exception.ObjectNotFoundException;
-import commons.dto.view.EventDetailsDto;
-import commons.dto.view.EventTitleDto;
+import server.dto.view.EventDetailsDto;
+import server.dto.view.EventTitleDto;
 import server.repository.EventRepository;
 
 import java.time.LocalTime;

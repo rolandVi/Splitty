@@ -9,20 +9,20 @@ import java.util.Objects;
 public class BankAccountEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long id;
 
     @Column(nullable = false, unique = true)
     private String iban;
     @Column(nullable = false)
     private String holder;
-    @Column(unique = true)
+    @Column(nullable = false)
     private String bic;
 
     /**
      *
      * @param iban the IBAN  of the bankaccount from the user.
-     * @param holder the username of the user who the bankaccount is from.
+     * @param holder the email of the user who the bankaccount is from. Since it's unique
      * @param bic the BIC  from the bankaccount from the user.
      */
     public BankAccountEntity(String iban, String holder, String bic) {

@@ -1,6 +1,8 @@
 plugins {
     id 'application'
     id("org.openjfx.javafxplugin") version "0.0.11"
+	id 'org.springframework.boot' version '3.2.2'
+	id 'io.spring.dependency-management' version '1.1.4'
 }
 
 application {
@@ -18,8 +20,6 @@ java {
 
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web:3.2.2'
-	implementation project(":commons")
 	
 	implementation group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '3.0.3'
 	implementation group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version: '3.0.3'
@@ -29,9 +29,10 @@ dependencies {
 	implementation group: 'jakarta.validation', name: 'jakarta.validation-api', version: '3.0.2'
 	implementation 'com.google.inject:guice:7.0.0'
 
-
+	implementation project(":server")
 
 	implementation 'org.openjfx:javafx-controls:21.0.2'
 	implementation 'org.openjfx:javafx-fxml:21.0.2'
-	
+    implementation project(path: ':server')
+
 }

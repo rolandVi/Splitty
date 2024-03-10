@@ -15,13 +15,13 @@ public class EventEntityTest {
     @BeforeEach
     public void initEvent() {
 
-        List<ExpenseEntity> expenses = new ArrayList<>();
+        Set<ExpenseEntity> expenses = new HashSet<>();
         Set<UserEntity> users = new HashSet<>();
 
         user = new UserEntity(1L, "FirstName", "LastName", "email@gmail.com",
                 new HashSet<>(), new BankAccountEntity());
 
-        expense = new ExpenseEntity(11L, 420.69D, user, new ArrayList<>(), "Title",
+        expense = new ExpenseEntity(11L, 420.69D, user, new HashSet<>(), "Title",
                 new Date(2024 -1900, Calendar.JANUARY, 24));
 
         event = new EventEntity(1L, "test_invite_code",
@@ -46,7 +46,7 @@ public class EventEntityTest {
 
     @Test
     public void testExpensesGetter() {
-        List<ExpenseEntity> expectedExpenses = new ArrayList<>();
+        Set<ExpenseEntity> expectedExpenses = new HashSet<>();
 
         assertEquals(expectedExpenses, this.event.getExpenses());
     }
@@ -65,7 +65,7 @@ public class EventEntityTest {
 
     @Test
     public void testEqualsWithEqualObject(){
-        List<ExpenseEntity> expenses = new ArrayList<>();
+        Set<ExpenseEntity> expenses = new HashSet<>();
         Set<UserEntity> users = new HashSet<>();
 
         EventEntity eventEntity = new EventEntity(1L, "test_invite_code",
@@ -76,7 +76,7 @@ public class EventEntityTest {
 
     @Test
     public void testEqualsWhenNotEqual(){
-        List<ExpenseEntity> expenses = new ArrayList<>();
+        Set<ExpenseEntity> expenses = new HashSet<>();
         Set<UserEntity> users = new HashSet<>();
 
         EventEntity eventEntity = new EventEntity(2L, "test_invite_code",
@@ -87,7 +87,7 @@ public class EventEntityTest {
 
     @Test
     public void testSameHash(){
-        List<ExpenseEntity> expenses = new ArrayList<>();
+        Set<ExpenseEntity> expenses = new HashSet<>();
         Set<UserEntity> users = new HashSet<>();
 
         EventEntity eventEntity = new EventEntity(1L, "test_invite_code",
