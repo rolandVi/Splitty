@@ -19,6 +19,9 @@ import static com.google.inject.Guice.createInjector;
 
 
 import client.scenes.*;
+import client.scenes.admin.AdminLoginPageCtrl;
+import client.scenes.admin.AdminMainCtrl;
+import client.scenes.admin.AdminOverviewPageCtrl;
 import com.google.inject.Injector;
 
 import javafx.application.Application;
@@ -73,8 +76,10 @@ public class Main extends Application {
 
         var adminLoginPage = FXML.load(AdminLoginPageCtrl.class,
                 "client.scenes", "adminLoginPage.fxml");
+        var adminOverviewPage = FXML.load(AdminOverviewPageCtrl.class,
+                "client.scenes", "adminOverviewPage.fxml");
 
-        adminMainCtrl.initialize(adminOverviewStage, adminLoginPage);
+        adminMainCtrl.initialize(adminOverviewStage, adminLoginPage, adminOverviewPage);
     }
 
 }
