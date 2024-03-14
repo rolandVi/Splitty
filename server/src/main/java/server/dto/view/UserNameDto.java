@@ -27,28 +27,61 @@ public class UserNameDto {
         this.lastName = lastName;
     }
 
+    /**
+     * Retrieves the id of the user.
+     *
+     * @return the id of the user
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * Sets the id of the user.
+     *
+     * @param id the id of the user
+     * @return this UserNameDto instance
+     */
     public UserNameDto setId(Long id) {
         this.id = id;
         return this;
     }
 
+    /**
+     * Retrieves the first name of the user.
+     *
+     * @return the first name of the user
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /**
+     * Sets the first name of the user.
+     *
+     * @param firstName the first name of the user
+     * @return this UserNameDto instance
+     */
     public UserNameDto setFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
 
+    /**
+     * Retrieves the last name of the user.
+     *
+     * @return the last name of the user
+     */
     public String getLastName() {
         return lastName;
     }
 
+    /**
+     * Sets the last name of the user.
+     *
+     * @param lastName the last name of the user
+     * @return this UserNameDto instance
+     */
     public UserNameDto setLastName(String lastName) {
         this.lastName = lastName;
         return this;

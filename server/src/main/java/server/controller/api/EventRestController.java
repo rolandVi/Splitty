@@ -100,6 +100,10 @@ public class EventRestController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Get all events endpoint
+     * @return all events
+     */
     @GetMapping(value = {"", "/"})
     public ResponseEntity<List<EventOverviewDto>> getAllEvents(){
         return ResponseEntity.ok(this.eventService.getAllEvents());

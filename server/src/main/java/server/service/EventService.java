@@ -143,6 +143,10 @@ public class EventService {
         return true;
     }
 
+    /**
+     * Get all events
+     * @return all events from the database
+     */
     public List<EventOverviewDto> getAllEvents() {
         return this.eventRepository.findAll().stream()
                 .map(e -> this.modelMapper.map(e, EventOverviewDto.class))
