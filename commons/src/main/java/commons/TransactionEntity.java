@@ -7,7 +7,7 @@ import java.util.Objects;
 @Table(name = "transactions")
 public class TransactionEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
     private double money;

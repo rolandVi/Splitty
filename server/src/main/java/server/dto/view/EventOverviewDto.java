@@ -1,4 +1,4 @@
-package commons.dto.view;
+package server.dto.view;
 
 import java.util.Objects;
 
@@ -21,6 +21,12 @@ public class EventOverviewDto {
         this.id = id;
         this.title = title;
         this.inviteCode = inviteCode;
+    }
+
+    /**
+     * Empty constructor
+     */
+    public EventOverviewDto() {
     }
 
     /**
@@ -108,3 +114,4 @@ public class EventOverviewDto {
         return Objects.hash(id, title, inviteCode);
     }
 }
+

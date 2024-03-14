@@ -39,14 +39,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminLoginPageCtrl">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.admin.AdminLoginPageCtrl">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
-            <TextField fx:id="passwordField" layoutX="245.0" layoutY="204.0" />
-            <Label fx:id="passwordLabel" layoutX="269.0" layoutY="167.0" text="Enter the password" />
-            <Text fx:id="incorrectPasswordError" fill="RED" layoutX="238.0" layoutY="247.0" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Incorrect password! Try again..." wrappingWidth="163.388671875" />
-            <Button layoutX="294.0" layoutY="269.0" mnemonicParsing="false" onAction="#login" text="Login" />
+            <TextField fx:id="passwordField" layoutX="245.0" layoutY="157.0" />
+            <Label fx:id="passwordLabel" layoutX="269.0" layoutY="130.0" text="Enter the password" />
+            <Text fx:id="incorrectPasswordError" fill="RED" layoutX="238.0" layoutY="197.0" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Incorrect or expired password! Try again..." textAlignment="CENTER" wrappingWidth="163.388671875" />
+            <Button layoutX="297.0" layoutY="253.0" mnemonicParsing="false" onAction="#login" text="Login" />
+            <Button layoutX="261.0" layoutY="220.0" mnemonicParsing="false" onAction="#generatePassword" text="Generate password" />
       </children>
     </AnchorPane>
   </children>

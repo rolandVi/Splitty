@@ -1,7 +1,8 @@
 package client.scenes;
 
-import commons.dto.view.EventOverviewDto;
+
 import javafx.fxml.FXML;
+import server.dto.view.EventOverviewDto;
 
 import java.awt.*;
 

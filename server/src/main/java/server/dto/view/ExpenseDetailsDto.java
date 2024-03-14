@@ -1,4 +1,4 @@
-package commons.dto.view;
+package server.dto.view;
 
 import java.util.Date;
 import java.util.Objects;

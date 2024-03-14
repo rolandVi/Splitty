@@ -8,8 +8,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import server.controller.exception.ObjectNotFoundException;
-import commons.dto.view.EventDetailsDto;
-import commons.dto.view.EventTitleDto;
+import server.dto.view.EventDetailsDto;
+import server.dto.view.EventTitleDto;
 import server.repository.EventRepository;
 
 import java.util.ArrayList;
@@ -68,7 +68,8 @@ class EventServiceTest {
     void getById_WhenEventExists_ReturnsEventDetailsDto() {
         // Arrange
         long eventId = 1L;
-        EventEntity eventEntity = new EventEntity(eventId, "", "Test Event", new ArrayList<>(), new HashSet<>());
+        EventEntity eventEntity = new EventEntity(eventId, "", "Test Event",
+                new HashSet<>(), new HashSet<>());
         when(eventRepository.findById(eventId)).thenReturn(Optional.of(eventEntity));
 
         // Act
@@ -108,7 +109,8 @@ class EventServiceTest {
         long eventId = 1L;
         String newTitle = "Updated Event Title";
         EventTitleDto updatedTitleDto = new EventTitleDto(newTitle);
-        EventEntity eventEntity = new EventEntity(eventId, "", "Test Event", new ArrayList<>(), new HashSet<>());
+        EventEntity eventEntity = new EventEntity(eventId, "", "Test Event",
+                new HashSet<>(), new HashSet<>());
 
         when(eventRepository.getEventTitleById(eventId)).thenReturn("Test Event");
 
@@ -138,7 +140,8 @@ class EventServiceTest {
         // Arrange
         String eventTitle = "New Event";
         EventTitleDto eventTitleDto = new EventTitleDto(eventTitle);
-        EventEntity eventEntity = new EventEntity(1L, "", "Test Event", new ArrayList<>(), new HashSet<>());
+        EventEntity eventEntity = new EventEntity(1L, "", "Test Event",
+                new HashSet<>(), new HashSet<>());
         eventEntity.setTitle(eventTitle);
 
         when(eventRepository.save(any())).thenReturn(eventEntity);
@@ -156,7 +159,8 @@ class EventServiceTest {
     void createEvent_ReturnsCreatedEventTitleDto() {
         // Arrange
         String eventTitle = "New Event";
-        EventEntity eventEntity = new EventEntity(1L, "", "Test Event", new ArrayList<>(), new HashSet<>());
+        EventEntity eventEntity = new EventEntity(1L, "", "Test Event",
+                new HashSet<>(), new HashSet<>());
         eventEntity.setTitle(eventTitle);
 
         when(eventRepository.save(any())).thenReturn(eventEntity);
@@ -175,7 +179,8 @@ class EventServiceTest {
         // Arrange
         long eventId = 1L;
         long userId = 2L;
-        EventEntity eventEntity = new EventEntity(eventId, "", "Test Event", new ArrayList<>(), new HashSet<>());
+        EventEntity eventEntity = new EventEntity(eventId, "", "Test Event",
+                new HashSet<>(), new HashSet<>());
         when(eventRepository.findById(eventId)).thenReturn(Optional.of(eventEntity));
         when(userService.findById(userId)).thenReturn(new UserEntity());
 
@@ -206,7 +211,8 @@ class EventServiceTest {
         // Arrange
         long eventId = 1L;
         long userId = 2L;
-        EventEntity eventEntity = new EventEntity(eventId, "", "Test Event", new ArrayList<>(), new HashSet<>());
+        EventEntity eventEntity = new EventEntity(eventId, "", "Test Event",
+                new HashSet<>(), new HashSet<>());
 
         when(eventRepository.findById(eventId)).thenReturn(Optional.of(eventEntity));
         when(userService.findById(userId)).thenThrow(ObjectNotFoundException.class);
@@ -225,7 +231,8 @@ class EventServiceTest {
         long userId = 2L;
         Set<UserEntity> participants = new HashSet<>();
         participants.add(new UserEntity());
-        EventEntity eventEntity = new EventEntity(eventId, "", "Test Event", new ArrayList<>(), participants);
+        EventEntity eventEntity = new EventEntity(eventId, "",
+                "Test Event", new HashSet<>(), participants);
 
         when(eventRepository.findById(eventId)).thenReturn(Optional.of(eventEntity));
         when(userService.findById(userId)).thenReturn(new UserEntity());
@@ -258,7 +265,8 @@ class EventServiceTest {
         // Arrange
         long eventId = 1L;
         long userId = 2L;
-        EventEntity eventEntity = new EventEntity(eventId, "", "Test Event", new ArrayList<>(), new HashSet<>());
+        EventEntity eventEntity = new EventEntity(eventId,
+                "", "Test Event", new HashSet<>(), new HashSet<>());
 
         when(eventRepository.findById(eventId)).thenReturn(Optional.of(eventEntity));
         when(userService.findById(userId)).thenThrow(ObjectNotFoundException.class);
