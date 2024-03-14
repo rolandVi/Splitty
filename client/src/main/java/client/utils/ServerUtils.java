@@ -1,18 +1,17 @@
 package client.utils;
 
-import jakarta.ws.rs.client.ClientBuilder;
-import jakarta.ws.rs.core.GenericType;
-import jakarta.ws.rs.core.MediaType;
-import org.glassfish.jersey.client.ClientConfig;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.google.inject.Inject;
-
 import jakarta.ws.rs.client.Client;
-import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import server.dto.view.EventDetailsDto;
+import server.dto.view.EventOverviewDto;
+import server.dto.view.EventTitleDto;
+import server.exceptions.PasswordExpiredException;
 
 import java.io.IOException;
 import java.net.URI;
@@ -21,11 +20,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Optional;
-
-import server.dto.view.EventDetailsDto;
-import server.dto.view.EventOverviewDto;
-import server.dto.view.EventTitleDto;
-import server.exceptions.PasswordExpiredException;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -142,6 +136,11 @@ public class ServerUtils {
                 .get(EventDetailsDto.class);
     }
 
+    /**
+     * Get the events of a specific user
+     * @param id the id of the user
+     * @return the events
+     */
     public List<EventOverviewDto> getEventsByUser(long id){
         return client
                 .target(SERVER).path("/api/users/"+id+"/events")
@@ -150,6 +149,10 @@ public class ServerUtils {
                 .get(new GenericType<List<EventOverviewDto>>() {});
     }
 
+    /**
+     * Get all events
+     * @return all events
+     */
     public List<EventOverviewDto> getAllEvents(){
         return client
                 .target(SERVER).path("/api/events")

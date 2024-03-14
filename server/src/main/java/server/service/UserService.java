@@ -1,11 +1,11 @@
 package server.service;
 
 import commons.UserEntity;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 import server.dto.UserCreationDto;
 import server.dto.view.EventOverviewDto;
 import server.dto.view.UserNameDto;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
 import server.repository.UserRepository;
 
 import java.util.List;

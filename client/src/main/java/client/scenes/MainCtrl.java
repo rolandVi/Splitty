@@ -15,15 +15,14 @@
  */
 package client.scenes;
 
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.scene.Parent;
 import javafx.util.Pair;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Objects;
-
-import java.io.IOException;
 
 
 public class MainCtrl {

@@ -1,6 +1,5 @@
 package server.service;
 
-import server.exceptions.PasswordExpiredException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,9 +7,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import server.exceptions.PasswordExpiredException;
 
 import java.security.SecureRandom;
-
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;

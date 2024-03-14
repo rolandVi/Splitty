@@ -15,10 +15,9 @@
  */
 package client.scenes.admin;
 
-import client.scenes.admin.AdminLoginPageCtrl;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.scene.Parent;
 import javafx.util.Pair;
 
 

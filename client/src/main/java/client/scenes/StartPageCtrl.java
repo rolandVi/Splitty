@@ -1,17 +1,15 @@
 package client.scenes;
 
 import client.Main;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-import server.dto.BankAccountCreationDto;
-import server.dto.UserCreationDto;
+import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
-
-import com.google.inject.Inject;
+import server.dto.BankAccountCreationDto;
+import server.dto.UserCreationDto;
 
 import java.io.IOException;
 import java.net.URI;

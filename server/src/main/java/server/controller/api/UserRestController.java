@@ -1,11 +1,11 @@
 package server.controller.api;
 
-import server.dto.UserCreationDto;
-import server.dto.view.EventOverviewDto;
-import server.dto.view.UserNameDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import server.dto.UserCreationDto;
+import server.dto.view.EventOverviewDto;
+import server.dto.view.UserNameDto;
 import server.service.UserService;
 
 import java.util.List;

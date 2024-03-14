@@ -40,7 +40,6 @@ public class EventCreationCtrl {
 
     /**
      * Creates HTTP request to the server using the contents of text field as name of event
-     * @return HTTP response from the server
      */
     public void createEvent() {
         mainCtrl.showOverview();

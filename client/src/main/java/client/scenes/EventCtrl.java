@@ -2,27 +2,12 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-//import org.springframework.http.*;
-//import org.springframework.web.client.RestTemplate;
-//import org.springframework.util.MultiValueMap;
-
-
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import server.dto.view.EventDetailsDto;
-import server.dto.view.EventDetailsDto;
-import server.dto.view.EventTitleDto;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.Optional;
 
 public class EventCtrl {
     private final MainCtrl mainCtrl;
@@ -78,7 +63,6 @@ public class EventCtrl {
 
     /**
      * Will update the event name to the server and update the current event name
-     * @return HTTP response from the server
      * @throws JsonProcessingException when the objectMapper cannot properly
      * turn the EventTitleDto into Json format string
      */
