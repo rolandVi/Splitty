@@ -1,6 +1,7 @@
 package client.utils;
 
 import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 import org.glassfish.jersey.client.ClientConfig;
 
@@ -18,9 +19,11 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 import java.util.Optional;
 
 import server.dto.view.EventDetailsDto;
+import server.dto.view.EventOverviewDto;
 import server.dto.view.EventTitleDto;
 import server.exceptions.PasswordExpiredException;
 
@@ -137,6 +140,14 @@ public class ServerUtils {
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .get(EventDetailsDto.class);
+    }
+
+    public List<EventOverviewDto> getEventsByUser(long id){
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("/api/users/"+id+"/events")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<List<EventOverviewDto>>() {});
     }
 
 }

@@ -48,8 +48,9 @@ public class EventService {
      * @return the requested EventEntity
      */
     public EventDetailsDto getById(long id) {
-        return this.modelMapper.map(this.eventRepository.findById(id)
-                .orElseThrow(ObjectNotFoundException::new), EventDetailsDto.class);
+        var event=this.eventRepository.findById(id)
+                .orElseThrow(ObjectNotFoundException::new);
+        return this.modelMapper.map(event, EventDetailsDto.class);
     }
 
     /**

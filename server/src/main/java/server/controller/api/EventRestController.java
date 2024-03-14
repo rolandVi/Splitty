@@ -92,7 +92,7 @@ public class EventRestController {
      */
     @DeleteMapping("/{id}/delete")
     public ResponseEntity<Void> deleteParticipant(@PathVariable(name = "id") long eventId,
-                                                  @RequestBody long userId){
+                                                  @RequestBody long userId) {
         this.eventService.deleteParticipant(eventId, userId);
         return ResponseEntity.ok().build();
     }
