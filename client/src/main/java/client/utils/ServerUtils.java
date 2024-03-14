@@ -135,7 +135,7 @@ public class ServerUtils {
      * @return the event details
      */
     public EventDetailsDto getEventDetails(long id) {
-        return ClientBuilder.newClient(new ClientConfig())
+        return client
                 .target(SERVER).path("/api/events/" + id)
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
@@ -143,8 +143,16 @@ public class ServerUtils {
     }
 
     public List<EventOverviewDto> getEventsByUser(long id){
-        return ClientBuilder.newClient(new ClientConfig())
+        return client
                 .target(SERVER).path("/api/users/"+id+"/events")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<List<EventOverviewDto>>() {});
+    }
+
+    public List<EventOverviewDto> getAllEvents(){
+        return client
+                .target(SERVER).path("/api/events")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<List<EventOverviewDto>>() {});

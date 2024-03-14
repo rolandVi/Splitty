@@ -4,13 +4,17 @@ import commons.EventEntity;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import server.controller.exception.ObjectNotFoundException;
 import server.dto.view.EventDetailsDto;
+import server.dto.view.EventOverviewDto;
 import server.dto.view.EventTitleDto;
 import server.repository.EventRepository;
 
 import java.time.LocalTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EventService {
@@ -138,5 +142,11 @@ public class EventService {
         event.getParticipants().remove(this.userService.findById(userId));
         this.eventRepository.save(event);
         return true;
+    }
+
+    public List<EventOverviewDto> getAllEvents() {
+        return this.eventRepository.findAll().stream()
+                .map(e -> this.modelMapper.map(e, EventOverviewDto.class))
+                .collect(Collectors.toList());
     }
 }

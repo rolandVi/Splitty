@@ -5,8 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.dto.view.EventDetailsDto;
+import server.dto.view.EventOverviewDto;
 import server.dto.view.EventTitleDto;
 import server.service.EventService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/events")
@@ -95,6 +98,11 @@ public class EventRestController {
                                                   @RequestBody long userId) {
         this.eventService.deleteParticipant(eventId, userId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = {"", "/"})
+    public ResponseEntity<List<EventOverviewDto>> getAllEvents(){
+        return ResponseEntity.ok(this.eventService.getAllEvents());
     }
 
     /**

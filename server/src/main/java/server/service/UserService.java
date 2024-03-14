@@ -74,8 +74,8 @@ public class UserService {
      * @return the events of the user
      */
     public List<EventOverviewDto> getUserEvents(long id) {
-        return this.userRepository.getEventsByUserId(id).stream()
-                .map(e-> this.modelMapper.map(e, EventOverviewDto.class))
+        var result=this.userRepository.getEventsByUserId(id);
+        return result.stream().map(e-> this.modelMapper.map(e, EventOverviewDto.class))
                 .collect(Collectors.toList());
     }
 

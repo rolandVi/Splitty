@@ -27,6 +27,33 @@ public class UserNameDto {
         this.lastName = lastName;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public UserNameDto setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public UserNameDto setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public UserNameDto setLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
     /**
      * Equals to check for equality
      *
@@ -51,68 +78,5 @@ public class UserNameDto {
     @Override
     public int hashCode() {
         return Objects.hash(id, firstName, lastName);
-    }
-
-    /**
-     * Represents a person with a unique identifier (ID), first name, and last name.
-     */
-    public class Person {
-        private Long id;
-        private String firstName;
-        private String lastName;
-
-        /**
-         * Retrieves the unique identifier (ID) of the person.
-         *
-         * @return The ID of the person.
-         */
-        public Long getId() {
-            return id;
-        }
-
-        /**
-         * Sets the unique identifier (ID) of the person.
-         *
-         * @param id The ID to set for the person.
-         */
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        /**
-         * Retrieves the first name of the person.
-         *
-         * @return The first name of the person.
-         */
-        public String getFirstName() {
-            return firstName;
-        }
-
-        /**
-         * Sets the first name of the person.
-         *
-         * @param firstName The first name to set for the person.
-         */
-        public void setFirstName(String firstName) {
-            this.firstName = firstName;
-        }
-
-        /**
-         * Retrieves the last name of the person.
-         *
-         * @return The last name of the person.
-         */
-        public String getLastName() {
-            return lastName;
-        }
-
-        /**
-         * Sets the last name of the person.
-         *
-         * @param lastName The last name to set for the person.
-         */
-        public void setLastName(String lastName) {
-            this.lastName = lastName;
-        }
     }
 }
