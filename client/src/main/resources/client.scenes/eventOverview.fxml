@@ -32,7 +32,6 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="b" layoutX="458.0" layoutY="30.0" mnemonicParsing="false" onAction="#b" text="[Temporary button]" />
       <ScrollPane layoutX="39.0" layoutY="88.0" prefHeight="200.0" prefWidth="441.0">
          <content>
             <VBox fx:id="eventContainer" prefHeight="199.0" prefWidth="423.0">

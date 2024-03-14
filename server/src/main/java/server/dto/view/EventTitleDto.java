@@ -9,7 +9,6 @@ public class EventTitleDto {
 
     private Long id;
     @NotBlank
-    @Size(min = 1, max = 100, message = "event title should be max 100 characters")
     private String title;
 
     /**

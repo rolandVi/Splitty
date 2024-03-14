@@ -18,6 +18,7 @@ import java.util.Optional;
 
 public class NewParticipantCtrl {
     private final MainCtrl mainCtrl;
+
     @FXML
     public TextField firstNameField;
     @FXML
@@ -68,9 +69,9 @@ public class NewParticipantCtrl {
      * after new participant is added return to current event
      */
     public void showEvent(){
-        mainCtrl.b();
+//        mainCtrl.showEventDetails();
     }
-
+//TODO : We really need to review this class
     /**
      * Creates HTTP request to the server using the contents of text fields as user info
      * @return HTTP response from the server

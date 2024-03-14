@@ -85,11 +85,11 @@ public class ServerUtils {
      * @param eventName name of event
      * @return HTTP response from the server
      */
-    public Response createEvent(String eventName){
+    public EventTitleDto createEvent(String eventName){
         return client.target(SERVER).path("api/events/")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .post(Entity.entity(eventName, APPLICATION_JSON));
+                .post(Entity.entity(eventName, APPLICATION_JSON), EventTitleDto.class);
     }
     /**
      * Updates the event name to the server and update the current event name

@@ -156,13 +156,6 @@ public class MainCtrl {
         primaryStage.setTitle("New Expense");
 //        primaryStage.setScene(expensePage); expense page has not been created yet
     }
-    /**
-     * Temporary button to access event scene
-     */
-    public void b(){
-        primaryStage.setTitle(" Page");
-        primaryStage.setScene(eventPage);
-    }
 
 
     /**
@@ -174,6 +167,7 @@ public class MainCtrl {
         primaryStage.setTitle("Page");
         primaryStage.setScene(eventPage);
     }
+
     /**
      * Shows the add new participant scene
      */
@@ -181,4 +175,5 @@ public class MainCtrl {
         primaryStage.setTitle("newParticipant page");
         primaryStage.setScene(newParticipant);
     }
+
 }

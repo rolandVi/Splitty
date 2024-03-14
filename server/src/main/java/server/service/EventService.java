@@ -4,7 +4,6 @@ import commons.EventEntity;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import server.controller.exception.ObjectNotFoundException;
 import server.dto.view.EventDetailsDto;

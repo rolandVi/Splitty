@@ -23,8 +23,6 @@ public class EventOverviewCtrl {
     private final ServerUtils serverUtils;
 
     @FXML
-    public Button b; // temporary button to access event scene
-    @FXML
     public Button newEventButton;
     @FXML
     public Button paymentButton;
@@ -57,23 +55,11 @@ public class EventOverviewCtrl {
     public void payment(){
         mainCtrl.showPayment();
     }
-    /**
-     * temporary button to access event scene
-     */
-    public void b(){
-        mainCtrl.b();
-    }
 
     /**
      * Loads the events and displays them on the page
      */
     public void loadEvents() {
-//        var events=new ArrayList<String>();
-//        for (int i = 0; i < 5; i++) {
-//            events.add("event"+i);
-//        }
-//        var nodes=new Node[events.size()];
-
         long userId=1L; //TODO: get the id of the current user
 
         List<EventOverviewDto> events = this.serverUtils.getEventsByUser(userId);

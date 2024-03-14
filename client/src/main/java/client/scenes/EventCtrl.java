@@ -83,8 +83,9 @@ public class EventCtrl {
      * turn the EventTitleDto into Json format string
      */
     public void changeEventName() throws JsonProcessingException {
-        mainCtrl.showOverview();
         serverUtils.changeEventName(1L, changeTextField.getText());
+        this.eventNameLabel.setText(this.changeTextField.getText());
+        this.changeTextField.setText("");
     }
 
     /**
