@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.Main;
+import client.utils.ServerUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
@@ -21,6 +22,8 @@ import java.util.Optional;
 public class StartPageCtrl {
 
     private final MainCtrl mainCtrl;
+
+    private final ServerUtils serverUtils;
 
     @FXML
     public TextField serverField;
@@ -44,11 +47,13 @@ public class StartPageCtrl {
     /**
      * The constructor
      *
-     * @param mainCtrl The main controller
+     * @param mainCtrl    The main controller
+     * @param serverUtils the server utils
      */
     @Inject
-    public StartPageCtrl(MainCtrl mainCtrl) {
+    public StartPageCtrl(MainCtrl mainCtrl, ServerUtils serverUtils) {
         this.mainCtrl = mainCtrl;
+        this.serverUtils = serverUtils;
     }
 
     /**
@@ -58,11 +63,20 @@ public class StartPageCtrl {
         this.incorrectData.setVisible(false);
         this.errorMessage.setOpacity(0d);
 
+        UserCreationDto user = getUserEntity();
+
         String serverInserted = serverField.getText();
+        if (!this.serverUtils.checkUserValidity(user)){
+            this.incorrectData.setVisible(true);
+            return;
+        }
         Optional<HttpResponse<String>> bankAccountResponse = createBankAccount();
-        Optional<HttpResponse<String>> userResponse = createUser();
-        if (userResponse.isEmpty() || bankAccountResponse.isEmpty()
-            || userResponse.get().statusCode()==400 || bankAccountResponse.get().statusCode()==400){
+        if (bankAccountResponse.isEmpty() || bankAccountResponse.get().statusCode()==400){
+            this.incorrectData.setVisible(true);
+            return;
+        }
+        Optional<HttpResponse<String>> userResponse = createUser(user);
+        if (userResponse.isEmpty() || userResponse.get().statusCode()==400){
             this.incorrectData.setVisible(true);
             return;
         }
@@ -106,12 +120,13 @@ public class StartPageCtrl {
 
     /**
      * Creates HTTP request to the server using the contents of text fields as user info
+     * @param user th user to create
      * @return HTTP response from the server
      */
-    public Optional<HttpResponse<String>> createUser() throws IOException, InterruptedException {
+    public Optional<HttpResponse<String>> createUser(UserCreationDto user)
+            throws IOException, InterruptedException {
         String url = "http://localhost:8080";
         // Prepare user data from text fields
-        UserCreationDto user = getUserEntity();
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(user);
 

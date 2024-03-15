@@ -45,4 +45,15 @@ public class UserRestController {
         return ResponseEntity.ok(this.userService.getUserEvents(id));
     }
 
+    /**
+     * Endpoint ot check if user credentials are valid
+     * @param user the user credentials
+     * @return status code ok if they are valid
+     */
+    @PostMapping("/check")
+    public ResponseEntity<Void> checkUserCredentialsValidity(
+            @Valid @RequestBody UserCreationDto user){
+        return ResponseEntity.ok().build();
+    }
+
 }

@@ -8,6 +8,7 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import server.dto.UserCreationDto;
 import server.dto.view.EventDetailsDto;
 import server.dto.view.EventOverviewDto;
 import server.dto.view.EventTitleDto;
@@ -159,6 +160,20 @@ public class ServerUtils {
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<List<EventOverviewDto>>() {});
+    }
+
+    /**
+     * Check the validity of the given user credentials
+     * @param user the user credentials
+     * @return true if they are valid and false otherwise
+     */
+    public boolean checkUserValidity(UserCreationDto user){
+        return client
+                .target(SERVER).path("/api/users/check")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(user, APPLICATION_JSON))
+                .getStatus()!=400;
     }
 
 }
