@@ -1,4 +1,4 @@
-package commons.exceptions;
+package server.exceptions;
 
 public class PasswordExpiredException extends RuntimeException{
 

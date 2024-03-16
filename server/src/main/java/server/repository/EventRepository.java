@@ -20,12 +20,12 @@ public interface EventRepository extends JpaRepository<EventEntity, Long> {
     void updateEventTitleById(@Param(value = "id") long id,
                                                @Param(value="title") String title);
 
-    /**
-     * Gets the event title using the id from the database
-     * @param id the ID of the event
-     * @return the title of the corresponding ID as a String
-     */
-    @Query("select e.title from EventEntity e where e.id=:id")
-    String getEventTitleById(@Param(value = "id") long id);
+//    /**
+//     * Gets the event title using the id from the database
+//     * @param id the ID of the event
+//     * @return the title of the corresponding ID as a String
+//     */
+//    @Query("select e.title from EventEntity e where e.id=:id")
+//    String getEventTitleById(@Param(value = "id") long id);
 
 }

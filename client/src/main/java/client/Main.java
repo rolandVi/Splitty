@@ -15,17 +15,15 @@
  */
 package client;
 
-import static com.google.inject.Guice.createInjector;
-
-
 import client.scenes.*;
 import client.scenes.admin.AdminLoginPageCtrl;
 import client.scenes.admin.AdminMainCtrl;
 import client.scenes.admin.AdminOverviewPageCtrl;
 import com.google.inject.Injector;
-
 import javafx.application.Application;
 import javafx.stage.Stage;
+
+import static com.google.inject.Guice.createInjector;
 
 public class Main extends Application {
 
@@ -59,9 +57,14 @@ public class Main extends Application {
         var eventPage = FXML.load(EventCtrl.class, "client.scenes", "event.fxml");
         var eventCreationPage = FXML.load(EventCreationCtrl.class,
                 "client.scenes", "eventCreation.fxml");
+        var eventItemPage=FXML.load(EventItemCtrl.class,
+                "client.scenes", "eventItem.fxml");
+        var newParticipant = FXML.load(NewParticipantCtrl.class,
+                "client.scenes", "newParticipant.fxml");
 
         mainCtrl.initialize(primaryStage, startPage,
-                eventOverview, paymentPage, eventPage, eventCreationPage);
+                eventOverview, paymentPage,
+                eventPage, eventCreationPage, eventItemPage, newParticipant);
     }
 
     /**

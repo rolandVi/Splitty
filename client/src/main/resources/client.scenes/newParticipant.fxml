@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.NewParticipantCtrl">
+   <children>
+      <TextField fx:id="firstNameField" layoutX="222.0" layoutY="154.0" promptText="First name" />
+      <TextField fx:id="surNameField" layoutX="222.0" layoutY="187.0" promptText="Surname" />
+      <TextField fx:id="emailField" layoutX="221.0" layoutY="219.0" promptText="Email" />
+      <TextField fx:id="ibanField" layoutX="221.0" layoutY="250.0" promptText="IBAN" />
+      <TextField fx:id="bicField" layoutX="222.0" layoutY="283.0" promptText="BIC" />
+      <Label layoutX="208.0" layoutY="92.0" text="Add participant">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <Button fx:id="goBackButton" layoutX="27.0" layoutY="27.0" mnemonicParsing="false" onAction="#returnToOverview" onKeyPressed="#keyPressed" prefHeight="33.0" prefWidth="48.0" text="←">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Button>
+      <Button fx:id="addButton" layoutX="278.0" layoutY="328.0" mnemonicParsing="false" onAction="#createUser" text="Add" />
+   </children>
+</AnchorPane>

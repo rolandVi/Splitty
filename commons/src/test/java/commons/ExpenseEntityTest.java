@@ -3,7 +3,10 @@ package commons;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -15,7 +18,7 @@ class ExpenseEntityTest {
     public void setup(){
         UserEntity user = new UserEntity(1L, "FirstName", "LastName", "email@gmail.com",
                 new HashSet<>(), new BankAccountEntity());
-        this.expense = new ExpenseEntity(11L, 420.69D, user, new ArrayList<>(), "Title",
+        this.expense = new ExpenseEntity(11L, 420.69D, user, new HashSet<>(), "Title",
                 new Date(2024 -1900, Calendar.JANUARY, 24));
     }
 
@@ -42,7 +45,7 @@ class ExpenseEntityTest {
 
     @Test
     void getDebtors() {
-        assertEquals(new ArrayList<>(), this.expense.getDebtors());
+        assertEquals(new HashSet<>(), this.expense.getDebtors());
     }
 
     @Test
@@ -77,7 +80,7 @@ class ExpenseEntityTest {
     void addDebtor() {
         this.expense.addDebtor(new UserEntity(1L, "FirstName", "LastName",
                 "email@gmail.com", new HashSet<>(), new BankAccountEntity()));
-        assertEquals(new ArrayList<UserEntity>(List.of(new UserEntity(1L, "FirstName", "LastName",
+        assertEquals(new HashSet<>(List.of(new UserEntity(1L, "FirstName", "LastName",
                 "email@gmail.com", new HashSet<>(), new BankAccountEntity()))), this.expense.getDebtors());
     }
 
@@ -85,7 +88,7 @@ class ExpenseEntityTest {
     void testEquals() {
         UserEntity user = new UserEntity(1L, "FirstName", "LastName", "email@gmail.com",
                 new HashSet<>(), new BankAccountEntity());
-        assertEquals(this.expense, new ExpenseEntity(11L, 420.69D, user, new ArrayList<>(), "Title",
+        assertEquals(this.expense, new ExpenseEntity(11L, 420.69D, user, new HashSet<>(), "Title",
                 new Date(2024 -1900, Calendar.JANUARY, 24)));
     }
 

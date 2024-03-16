@@ -24,6 +24,7 @@ public class MyModule implements Module {
         binder.bind(PaymentPageCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AdminMainCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AdminLoginPageCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(EventItemCtrl.class).in(Scopes.NO_SCOPE);
         binder.bind(AdminOverviewPageCtrl.class).in(Scopes.SINGLETON);
         binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
         binder.bind(Client.class).toProvider(ClientProvider.class);

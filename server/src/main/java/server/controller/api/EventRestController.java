@@ -4,9 +4,12 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import commons.dto.view.EventDetailsDto;
-import commons.dto.view.EventTitleDto;
+import server.dto.view.EventDetailsDto;
+import server.dto.view.EventOverviewDto;
+import server.dto.view.EventTitleDto;
 import server.service.EventService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/events")
@@ -28,8 +31,8 @@ public class EventRestController {
      * @return ResponseEntity with badRequest status if invalid id was presented
      *         or ResponseEntity with the requested event as body
      */
-    @GetMapping(name = "/{id}", produces = "application/json")
-    public ResponseEntity<EventDetailsDto> getById(@PathVariable(name = "id") long id){
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<EventDetailsDto> getById(@PathVariable("id") long id){
         return ResponseEntity.ok(this.eventService.getById(id));
     }
 
@@ -92,9 +95,18 @@ public class EventRestController {
      */
     @DeleteMapping("/{id}/delete")
     public ResponseEntity<Void> deleteParticipant(@PathVariable(name = "id") long eventId,
-                                                  @RequestBody long userId){
+                                                  @RequestBody long userId) {
         this.eventService.deleteParticipant(eventId, userId);
         return ResponseEntity.ok().build();
+    }
+
+    /**
+     * Get all events endpoint
+     * @return all events
+     */
+    @GetMapping(value = {"", "/"})
+    public ResponseEntity<List<EventOverviewDto>> getAllEvents(){
+        return ResponseEntity.ok(this.eventService.getAllEvents());
     }
 
     /**

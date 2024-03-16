@@ -6,18 +6,19 @@ import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import server.controller.exception.ObjectNotFoundException;
-import commons.dto.view.EventDetailsDto;
-import commons.dto.view.EventTitleDto;
+import server.dto.view.EventDetailsDto;
+import server.dto.view.EventOverviewDto;
+import server.dto.view.EventTitleDto;
 import server.repository.EventRepository;
 
 import java.time.LocalTime;
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EventService {
     private final EventRepository eventRepository;
     private final ModelMapper modelMapper;
-
     private final UserService userService;
 
     /**
@@ -50,8 +51,9 @@ public class EventService {
      * @return the requested EventEntity
      */
     public EventDetailsDto getById(long id) {
-        return this.modelMapper.map(this.eventRepository.findById(id)
-                .orElseThrow(ObjectNotFoundException::new), EventDetailsDto.class);
+        var event=this.eventRepository.findById(id)
+                .orElseThrow(ObjectNotFoundException::new);
+        return this.modelMapper.map(event, EventDetailsDto.class);
     }
 
     /**
@@ -72,11 +74,11 @@ public class EventService {
     @Transactional
     public EventTitleDto updateById(long id, @Valid EventTitleDto title) {
         this.eventRepository.updateEventTitleById(id, title.getTitle());
-        String eventTitleById = this.eventRepository.getEventTitleById(id);
-        if (eventTitleById == null) throw new ObjectNotFoundException();
-        Optional<EventTitleDto> eventTitleDto = Optional.of(new EventTitleDto(eventTitleById));
-        return this.modelMapper
-                .map(eventTitleDto.orElseThrow(ObjectNotFoundException::new), EventTitleDto.class);
+        EventEntity eventTitleById = this.eventRepository.findById(id)
+                .orElseThrow(ObjectNotFoundException::new);
+        EventTitleDto result=this.modelMapper
+                .map(eventTitleById, EventTitleDto.class);
+        return result;
     }
 
     /**
@@ -139,5 +141,15 @@ public class EventService {
         event.getParticipants().remove(this.userService.findById(userId));
         this.eventRepository.save(event);
         return true;
+    }
+
+    /**
+     * Get all events
+     * @return all events from the database
+     */
+    public List<EventOverviewDto> getAllEvents() {
+        return this.eventRepository.findAll().stream()
+                .map(e -> this.modelMapper.map(e, EventOverviewDto.class))
+                .collect(Collectors.toList());
     }
 }

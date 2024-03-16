@@ -1,7 +1,6 @@
-package commons.dto.view;
+package server.dto.view;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
 
@@ -9,7 +8,6 @@ public class EventTitleDto {
 
     private Long id;
     @NotBlank
-    @Size(min = 1, max = 100, message = "event title should be max 100 characters")
     private String title;
 
     /**

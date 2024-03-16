@@ -1,26 +1,18 @@
 package client.scenes;
 
-import commons.dto.view.EventDetailsDto;
+import client.utils.ServerUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import commons.dto.view.EventTitleDto;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import server.dto.view.EventDetailsDto;
 
 public class EventCtrl implements MultiLanguages{
     private final MainCtrl mainCtrl;
+
+    private final ServerUtils serverUtils;
     @FXML
     public Label eventNameLabel;
     @FXML
@@ -37,17 +29,19 @@ public class EventCtrl implements MultiLanguages{
     public Label expensesLabel;
     @FXML
     public Button addExpenseButton;
+    @FXML
+    public Button addParticipant;
     private EventDetailsDto eventDetailsDto;
-    private final ObjectMapper objectMapper;
 
     /**
      * Injector for Event Controller
      * @param mainCtrl The Main Controller
+     * @param serverUtils The Server Utilities
      */
     @Inject
-    public EventCtrl(MainCtrl mainCtrl) {
+    public EventCtrl(MainCtrl mainCtrl, ServerUtils serverUtils) {
         this.mainCtrl = mainCtrl;
-        this.objectMapper = new ObjectMapper();
+        this.serverUtils = serverUtils;
     }
     /**
      * Updates the language of the scene using the resource bundle
@@ -74,39 +68,25 @@ public class EventCtrl implements MultiLanguages{
         mainCtrl.showOverview();
     }
 
+
+    /**
+     * Updates teh view information with the details of the event with the given id
+     * @param id the id of the event
+     */
+    public void init(long id) {
+        var event=serverUtils.getEventDetails(id);
+        eventNameLabel.setText(event.getTitle());
+    }
+
     /**
      * Will update the event name to the server and update the current event name
-     * @return HTTP response from the server
      * @throws JsonProcessingException when the objectMapper cannot properly
      * turn the EventTitleDto into Json format string
      */
-    public Optional<HttpResponse<String>> changeEventName() throws JsonProcessingException {
-        // Todo: replace temporary values with eventDetailsDto.getID() and host selected at start
-        long id = 1L;
-        String url = "http://localhost:8080";
-
-        // Create HTTP request body
-        EventTitleDto eventTitleDto = new EventTitleDto(changeTextField.getText());
-        String requestBody = objectMapper.writeValueAsString(eventTitleDto);
-
-        // Create HTTP request
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/api/events/" + id))
-                .header("Content-Type", "application/json")
-                .method("PATCH", HttpRequest.BodyPublishers.ofString(requestBody))
-                .build();
-
-        // Send HTTP request to server
-        // Receives HTTP response from server
-        Optional<HttpResponse<String>> response;
-        try {
-            response = Optional.of(HttpClient
-                    .newHttpClient()
-                    .send(request, HttpResponse.BodyHandlers.ofString()));
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return response;
+    public void changeEventName() throws JsonProcessingException {
+        serverUtils.changeEventName(1L, changeTextField.getText());
+        this.eventNameLabel.setText(this.changeTextField.getText());
+        this.changeTextField.setText("");
     }
 
     /**
@@ -131,4 +111,12 @@ public class EventCtrl implements MultiLanguages{
     public void setEventDetailsDto(EventDetailsDto eventDetailsDto) {
         this.eventDetailsDto = eventDetailsDto;
     }
+
+    /**
+     * shows the newParticipant scene
+     */
+    public void newParticipant(){
+        mainCtrl.showNewParticipant();
+    }
+
 }
