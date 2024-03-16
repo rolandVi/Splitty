@@ -2,13 +2,13 @@ package server.service;
 
 import commons.ExpenseEntity;
 import commons.UserEntity;
-import server.dto.view.ExpenseDetailsDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import server.controller.exception.ObjectNotFoundException;
+import server.dto.view.ExpenseDetailsDto;
 import server.repository.ExpenseRepository;
 
 import java.util.*;

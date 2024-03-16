@@ -1,0 +1,7 @@
+.eventBtn:hover{
+    -fx-background-color: #a8e1a8;
+}
+
+.eventBtn{
+    -fx-border-color: #a8e1a8;
+}

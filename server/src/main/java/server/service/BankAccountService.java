@@ -1,12 +1,12 @@
 package server.service;
 
 import commons.BankAccountEntity;
-import server.dto.BankAccountCreationDto;
-import server.dto.view.BankAccountDto;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import server.controller.exception.ObjectNotFoundException;
+import server.dto.BankAccountCreationDto;
+import server.dto.view.BankAccountDto;
 import server.repository.BankAccountRepository;
 
 @Service

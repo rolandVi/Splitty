@@ -44,6 +44,7 @@ public class EventCreationCtrl {
     public void createEvent() {
         mainCtrl.showOverview();
         serverUtils.createEvent(eventNameTextField.getText());
+        this.eventNameTextField.setText("");
     }
 
 

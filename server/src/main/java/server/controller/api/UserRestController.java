@@ -1,11 +1,11 @@
 package server.controller.api;
 
-import server.dto.UserCreationDto;
-import server.dto.view.EventOverviewDto;
-import server.dto.view.UserNameDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import server.dto.UserCreationDto;
+import server.dto.view.EventOverviewDto;
+import server.dto.view.UserNameDto;
 import server.service.UserService;
 
 import java.util.List;
@@ -43,6 +43,17 @@ public class UserRestController {
     @GetMapping("/{id}/events")
     public ResponseEntity<List<EventOverviewDto>> getUserEvents(@PathVariable(name = "id") long id){
         return ResponseEntity.ok(this.userService.getUserEvents(id));
+    }
+
+    /**
+     * Endpoint ot check if user credentials are valid
+     * @param user the user credentials
+     * @return status code ok if they are valid
+     */
+    @PostMapping("/check")
+    public ResponseEntity<Void> checkUserCredentialsValidity(
+            @Valid @RequestBody UserCreationDto user){
+        return ResponseEntity.ok().build();
     }
 
 }

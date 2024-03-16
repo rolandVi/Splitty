@@ -28,6 +28,66 @@ public class UserNameDto {
     }
 
     /**
+     * Retrieves the id of the user.
+     *
+     * @return the id of the user
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Sets the id of the user.
+     *
+     * @param id the id of the user
+     * @return this UserNameDto instance
+     */
+    public UserNameDto setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Retrieves the first name of the user.
+     *
+     * @return the first name of the user
+     */
+    public String getFirstName() {
+        return firstName;
+    }
+
+    /**
+     * Sets the first name of the user.
+     *
+     * @param firstName the first name of the user
+     * @return this UserNameDto instance
+     */
+    public UserNameDto setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    /**
+     * Retrieves the last name of the user.
+     *
+     * @return the last name of the user
+     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * Sets the last name of the user.
+     *
+     * @param lastName the last name of the user
+     * @return this UserNameDto instance
+     */
+    public UserNameDto setLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    /**
      * Equals to check for equality
      *
      * @param o the object to compare to
@@ -51,68 +111,5 @@ public class UserNameDto {
     @Override
     public int hashCode() {
         return Objects.hash(id, firstName, lastName);
-    }
-
-    /**
-     * Represents a person with a unique identifier (ID), first name, and last name.
-     */
-    public class Person {
-        private Long id;
-        private String firstName;
-        private String lastName;
-
-        /**
-         * Retrieves the unique identifier (ID) of the person.
-         *
-         * @return The ID of the person.
-         */
-        public Long getId() {
-            return id;
-        }
-
-        /**
-         * Sets the unique identifier (ID) of the person.
-         *
-         * @param id The ID to set for the person.
-         */
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        /**
-         * Retrieves the first name of the person.
-         *
-         * @return The first name of the person.
-         */
-        public String getFirstName() {
-            return firstName;
-        }
-
-        /**
-         * Sets the first name of the person.
-         *
-         * @param firstName The first name to set for the person.
-         */
-        public void setFirstName(String firstName) {
-            this.firstName = firstName;
-        }
-
-        /**
-         * Retrieves the last name of the person.
-         *
-         * @return The last name of the person.
-         */
-        public String getLastName() {
-            return lastName;
-        }
-
-        /**
-         * Sets the last name of the person.
-         *
-         * @param lastName The last name to set for the person.
-         */
-        public void setLastName(String lastName) {
-            this.lastName = lastName;
-        }
     }
 }

@@ -1,11 +1,11 @@
 package server.service;
 
 import commons.UserEntity;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 import server.dto.UserCreationDto;
 import server.dto.view.EventOverviewDto;
 import server.dto.view.UserNameDto;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
 import server.repository.UserRepository;
 
 import java.util.List;
@@ -74,8 +74,8 @@ public class UserService {
      * @return the events of the user
      */
     public List<EventOverviewDto> getUserEvents(long id) {
-        return this.userRepository.getEventsByUserId(id).stream()
-                .map(e-> this.modelMapper.map(e, EventOverviewDto.class))
+        var result=this.userRepository.getEventsByUserId(id);
+        return result.stream().map(e-> this.modelMapper.map(e, EventOverviewDto.class))
                 .collect(Collectors.toList());
     }
 

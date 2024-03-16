@@ -1,6 +1,5 @@
 package server.controller.api;
 
-import server.dto.view.UserNameDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -8,11 +7,12 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import server.dto.view.ExpenseDetailsDto;
+import server.dto.view.UserNameDto;
 import server.service.ExpenseService;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class ExpenseRestControllerTest {
