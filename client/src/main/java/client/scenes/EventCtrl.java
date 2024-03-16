@@ -9,6 +9,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import server.dto.view.EventDetailsDto;
 
+import java.util.ResourceBundle;
+
 public class EventCtrl implements MultiLanguages{
     private final MainCtrl mainCtrl;
 

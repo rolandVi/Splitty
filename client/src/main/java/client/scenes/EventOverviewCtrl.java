@@ -26,10 +26,11 @@ import java.util.ResourceBundle;
 
 public class EventOverviewCtrl implements MultiLanguages {
     private final MainCtrl mainCtrl;
-
-    @FXML
     private final ServerUtils serverUtils;
-
+    @FXML
+    public Label titleLabel;
+    @FXML
+    public Label newEventLabel;
     @FXML
     public Button newEventButton;
     @FXML
