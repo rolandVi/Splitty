@@ -77,4 +77,33 @@ public class UserEntityTest {
         UserEntity emptyUser = new UserEntity();
         assertNotNull(emptyUser);
     }
+
+    @Test
+    void testSetFirstName() {
+        String newFirstName = "Jane";
+        this.user.setFirstName(newFirstName);
+        assertEquals(newFirstName, this.user.getFirstName());
+    }
+
+    @Test
+    void testSetLastName() {
+        String newLastName = "Smith";
+        this.user.setLastName(newLastName);
+        assertEquals(newLastName, this.user.getLastName());
+    }
+
+    @Test
+    void testSetEmail() {
+        String newEmail = "janesmith@example.com";
+        this.user.setEmail(newEmail);
+        assertEquals(newEmail, this.user.getEmail());
+    }
+
+    @Test
+    void testSetBankAccount() {
+        BankAccountEntity newBankAccount = new BankAccountEntity();
+
+        this.user.setBankAccount(newBankAccount);
+        assertEquals(newBankAccount, this.user.getBankAccount());
+    }
 }
