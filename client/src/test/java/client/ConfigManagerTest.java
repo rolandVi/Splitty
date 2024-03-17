@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ConfigManagerTest {
 
-    private static final String TEST_CONFIG_PATH = "src/test/resources/testConfig.properties";
+    private static final String TEST_CONFIG_PATH = "testConfig.properties";
 
     private ConfigManager configManager;
 
