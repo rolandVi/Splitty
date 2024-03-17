@@ -10,7 +10,7 @@ import java.util.Locale;
 
 public class LanguageComboBoxUtil {
     static private final ConfigManager configManager =
-            new ConfigManager("src/main/resources/config.properties");
+            new ConfigManager("config.properties");
 
     /**
      * Configures the ComboBox (Dropdown menu)

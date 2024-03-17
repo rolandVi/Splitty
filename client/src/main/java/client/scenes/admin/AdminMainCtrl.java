@@ -51,7 +51,7 @@ public class AdminMainCtrl {
     public void initialize(Stage adminOverviewStage,
                            Pair<AdminLoginPageCtrl, Parent> loginPage,
                            Pair<AdminOverviewPageCtrl, Parent> overviewPage) {
-        this.config = new ConfigManager("src/main/resources/config.properties");
+        this.config = new ConfigManager("config.properties");
         this.adminOverviewStage = adminOverviewStage;
 
         this.loginPageCtrl = loginPage.getKey();
