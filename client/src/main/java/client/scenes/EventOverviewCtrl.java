@@ -62,7 +62,8 @@ public class EventOverviewCtrl {
     public void loadEvents() {
         long userId=1L; //TODO: get the id of the current user
 
-        List<EventOverviewDto> events = this.serverUtils.getEventsByUser(userId);
+//        List<EventOverviewDto> events = this.serverUtils.getEventsByUser(userId);
+        List<EventOverviewDto> events = this.serverUtils.getAllEvents();
         Node[] nodes=new Node[events.size()];
 
 
