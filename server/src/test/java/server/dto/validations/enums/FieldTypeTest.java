@@ -1,8 +1,6 @@
 package server.dto.validations.enums;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.dto.validations.enums.FieldType;
 import server.service.BankAccountService;
 import server.service.UserService;
 
