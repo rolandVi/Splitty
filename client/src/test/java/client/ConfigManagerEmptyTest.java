@@ -1,7 +1,6 @@
 package client;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -12,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ConfigManagerEmptyTest {
     private static final String TEST_CONFIG_PATH = "src/test/resources/testConfigEmpty.properties";
-    private ConfigManager configManager;
 
     @BeforeEach
         // We create a new test file before each test
@@ -35,7 +33,7 @@ public class ConfigManagerEmptyTest {
         }catch(IOException e){
             e.printStackTrace();
         }
-        configManager = new ConfigManager(TEST_CONFIG_PATH);
+        ConfigManager configManager = new ConfigManager(TEST_CONFIG_PATH);
         configManager.loadConfig();
         assertNull(configManager.getProperty("property1"));
         assertNull(configManager.getProperty("property2"));

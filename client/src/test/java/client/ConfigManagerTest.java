@@ -34,7 +34,7 @@ class ConfigManagerTest {
     @Test
     @Order(1)
     void getPropertyTest() {
-        try(FileWriter writer = new FileWriter(TEST_CONFIG_PATH);){
+        try(FileWriter writer = new FileWriter(TEST_CONFIG_PATH)){
             writer.write("property1=value1\nproperty2=value2");
         }catch(IOException e){
             e.printStackTrace();
