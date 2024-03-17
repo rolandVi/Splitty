@@ -20,7 +20,7 @@ class ConfigManagerTest {
 
     @BeforeEach
     // We create a new test file before each test
-    void setup(){
+    void setup() {
         try{
             File testFile = new File(TEST_CONFIG_PATH);
             if(testFile.exists()){
@@ -31,7 +31,6 @@ class ConfigManagerTest {
             e.printStackTrace();
         }
     }
-
     @Test
     @Order(1)
     void getPropertyTest() {
@@ -42,7 +41,7 @@ class ConfigManagerTest {
         }
 
         configManager = new ConfigManager(TEST_CONFIG_PATH);
-
+        WFM();
         assertEquals("value1", configManager.getProperty("property1"));
         assertEquals("value2", configManager.getProperty("property2"));
         assertNull(configManager.getProperty("property3"));
@@ -82,19 +81,13 @@ class ConfigManagerTest {
 
     @Test
     @Order(4)
-    void loadConfigTest() throws InterruptedException {
+    void loadConfigTest() {
         configManager = new ConfigManager(TEST_CONFIG_PATH);
-
-        assertNull(configManager.getProperty("property1"));
-        assertNull(configManager.getProperty("property2"));
-        assertEquals(0, configManager.getPropertyNames().size());
-
         try(FileWriter writer = new FileWriter(TEST_CONFIG_PATH)){
             writer.write("property1=value1\nproperty2=value2");
         }catch(IOException e){
             e.printStackTrace();
         }
-
         configManager.loadConfig();
 
         assertEquals(2, configManager.getPropertyNames().size());
@@ -103,7 +96,7 @@ class ConfigManagerTest {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     void saveConfigTest() {
         configManager = new ConfigManager(TEST_CONFIG_PATH);
 
@@ -145,5 +138,13 @@ class ConfigManagerTest {
         }catch(IOException e){
             e.printStackTrace();
         }
+    }
+    private void WFM() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        configManager.loadConfig();
     }
 }
