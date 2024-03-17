@@ -6,7 +6,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import server.controller.api.BankAccountRestController;
 import server.dto.BankAccountCreationDto;
 import server.dto.view.BankAccountDto;
 import server.service.BankAccountService;
