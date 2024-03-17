@@ -7,8 +7,12 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import server.dto.view.EventDetailsDto;
+import server.dto.view.EventOverviewDto;
 import server.dto.view.EventTitleDto;
 import server.service.EventService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -128,5 +132,22 @@ class EventRestControllerTest {
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         verify(eventService, times(1)).deleteParticipant(eventId, userId);
+    }
+
+    @Test
+    void getAllEvents() {
+        // Arrange
+        List<EventOverviewDto> expectedEvents = new ArrayList<>();
+        expectedEvents.add(new EventOverviewDto(/* Create your expected EventOverviewDto */));
+        expectedEvents.add(new EventOverviewDto(/* Create another expected EventOverviewDto */));
+        when(eventService.getAllEvents()).thenReturn(expectedEvents);
+
+        // Act
+        ResponseEntity<List<EventOverviewDto>> response = eventRestController.getAllEvents();
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedEvents, response.getBody());
+        verify(eventService, times(1)).getAllEvents();
     }
 }
