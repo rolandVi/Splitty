@@ -1,7 +1,6 @@
 package client;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -12,10 +11,10 @@ import java.util.Scanner;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ConfigManagerTest {
 
-    private static final String TEST_CONFIG_PATH = "testConfig.properties";
+    private static final String TEST_CONFIG_PATH = "src/test/resources/testConfig.properties";
 
     private ConfigManager configManager;
 
@@ -34,6 +33,7 @@ class ConfigManagerTest {
     }
 
     @Test
+    @Order(1)
     void getPropertyTest() {
         try(FileWriter writer = new FileWriter(TEST_CONFIG_PATH);){
             writer.write("property1=value1\nproperty2=value2");
@@ -49,6 +49,7 @@ class ConfigManagerTest {
     }
 
     @Test
+    @Order(2)
     void setPropertyTest() {
         configManager = new ConfigManager(TEST_CONFIG_PATH);
 
@@ -62,6 +63,7 @@ class ConfigManagerTest {
     }
 
     @Test
+    @Order(3)
     void getPropertyNamesTest() {
         configManager = new ConfigManager(TEST_CONFIG_PATH);
 
@@ -79,18 +81,19 @@ class ConfigManagerTest {
     }
 
     @Test
-    void loadConfigTest() {
+    @Order(4)
+    void loadConfigTest() throws InterruptedException {
         configManager = new ConfigManager(TEST_CONFIG_PATH);
-
-        try(FileWriter writer = new FileWriter(TEST_CONFIG_PATH);){
-            writer.write("property1=value1\nproperty2=value2");
-        }catch(IOException e){
-            e.printStackTrace();
-        }
 
         assertNull(configManager.getProperty("property1"));
         assertNull(configManager.getProperty("property2"));
         assertEquals(0, configManager.getPropertyNames().size());
+
+        try(FileWriter writer = new FileWriter(TEST_CONFIG_PATH)){
+            writer.write("property1=value1\nproperty2=value2");
+        }catch(IOException e){
+            e.printStackTrace();
+        }
 
         configManager.loadConfig();
 
@@ -100,6 +103,7 @@ class ConfigManagerTest {
     }
 
     @Test
+    @Order(5)
     void saveConfigTest() {
         configManager = new ConfigManager(TEST_CONFIG_PATH);
 

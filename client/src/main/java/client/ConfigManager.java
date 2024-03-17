@@ -1,6 +1,5 @@
 package client;
 
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,6 +9,7 @@ import java.util.Set;
 public class ConfigManager {
 
     private String configFilePath;
+    private String fileName;
 //    private final String CONFIG_FILE_PATH="client/src/main/resources/config.properties";
 
 //    private ConfigManager instance;
@@ -31,6 +31,8 @@ public class ConfigManager {
     public ConfigManager(String configFilePath){
         properties = new Properties();
         this.configFilePath = configFilePath;
+        String[] arr = configFilePath.split("/");
+        this.fileName = arr[arr.length-1];
         loadConfig();
     }
 
@@ -38,12 +40,7 @@ public class ConfigManager {
      * Loads the contents of the config file into the properties object
      */
     public void loadConfig(){
-//        try (FileReader reader = new FileReader(configFilePath)){
-//            properties.load(reader);
-//        }catch (IOException e){
-//            e.printStackTrace();
-//        }
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(configFilePath)) {
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(fileName)) {
             properties.load(inputStream);
         } catch (IOException e){
             e.printStackTrace();
