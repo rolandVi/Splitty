@@ -51,6 +51,10 @@ public class MainCtrl {
     private Scene newParticipant;
     private NewParticipantCtrl newParticipantCtrl;
 
+    private EnrollEventCtrl enrollEventCtrl;
+
+    private Scene enrollPage;
+
     /**
      * The initialize method
      *
@@ -60,8 +64,9 @@ public class MainCtrl {
      * @param paymentPage       The payment page
      * @param eventPage         The event page
      * @param eventCreationPage The create an event page
-     * @param eventItemPage
-     * @param newParticipant page to add new participants to event
+     * @param eventItemPage     The event items page
+     * @param newParticipant    page to add new participants to event
+     * @param enrollEventPage   The page to enroll into event
      */
     public void initialize(Stage primaryStage, Pair<StartPageCtrl, Parent> startPage,
                            Pair<EventOverviewCtrl, Parent> eventOverview,
@@ -69,7 +74,8 @@ public class MainCtrl {
                            Pair<EventCtrl, Parent> eventPage,
                            Pair<EventCreationCtrl, Parent> eventCreationPage,
                            Pair<EventItemCtrl, Parent> eventItemPage,
-                           Pair<NewParticipantCtrl, Parent> newParticipant) {
+                           Pair<NewParticipantCtrl, Parent> newParticipant,
+                           Pair<EnrollEventCtrl, Parent> enrollEventPage) {
         this.primaryStage = primaryStage;
 
         this.startPageCtrl = startPage.getKey();
@@ -79,6 +85,7 @@ public class MainCtrl {
         this.eventCreationCtrl = eventCreationPage.getKey();
         this.eventItemCtrl=eventItemPage.getKey();
         this.newParticipantCtrl = newParticipant.getKey();
+        this.enrollEventCtrl=enrollEventPage.getKey();
 
         this.startPage = new Scene(startPage.getValue());
         this.eventOverview = new Scene(eventOverview.getValue());
@@ -96,7 +103,7 @@ public class MainCtrl {
                         .toExternalForm());
 
         this.newParticipant = new Scene(newParticipant.getValue());
-
+        this.enrollPage=new Scene(enrollEventPage.getValue());
 
         showStart();
         primaryStage.show();
@@ -173,6 +180,11 @@ public class MainCtrl {
     public void showNewParticipant() {
         primaryStage.setTitle("newParticipant page");
         primaryStage.setScene(newParticipant);
+    }
+
+    public void showEnrollPage(){
+        primaryStage.setTitle("Enroll");
+        primaryStage.setScene(enrollPage);
     }
 
 }

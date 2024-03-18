@@ -23,7 +23,7 @@ public class UserEntity {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "participants")
     private Set<EventEntity> events;
 
     @OneToOne

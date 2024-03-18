@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface EventRepository extends JpaRepository<EventEntity, Long> {
 
@@ -27,5 +29,7 @@ public interface EventRepository extends JpaRepository<EventEntity, Long> {
 //     */
 //    @Query("select e.title from EventEntity e where e.id=:id")
 //    String getEventTitleById(@Param(value = "id") long id);
+
+    Optional<EventEntity> findEventEntityByInviteCode(String inviteCode);
 
 }

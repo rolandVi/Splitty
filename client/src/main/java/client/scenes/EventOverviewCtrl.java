@@ -30,6 +30,9 @@ public class EventOverviewCtrl {
     @FXML
     private VBox eventContainer;
 
+    @FXML
+    private Button enrollBtn;
+
 
     /**
      * Injector for EventOverviewCtrl
@@ -54,6 +57,10 @@ public class EventOverviewCtrl {
      */
     public void payment(){
         mainCtrl.showPayment();
+    }
+
+    public void showEnroll(){
+
     }
 
     /**
@@ -105,5 +112,9 @@ public class EventOverviewCtrl {
         ClipboardContent content = new ClipboardContent();
         content.putString(inviteCode);
         clipboard.setContent(content);
+    }
+
+    public void showEnrollPage(){
+        mainCtrl.showEnrollPage();
     }
 }
