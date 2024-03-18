@@ -1,6 +1,5 @@
 package client.utils;
 
-import client.ConfigManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
@@ -9,12 +8,10 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import javafx.scene.control.TextField;
 import server.dto.UserCreationDto;
 import server.dto.view.EventDetailsDto;
 import server.dto.view.EventOverviewDto;
 import server.dto.view.EventTitleDto;
-import server.dto.view.UserNameDto;
 import server.exceptions.PasswordExpiredException;
 
 import java.io.IOException;
@@ -179,7 +176,12 @@ public class ServerUtils {
                 .getStatus()!=400;
     }
 
+    /**
+     * Enrolls the current user to the event with this invite code
+     * @param inviteCode the invite code
+     */
     public void enrollInEvent(String inviteCode) {
+        //TODO: get the id of the current user (not hard code it)
         long currentUserId= 1L;
 
         client

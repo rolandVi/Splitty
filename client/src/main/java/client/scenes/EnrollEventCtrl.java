@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import org.checkerframework.checker.index.qual.IndexFor;
 
 import java.io.IOException;
 
@@ -20,14 +19,24 @@ public class EnrollEventCtrl {
     @FXML
     public Button returnButton;
 
+    /**
+     * Injector constructor
+     * @param mainCtrl teh main controller
+     * @param serverUtils the server utils class
+     */
     @Inject
     public EnrollEventCtrl(MainCtrl mainCtrl, ServerUtils serverUtils) {
         this.mainCtrl = mainCtrl;
         this.serverUtils = serverUtils;
     }
 
+    /**
+     * Enrolls the current user for the chosen event
+     */
     public void enrollInEvent(){
         serverUtils.enrollInEvent(inviteCodeField.getText().trim());
+        inviteCodeField.setText("");
+        this.mainCtrl.showOverview();
     }
 
     /**

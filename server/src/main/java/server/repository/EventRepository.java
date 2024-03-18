@@ -30,6 +30,11 @@ public interface EventRepository extends JpaRepository<EventEntity, Long> {
 //    @Query("select e.title from EventEntity e where e.id=:id")
 //    String getEventTitleById(@Param(value = "id") long id);
 
+    /**
+     * find the event entity with eh given invite code
+     * @param inviteCode the invite code
+     * @return the event entity
+     */
     Optional<EventEntity> findEventEntityByInviteCode(String inviteCode);
 
 }

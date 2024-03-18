@@ -182,6 +182,9 @@ public class MainCtrl {
         primaryStage.setScene(newParticipant);
     }
 
+    /**
+     * Shows the enroll page
+     */
     public void showEnrollPage(){
         primaryStage.setTitle("Enroll");
         primaryStage.setScene(enrollPage);

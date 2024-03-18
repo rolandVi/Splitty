@@ -59,10 +59,6 @@ public class EventOverviewCtrl {
         mainCtrl.showPayment();
     }
 
-    public void showEnroll(){
-
-    }
-
     /**
      * Loads the events and displays them on the page
      */
@@ -114,6 +110,9 @@ public class EventOverviewCtrl {
         clipboard.setContent(content);
     }
 
+    /**
+     * Shows the enroll page
+     */
     public void showEnrollPage(){
         mainCtrl.showEnrollPage();
     }
