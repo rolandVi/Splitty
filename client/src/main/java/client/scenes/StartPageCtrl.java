@@ -5,6 +5,7 @@ import client.utils.ServerUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -43,6 +44,9 @@ public class StartPageCtrl {
     @FXML
     public Label incorrectData;
 
+    @FXML
+    public Button tempSkip;
+
 
     /**
      * The constructor
@@ -54,6 +58,10 @@ public class StartPageCtrl {
     public StartPageCtrl(MainCtrl mainCtrl, ServerUtils serverUtils) {
         this.mainCtrl = mainCtrl;
         this.serverUtils = serverUtils;
+    }
+
+    public void skip(){
+        mainCtrl.showOverview();
     }
 
     /**

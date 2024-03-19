@@ -163,6 +163,7 @@ public class MainCtrl {
      */
     public void showEventDetails(long id) {
         eventCtrl.init(id);
+        //eventCtrl.initializeExpenseList();
         primaryStage.setTitle("Page");
         primaryStage.setScene(eventPage);
     }

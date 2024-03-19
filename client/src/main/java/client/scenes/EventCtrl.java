@@ -3,10 +3,14 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.inject.Inject;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.text.Text;
+import javafx.util.Callback;
 import server.dto.view.EventDetailsDto;
 
 public class EventCtrl {
@@ -26,12 +30,17 @@ public class EventCtrl {
     @FXML
     public Label inviteCode;
     @FXML
-    public Label expensesLabel;
+    public ListView<String> expenseList;
     @FXML
     public Button addExpenseButton;
     @FXML
     public Button addParticipant;
+    @FXML
+    public Text tempText;
+
     private EventDetailsDto eventDetailsDto;
+
+    private final EventCtrl self = this;
 
     /**
      * Injector for Event Controller
@@ -59,7 +68,22 @@ public class EventCtrl {
     public void init(long id) {
         var event=serverUtils.getEventDetails(id);
         eventNameLabel.setText(event.getTitle());
+        loadExpenseList();
     }
+
+    public void loadExpenseList(){
+        ObservableList<String> items = FXCollections.observableArrayList("1", "2", "3", "4");
+        expenseList.setCellFactory(new Callback<ListView<String>,
+                ListCell<String>>() {
+            @Override
+            public ListCell<String> call(ListView<String> param) {
+                return new ExpenseListCell(self);
+            }
+        });
+        expenseList.setItems(items);
+        //set amount of rows visible
+    }
+
 
     /**
      * Will update the event name to the server and update the current event name
@@ -102,4 +126,46 @@ public class EventCtrl {
         mainCtrl.showNewParticipant();
     }
 
+    private static class ExpenseListCell extends ListCell<String>{
+        private final Button button;
+
+        public ExpenseListCell(EventCtrl ctrl){
+            button = new Button("Edit");
+
+            button.setOnAction(event -> {
+                String item = getItem();
+                if (item!=null){
+                    ctrl.tempText.setText("You pressed: " + item);
+                }
+            });
+
+            HBox hBox = new HBox();
+            //HBox.setHgrow(text, Priority.ALWAYS);
+            //HBox.setMargin(button, new javafx.geometry.Insets(0, 0, 0, 1));
+
+            hBox.getChildren().add(new Text());
+            //System.out.println(getItem());
+//            if (getItem()!=null){
+//                hBox.getChildren().add(button);
+//            }
+            //hBox.getChildren().add(button);
+            hBox.setSpacing(10);
+
+            setGraphic(hBox);
+        }
+
+        @Override
+        protected void updateItem(String item, boolean empty){
+            super.updateItem(item, empty);
+            if (empty || item==null){
+                setText(null);
+            }else {
+                ((Text) ((HBox) getGraphic()).getChildren().get(0)).setText(item);
+                // I'm using the if statement, due to a weird error
+                if (((HBox) getGraphic()).getChildren().size()<2){
+                    ((HBox) getGraphic()).getChildren().add(button);
+                }
+            }
+        }
+    }
 }
