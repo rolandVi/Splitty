@@ -4,10 +4,18 @@ import client.utils.ServerUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import server.dto.view.EventDetailsDto;
+import server.dto.view.EventOverviewDto;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.List;
 
 public class EventCtrl {
     private final MainCtrl mainCtrl;
@@ -31,6 +39,8 @@ public class EventCtrl {
     public Button addExpenseButton;
     @FXML
     public Button addParticipant;
+    @FXML
+    private VBox participantsContainer;
     private EventDetailsDto eventDetailsDto;
 
     /**
@@ -100,6 +110,13 @@ public class EventCtrl {
      */
     public void newParticipant(){
         mainCtrl.showNewParticipant();
+    }
+
+    /**
+     * Loads the participants and displays them on the page
+     */
+    public void loadParticipants() {
+        return;
     }
 
 }

@@ -50,6 +50,8 @@ public class MainCtrl {
 
     private Scene newParticipant;
     private NewParticipantCtrl newParticipantCtrl;
+    private Scene participantItem;
+    private Scene participant;
 
     /**
      * The initialize method
@@ -62,6 +64,8 @@ public class MainCtrl {
      * @param eventCreationPage The create an event page
      * @param eventItemPage
      * @param newParticipant page to add new participants to event
+     * @param participantItemPage The participant item page
+     * @param participantPage The participant details page
      */
     public void initialize(Stage primaryStage, Pair<StartPageCtrl, Parent> startPage,
                            Pair<EventOverviewCtrl, Parent> eventOverview,
@@ -69,7 +73,9 @@ public class MainCtrl {
                            Pair<EventCtrl, Parent> eventPage,
                            Pair<EventCreationCtrl, Parent> eventCreationPage,
                            Pair<EventItemCtrl, Parent> eventItemPage,
-                           Pair<NewParticipantCtrl, Parent> newParticipant) {
+                           Pair<NewParticipantCtrl, Parent> newParticipant,
+                           Pair<ParticipantItemCtrl, Parent> participantItemPage,
+                           Pair<ParticipantCtrl, Parent> participantPage){
         this.primaryStage = primaryStage;
 
         this.startPageCtrl = startPage.getKey();
@@ -96,7 +102,8 @@ public class MainCtrl {
                         .toExternalForm());
 
         this.newParticipant = new Scene(newParticipant.getValue());
-
+        this.participantItem = new Scene(participantItemPage.getValue());
+        this.participant = new Scene(participantItemPage.getValue());
 
         showStart();
         primaryStage.show();
