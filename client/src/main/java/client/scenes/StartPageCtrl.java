@@ -60,6 +60,9 @@ public class StartPageCtrl {
         this.serverUtils = serverUtils;
     }
 
+    /**
+     * Temporary function for skipping the login page for development purposes
+     */
     public void skip(){
         mainCtrl.showOverview();
     }

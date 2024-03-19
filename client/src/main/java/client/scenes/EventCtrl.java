@@ -8,10 +8,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import server.dto.view.EventDetailsDto;
+import server.dto.view.ExpenseDetailsDto;
+
 
 public class EventCtrl {
     private final MainCtrl mainCtrl;
@@ -30,7 +31,7 @@ public class EventCtrl {
     @FXML
     public Label inviteCode;
     @FXML
-    public ListView<String> expenseList;
+    public ListView<ExpenseDetailsDto> expenseList;
     @FXML
     public Button addExpenseButton;
     @FXML
@@ -38,7 +39,7 @@ public class EventCtrl {
     @FXML
     public Text tempText;
 
-    private EventDetailsDto eventDetailsDto;
+    private EventDetailsDto event;
 
     private final EventCtrl self = this;
 
@@ -66,17 +67,39 @@ public class EventCtrl {
      * @param id the id of the event
      */
     public void init(long id) {
-        var event=serverUtils.getEventDetails(id);
+        event = serverUtils.getEventDetails(id);
         eventNameLabel.setText(event.getTitle());
         loadExpenseList();
     }
 
+    /**
+     * Load the list of expenses
+     */
     public void loadExpenseList(){
-        ObservableList<String> items = FXCollections.observableArrayList("1", "2", "3", "4");
-        expenseList.setCellFactory(new Callback<ListView<String>,
-                ListCell<String>>() {
+//        Set<UserNameDto> debtors = new HashSet<>();
+//        UserNameDto user2 = new UserNameDto(2L, "debtor1", "Surname1");
+//        UserNameDto user3 = new UserNameDto(3L, "debtor2", "Surname2");
+//        UserNameDto user1 = new UserNameDto(1L, "Tymon", "Slepowronski");
+//        Set<UserNameDto> participants = new HashSet<>();
+//        participants.add(user1);
+//        participants.add(user2);
+//        participants.add(user3);
+//        debtors.add(user2);
+//        debtors.add(user3);
+//        ExpenseDetailsDto expenseDetailsDto1 = new ExpenseDetailsDto(1L, 12.50, user1,
+//        "Test expense 1", debtors, new Date(2024, 03, 19) );
+//        ExpenseDetailsDto expenseDetailsDto2 = new ExpenseDetailsDto(1L, 12.50, user1,
+//        "Test expense 2", debtors, new Date(2024, 03, 19) );
+//        Set<ExpenseDetailsDto> expenses = new HashSet<>();
+//        expenses.add(expenseDetailsDto1);
+//        expenses.add(expenseDetailsDto2);
+//        event = new EventDetailsDto(1L, "ABC01", "Test Event 1", expenses, participants);
+        ObservableList<ExpenseDetailsDto> items = FXCollections
+                .observableArrayList(event.getExpenses());
+        expenseList.setCellFactory(new Callback<ListView<ExpenseDetailsDto>,
+                ListCell<ExpenseDetailsDto>>() {
             @Override
-            public ListCell<String> call(ListView<String> param) {
+            public ListCell<ExpenseDetailsDto> call(ListView<ExpenseDetailsDto> param) {
                 return new ExpenseListCell(self);
             }
         });
@@ -108,7 +131,7 @@ public class EventCtrl {
      * @return the Data transfer object of current event showing
      */
     public EventDetailsDto getEventDetailsDto() {
-        return eventDetailsDto;
+        return event;
     }
 
     /**
@@ -116,7 +139,7 @@ public class EventCtrl {
      * @param eventDetailsDto the Data transfer object of current event showing
      */
     public void setEventDetailsDto(EventDetailsDto eventDetailsDto) {
-        this.eventDetailsDto = eventDetailsDto;
+        this.event = eventDetailsDto;
     }
 
     /**
@@ -126,14 +149,14 @@ public class EventCtrl {
         mainCtrl.showNewParticipant();
     }
 
-    private static class ExpenseListCell extends ListCell<String>{
+    private static class ExpenseListCell extends ListCell<ExpenseDetailsDto>{
         private final Button button;
 
         public ExpenseListCell(EventCtrl ctrl){
             button = new Button("Edit");
 
             button.setOnAction(event -> {
-                String item = getItem();
+                ExpenseDetailsDto item = getItem();
                 if (item!=null){
                     ctrl.tempText.setText("You pressed: " + item);
                 }
@@ -155,12 +178,12 @@ public class EventCtrl {
         }
 
         @Override
-        protected void updateItem(String item, boolean empty){
+        protected void updateItem(ExpenseDetailsDto item, boolean empty){
             super.updateItem(item, empty);
             if (empty || item==null){
                 setText(null);
             }else {
-                ((Text) ((HBox) getGraphic()).getChildren().get(0)).setText(item);
+                ((Text) ((HBox) getGraphic()).getChildren().get(0)).setText(item.getTitle());
                 // I'm using the if statement, due to a weird error
                 if (((HBox) getGraphic()).getChildren().size()<2){
                     ((HBox) getGraphic()).getChildren().add(button);
