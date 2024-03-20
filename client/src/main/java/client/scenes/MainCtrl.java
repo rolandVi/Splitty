@@ -67,6 +67,7 @@ public class MainCtrl {
      * @param newParticipant page to add new participants to event
      * @param addBankInfo    page to add bank credentials to a user
      */
+    @SuppressWarnings("checkstyle:ParameterNumber")
     public void initialize(Stage primaryStage, Pair<StartPageCtrl, Parent> startPage,
                            Pair<EventOverviewCtrl, Parent> eventOverview,
                            Pair<PaymentPageCtrl, Parent> paymentPage,

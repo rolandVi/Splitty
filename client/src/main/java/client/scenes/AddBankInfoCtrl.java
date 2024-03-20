@@ -78,7 +78,9 @@ public class AddBankInfoCtrl {
         String bic = bicField.getText();
         BankAccountCreationDto bankAccount = new BankAccountCreationDto();
         bankAccount.setIban(iban);
-        bankAccount.setHolder("holder"); // Temporary solution since we can't link the bankAccount to the user yet we also don't have access to the email of the user.
+        bankAccount.setHolder("holder");
+        // Temporary solution since we can't link the bankAccount to the user
+        // ,yet we also don't have access to the email of the user.
         bankAccount.setBic(bic);
 
         ObjectMapper objectMapper = new ObjectMapper();
