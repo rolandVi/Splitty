@@ -73,7 +73,8 @@ public class MainCtrl {
                            Pair<EventCtrl, Parent> eventPage,
                            Pair<EventCreationCtrl, Parent> eventCreationPage,
                            Pair<EventItemCtrl, Parent> eventItemPage,
-                           Pair<NewParticipantCtrl, Parent> newParticipant, Pair<AddBankInfoCtrl, Parent> addBankInfo) {
+                           Pair<NewParticipantCtrl, Parent> newParticipant,
+                           Pair<AddBankInfoCtrl, Parent> addBankInfo) {
         this.primaryStage = primaryStage;
 
         this.startPageCtrl = startPage.getKey();
