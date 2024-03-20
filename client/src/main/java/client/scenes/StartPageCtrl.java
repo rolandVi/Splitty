@@ -70,11 +70,7 @@ public class StartPageCtrl {
             this.incorrectData.setVisible(true);
             return;
         }
-        Optional<HttpResponse<String>> bankAccountResponse = createBankAccount();
-        if (bankAccountResponse.isEmpty() || bankAccountResponse.get().statusCode()==400){
-            this.incorrectData.setVisible(true);
-            return;
-        }
+
         Optional<HttpResponse<String>> userResponse = createUser(user);
         if (userResponse.isEmpty() || userResponse.get().statusCode()==400){
             this.incorrectData.setVisible(true);

@@ -51,6 +51,9 @@ public class MainCtrl {
     private Scene newParticipant;
     private NewParticipantCtrl newParticipantCtrl;
 
+    private Scene addBankInfo;
+    private AddBankInfoCtrl addBankInfoCtrl;
+
     /**
      * The initialize method
      *
@@ -62,6 +65,7 @@ public class MainCtrl {
      * @param eventCreationPage The create an event page
      * @param eventItemPage
      * @param newParticipant page to add new participants to event
+     * @param addBankInfo    page to add bank credentials to a user
      */
     public void initialize(Stage primaryStage, Pair<StartPageCtrl, Parent> startPage,
                            Pair<EventOverviewCtrl, Parent> eventOverview,
@@ -69,7 +73,7 @@ public class MainCtrl {
                            Pair<EventCtrl, Parent> eventPage,
                            Pair<EventCreationCtrl, Parent> eventCreationPage,
                            Pair<EventItemCtrl, Parent> eventItemPage,
-                           Pair<NewParticipantCtrl, Parent> newParticipant) {
+                           Pair<NewParticipantCtrl, Parent> newParticipant, Pair<AddBankInfoCtrl, Parent> addBankInfo) {
         this.primaryStage = primaryStage;
 
         this.startPageCtrl = startPage.getKey();
@@ -79,6 +83,7 @@ public class MainCtrl {
         this.eventCreationCtrl = eventCreationPage.getKey();
         this.eventItemCtrl=eventItemPage.getKey();
         this.newParticipantCtrl = newParticipant.getKey();
+        this.addBankInfoCtrl = addBankInfo.getKey();
 
         this.startPage = new Scene(startPage.getValue());
         this.eventOverview = new Scene(eventOverview.getValue());
@@ -96,6 +101,8 @@ public class MainCtrl {
                         .toExternalForm());
 
         this.newParticipant = new Scene(newParticipant.getValue());
+
+        this.addBankInfo= new Scene(addBankInfo.getValue());
 
 
         showStart();
@@ -173,6 +180,14 @@ public class MainCtrl {
     public void showNewParticipant() {
         primaryStage.setTitle("newParticipant page");
         primaryStage.setScene(newParticipant);
+    }
+
+    /**
+     * Shows the add new bank scene
+     */
+    public void showAddNewBank(){
+        primaryStage.setTitle("addBankInfo page");
+        primaryStage.setScene(addBankInfo);
     }
 
 }
