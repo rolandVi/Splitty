@@ -15,10 +15,8 @@
  */
 package client.scenes;
 
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -51,62 +49,47 @@ public class MainCtrl {
     private Scene newParticipant;
     private NewParticipantCtrl newParticipantCtrl;
     private Scene participantItem;
-    private Scene participant;
+    private Scene participantEdit;
+    private ParticipantCtrl participantCtrl;
 
     /**
      * The initialize method
      *
-     * @param primaryStage      The primary Stage
-     * @param startPage         The start Page
-     * @param eventOverview     The event Overview
-     * @param paymentPage       The payment page
-     * @param eventPage         The event page
-     * @param eventCreationPage The create an event page
-     * @param eventItemPage
-     * @param newParticipant page to add new participants to event
-     * @param participantItemPage The participant item page
-     * @param participantPage The participant details page
+     * @param sceneInputWrapper Wrapper for the inputs because of high number of parameters
      */
-    public void initialize(Stage primaryStage, Pair<StartPageCtrl, Parent> startPage,
-                           Pair<EventOverviewCtrl, Parent> eventOverview,
-                           Pair<PaymentPageCtrl, Parent> paymentPage,
-                           Pair<EventCtrl, Parent> eventPage,
-                           Pair<EventCreationCtrl, Parent> eventCreationPage,
-                           Pair<EventItemCtrl, Parent> eventItemPage,
-                           Pair<NewParticipantCtrl, Parent> newParticipant,
-                           Pair<ParticipantItemCtrl, Parent> participantItemPage,
-                           Pair<ParticipantCtrl, Parent> participantPage){
-        this.primaryStage = primaryStage;
+    public void initialize(SceneInputWrapper sceneInputWrapper){
+        this.primaryStage = sceneInputWrapper.primaryStage();
 
-        this.startPageCtrl = startPage.getKey();
-        this.eventOverviewCtrl = eventOverview.getKey();
-        this.paymentPageCtrl = paymentPage.getKey();
-        this.eventCtrl = eventPage.getKey();
-        this.eventCreationCtrl = eventCreationPage.getKey();
-        this.eventItemCtrl=eventItemPage.getKey();
-        this.newParticipantCtrl = newParticipant.getKey();
+        this.startPageCtrl = sceneInputWrapper.startPage().getKey();
+        this.eventOverviewCtrl = sceneInputWrapper.eventOverview().getKey();
+        this.paymentPageCtrl = sceneInputWrapper.paymentPage().getKey();
+        this.eventCtrl = sceneInputWrapper.eventPage().getKey();
+        this.eventCreationCtrl = sceneInputWrapper.eventCreationPage().getKey();
+        this.eventItemCtrl= sceneInputWrapper.eventItemPage().getKey();
+        this.newParticipantCtrl = sceneInputWrapper.newParticipant().getKey();
+        this.participantCtrl = sceneInputWrapper.participantPage().getKey();
 
-        this.startPage = new Scene(startPage.getValue());
-        this.eventOverview = new Scene(eventOverview.getValue());
+        this.startPage = new Scene(sceneInputWrapper.startPage().getValue());
+        this.eventOverview = new Scene(sceneInputWrapper.eventOverview().getValue());
 
-        this.paymentPage = new Scene(paymentPage.getValue());
+        this.paymentPage = new Scene(sceneInputWrapper.paymentPage().getValue());
 
-        this.eventPage = new Scene(eventPage.getValue());
-        this.eventCreationPage = new Scene(eventCreationPage.getValue());
+        this.eventPage = new Scene(sceneInputWrapper.eventPage().getValue());
+        this.eventCreationPage = new Scene(sceneInputWrapper.eventCreationPage().getValue());
 
-        this.eventItemPage=new Scene(eventItemPage.getValue());
+        this.eventItemPage=new Scene(sceneInputWrapper.eventItemPage().getValue());
 
         this.eventOverview.getStylesheets().add(
                 Objects.requireNonNull(this.getClass().getClassLoader()
                         .getResource(Path.of("stylesheets", "eventOverview.css").toString()))
                         .toExternalForm());
 
-        this.newParticipant = new Scene(newParticipant.getValue());
-        this.participantItem = new Scene(participantItemPage.getValue());
-        this.participant = new Scene(participantItemPage.getValue());
+        this.newParticipant = new Scene(sceneInputWrapper.newParticipant().getValue());
+        this.participantItem = new Scene(sceneInputWrapper.participantItemPage().getValue());
+        this.participantEdit = new Scene(sceneInputWrapper.participantPage().getValue());
 
         showStart();
-        primaryStage.show();
+        sceneInputWrapper.primaryStage().show();
     }
 
     /**
@@ -182,4 +165,14 @@ public class MainCtrl {
         primaryStage.setScene(newParticipant);
     }
 
+    /**
+     * Creates the participant edit page and sets it as the scene
+     * @param parID id of the participant
+     * @param eventId id of the scene
+     */
+    public void showParticipantEdit(long parID, long eventId) {
+        participantCtrl.init(parID, eventId);
+        primaryStage.setTitle("editParticipant page");
+        primaryStage.setScene(participantEdit);
+    }
 }
