@@ -152,4 +152,5 @@ public class EventService {
                 .map(e -> this.modelMapper.map(e, EventOverviewDto.class))
                 .collect(Collectors.toList());
     }
+
 }
