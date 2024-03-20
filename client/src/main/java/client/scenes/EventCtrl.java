@@ -40,8 +40,11 @@ public class EventCtrl {
     @FXML
     public Button addParticipant;
     @FXML
+    public Button leaveButton;
+    @FXML
     private VBox participantsContainer;
     private EventDetailsDto eventDetailsDto;
+    private long eventId;
 
     /**
      * Injector for Event Controller
@@ -67,6 +70,7 @@ public class EventCtrl {
      * @param id the id of the event
      */
     public void init(long id) {
+        this.eventId = id;
         var event=serverUtils.getEventDetails(id);
         eventNameLabel.setText(event.getTitle());
     }
@@ -152,6 +156,12 @@ public class EventCtrl {
      */
     private void showParticipantEdit(long parID, long eventId) {
         mainCtrl.showParticipantEdit(parID, eventId);
+    }
+
+    private void leave(){
+        long userId = 1L; // TODO replace with the actual user id
+        serverUtils.deleteEventParticipant(this.eventId, userId);
+        returnToOverview();
     }
 
 }
