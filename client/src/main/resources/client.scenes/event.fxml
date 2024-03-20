@@ -29,10 +29,10 @@
       <Button fx:id="changeButton" layoutX="173.0" layoutY="59.0" mnemonicParsing="false" onAction="#changeEventName" text="Change" />
       <Button fx:id="returnButton" layoutX="534.0" layoutY="14.0" mnemonicParsing="false" onAction="#returnToOverview" text="Return" />
       <Button fx:id="addParticipant" layoutX="204.0" layoutY="101.0" mnemonicParsing="false" onAction="#newParticipant" text="Add participant" />
-      <ScrollPane layoutX="29.0" layoutY="168.0" prefHeight="176.0" prefWidth="276.0">
-        <content>
-          <AnchorPane fx:id="participantsContainer" minHeight="0.0" minWidth="0.0" prefHeight="176.0" prefWidth="260.0" />
-        </content>
+      <ScrollPane layoutX="29.0" layoutY="168.0" prefHeight="176.0" prefWidth="287.0">
+         <content>
+            <VBox fx:id="participantsContainer" prefHeight="175.0" prefWidth="270.0" />
+         </content>
       </ScrollPane>
       <Button fx:id="leaveButton" layoutX="30.0" layoutY="360.0" mnemonicParsing="false" onAction="#leave" text="Leave" />
    </children>

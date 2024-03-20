@@ -158,7 +158,10 @@ public class EventCtrl {
         mainCtrl.showParticipantEdit(parID, eventId);
     }
 
-    private void leave(){
+    /**
+     * The current user leaves the event
+     */
+    public void leave(){
         long userId = 1L; // TODO replace with the actual user id
         serverUtils.deleteEventParticipant(this.eventId, userId);
         returnToOverview();
