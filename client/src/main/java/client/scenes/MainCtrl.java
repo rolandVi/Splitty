@@ -56,6 +56,9 @@ public class MainCtrl {
 
     private Scene enrollPage;
 
+    private AddBankInfoCtrl bankInfoCtrl;
+    private Scene addBankInfo;
+
     /**
      * The initialize method
      *
@@ -72,6 +75,7 @@ public class MainCtrl {
         this.eventItemCtrl= sceneInputWrapper.eventItemPage().getKey();
         this.newParticipantCtrl = sceneInputWrapper.newParticipant().getKey();
         this.participantCtrl = sceneInputWrapper.participantPage().getKey();
+        this.bankInfoCtrl = sceneInputWrapper.bankInfoPage().getKey();
 
         this.startPage = new Scene(sceneInputWrapper.startPage().getValue());
         this.eventOverview = new Scene(sceneInputWrapper.eventOverview().getValue());
@@ -88,10 +92,14 @@ public class MainCtrl {
                         .getResource(Path.of("stylesheets", "eventOverview.css").toString()))
                         .toExternalForm());
 
+        this.newParticipant = new Scene(sceneInputWrapper.newParticipant().getValue());
+        this.participantItem = new Scene(sceneInputWrapper.participantItemPage().getValue());
+        this.participantEdit = new Scene(sceneInputWrapper.participantPage().getValue());
+        this.addBankInfo = new Scene(sceneInputWrapper.bankInfoPage().getValue());
         this.enrollPage=new Scene(sceneInputWrapper.enrollEventPage().getValue());
 
         showStart();
-        primaryStage.show();
+        sceneInputWrapper.primaryStage().show();
     }
 
     /**
@@ -104,9 +112,7 @@ public class MainCtrl {
         startPage.setOnKeyPressed(e -> {
             try {
                 startPageCtrl.keyPressed(e);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            } catch (InterruptedException ex) {
+            } catch (IOException | InterruptedException ex) {
                 throw new RuntimeException(ex);
             }
         });
@@ -184,5 +190,13 @@ public class MainCtrl {
         participantCtrl.init(parID, eventId);
         primaryStage.setTitle("editParticipant page");
         primaryStage.setScene(participantEdit);
+    }
+
+    /**
+     * Shows the addBankInfo page such that a user may add bank credentials to their accounts
+     */
+    public void showAddNewBank() {
+        primaryStage.setTitle("addNewBank page");
+        primaryStage.setScene(addBankInfo);
     }
 }
