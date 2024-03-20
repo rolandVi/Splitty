@@ -4,17 +4,18 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="300.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.Participant">
+<AnchorPane prefHeight="300.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ParticipantCtrl">
    <children>
-      <Button layoutX="120.0" layoutY="200.0" mnemonicParsing="false" text="Delete" />
-      <Label layoutX="90.0" layoutY="80.0" prefHeight="26.0" prefWidth="120.0" text="First_Name">
+      <Button fx:id="deleteButton" layoutX="120.0" layoutY="200.0" mnemonicParsing="false" onAction="#deleteParticipant" text="Delete" />
+      <Label fx:id="firstNameLabel" layoutX="90.0" layoutY="70.0" prefHeight="26.0" prefWidth="120.0" text="First_Name">
          <font>
             <Font size="24.0" />
          </font></Label>
-      <Label layoutX="90.0" layoutY="120.0" text="Last_Name">
+      <Label fx:id="lastNameLabel" layoutX="90.0" layoutY="120.0" text="Last_Name">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
+      <Button fx:id="returnButton" layoutX="234.0" layoutY="14.0" mnemonicParsing="false" onAction="#returnToOverview" text="Return" />
    </children>
 </AnchorPane>
