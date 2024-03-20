@@ -71,6 +71,7 @@ public class AdminMainCtrl {
     public void showAdminOverview(){
         adminOverviewStage.setTitle("Admin Overview");
         adminOverviewStage.setScene(overviewPage);
+        overviewPageCtrl.loadEvents();
     }
 
 
