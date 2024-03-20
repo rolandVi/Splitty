@@ -51,6 +51,9 @@ public class MainCtrl {
     private Scene newParticipant;
     private NewParticipantCtrl newParticipantCtrl;
 
+    private Scene newExpensePage;
+    private NewExpenseCtrl newExpenseCtrl;
+
     /**
      * The initialize method
      *
@@ -62,6 +65,7 @@ public class MainCtrl {
      * @param eventCreationPage The create an event page
      * @param eventItemPage
      * @param newParticipant page to add new participants to event
+     * @param newExpensePage the new expense page
      */
     public void initialize(Stage primaryStage, Pair<StartPageCtrl, Parent> startPage,
                            Pair<EventOverviewCtrl, Parent> eventOverview,
@@ -69,7 +73,8 @@ public class MainCtrl {
                            Pair<EventCtrl, Parent> eventPage,
                            Pair<EventCreationCtrl, Parent> eventCreationPage,
                            Pair<EventItemCtrl, Parent> eventItemPage,
-                           Pair<NewParticipantCtrl, Parent> newParticipant) {
+                           Pair<NewParticipantCtrl, Parent> newParticipant,
+                           Pair<NewExpenseCtrl, Parent> newExpensePage) {
         this.primaryStage = primaryStage;
 
         this.startPageCtrl = startPage.getKey();
@@ -79,6 +84,7 @@ public class MainCtrl {
         this.eventCreationCtrl = eventCreationPage.getKey();
         this.eventItemCtrl=eventItemPage.getKey();
         this.newParticipantCtrl = newParticipant.getKey();
+        this.newExpenseCtrl = newExpensePage.getKey();
 
         this.startPage = new Scene(startPage.getValue());
         this.eventOverview = new Scene(eventOverview.getValue());
@@ -89,6 +95,8 @@ public class MainCtrl {
         this.eventCreationPage = new Scene(eventCreationPage.getValue());
 
         this.eventItemPage=new Scene(eventItemPage.getValue());
+
+        this.newExpensePage = new Scene(newExpensePage.getValue());
 
         this.eventOverview.getStylesheets().add(
                 Objects.requireNonNull(this.getClass().getClassLoader()
@@ -153,7 +161,7 @@ public class MainCtrl {
      */
     public void showNewExpense(){
         primaryStage.setTitle("New Expense");
-//        primaryStage.setScene(expensePage); expense page has not been created yet
+        primaryStage.setScene(newExpensePage);
     }
 
 

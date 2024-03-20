@@ -41,17 +41,21 @@ public class EventCtrl {
 
     private EventDetailsDto event;
 
+    private NewExpenseCtrl newExpenseCtrl;
+
     private final EventCtrl self = this;
 
     /**
      * Injector for Event Controller
      * @param mainCtrl The Main Controller
      * @param serverUtils The Server Utilities
+     * @param newExpenseCtrl The new expense page controller
      */
     @Inject
-    public EventCtrl(MainCtrl mainCtrl, ServerUtils serverUtils) {
+    public EventCtrl(MainCtrl mainCtrl, ServerUtils serverUtils, NewExpenseCtrl newExpenseCtrl) {
         this.mainCtrl = mainCtrl;
         this.serverUtils = serverUtils;
+        this.newExpenseCtrl = newExpenseCtrl;
     }
 
     /**
@@ -123,6 +127,7 @@ public class EventCtrl {
      * Will show add expense scene, allowing the user to add an expense
      */
     public void addExpense(){
+        newExpenseCtrl.init(event);
         mainCtrl.showNewExpense();
     }
 
