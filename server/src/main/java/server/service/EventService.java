@@ -149,4 +149,6 @@ public class EventService {
         return this.eventRepository.findEventEntityByInviteCode(inviteCode)
                 .orElseThrow(ObjectNotFoundException::new);
     }
+
+
 }

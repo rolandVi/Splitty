@@ -101,14 +101,16 @@ public class UserService {
      * Leaves a particular event
      * @param eventId the event id
      * @param userId the user id
+     * @return  true if the operation was successful
      */
     @Transactional
-    public void leave(long eventId, long userId) {
+    public boolean leave(long eventId, long userId) {
         EventEntity event=eventService.findEntityById(eventId);
         UserEntity user= this.userRepository.findById(userId)
                         .orElseThrow(IllegalArgumentException::new);
         user.leave(event);
         this.userRepository.saveAndFlush(user);
+        return true;
     }
 
 
@@ -116,13 +118,15 @@ public class UserService {
      * Adding a participant in the event
      * @param inviteCode the event invite code
      * @param userId the user id
+     * @return  true if the operation was successful
      */
-    public void join(String inviteCode, long userId) {
+    public boolean join(String inviteCode, long userId) {
         UserEntity user=this.userRepository.findById(userId)
                 .orElseThrow(ObjectNotFoundException::new);
         EventEntity event = eventService.findEntityByInviteCode(inviteCode);
         user.join(event);
         userRepository.save(user);
+        return true;
     }
 
     /**
