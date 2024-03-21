@@ -71,6 +71,17 @@ public class AdminOverviewPageCtrl {
 
         orderButton.setGraphic(imageByOrder());
 
+        MenuItem titleMenuItem = new MenuItem("title", new ImageView(titleImg));
+        MenuItem creationMenuItem = new MenuItem("creation", new ImageView(creationTimeImg));
+        MenuItem lastModifiedMenuItem = new MenuItem("last modified",
+                new ImageView(lastModifiedImg));
+
+        titleMenuItem.setOnAction(this::handleOrderMenuItem);
+        creationMenuItem.setOnAction(this::handleOrderMenuItem);
+        lastModifiedMenuItem.setOnAction(this::handleOrderMenuItem);
+
+        orderButton.getItems().addAll(titleMenuItem, creationMenuItem, lastModifiedMenuItem);
+
     }
 
     /**
@@ -153,7 +164,7 @@ public class AdminOverviewPageCtrl {
         } else if (currentOrder.equals("creation")){
             events.sort(Comparator.comparing(EventOverviewDto::getCreationDate));
         } else if (currentOrder.equals("last modified")){
-            events.sort(Comparator.comparing(EventOverviewDto::getLastModifiedDate));
+            events.sort(Comparator.comparing(EventOverviewDto::getLastModifiedDate).reversed());
         } else {
             throw new RuntimeException("Impossible ordering");
         }
