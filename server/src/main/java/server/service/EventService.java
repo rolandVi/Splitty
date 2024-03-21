@@ -1,7 +1,6 @@
 package server.service;
 
 import commons.EventEntity;
-import commons.UserEntity;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -102,12 +101,11 @@ public class EventService {
      * @param title the title
      * @return the title and id of the event
      */
-    public EventTitleDto createEvent(String title) {
+    public EventEntity createEvent(String title) {
         EventEntity newEntity=new EventEntity();
         newEntity.setTitle(title);
         newEntity.setInviteCode(generateInviteCode(title));
-        EventEntity result=this.eventRepository.save(newEntity);
-        return modelMapper.map(result, EventTitleDto.class);
+        return this.eventRepository.save(newEntity);
     }
 
     /**

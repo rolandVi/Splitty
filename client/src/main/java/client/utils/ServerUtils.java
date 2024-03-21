@@ -8,6 +8,7 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import server.dto.CreatorToTitleDto;
 import server.dto.UserCreationDto;
 import server.dto.view.EventDetailsDto;
 import server.dto.view.EventOverviewDto;
@@ -20,6 +21,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.text.AttributedCharacterIterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,11 +83,11 @@ public class ServerUtils {
      * @param eventName name of event
      * @return HTTP response from the server
      */
-    public EventTitleDto createEvent(String eventName){
-        return client.target(SERVER).path("api/events/")
+    public EventTitleDto createEvent(String eventName, Long userId){
+        return client.target(SERVER).path("api/users/events/create")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .post(Entity.entity(eventName, APPLICATION_JSON), EventTitleDto.class);
+                .post(Entity.entity(new CreatorToTitleDto(userId, eventName), APPLICATION_JSON), EventTitleDto.class);
     }
     /**
      * Updates the event name to the server and update the current event name

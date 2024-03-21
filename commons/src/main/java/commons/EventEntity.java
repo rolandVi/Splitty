@@ -2,6 +2,7 @@ package commons;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -29,6 +30,8 @@ public class EventEntity {
      * Default constructor for JBA
      */
     public EventEntity() {
+        this.expenses=new HashSet<>();
+        this.participants=new HashSet<>();
     }
 
     /**

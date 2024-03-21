@@ -93,7 +93,7 @@ class EventRestControllerTest {
         // Arrange
         String title = "New Event";
         EventTitleDto expectedDto = new EventTitleDto(/* Create your expected DTO */);
-        when(eventService.createEvent(title)).thenReturn(expectedDto);
+        when(eventService.createEvent(title, creatorToTitleDto.getId())).thenReturn(expectedDto);
 
         // Act
         ResponseEntity<EventTitleDto> response = eventRestController.createEvent(title);
@@ -101,7 +101,7 @@ class EventRestControllerTest {
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedDto, response.getBody());
-        verify(eventService, times(1)).createEvent(title);
+        verify(eventService, times(1)).createEvent(title, creatorToTitleDto.getId());
     }
 
     @Test

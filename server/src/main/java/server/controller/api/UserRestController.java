@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import server.dto.CreatorToTitleDto;
 import server.dto.UserCreationDto;
 import server.dto.view.EventOverviewDto;
 import server.dto.view.EventTitleDto;
@@ -57,6 +58,17 @@ public class UserRestController {
     public ResponseEntity<Void> checkUserCredentialsValidity(
             @Valid @RequestBody UserCreationDto user){
         return ResponseEntity.ok().build();
+    }
+
+    /**
+     * Creates an event with the given title
+     * @param creatorToTitleDto the title of the new event along with the id of the creator
+     * @return the newly created event title and id
+     */
+    @PostMapping("/events/create")
+    public ResponseEntity<EventTitleDto> createEvent(
+            @Valid @RequestBody CreatorToTitleDto creatorToTitleDto){
+        return ResponseEntity.ok(this.userService.createEvent(creatorToTitleDto.getTitle(), creatorToTitleDto.getId()));
     }
 
     /**

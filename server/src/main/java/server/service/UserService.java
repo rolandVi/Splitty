@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import server.controller.exception.ObjectNotFoundException;
 import server.dto.UserCreationDto;
 import server.dto.view.EventOverviewDto;
+import server.dto.view.EventTitleDto;
 import server.dto.view.UserNameDto;
 import server.repository.UserRepository;
 
@@ -121,5 +122,17 @@ public class UserService {
         EventEntity event = eventService.findEntityByInviteCode(inviteCode);
         user.join(event);
         userRepository.save(user);
+    }
+
+    /**
+     * Creates and event and joins the creator
+     * @param title the title of the event
+     * @param id the id of the creator
+     * @return the created event
+     */
+    public EventTitleDto createEvent(String title, Long id) {
+        EventEntity event = this.eventService.createEvent(title);
+        this.join(event.getInviteCode(), id);
+        return this.modelMapper.map(event, EventTitleDto.class);
     }
 }

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import server.dto.CreatorToTitleDto;
 import server.dto.view.EventDetailsDto;
 import server.dto.view.EventOverviewDto;
 import server.dto.view.EventTitleDto;
@@ -64,16 +65,6 @@ public class EventRestController {
     public ResponseEntity<EventTitleDto> updateEventTitleById(@PathVariable(name = "id") long id,
                                                    @Valid @RequestBody EventTitleDto eventTitle){
         return ResponseEntity.ok(this.eventService.updateById(id, eventTitle));
-    }
-
-    /**
-     * Creates an event with the given title
-     * @param title the title of the new event
-     * @return the newly created event title and id
-     */
-    @PostMapping("/")
-    public ResponseEntity<EventTitleDto> createEvent(@NotBlank @RequestBody String title){
-        return ResponseEntity.ok(this.eventService.createEvent(title));
     }
 
     /**

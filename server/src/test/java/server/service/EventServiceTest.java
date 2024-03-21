@@ -165,7 +165,7 @@ class EventServiceTest {
         when(eventRepository.save(any())).thenReturn(eventEntity);
 
         // Act
-        EventTitleDto createdEvent = eventService.createEvent(eventTitle);
+        EventTitleDto createdEvent = eventService.createEvent(eventTitle, creatorToTitleDto.getId());
 
         // Assert
         assertNotNull(createdEvent);
