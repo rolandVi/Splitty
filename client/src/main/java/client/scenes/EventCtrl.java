@@ -17,7 +17,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
-public class EventCtrl {
+import java.util.ResourceBundle;
+
+public class EventCtrl implements MultiLanguages{
     private final MainCtrl mainCtrl;
 
     private final ServerUtils serverUtils;
@@ -55,6 +57,23 @@ public class EventCtrl {
     public EventCtrl(MainCtrl mainCtrl, ServerUtils serverUtils) {
         this.mainCtrl = mainCtrl;
         this.serverUtils = serverUtils;
+    }
+    /**
+     * Updates the language of the scene using the resource bundle
+     */
+    @Override
+    public void updateLanguage() {
+        try {
+            ResourceBundle lang = mainCtrl.lang;
+            returnButton.setText(lang.getString("return"));
+            changeTextField.setPromptText(lang.getString("event_name"));
+            changeButton.setText(lang.getString("change"));
+            participantsLabel.setText(lang.getString("participants"));
+            expensesLabel.setText(lang.getString("expenses"));
+            addExpenseButton.setText(lang.getString("add_expense"));
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
     /**

@@ -9,6 +9,7 @@ import java.util.Set;
 public class ConfigManager {
 
     private String configFilePath;
+    private String fileName;
 //    private final String CONFIG_FILE_PATH="client/src/main/resources/config.properties";
 
 //    private ConfigManager instance;
@@ -37,10 +38,14 @@ public class ConfigManager {
      * Loads the contents of the config file into the properties object
      */
     public void loadConfig(){
-        try (FileReader reader = new FileReader(configFilePath)){
-            properties.load(reader);
-        }catch (IOException e){
-            e.printStackTrace();
+        try (FileReader fileReader = new FileReader(configFilePath)) {
+            properties.load(fileReader);
+        } catch (IOException e){
+            if (configFilePath.contains("client/")) e.printStackTrace();
+            else {
+                configFilePath += "client/";
+                loadConfig();
+            }
         }
     }
 
@@ -51,7 +56,11 @@ public class ConfigManager {
         try (FileWriter writer = new FileWriter(configFilePath)){
             properties.store(writer, "Application configuration");
         }catch (IOException e){
-            e.printStackTrace();
+            if (configFilePath.contains("client/")) e.printStackTrace();
+            else {
+                configFilePath += "client/";
+                saveConfig();
+            }
         }
     }
 
