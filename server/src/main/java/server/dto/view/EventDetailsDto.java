@@ -22,8 +22,8 @@ public class EventDetailsDto {
      * Empty constructor
      */
     public EventDetailsDto() {
-        creationDate = new Date();
-        lastModifiedDate = new Date();
+        creationDate = new Date(System.currentTimeMillis());
+        lastModifiedDate = new Date(System.currentTimeMillis());
     }
 
     /**

@@ -20,10 +20,10 @@ public class EventEntity {
     @Column(nullable = false)
     private String title;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
 
     @OneToMany
@@ -36,8 +36,9 @@ public class EventEntity {
      * Default constructor for JBA
      */
     public EventEntity() {
-        creationDate = new Date();
-        lastModifiedDate = new Date();
+        creationDate = new Date(System.currentTimeMillis());
+        lastModifiedDate = new Date(System.currentTimeMillis());
+
     }
 
     /**

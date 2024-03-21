@@ -56,6 +56,7 @@ public class AdminOverviewPageCtrl {
 
     /**
      * Loads the order menu
+     * This method should be run only on startup!
      */
     public void loadOrder(){
         currentOrder = "title";
@@ -76,10 +77,12 @@ public class AdminOverviewPageCtrl {
         MenuItem lastModifiedMenuItem = new MenuItem("last modified",
                 new ImageView(lastModifiedImg));
 
+
         titleMenuItem.setOnAction(this::handleOrderMenuItem);
         creationMenuItem.setOnAction(this::handleOrderMenuItem);
         lastModifiedMenuItem.setOnAction(this::handleOrderMenuItem);
 
+        orderButton.getItems().removeAll();
         orderButton.getItems().addAll(titleMenuItem, creationMenuItem, lastModifiedMenuItem);
 
     }
@@ -159,6 +162,8 @@ public class AdminOverviewPageCtrl {
     private List<EventOverviewDto> getEventOverviewDtos() {
         List<EventOverviewDto> events = serverUtils.getAllEvents();
 
+
+
         if (currentOrder.equals("title")){
             events.sort(Comparator.comparing(EventOverviewDto::getTitle));
         } else if (currentOrder.equals("creation")){
@@ -168,6 +173,7 @@ public class AdminOverviewPageCtrl {
         } else {
             throw new RuntimeException("Impossible ordering");
         }
+
 
         return events;
     }
@@ -205,7 +211,7 @@ public class AdminOverviewPageCtrl {
      * //todo: remove this when web sockets are implemented
      */
     public void refresh(){
-        adminMainCtrl.showAdminOverview();
+        loadEvents();
     }
 
 
