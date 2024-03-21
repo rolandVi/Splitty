@@ -1,6 +1,7 @@
 package server.service;
 
 import commons.EventEntity;
+import commons.UserEntity;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -133,14 +134,16 @@ public class EventService {
      * @param userId the user id
      * @return true if it was deleted successfully and false otherwise
      */
+    @Transactional
     public boolean deleteParticipant(long eventId, long userId) {
-        if (this.eventRepository.existsById(eventId) ||
-                userService.existsById(userId)) return false;
+        if (!this.eventRepository.existsById(eventId) ||
+                !userService.existsById(userId)) return false;
 
         EventEntity event=this.eventRepository.findById(eventId)
                         .orElseThrow(IllegalArgumentException::new);
-        event.getParticipants().remove(this.userService.findById(userId));
-        this.eventRepository.save(event);
+        UserEntity user= this.userService.findById(userId);
+        event.removeParticipant(user);
+        this.eventRepository.saveAndFlush(event);
         return true;
     }
 
@@ -165,5 +168,4 @@ public class EventService {
                 .map(p -> this.modelMapper.map(p, UserNameDto.class))
                 .collect(Collectors.toList());
     }
-
 }

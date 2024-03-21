@@ -2,6 +2,7 @@ package server.controller.api;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.dto.view.EventDetailsDto;
@@ -89,19 +90,6 @@ public class EventRestController {
     }
 
     /**
-     * Delete a participant from an event
-     * @param eventId the id of the event
-     * @param userId the id of the user
-     * @return whether the operation was successful
-     */
-    @DeleteMapping("/{id}/delete")
-    public ResponseEntity<Void> deleteParticipant(@PathVariable(name = "id") long eventId,
-                                                  @RequestBody long userId) {
-        this.eventService.deleteParticipant(eventId, userId);
-        return ResponseEntity.ok().build();
-    }
-
-    /**
      * Get all events endpoint
      * @return all events
      */
@@ -110,9 +98,30 @@ public class EventRestController {
         return ResponseEntity.ok(this.eventService.getAllEvents());
     }
 
+    /**
+     * Endpoint to get the participants of an event
+     * @param eventId the event id
+     * @return the participants
+     */
     @GetMapping("/{id}/participants")
-    public ResponseEntity<List<UserNameDto>> getEventParticipants(@PathVariable(name = "id") long eventId){
+    public ResponseEntity<List<UserNameDto>> getEventParticipants(
+            @PathVariable(name = "id") long eventId){
         return ResponseEntity.ok(this.eventService.getEventParticipants(eventId));
+    }
+
+    /**
+     * Delete a participant
+     * @param eventId the event id
+     * @param userId the participant id
+     * @return whether the request was successful
+     */
+    @DeleteMapping("/{eventId}/participants/{participantId}/delete")
+    public ResponseEntity<Void> deleteParticipant(@PathVariable(name = "eventId") long eventId,
+                                            @PathVariable(name = "participantId") long userId) {
+        if (!this.eventService.deleteParticipant(eventId, userId)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok().build();
     }
 
 

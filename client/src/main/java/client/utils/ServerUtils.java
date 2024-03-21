@@ -206,7 +206,12 @@ public class ServerUtils {
      * @param participantId id of the specific participant
      */
     public void deleteEventParticipant(long eventId, long participantId) {
-        //TODO
+        client
+                .target(SERVER).path("/api/events/" + eventId
+                        + "/participants/"+participantId+"/delete")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .delete();
     }
     /**
      * Enrolls the current user to the event with this invite code
