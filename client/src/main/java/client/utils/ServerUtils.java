@@ -205,4 +205,18 @@ public class ServerUtils {
     public void deleteEventParticipant(long eventId, long participantId) {
         //TODO
     }
+    /**
+     * Enrolls the current user to the event with this invite code
+     * @param inviteCode the invite code
+     */
+    public void enrollInEvent(String inviteCode) {
+        //TODO: get the id of the current user (not hard code it)
+        long currentUserId= 1L;
+
+        client
+                .target(SERVER).path("/api/events/add/"+inviteCode)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(currentUserId, APPLICATION_JSON));
+    }
 }

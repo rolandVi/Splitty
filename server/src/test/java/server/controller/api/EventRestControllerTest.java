@@ -107,16 +107,17 @@ class EventRestControllerTest {
     @Test
     void testAddParticipant() {
         // Arrange
-        long eventId = 1L;
+        String invite = "1";
         long userId = 2L;
-        when(eventService.addParticipant(eventId, userId)).thenReturn(true);
+        when(eventService.addParticipant(invite, userId)).thenReturn(true);
 
         // Act
-        ResponseEntity<Void> response = eventRestController.addParticipant(eventId, userId);
+        ResponseEntity<Void> response = eventRestController.addParticipant(invite, userId);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        verify(eventService, times(1)).addParticipant(eventId, userId);
+
+        verify(eventService, times(1)).addParticipant(invite, userId);
     }
 
     @Test
