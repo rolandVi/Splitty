@@ -31,7 +31,7 @@ public class UserServiceTest {
     void setUp(){
         MockitoAnnotations.openMocks(this);
         ModelMapper mapper=new ModelMapper();
-        this.userService=new UserService(mapper,userRepository);
+        this.userService=new UserService(mapper,userRepository, eventService);
     }
 
     @Test

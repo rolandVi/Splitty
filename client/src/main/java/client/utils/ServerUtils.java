@@ -207,8 +207,8 @@ public class ServerUtils {
      */
     public void deleteEventParticipant(long eventId, long participantId) {
         client
-                .target(SERVER).path("/api/events/" + eventId
-                        + "/participants/"+participantId+"/delete")
+                .target(SERVER).path("/api/users/" + participantId
+                        + "/events/" + eventId + "/leave")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .delete();
@@ -222,7 +222,7 @@ public class ServerUtils {
         long currentUserId= 1L;
 
         client
-                .target(SERVER).path("/api/events/add/"+inviteCode)
+                .target(SERVER).path("/api/users/events/join/"+inviteCode)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(currentUserId, APPLICATION_JSON));

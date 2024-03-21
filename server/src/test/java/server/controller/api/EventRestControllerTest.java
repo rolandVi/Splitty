@@ -120,20 +120,20 @@ class EventRestControllerTest {
         verify(eventService, times(1)).addParticipant(invite, userId);
     }
 
-    @Test
-    void testDeleteParticipant() {
-        // Arrange
-        long eventId = 1L;
-        long userId = 2L;
-        when(eventService.deleteParticipant(eventId, userId)).thenReturn(true);
-
-        // Act
-        ResponseEntity<Void> response = eventRestController.deleteParticipant(eventId, userId);
-
-        // Assert
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        verify(eventService, times(1)).deleteParticipant(eventId, userId);
-    }
+//    @Test
+//    void testDeleteParticipant() {
+//        // Arrange
+//        long eventId = 1L;
+//        long userId = 2L;
+//        when(eventService.deleteParticipant(eventId, userId)).thenReturn(true);
+//
+//        // Act
+//        ResponseEntity<Void> response = eventRestController.deleteParticipant(eventId, userId);
+//
+//        // Assert
+//        assertEquals(HttpStatus.OK, response.getStatusCode());
+//        verify(eventService, times(1)).deleteParticipant(eventId, userId);
+//    }
 
     @Test
     void getAllEvents() {

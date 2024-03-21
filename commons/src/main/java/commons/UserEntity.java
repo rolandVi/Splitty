@@ -152,4 +152,14 @@ public class UserEntity {
     public void setBankAccount(BankAccountEntity bankAccount) {
         this.bankAccount = bankAccount;
     }
+
+    public void leave(EventEntity event) {
+        this.events.remove(event);
+        event.getParticipants().remove(this);
+    }
+
+    public void join(EventEntity event) {
+        this.events.add(event);
+        event.getParticipants().add(this);
+    }
 }

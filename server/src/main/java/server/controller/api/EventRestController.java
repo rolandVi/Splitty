@@ -77,19 +77,6 @@ public class EventRestController {
     }
 
     /**
-     * Adding a participant to an event
-     * @param inviteCode the event invite code
-     * @param userId the user id
-     * @return whether the operation was successful
-     */
-    @PostMapping("/add/{invite}")
-    public ResponseEntity<Void> addParticipant(@PathVariable(name = "invite") String inviteCode,
-                                               @RequestBody long userId){
-        this.eventService.addParticipant(inviteCode, userId);
-        return ResponseEntity.ok().build();
-    }
-
-    /**
      * Get all events endpoint
      * @return all events
      */
@@ -107,21 +94,6 @@ public class EventRestController {
     public ResponseEntity<List<UserNameDto>> getEventParticipants(
             @PathVariable(name = "id") long eventId){
         return ResponseEntity.ok(this.eventService.getEventParticipants(eventId));
-    }
-
-    /**
-     * Delete a participant
-     * @param eventId the event id
-     * @param userId the participant id
-     * @return whether the request was successful
-     */
-    @DeleteMapping("/{eventId}/participants/{participantId}/delete")
-    public ResponseEntity<Void> deleteParticipant(@PathVariable(name = "eventId") long eventId,
-                                            @PathVariable(name = "participantId") long userId) {
-        if (!this.eventService.deleteParticipant(eventId, userId)){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        return ResponseEntity.ok().build();
     }
 
 
