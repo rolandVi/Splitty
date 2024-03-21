@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import server.dto.view.EventDetailsDto;
 import server.dto.view.EventOverviewDto;
 import server.dto.view.EventTitleDto;
+import server.dto.view.UserNameDto;
 import server.service.EventService;
 
 import java.util.List;
@@ -108,6 +109,12 @@ public class EventRestController {
     public ResponseEntity<List<EventOverviewDto>> getAllEvents(){
         return ResponseEntity.ok(this.eventService.getAllEvents());
     }
+
+    @GetMapping("/{id}/participants")
+    public ResponseEntity<List<UserNameDto>> getEventParticipants(@PathVariable(name = "id") long eventId){
+        return ResponseEntity.ok(this.eventService.getEventParticipants(eventId));
+    }
+
 
     /**
      * Helper method to check if and id is valid

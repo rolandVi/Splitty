@@ -183,8 +183,11 @@ public class ServerUtils {
      * @return List of participants as List<UserNameDto>
      */
     public List<UserNameDto> getParticipantsByEvent(long eventId) {
-        return null;
-        // TODO
+        return client
+                .target(SERVER).path("/api/events/" + eventId + "/participants")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<List<UserNameDto>>() {});
     }
 
     /**

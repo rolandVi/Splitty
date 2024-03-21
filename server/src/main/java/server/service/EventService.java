@@ -9,6 +9,7 @@ import server.controller.exception.ObjectNotFoundException;
 import server.dto.view.EventDetailsDto;
 import server.dto.view.EventOverviewDto;
 import server.dto.view.EventTitleDto;
+import server.dto.view.UserNameDto;
 import server.repository.EventRepository;
 
 import java.time.LocalTime;
@@ -150,6 +151,18 @@ public class EventService {
     public List<EventOverviewDto> getAllEvents() {
         return this.eventRepository.findAll().stream()
                 .map(e -> this.modelMapper.map(e, EventOverviewDto.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Returns all the participants of a particular event
+     * @param eventId the event id
+     * @return the participants
+     */
+    public List<UserNameDto> getEventParticipants(long eventId) {
+        return this.eventRepository.findEventParticipants(eventId)
+                .stream()
+                .map(p -> this.modelMapper.map(p, UserNameDto.class))
                 .collect(Collectors.toList());
     }
 

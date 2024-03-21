@@ -90,8 +90,9 @@ public class EventCtrl implements MultiLanguages{
      */
     public void init(long id) {
         this.eventId = id;
-        var event=serverUtils.getEventDetails(id);
-        eventNameLabel.setText(event.getTitle());
+        this.eventDetailsDto=serverUtils.getEventDetails(id);
+        eventNameLabel.setText(eventDetailsDto.getTitle());
+        this.loadParticipants();
     }
 
     /**
@@ -160,7 +161,7 @@ public class EventCtrl implements MultiLanguages{
 
             Button eventButton = (Button) currentNode.lookup("#participantName");
             eventButton.setText(participants.get(i).getFirstName() + " "
-                    + participants.get(i).getFirstName());
+                    + participants.get(i).getLastName());
 
             eventButton.setOnAction(e -> showParticipantEdit(participant.getId(), eventId));
         }
