@@ -17,6 +17,7 @@ import server.exceptions.PasswordExpiredException;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -161,6 +162,35 @@ public class ServerUtils {
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<List<EventOverviewDto>>() {});
+    }
+
+    /**
+     * Deletes the event with the given ID from the server.
+     *
+     * @param eventId the ID of the event to delete
+     * @throws IOException       if an I/O error occurs when sending or receiving
+     *                           the HTTP request/response
+     * @throws URISyntaxException if the provided URI is invalid
+     * @throws InterruptedException if the thread is interrupted during the request
+     */
+    public void deleteEvent(long eventId) throws IOException,
+            URISyntaxException, InterruptedException {
+        // Create HTTP DELETE request
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI(SERVER + "api/events/" + eventId))
+                .header("Content-Type", "application/json")
+                .DELETE()
+                .build();
+
+        // Send HTTP DELETE request to server
+        HttpResponse<Void> response = HttpClient.newHttpClient()
+                .send(request, HttpResponse.BodyHandlers.discarding());
+
+        // Check the response status code
+        if (response.statusCode() != 200) {
+            throw new RuntimeException("Failed to delete event. Server returned status code: "
+                    + response.statusCode());
+        }
     }
 
     /**

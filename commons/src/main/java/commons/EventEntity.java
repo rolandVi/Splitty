@@ -2,6 +2,7 @@ package commons;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 
@@ -19,6 +20,12 @@ public class EventEntity {
     @Column(nullable = false)
     private String title;
 
+    @Temporal(TemporalType.DATE)
+    private Date creationDate;
+
+    @Temporal(TemporalType.DATE)
+    private Date lastModifiedDate;
+
     @OneToMany
     private Set<ExpenseEntity> expenses;
 
@@ -29,6 +36,8 @@ public class EventEntity {
      * Default constructor for JBA
      */
     public EventEntity() {
+        creationDate = new Date();
+        lastModifiedDate = new Date();
     }
 
     /**
@@ -38,15 +47,19 @@ public class EventEntity {
      * @param title The title of the event
      * @param expenses The list of expenses of the event
      * @param participants The list of users of the event
-     *
+     * @param creationDate the creation date
+     * @param lastModifiedDate the last modified date
      */
     public EventEntity(Long id, String inviteCode, String title,
-                       Set<ExpenseEntity> expenses, Set<UserEntity> participants) {
+                       Set<ExpenseEntity> expenses, Set<UserEntity> participants,
+                       Date creationDate, Date lastModifiedDate) {
         this.id = id;
         this.inviteCode = inviteCode;
         this.title = title;
         this.expenses = expenses;
         this.participants = participants;
+        this.creationDate = creationDate;
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     /**
@@ -64,6 +77,29 @@ public class EventEntity {
      */
     public String getInviteCode() {
         return inviteCode;
+    }
+
+    /**
+     * Get the creation Date
+     * @return The creation Date
+     */
+    public Date getCreationDate(){
+        return creationDate;
+    }
+
+    /**
+     * Get the last modified Date
+     * @return The last modified Date
+     */
+    public Date getLastModifiedDate(){
+        return lastModifiedDate;
+    }
+
+    /**
+     * updates the last modified date
+     */
+    public void updateLastModifiedDate(){
+        this.lastModifiedDate = new Date();
     }
 
     /**

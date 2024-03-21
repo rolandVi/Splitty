@@ -1,5 +1,6 @@
 package server.dto.view;
 
+import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 
@@ -9,6 +10,10 @@ public class EventDetailsDto {
 
     private String title;
 
+    private final Date creationDate;
+
+    private Date lastModifiedDate;
+
     private Set<ExpenseDetailsDto> expenses;
 
     private Set<UserNameDto> participants;
@@ -17,6 +22,8 @@ public class EventDetailsDto {
      * Empty constructor
      */
     public EventDetailsDto() {
+        creationDate = new Date();
+        lastModifiedDate = new Date();
     }
 
     /**
@@ -26,16 +33,22 @@ public class EventDetailsDto {
      * @param title teh title
      * @param expenses the expenses
      * @param participants the participants
+     * @param creationDate the creation date
+     * @param lastModifiedDate the last modified date
      */
     public EventDetailsDto(Long id, String inviteCode,
                            String title,
                            Set<ExpenseDetailsDto> expenses,
-                           Set<UserNameDto> participants) {
+                           Set<UserNameDto> participants,
+                           Date creationDate,
+                           Date lastModifiedDate) {
         this.id = id;
         this.inviteCode = inviteCode;
         this.title = title;
         this.expenses = expenses;
         this.participants = participants;
+        this.creationDate = creationDate;
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     /**
@@ -90,6 +103,29 @@ public class EventDetailsDto {
     public EventDetailsDto setTitle(String title) {
         this.title = title;
         return this;
+    }
+
+    /**
+     * Get the creation Date
+     * @return The creation Date
+     */
+    public Date getCreationDate(){
+        return creationDate;
+    }
+
+    /**
+     * Get the last modified Date
+     * @return The last modified Date
+     */
+    public Date getLastModifiedDate(){
+        return lastModifiedDate;
+    }
+
+    /**
+     * updates the last modified date
+     */
+    public void updateLastModifiedDate(){
+        this.lastModifiedDate = new Date();
     }
 
     /**

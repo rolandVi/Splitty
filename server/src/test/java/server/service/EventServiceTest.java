@@ -12,6 +12,7 @@ import server.dto.view.EventDetailsDto;
 import server.dto.view.EventTitleDto;
 import server.repository.EventRepository;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -68,7 +69,7 @@ class EventServiceTest {
         // Arrange
         long eventId = 1L;
         EventEntity eventEntity = new EventEntity(eventId, "", "Test Event",
-                new HashSet<>(), new HashSet<>());
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
         when(eventRepository.findById(eventId)).thenReturn(Optional.of(eventEntity));
 
         // Act
@@ -140,7 +141,7 @@ class EventServiceTest {
         String eventTitle = "New Event";
         EventTitleDto eventTitleDto = new EventTitleDto(eventTitle);
         EventEntity eventEntity = new EventEntity(1L, "", "Test Event",
-                new HashSet<>(), new HashSet<>());
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
         eventEntity.setTitle(eventTitle);
 
         when(eventRepository.save(any())).thenReturn(eventEntity);
@@ -159,7 +160,7 @@ class EventServiceTest {
         // Arrange
         String eventTitle = "New Event";
         EventEntity eventEntity = new EventEntity(1L, "", "Test Event",
-                new HashSet<>(), new HashSet<>());
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
         eventEntity.setTitle(eventTitle);
 
         when(eventRepository.save(any())).thenReturn(eventEntity);
@@ -179,7 +180,7 @@ class EventServiceTest {
         String invite = "1";
         long userId = 2L;
         EventEntity eventEntity = new EventEntity(1L, invite, "Test Event",
-                new HashSet<>(), new HashSet<>());
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
         when(eventRepository.findEventEntityByInviteCode(invite)).thenReturn(Optional.of(eventEntity));
         when(userService.findById(userId)).thenReturn(new UserEntity());
 
@@ -211,7 +212,7 @@ class EventServiceTest {
         String invite = "1";
         long userId = 2L;
         EventEntity eventEntity = new EventEntity(1L, invite, "Test Event",
-                new HashSet<>(), new HashSet<>());
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
 
         when(eventRepository.findEventEntityByInviteCode(invite)).thenReturn(Optional.of(eventEntity));
         when(userService.findById(userId)).thenThrow(ObjectNotFoundException.class);
@@ -231,7 +232,7 @@ class EventServiceTest {
         Set<UserEntity> participants = new HashSet<>();
         participants.add(new UserEntity());
         EventEntity eventEntity = new EventEntity(eventId, "",
-                "Test Event", new HashSet<>(), participants);
+                "Test Event", new HashSet<>(), participants, new Date(), new Date());
 
         when(eventRepository.findById(eventId)).thenReturn(Optional.of(eventEntity));
         when(userService.findById(userId)).thenReturn(new UserEntity());
@@ -265,7 +266,7 @@ class EventServiceTest {
         long eventId = 1L;
         long userId = 2L;
         EventEntity eventEntity = new EventEntity(eventId,
-                "", "Test Event", new HashSet<>(), new HashSet<>());
+                "", "Test Event", new HashSet<>(), new HashSet<>(), new Date(), new Date());
 
         when(eventRepository.findById(eventId)).thenReturn(Optional.of(eventEntity));
         when(userService.findById(userId)).thenThrow(ObjectNotFoundException.class);

@@ -28,7 +28,7 @@ public class EventEntityTest {
                 new Date(2024 -1900, Calendar.JANUARY, 24));
 
         event = new EventEntity(1L, "test_invite_code",
-                "title", expenses, users);
+                "title", expenses, users, new Date(), new Date());
     }
 
     @Test
@@ -72,7 +72,7 @@ public class EventEntityTest {
         Set<UserEntity> users = new HashSet<>();
 
         EventEntity eventEntity = new EventEntity(1L, "test_invite_code",
-                "title", expenses, users);
+                "title", expenses, users, new Date(), new Date());
 
         assertEquals(this.event, eventEntity);
     }
@@ -83,7 +83,7 @@ public class EventEntityTest {
         Set<UserEntity> users = new HashSet<>();
 
         EventEntity eventEntity = new EventEntity(2L, "test_invite_code",
-                "title", expenses, users);
+                "title", expenses, users, new Date(), new Date());
 
         assertNotEquals(this.event, eventEntity);
     }
@@ -94,7 +94,7 @@ public class EventEntityTest {
         Set<UserEntity> users = new HashSet<>();
 
         EventEntity eventEntity = new EventEntity(1L, "test_invite_code",
-                "title", expenses, users);
+                "title", expenses, users, new Date(), new Date());
 
         assertEquals(this.event.hashCode(), eventEntity.hashCode());
     }
@@ -139,6 +139,26 @@ public class EventEntityTest {
     void testEmptyConstructor() {
         EventEntity emptyEvent = new EventEntity();
         assertNotNull(emptyEvent);
+    }
+
+    @Test
+    public void testGetCreationDate() {
+        assertNotNull(event.getCreationDate());
+    }
+
+    @Test
+    public void testGetLastModifiedDate() {
+        assertNotNull(event.getLastModifiedDate());
+    }
+
+    @Test
+    public void testUpdateLastModifiedDate() throws InterruptedException {
+        Date initialLastModifiedDate = event.getLastModifiedDate();
+
+        Thread.sleep(1);
+
+        event.updateLastModifiedDate();
+        assertNotEquals(initialLastModifiedDate, event.getLastModifiedDate());
     }
 
 }
