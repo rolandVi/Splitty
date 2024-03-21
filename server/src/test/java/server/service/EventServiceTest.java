@@ -176,15 +176,15 @@ class EventServiceTest {
     @Test
     void addParticipant_WhenEventAndUserExist_AddsParticipant() {
         // Arrange
-        long eventId = 1L;
+        String invite = "1";
         long userId = 2L;
-        EventEntity eventEntity = new EventEntity(eventId, "", "Test Event",
+        EventEntity eventEntity = new EventEntity(1L, invite, "Test Event",
                 new HashSet<>(), new HashSet<>());
-        when(eventRepository.findById(eventId)).thenReturn(Optional.of(eventEntity));
+        when(eventRepository.findEventEntityByInviteCode(invite)).thenReturn(Optional.of(eventEntity));
         when(userService.findById(userId)).thenReturn(new UserEntity());
 
         // Act
-        boolean added = eventService.addParticipant(eventId, userId);
+        boolean added = eventService.addParticipant(invite, userId);
 
         // Assert
         assertTrue(added);
@@ -195,12 +195,12 @@ class EventServiceTest {
     @Test
     void addParticipant_WhenEventDoesNotExist_ThrowsObjectNotFoundException() {
         // Arrange
-        long eventId = 1L;
+        String invite = "1";
         long userId = 2L;
-        when(eventRepository.findById(eventId)).thenReturn(Optional.empty());
+        when(eventRepository.findEventEntityByInviteCode(invite)).thenReturn(Optional.empty());
 
         // Act and Assert
-        assertThrows(ObjectNotFoundException.class, () -> eventService.addParticipant(eventId, userId));
+        assertThrows(ObjectNotFoundException.class, () -> eventService.addParticipant(invite, userId));
 
         verify(eventRepository, never()).save(any());
     }
@@ -208,16 +208,16 @@ class EventServiceTest {
     @Test
     void addParticipant_WhenUserIsDifferent_ThrowsObjectNotFoundException() {
         // Arrange
-        long eventId = 1L;
+        String invite = "1";
         long userId = 2L;
-        EventEntity eventEntity = new EventEntity(eventId, "", "Test Event",
+        EventEntity eventEntity = new EventEntity(1L, invite, "Test Event",
                 new HashSet<>(), new HashSet<>());
 
-        when(eventRepository.findById(eventId)).thenReturn(Optional.of(eventEntity));
+        when(eventRepository.findEventEntityByInviteCode(invite)).thenReturn(Optional.of(eventEntity));
         when(userService.findById(userId)).thenThrow(ObjectNotFoundException.class);
 
         // Act
-        assertThrows(ObjectNotFoundException.class, () -> eventService.addParticipant(eventId, userId));
+        assertThrows(ObjectNotFoundException.class, () -> eventService.addParticipant(invite, userId));
 
         // Assert
         verify(eventRepository, never()).save(any());

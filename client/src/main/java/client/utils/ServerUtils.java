@@ -12,6 +12,7 @@ import server.dto.UserCreationDto;
 import server.dto.view.EventDetailsDto;
 import server.dto.view.EventOverviewDto;
 import server.dto.view.EventTitleDto;
+import server.dto.view.UserNameDto;
 import server.exceptions.PasswordExpiredException;
 
 import java.io.IOException;
@@ -176,4 +177,46 @@ public class ServerUtils {
                 .getStatus()!=400;
     }
 
+    /**
+     * Get the participants of a specific event
+     * @param eventId id of the event
+     * @return List of participants as List<UserNameDto>
+     */
+    public List<UserNameDto> getParticipantsByEvent(long eventId) {
+        return null;
+        // TODO
+    }
+
+    /**
+     * Get details of a specific participant
+     * @param id id of the participant
+     * @return the participant as UserNameDto
+     */
+    public UserNameDto getParticipantDetails(long id) {
+        return null;
+        //TODO
+    }
+
+    /**
+     * Delete a participant from an event
+     * @param eventId id of the specific event
+     * @param participantId id of the specific participant
+     */
+    public void deleteEventParticipant(long eventId, long participantId) {
+        //TODO
+    }
+    /**
+     * Enrolls the current user to the event with this invite code
+     * @param inviteCode the invite code
+     */
+    public void enrollInEvent(String inviteCode) {
+        //TODO: get the id of the current user (not hard code it)
+        long currentUserId= 1L;
+
+        client
+                .target(SERVER).path("/api/events/add/"+inviteCode)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(currentUserId, APPLICATION_JSON));
+    }
 }

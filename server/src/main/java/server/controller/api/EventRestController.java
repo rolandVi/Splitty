@@ -76,14 +76,14 @@ public class EventRestController {
 
     /**
      * Adding a participant to an event
-     * @param eventId the event id
+     * @param inviteCode the event invite code
      * @param userId the user id
      * @return whether the operation was successful
      */
-    @PatchMapping("/{id}/add")
-    public ResponseEntity<Void> addParticipant(@PathVariable(name = "id") long eventId,
+    @PostMapping("/add/{invite}")
+    public ResponseEntity<Void> addParticipant(@PathVariable(name = "invite") String inviteCode,
                                                @RequestBody long userId){
-        this.eventService.addParticipant(eventId, userId);
+        this.eventService.addParticipant(inviteCode, userId);
         return ResponseEntity.ok().build();
     }
 

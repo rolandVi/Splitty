@@ -113,13 +113,13 @@ public class EventService {
 
     /**
      * Adding a participant in the event
-     * @param eventId the event id
+     * @param inviteCode the event invite code
      * @param userId the user id
      * @return true if the operation was successful and false otherwise
      *
      */
-    public Boolean addParticipant(long eventId, long userId) {
-        EventEntity event=this.eventRepository.findById(eventId)
+    public Boolean addParticipant(String inviteCode, long userId) {
+        EventEntity event=this.eventRepository.findEventEntityByInviteCode(inviteCode)
                         .orElseThrow(ObjectNotFoundException::new);
         event.getParticipants().add(this.userService.findById(userId));
         this.eventRepository.save(event);
@@ -152,4 +152,5 @@ public class EventService {
                 .map(e -> this.modelMapper.map(e, EventOverviewDto.class))
                 .collect(Collectors.toList());
     }
+
 }

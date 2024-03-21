@@ -61,8 +61,8 @@ public class EventCreationCtrl implements MultiLanguages{
      * Creates HTTP request to the server using the contents of text field as name of event
      */
     public void createEvent() {
-        mainCtrl.showOverview();
         serverUtils.createEvent(eventNameTextField.getText());
+        mainCtrl.showOverview();
         this.eventNameTextField.setText("");
     }
 

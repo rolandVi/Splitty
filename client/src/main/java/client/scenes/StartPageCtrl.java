@@ -13,7 +13,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
-import server.dto.BankAccountCreationDto;
 import server.dto.UserCreationDto;
 
 import java.io.IOException;
@@ -94,11 +93,7 @@ public class StartPageCtrl implements MultiLanguages{
             this.incorrectData.setVisible(true);
             return;
         }
-        Optional<HttpResponse<String>> bankAccountResponse = createBankAccount();
-        if (bankAccountResponse.isEmpty() || bankAccountResponse.get().statusCode()==400){
-            this.incorrectData.setVisible(true);
-            return;
-        }
+
         Optional<HttpResponse<String>> userResponse = createUser(user);
         if (userResponse.isEmpty() || userResponse.get().statusCode()==400){
             this.incorrectData.setVisible(true);
@@ -188,46 +183,5 @@ public class StartPageCtrl implements MultiLanguages{
 
         return user;
     }
-
-    /**
-     * Creates HTTP request to the server using the contents of text fields as user info
-     * @return HTTP response from the server
-     */
-    public Optional<HttpResponse<String>> createBankAccount()
-            throws IOException, InterruptedException {
-        // Todo: replace temporary value with host selected at start
-        String url = "http://localhost:8080";
-
-        // Prepare user data from text fields
-        String holder = firstNameField.getText() + " " + surNameField.getText();
-        String iban = ibanField.getText();
-        String bic = bicField.getText();
-        BankAccountCreationDto bankAccount = new BankAccountCreationDto();
-        bankAccount.setIban(iban);
-        bankAccount.setHolder(holder); // Assuming holder's email is the same as the user's email
-        bankAccount.setBic(bic);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String requestBody = objectMapper.writeValueAsString(bankAccount);
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .uri(URI.create(url + "/api/bankaccounts/"))
-                .header("Content-Type", "application/json")
-                .build();
-
-        // Send HTTP request to server
-        // Return HTTP response from server
-        Optional<HttpResponse<String>> response;
-        try {
-            response = Optional.of(HttpClient
-                    .newHttpClient()
-                    .send(request, HttpResponse.BodyHandlers.ofString()));
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return response;
-    }
-
 
 }

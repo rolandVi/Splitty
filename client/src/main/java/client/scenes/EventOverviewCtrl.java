@@ -43,6 +43,9 @@ public class EventOverviewCtrl implements MultiLanguages {
     @FXML
     private VBox eventContainer;
 
+    @FXML
+    private Button enrollBtn;
+
 
     /**
      * Injector for EventOverviewCtrl
@@ -106,7 +109,8 @@ public class EventOverviewCtrl implements MultiLanguages {
     public void loadEvents() {
         long userId=1L; //TODO: get the id of the current user
 
-        List<EventOverviewDto> events = this.serverUtils.getEventsByUser(userId);
+//        List<EventOverviewDto> events = this.serverUtils.getEventsByUser(userId);
+        List<EventOverviewDto> events = this.serverUtils.getAllEvents();
         Node[] nodes=new Node[events.size()];
 
 
@@ -148,5 +152,12 @@ public class EventOverviewCtrl implements MultiLanguages {
         ClipboardContent content = new ClipboardContent();
         content.putString(inviteCode);
         clipboard.setContent(content);
+    }
+
+    /**
+     * Shows the enroll page
+     */
+    public void showEnrollPage(){
+        mainCtrl.showEnrollPage();
     }
 }

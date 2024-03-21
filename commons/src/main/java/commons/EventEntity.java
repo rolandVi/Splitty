@@ -22,7 +22,7 @@ public class EventEntity {
     @OneToMany
     private Set<ExpenseEntity> expenses;
 
-    @ManyToMany(mappedBy = "events")
+    @ManyToMany
     private Set<UserEntity> participants;
 
     /**
