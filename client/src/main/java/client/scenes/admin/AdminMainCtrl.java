@@ -102,6 +102,7 @@ public class AdminMainCtrl {
         adminOverviewStage.setTitle("Admin Overview");
         adminOverviewStage.setScene(overviewPage);
         overviewPageCtrl.loadEvents();
+        overviewPageCtrl.loadOrder();
     }
 
 }

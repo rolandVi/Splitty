@@ -3,6 +3,8 @@ package server.dto.view;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Date;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -13,8 +15,8 @@ class EventOverviewDtoTest {
 
     @BeforeEach
     void setUp() {
-        event1 = new EventOverviewDto(1L, "Birthday Party", "BDAY123");
-        event2 = new EventOverviewDto(1L, "Birthday Party", "BDAY123");
+        event1 = new EventOverviewDto(1L, "Birthday Party", "BDAY123", new Date(), new Date());
+        event2 = new EventOverviewDto(1L, "Birthday Party", "BDAY123", new Date(), new Date());
     }
 
     @Test
@@ -65,8 +67,10 @@ class EventOverviewDtoTest {
     @Test
     void testEquals() {
         // Arrange
-        EventOverviewDto sameEvent = new EventOverviewDto(1L, "Birthday Party", "BDAY123");
-        EventOverviewDto differentEvent = new EventOverviewDto(2L, "Wedding Celebration", "WEDD789");
+        EventOverviewDto sameEvent = new EventOverviewDto
+                (1L, "Birthday Party", "BDAY123", new Date(), new Date());
+        EventOverviewDto differentEvent = new EventOverviewDto
+                (2L, "Wedding Celebration", "WEDD789", new Date(), new Date());
 
         // Act & Assert
         assertEquals(event1, event2);
@@ -77,7 +81,8 @@ class EventOverviewDtoTest {
     @Test
     void testHashCode() {
         // Arrange
-        EventOverviewDto sameEvent = new EventOverviewDto(1L, "Birthday Party", "BDAY123");
+        EventOverviewDto sameEvent = new EventOverviewDto
+                (1L, "Birthday Party", "BDAY123", new Date(), new Date());
 
         // Act & Assert
         assertEquals(event1.hashCode(), event2.hashCode());

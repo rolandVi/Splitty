@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import server.dto.view.EventOverviewDto;
 import server.repository.UserRepository;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -76,7 +77,8 @@ public class UserServiceTest {
         long id = 1L;
         HashSet<EventEntity> events=new HashSet<>();
         for (long i = 0L; i < 5; i++) {
-            events.add(new EventEntity(i, "invCode"+i, "title"+i, new HashSet<>(), new HashSet<>()));
+            events.add(new EventEntity(i, "invCode"+i, "title"+i,
+                    new HashSet<>(), new HashSet<>(), new Date(), new Date()));
         }
         UserEntity user = new UserEntity(id, "vwv", "vwer", "vwer@fewr",
                 events, new BankAccountEntity("12345", "vwve", "1324"));

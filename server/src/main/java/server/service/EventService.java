@@ -76,6 +76,7 @@ public class EventService {
         this.eventRepository.updateEventTitleById(id, title.getTitle());
         EventEntity eventTitleById = this.eventRepository.findById(id)
                 .orElseThrow(ObjectNotFoundException::new);
+        eventTitleById.updateLastModifiedDate();
         EventTitleDto result=this.modelMapper
                 .map(eventTitleById, EventTitleDto.class);
         return result;
@@ -122,6 +123,7 @@ public class EventService {
         EventEntity event=this.eventRepository.findEventEntityByInviteCode(inviteCode)
                         .orElseThrow(ObjectNotFoundException::new);
         event.getParticipants().add(this.userService.findById(userId));
+        event.updateLastModifiedDate();
         this.eventRepository.save(event);
         return true;
     }
@@ -139,6 +141,7 @@ public class EventService {
         EventEntity event=this.eventRepository.findById(eventId)
                         .orElseThrow(IllegalArgumentException::new);
         event.getParticipants().remove(this.userService.findById(userId));
+        event.updateLastModifiedDate();
         this.eventRepository.save(event);
         return true;
     }
