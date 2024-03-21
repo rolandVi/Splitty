@@ -21,7 +21,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.text.AttributedCharacterIterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,13 +80,15 @@ public class ServerUtils {
     /**
      * Creates HTTP request to the server using the parameter as name of event
      * @param eventName name of event
+     * @param userId the user id
      * @return HTTP response from the server
      */
     public EventTitleDto createEvent(String eventName, Long userId){
         return client.target(SERVER).path("api/users/events/create")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .post(Entity.entity(new CreatorToTitleDto(userId, eventName), APPLICATION_JSON), EventTitleDto.class);
+                .post(Entity.entity(new CreatorToTitleDto(userId, eventName), APPLICATION_JSON),
+                        EventTitleDto.class);
     }
     /**
      * Updates the event name to the server and update the current event name

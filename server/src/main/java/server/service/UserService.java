@@ -29,9 +29,10 @@ public class UserService {
      *
      * @param modelMapper    the ModelMapper injected by Spring
      * @param userRepository the UserRepository injected by Spring
-     * @param eventService
+     * @param eventService the event service
      */
-    public UserService(ModelMapper modelMapper, UserRepository userRepository, EventService eventService) {
+    public UserService(ModelMapper modelMapper, UserRepository userRepository,
+                       EventService eventService) {
         this.modelMapper = modelMapper;
         this.userRepository = userRepository;
         this.eventService = eventService;

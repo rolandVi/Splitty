@@ -153,11 +153,19 @@ public class UserEntity {
         this.bankAccount = bankAccount;
     }
 
+    /**
+     * leaves a particular event
+     * @param event the event to leave
+     */
     public void leave(EventEntity event) {
         this.events.remove(event);
         event.getParticipants().remove(this);
     }
 
+    /**
+     * join an event
+     * @param event the event
+     */
     public void join(EventEntity event) {
         this.events.add(event);
         event.getParticipants().add(this);

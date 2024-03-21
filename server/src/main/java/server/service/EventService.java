@@ -130,11 +130,21 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * find an event by its id
+     * @param eventId the event id
+     * @return the event
+     */
     public EventEntity findEntityById(long eventId) {
         return this.eventRepository.findById(eventId)
                 .orElseThrow(ObjectNotFoundException::new);
     }
 
+    /**
+     * finds an event by its invite code
+     * @param inviteCode the invite code
+     * @return the event
+     */
     public EventEntity findEntityByInviteCode(String inviteCode) {
         return this.eventRepository.findEventEntityByInviteCode(inviteCode)
                 .orElseThrow(ObjectNotFoundException::new);

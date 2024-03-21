@@ -1,11 +1,8 @@
 package server.controller.api;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.dto.CreatorToTitleDto;
 import server.dto.view.EventDetailsDto;
 import server.dto.view.EventOverviewDto;
 import server.dto.view.EventTitleDto;
