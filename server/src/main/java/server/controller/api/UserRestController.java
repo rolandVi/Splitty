@@ -63,7 +63,7 @@ public class UserRestController {
      * @param creatorToTitleDto the title of the new event along with the id of the creator
      * @return the newly created event title and id
      */
-    @PostMapping("/events/create")
+    @PostMapping("/events")
     public ResponseEntity<EventTitleDto> createEvent(
             @Valid @RequestBody CreatorToTitleDto creatorToTitleDto){
         return ResponseEntity.ok(this.userService.createEvent(creatorToTitleDto.getTitle(),
@@ -76,7 +76,7 @@ public class UserRestController {
      * @param userId the user id
      * @return whether the operation was successful
      */
-    @PostMapping("/events/join/{invite}")
+    @PostMapping("/events/{invite}")
     public ResponseEntity<Void> joinEvent(@PathVariable(name = "invite") String inviteCode,
                                                @RequestBody long userId){
         this.userService.join(inviteCode, userId);
@@ -89,7 +89,7 @@ public class UserRestController {
      * @param userId the participant id
      * @return whether the request was successful
      */
-    @DeleteMapping("/{userId}/events/{eventId}/leave")
+    @DeleteMapping("/{userId}/events/{eventId}")
     public ResponseEntity<Void> leaveEvent(@PathVariable(name = "eventId") long eventId,
                                                   @PathVariable(name = "userId") long userId) {
         this.userService.leave(eventId, userId);

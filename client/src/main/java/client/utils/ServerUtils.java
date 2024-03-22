@@ -85,7 +85,7 @@ public class ServerUtils {
      * @return HTTP response from the server
      */
     public EventTitleDto createEvent(String eventName, Long userId){
-        return client.target(SERVER).path("api/users/events/create")
+        return client.target(SERVER).path("api/users/events")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(new CreatorToTitleDto(userId, eventName), APPLICATION_JSON),
@@ -241,7 +241,7 @@ public class ServerUtils {
     public void deleteEventParticipant(long eventId, long participantId) {
         client
                 .target(SERVER).path("/api/users/" + participantId
-                        + "/events/" + eventId + "/leave")
+                        + "/events/" + eventId)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .delete();
@@ -255,7 +255,7 @@ public class ServerUtils {
         long currentUserId= 1L;
 
         client
-                .target(SERVER).path("/api/users/events/join/"+inviteCode)
+                .target(SERVER).path("/api/users/events/"+inviteCode)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(currentUserId, APPLICATION_JSON));
