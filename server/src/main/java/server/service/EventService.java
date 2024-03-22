@@ -74,6 +74,7 @@ public class EventService {
         this.eventRepository.updateEventTitleById(id, title.getTitle());
         EventEntity eventTitleById = this.eventRepository.findById(id)
                 .orElseThrow(ObjectNotFoundException::new);
+        eventTitleById.updateLastModifiedDate();
         EventTitleDto result=this.modelMapper
                 .map(eventTitleById, EventTitleDto.class);
         return result;
@@ -102,7 +103,7 @@ public class EventService {
      * @return the title and id of the event
      */
     public EventEntity createEvent(String title) {
-        EventEntity newEntity=new EventEntity();
+        EventEntity newEntity = new EventEntity();
         newEntity.setTitle(title);
         newEntity.setInviteCode(generateInviteCode(title));
         return this.eventRepository.save(newEntity);

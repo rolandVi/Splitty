@@ -7,8 +7,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class EventDetailsDtoTest {
 
@@ -16,7 +15,7 @@ class EventDetailsDtoTest {
     @BeforeEach
     void setUp() {
         event = new EventDetailsDto(null, "invite123", "Test Event",
-                new HashSet<>(), new HashSet<>());
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
     }
 
     @Test
@@ -98,9 +97,9 @@ class EventDetailsDtoTest {
     @Test
     void testEquals() {
         EventDetailsDto event1 = new EventDetailsDto(123L, "invite123", "Test Event",
-                new HashSet<>(), new HashSet<>());
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
         EventDetailsDto event2 = new EventDetailsDto(123L, "invite123", "Test Event",
-                new HashSet<>(), new HashSet<>());
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
 
         assertEquals(event1, event2);
     }
@@ -108,10 +107,30 @@ class EventDetailsDtoTest {
     @Test
     void testHashCode() {
         EventDetailsDto event1 = new EventDetailsDto(123L, "invite123", "Test Event",
-                new HashSet<>(), new HashSet<>());
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
         EventDetailsDto event2 = new EventDetailsDto(123L, "invite123", "Test Event",
-                new HashSet<>(), new HashSet<>());
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
 
         assertEquals(event1.hashCode(), event2.hashCode());
+    }
+
+    @Test
+    public void testGetCreationDate() {
+        assertNotNull(event.getCreationDate());
+    }
+
+    @Test
+    public void testGetLastModifiedDate() {
+        assertNotNull(event.getLastModifiedDate());
+    }
+
+    @Test
+    public void testUpdateLastModifiedDate() throws InterruptedException {
+        Date initialLastModifiedDate = event.getLastModifiedDate();
+
+        Thread.sleep(1);
+
+        event.updateLastModifiedDate();
+        assertNotEquals(initialLastModifiedDate, event.getLastModifiedDate());
     }
 }

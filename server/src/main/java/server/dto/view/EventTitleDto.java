@@ -2,6 +2,7 @@ package server.dto.view;
 
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class EventTitleDto {
@@ -10,10 +11,15 @@ public class EventTitleDto {
     @NotBlank
     private String title;
 
+    private Date creationDate;
+    private Date lastModifiedDate;
+
     /**
      * Empty constructor
      */
     public EventTitleDto() {
+        this.creationDate = new Date(System.currentTimeMillis());
+        this.lastModifiedDate = new Date(System.currentTimeMillis());
     }
 
     /**
@@ -58,6 +64,42 @@ public class EventTitleDto {
     public EventTitleDto setTitle(String title) {
         this.title = title;
         return this;
+    }
+
+    /**
+     * Getter for creation daet
+     * @return The creation date
+     */
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    /**
+     * Setter for creation date
+     * @param creationDate The creation Date
+     * @return The creation Date
+     */
+    public EventTitleDto setCreationDate(Date creationDate){
+        this.creationDate = creationDate;
+        return this;
+    }
+
+    /**
+     * Setter for last modified
+     * @param lastModifiedDate The last modified Date
+     * @return The last modified Date
+     */
+    public EventTitleDto setLastModifiedDate(Date lastModifiedDate){
+        this.lastModifiedDate = lastModifiedDate;
+        return this;
+    }
+
+    /**
+     * Getter for last modified Date
+     * @return The last modified date
+     */
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
     }
 
     /**

@@ -15,6 +15,7 @@ import server.dto.view.EventTitleDto;
 import server.dto.view.UserNameDto;
 import server.repository.EventRepository;
 
+import java.util.Date;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -69,7 +70,7 @@ class EventServiceTest {
         // Arrange
         long eventId = 1L;
         EventEntity eventEntity = new EventEntity(eventId, "", "Test Event",
-                new HashSet<>(), new HashSet<>());
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
         when(eventRepository.findById(eventId)).thenReturn(Optional.of(eventEntity));
 
         // Act
@@ -109,7 +110,7 @@ class EventServiceTest {
         String eventTitle = "New Event";
         EventTitleDto eventTitleDto = new EventTitleDto(eventTitle);
         EventEntity eventEntity = new EventEntity(1L, "", "Test Event",
-                new HashSet<>(), new HashSet<>());
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
         eventEntity.setTitle(eventTitle);
 
         when(eventRepository.save(any())).thenReturn(eventEntity);
@@ -131,7 +132,7 @@ class EventServiceTest {
         String newTitle = "Updated Event Title";
         EventTitleDto updatedTitleDto = new EventTitleDto(newTitle);
         EventEntity eventEntity = new EventEntity(id, "inviteCode", "Original Title",
-                new HashSet<>(), new HashSet<>());
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
         EventTitleDto expectedDto = new EventTitleDto(newTitle);
         eventEntity.setTitle(newTitle);
         when(eventRepository.findById(id)).thenReturn(Optional.of(eventEntity));
@@ -160,7 +161,7 @@ class EventServiceTest {
         String title = "New Event Title";
         EventTitleDto eventTitleDto = new EventTitleDto(title);
         EventEntity expectedEntity = new EventEntity(1L, "inviteCode", title,
-                new HashSet<>(), new HashSet<>());
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
         when(eventRepository.save(any())).thenReturn(expectedEntity);
 
         // Act
@@ -176,7 +177,7 @@ class EventServiceTest {
         // Arrange
         String title = "New Event Title";
         EventEntity expectedEntity = new EventEntity(1L, "inviteCode", title,
-                new HashSet<>(), new HashSet<>());
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
         when(eventRepository.save(any(EventEntity.class))).thenReturn(expectedEntity);
 
         // Act
@@ -191,12 +192,12 @@ class EventServiceTest {
     void getAllEvents_ReturnsListOfEventOverviewDto() {
         // Arrange
         List<EventEntity> eventEntities = Arrays.asList(
-                new EventEntity(1L, "inviteCode1", "Event 1", new HashSet<>(), new HashSet<>()),
-                new EventEntity(2L, "inviteCode2", "Event 2", new HashSet<>(), new HashSet<>())
+                new EventEntity(1L, "inviteCode1", "Event 1", new HashSet<>(), new HashSet<>(), new Date(), new Date()),
+                new EventEntity(2L, "inviteCode2", "Event 2", new HashSet<>(), new HashSet<>(), new Date(), new Date())
         );
         List<EventOverviewDto> expectedDtos = Arrays.asList(
-                new EventOverviewDto(1L, "Event 1", "inviteCode1"),
-                new EventOverviewDto(2L, "Event 2", "inviteCode2")
+                new EventOverviewDto(1L, "Event 1", "inviteCode1", new Date(), new Date()),
+                new EventOverviewDto(2L, "Event 2", "inviteCode2", new Date(), new Date())
         );
         when(eventRepository.findAll()).thenReturn(eventEntities);
 
@@ -245,7 +246,7 @@ class EventServiceTest {
         // Arrange
         long eventId = 1L;
         EventEntity expectedEntity = new EventEntity(eventId, "inviteCode", "Test Event",
-                new HashSet<>(), new HashSet<>());
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
         when(eventRepository.findById(eventId)).thenReturn(Optional.of(expectedEntity));
 
         // Act

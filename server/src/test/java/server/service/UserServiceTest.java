@@ -15,6 +15,7 @@ import server.dto.view.EventTitleDto;
 import server.dto.view.UserNameDto;
 import server.repository.UserRepository;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -84,7 +85,8 @@ public class UserServiceTest {
         long id = 1L;
         HashSet<EventEntity> events=new HashSet<>();
         for (long i = 0L; i < 5; i++) {
-            events.add(new EventEntity(i, "invCode"+i, "title"+i, new HashSet<>(), new HashSet<>()));
+            events.add(new EventEntity(i, "invCode"+i, "title"+i,
+                    new HashSet<>(), new HashSet<>(), new Date(), new Date()));
         }
         UserEntity user = new UserEntity(id, "vwv", "vwer", "vwer@fewr",
                 events, new BankAccountEntity("12345", "vwve", "1324"));
@@ -126,7 +128,7 @@ public class UserServiceTest {
         // Arrange
         String eventTitle = "New Event";
         EventEntity eventEntity = new EventEntity(1L, "", eventTitle,
-                new HashSet<>(), new HashSet<>());
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
         UserEntity user= new UserEntity(1L, "first","last", "email@gmai.com",
                 new HashSet<>(), new BankAccountEntity("12345", "vwve", "1324"));
         eventEntity.setTitle(eventTitle);
@@ -150,7 +152,7 @@ public class UserServiceTest {
         long eventId = 1L;
         long userId = 2L;
         EventEntity eventEntity = new EventEntity(eventId, "inviteCode", "Test Event",
-                new HashSet<>(), new HashSet<>());
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
         UserEntity userEntity = new UserEntity(userId, "John", "Doe", "john@example.com",
                 new HashSet<>(), new BankAccountEntity("12345", "vwve", "1324"));
 
@@ -187,7 +189,7 @@ public class UserServiceTest {
         long eventId = 1L;
         long userId = 2L;
         EventEntity eventEntity = new EventEntity(eventId, "inviteCode", "Test Event",
-                new HashSet<>(), new HashSet<>());
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
 
         when(eventService.findEntityById(eventId)).thenReturn(eventEntity);
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
@@ -207,7 +209,7 @@ public class UserServiceTest {
         UserEntity userEntity = new UserEntity(userId, "John", "Doe", "john@example.com",
                 new HashSet<>(), new BankAccountEntity("12345", "vwve", "1324"));
         EventEntity eventEntity = new EventEntity(1L, inviteCode, "Test Event",
-                new HashSet<>(), new HashSet<>());
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity));
         when(eventService.findEntityByInviteCode(inviteCode)).thenReturn(eventEntity);
