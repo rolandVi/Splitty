@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import server.controller.exception.ObjectNotFoundException;
 import server.dto.view.EventDetailsDto;
 import server.dto.view.EventOverviewDto;
@@ -15,11 +17,7 @@ import server.dto.view.EventTitleDto;
 import server.dto.view.UserNameDto;
 import server.repository.EventRepository;
 
-import java.util.Date;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -266,4 +264,5 @@ class EventServiceTest {
         // Act and Assert
         assertThrows(ObjectNotFoundException.class, () -> eventService.findEntityById(eventId));
     }
+
 }
