@@ -26,7 +26,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
-public class EventCtrl {
+import java.util.ResourceBundle;
+
+public class EventCtrl implements MultiLanguages{
     private final MainCtrl mainCtrl;
 
     private final ServerUtils serverUtils;
@@ -43,6 +45,8 @@ public class EventCtrl {
     @FXML
     public Label inviteCode;
     @FXML
+    public Label expensesLabel;
+    @FXML
     public ListView<ExpenseDetailsDto> expenseList;
     @FXML
     public Button addExpenseButton;
@@ -51,7 +55,7 @@ public class EventCtrl {
     @FXML
     public Text tempText;
 
-    private EventDetailsDto event;
+    private EventDetailsDto eventDetailsDto;
 
     private NewExpenseCtrl newExpenseCtrl;
 
@@ -60,6 +64,7 @@ public class EventCtrl {
     public Button leaveButton;
     @FXML
     private VBox participantsContainer;
+    private long eventId;
 
 
     /**
@@ -73,6 +78,23 @@ public class EventCtrl {
         this.mainCtrl = mainCtrl;
         this.serverUtils = serverUtils;
         this.newExpenseCtrl = newExpenseCtrl;
+    }
+    /**
+     * Updates the language of the scene using the resource bundle
+     */
+    @Override
+    public void updateLanguage() {
+        try {
+            ResourceBundle lang = mainCtrl.lang;
+            returnButton.setText(lang.getString("return"));
+            changeTextField.setPromptText(lang.getString("event_name"));
+            changeButton.setText(lang.getString("change"));
+            participantsLabel.setText(lang.getString("participants"));
+            expensesLabel.setText(lang.getString("expenses"));
+            addExpenseButton.setText(lang.getString("add_expense"));
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -88,9 +110,10 @@ public class EventCtrl {
      * @param id the id of the event
      */
     public void init(long id) {
-        event = serverUtils.getEventDetails(id);
-
-        eventNameLabel.setText(event.getTitle());
+        this.eventId = id;
+        this.eventDetailsDto=serverUtils.getEventDetails(id);
+        eventNameLabel.setText(eventDetailsDto.getTitle());
+        this.loadParticipants();
         loadExpenseList();
     }
 
@@ -117,7 +140,7 @@ public class EventCtrl {
 //        expenses.add(expenseDetailsDto2);
 //        event = new EventDetailsDto(1L, "ABC01", "Test Event 1", expenses, participants);
         ObservableList<ExpenseDetailsDto> items = FXCollections
-                .observableArrayList(event.getExpenses());
+                .observableArrayList(eventDetailsDto.getExpenses());
         expenseList.setCellFactory(new Callback<ListView<ExpenseDetailsDto>,
                 ListCell<ExpenseDetailsDto>>() {
             @Override
@@ -145,7 +168,7 @@ public class EventCtrl {
      * Will show add expense scene, allowing the user to add an expense
      */
     public void addExpense(){
-        newExpenseCtrl.init(event);
+        newExpenseCtrl.init(eventDetailsDto);
         mainCtrl.showNewExpense();
     }
 
@@ -154,7 +177,7 @@ public class EventCtrl {
      * @return the Data transfer object of current event showing
      */
     public EventDetailsDto getEventDetailsDto() {
-        return event;
+        return eventDetailsDto;
     }
 
     /**
@@ -162,7 +185,7 @@ public class EventCtrl {
      * @param eventDetailsDto the Data transfer object of current event showing
      */
     public void setEventDetailsDto(EventDetailsDto eventDetailsDto) {
-        this.event = eventDetailsDto;
+        this.eventDetailsDto = eventDetailsDto;
     }
 
     /**
@@ -220,7 +243,7 @@ public class EventCtrl {
      * Loads the participants and displays them on the page
      */
     public void loadParticipants() {
-        long eventId= this.event.getId();
+        long eventId= this.eventDetailsDto.getId();
 
         List<UserNameDto> participants = this.serverUtils.getParticipantsByEvent(eventId);
         Node[] nodes=new Node[participants.size()];
@@ -241,7 +264,7 @@ public class EventCtrl {
 
             Button eventButton = (Button) currentNode.lookup("#participantName");
             eventButton.setText(participants.get(i).getFirstName() + " "
-                    + participants.get(i).getFirstName());
+                    + participants.get(i).getLastName());
 
             eventButton.setOnAction(e -> showParticipantEdit(participant.getId(), eventId));
         }
@@ -263,7 +286,7 @@ public class EventCtrl {
      */
     public void leave(){
         long userId = 1L; // TODO replace with the actual user id
-        serverUtils.deleteEventParticipant(this.event.getId(), userId);
+        serverUtils.deleteEventParticipant(this.eventDetailsDto.getId(), userId);
         returnToOverview();
     }
 

@@ -15,13 +15,23 @@
  */
 package client.scenes.admin;
 
+
+import client.ConfigManager;
+
 import javafx.scene.Parent;
+
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 
 public class AdminMainCtrl {
+
+    protected ConfigManager config;
+    protected ResourceBundle lang;
 
     private Stage adminOverviewStage;
 
@@ -41,6 +51,7 @@ public class AdminMainCtrl {
     public void initialize(Stage adminOverviewStage,
                            Pair<AdminLoginPageCtrl, Parent> loginPage,
                            Pair<AdminOverviewPageCtrl, Parent> overviewPage) {
+        this.config = new ConfigManager("client/src/main/resources/config.properties");
         this.adminOverviewStage = adminOverviewStage;
 
         this.loginPageCtrl = loginPage.getKey();
@@ -52,6 +63,25 @@ public class AdminMainCtrl {
 
         showLogin();
         adminOverviewStage.show();
+        updateLanguagesOfScenes();
+    }
+    /**
+     * Updates the languages of all admin scenes
+     */
+    void updateLanguagesOfScenes(){
+        Locale.setDefault(getLocalFromConfig());
+        lang = ResourceBundle.getBundle("languages.lang");
+        loginPageCtrl.updateLanguage();
+    }
+
+    /**
+     * Retrieves the locale based on the saved config file
+     * @return language locale
+     */
+    private Locale getLocalFromConfig(){
+        String language = config.getProperty("language");
+        String country = config.getProperty("country");
+        return Locale.of(language, country);
     }
 
 
@@ -72,7 +102,7 @@ public class AdminMainCtrl {
         adminOverviewStage.setTitle("Admin Overview");
         adminOverviewStage.setScene(overviewPage);
         overviewPageCtrl.loadEvents();
+        overviewPageCtrl.loadOrder();
     }
-
 
 }

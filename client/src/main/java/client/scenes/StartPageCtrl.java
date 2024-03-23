@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+
 import javafx.scene.control.Label;
+
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
@@ -19,7 +21,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Optional;
 
-public class StartPageCtrl {
+import java.util.ResourceBundle;
+
+public class StartPageCtrl implements MultiLanguages{
 
     private final MainCtrl mainCtrl;
 
@@ -45,6 +49,10 @@ public class StartPageCtrl {
 
     @FXML
     public Button tempSkip;
+    @FXML
+    public Button connectButton;
+    @FXML
+    public Button openAdminButton;
 
 
     /**
@@ -57,6 +65,19 @@ public class StartPageCtrl {
     public StartPageCtrl(MainCtrl mainCtrl, ServerUtils serverUtils) {
         this.mainCtrl = mainCtrl;
         this.serverUtils = serverUtils;
+    }
+    /**
+     * Updates the language of the scene using the resource bundle
+     */
+    @Override
+    public void updateLanguage() {
+        try {
+            ResourceBundle lang = mainCtrl.lang;
+            connectButton.setText(lang.getString("connect"));
+            openAdminButton.setText(lang.getString("open_admin"));
+        } catch (Exception e) {
+            System.out.println("Incorrect key");
+        }
     }
 
     /**

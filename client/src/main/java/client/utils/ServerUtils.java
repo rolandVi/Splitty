@@ -8,12 +8,14 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import server.dto.CreatorToTitleDto;
 import server.dto.UserCreationDto;
 import server.dto.view.*;
 import server.exceptions.PasswordExpiredException;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -76,13 +78,15 @@ public class ServerUtils {
     /**
      * Creates HTTP request to the server using the parameter as name of event
      * @param eventName name of event
+     * @param userId the user id
      * @return HTTP response from the server
      */
-    public EventTitleDto createEvent(String eventName){
-        return client.target(SERVER).path("api/events/")
+    public EventTitleDto createEvent(String eventName, Long userId){
+        return client.target(SERVER).path("api/users/events")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .post(Entity.entity(eventName, APPLICATION_JSON), EventTitleDto.class);
+                .post(Entity.entity(new CreatorToTitleDto(userId, eventName), APPLICATION_JSON),
+                        EventTitleDto.class);
     }
     /**
      * Updates the event name to the server and update the current event name
@@ -161,6 +165,35 @@ public class ServerUtils {
     }
 
     /**
+     * Deletes the event with the given ID from the server.
+     *
+     * @param eventId the ID of the event to delete
+     * @throws IOException       if an I/O error occurs when sending or receiving
+     *                           the HTTP request/response
+     * @throws URISyntaxException if the provided URI is invalid
+     * @throws InterruptedException if the thread is interrupted during the request
+     */
+    public void deleteEvent(long eventId) throws IOException,
+            URISyntaxException, InterruptedException {
+        // Create HTTP DELETE request
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI(SERVER + "api/events/" + eventId))
+                .header("Content-Type", "application/json")
+                .DELETE()
+                .build();
+
+        // Send HTTP DELETE request to server
+        HttpResponse<Void> response = HttpClient.newHttpClient()
+                .send(request, HttpResponse.BodyHandlers.discarding());
+
+        // Check the response status code
+        if (response.statusCode() != 200) {
+            throw new RuntimeException("Failed to delete event. Server returned status code: "
+                    + response.statusCode());
+        }
+    }
+
+    /**
      * Check the validity of the given user credentials
      * @param user the user credentials
      * @return true if they are valid and false otherwise
@@ -181,7 +214,7 @@ public class ServerUtils {
      */
     public List<UserNameDto> getParticipantsByEvent(long eventId) {
         return client
-                .target(SERVER).path("/api/events/" + eventId + "/get_participants")
+                .target(SERVER).path("/api/events/" + eventId + "/participants")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<List<UserNameDto>>() {});
@@ -203,7 +236,26 @@ public class ServerUtils {
      * @param participantId id of the specific participant
      */
     public void deleteEventParticipant(long eventId, long participantId) {
-        //TODO
+        client
+                .target(SERVER).path("/api/users/" + participantId
+                        + "/events/" + eventId)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .delete();
+    }
+    /**
+     * Enrolls the current user to the event with this invite code
+     * @param inviteCode the invite code
+     */
+    public void enrollInEvent(String inviteCode) {
+        //TODO: get the id of the current user (not hard code it)
+        long currentUserId= 1L;
+
+        client
+                .target(SERVER).path("/api/users/events/"+inviteCode)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(currentUserId, APPLICATION_JSON));
     }
 
     /**

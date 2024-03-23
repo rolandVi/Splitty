@@ -18,6 +18,10 @@ package client.scenes;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+import client.sceneUtils.LanguageComboBoxUtil;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Objects;
@@ -41,6 +45,7 @@ public class MainCtrl {
     private EventCreationCtrl eventCreationCtrl;
     private Scene eventPage;
     private Scene eventCreationPage;
+    protected ResourceBundle lang;
 
     private Scene eventItemPage;
 
@@ -51,6 +56,10 @@ public class MainCtrl {
     private Scene participantItem;
     private Scene participantEdit;
     private ParticipantCtrl participantCtrl;
+
+    private EnrollEventCtrl enrollEventCtrl;
+
+    private Scene enrollPage;
 
     private AddBankInfoCtrl bankInfoCtrl;
     private Scene addBankInfo;
@@ -97,9 +106,24 @@ public class MainCtrl {
         this.participantItem = new Scene(sceneInputWrapper.participantItemPage().getValue());
         this.participantEdit = new Scene(sceneInputWrapper.participantPage().getValue());
         this.addBankInfo = new Scene(sceneInputWrapper.bankInfoPage().getValue());
+        this.enrollPage=new Scene(sceneInputWrapper.enrollEventPage().getValue());
 
         showStart();
         sceneInputWrapper.primaryStage().show();
+        updateLanguagesOfScenes();
+    }
+
+    /**
+     * Updates the languages of all scenes (except admin)
+     */
+    protected void updateLanguagesOfScenes() {
+        Locale.setDefault(LanguageComboBoxUtil.getLocaleFromConfig());
+        lang = ResourceBundle.getBundle("languages.lang");
+        eventCtrl.updateLanguage();
+        eventOverviewCtrl.updateLanguage();
+        eventCreationCtrl.updateLanguage();
+        paymentPageCtrl.updateLanguage();
+        startPageCtrl.updateLanguage();
     }
 
     /**
@@ -173,6 +197,14 @@ public class MainCtrl {
     public void showNewParticipant() {
         primaryStage.setTitle("newParticipant page");
         primaryStage.setScene(newParticipant);
+    }
+
+    /**
+     * Shows the enroll page
+     */
+    public void showEnrollPage(){
+        primaryStage.setTitle("Enroll");
+        primaryStage.setScene(enrollPage);
     }
 
     /**

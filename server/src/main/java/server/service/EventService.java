@@ -18,23 +18,23 @@ import java.util.stream.Collectors;
 public class EventService {
     private final EventRepository eventRepository;
     private final ModelMapper modelMapper;
-    private final UserService userService;
+    //private final UserService userService;
     private final ExpenseService expenseService;
+
 
     /**
      * Constructor Injection
      *
      * @param eventRepository the EventEntity repository
      * @param modelMapper     the ModelMapper injected by Spring
-     * @param userService     the userService
      * @param expenseService the expense service
      */
     public EventService(EventRepository eventRepository,
-                        ModelMapper modelMapper, UserService userService,
+                        ModelMapper modelMapper,
                         ExpenseService expenseService) {
         this.eventRepository = eventRepository;
         this.modelMapper = modelMapper;
-        this.userService = userService;
+        //this.userService = userService;
         this.expenseService = expenseService;
     }
 
@@ -79,6 +79,7 @@ public class EventService {
         this.eventRepository.updateEventTitleById(id, title.getTitle());
         EventEntity eventTitleById = this.eventRepository.findById(id)
                 .orElseThrow(ObjectNotFoundException::new);
+        eventTitleById.updateLastModifiedDate();
         EventTitleDto result=this.modelMapper
                 .map(eventTitleById, EventTitleDto.class);
         return result;
@@ -106,55 +107,11 @@ public class EventService {
      * @param title the title
      * @return the title and id of the event
      */
-    public EventTitleDto createEvent(String title) {
-        EventEntity newEntity=new EventEntity();
+    public EventEntity createEvent(String title) {
+        EventEntity newEntity = new EventEntity();
         newEntity.setTitle(title);
         newEntity.setInviteCode(generateInviteCode(title));
-        EventEntity result=this.eventRepository.save(newEntity);
-        return modelMapper.map(result, EventTitleDto.class);
-    }
-
-    /**
-     * Adding a participant in the event
-     * @param eventId the event id
-     * @param userId the user id
-     * @return true if the operation was successful and false otherwise
-     *
-     */
-    public Boolean addParticipant(long eventId, long userId) {
-        EventEntity event=this.eventRepository.findById(eventId)
-                        .orElseThrow(ObjectNotFoundException::new);
-        event.getParticipants().add(this.userService.findById(userId));
-        this.eventRepository.save(event);
-        return true;
-    }
-
-    /**
-     * Deleting a participant from an event
-     * @param eventId the event id
-     * @param userId the user id
-     * @return true if it was deleted successfully and false otherwise
-     */
-    public boolean deleteParticipant(long eventId, long userId) {
-        if (this.eventRepository.existsById(eventId) ||
-                userService.existsById(userId)) return false;
-
-        EventEntity event=this.eventRepository.findById(eventId)
-                        .orElseThrow(IllegalArgumentException::new);
-        event.getParticipants().remove(this.userService.findById(userId));
-        this.eventRepository.save(event);
-        return true;
-    }
-
-    /**
-     * Retrieves all participants of the specified event
-     * @param eventId the id of the event
-     * @return the list of all participants of the event
-     */
-    public List<UserNameDto> getParticipantsById(long eventId) {
-        return eventRepository.getParticipantsById(eventId).stream()
-                .map(p -> this.modelMapper.map(p, UserNameDto.class))
-                .collect(Collectors.toList());
+        return this.eventRepository.save(newEntity);
     }
 
     /**
@@ -179,4 +136,38 @@ public class EventService {
                 .map(e -> this.modelMapper.map(e, EventOverviewDto.class))
                 .collect(Collectors.toList());
     }
+
+    /**
+     * Returns all the participants of a particular event
+     * @param eventId the event id
+     * @return the participants
+     */
+    public List<UserNameDto> getEventParticipants(long eventId) {
+        return this.eventRepository.findEventParticipants(eventId)
+                .stream()
+                .map(p -> this.modelMapper.map(p, UserNameDto.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * find an event by its id
+     * @param eventId the event id
+     * @return the event
+     */
+    public EventEntity findEntityById(long eventId) {
+        return this.eventRepository.findById(eventId)
+                .orElseThrow(ObjectNotFoundException::new);
+    }
+
+    /**
+     * finds an event by its invite code
+     * @param inviteCode the invite code
+     * @return the event
+     */
+    public EventEntity findEntityByInviteCode(String inviteCode) {
+        return this.eventRepository.findEventEntityByInviteCode(inviteCode)
+                .orElseThrow(ObjectNotFoundException::new);
+    }
+
+
 }

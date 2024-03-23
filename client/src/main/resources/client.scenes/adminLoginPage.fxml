@@ -45,8 +45,8 @@
             <TextField fx:id="passwordField" layoutX="245.0" layoutY="157.0" />
             <Label fx:id="passwordLabel" layoutX="269.0" layoutY="130.0" text="Enter the password" />
             <Text fx:id="incorrectPasswordError" fill="RED" layoutX="238.0" layoutY="197.0" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Incorrect or expired password! Try again..." textAlignment="CENTER" wrappingWidth="163.388671875" />
-            <Button layoutX="297.0" layoutY="253.0" mnemonicParsing="false" onAction="#login" text="Login" />
-            <Button layoutX="261.0" layoutY="220.0" mnemonicParsing="false" onAction="#generatePassword" text="Generate password" />
+            <Button fx:id="loginButton" layoutX="297.0" layoutY="253.0" mnemonicParsing="false" onAction="#login" text="Login" />
+            <Button fx:id="generateButton" layoutX="261.0" layoutY="220.0" mnemonicParsing="false" onAction="#generatePassword" text="Generate password" />
       </children>
     </AnchorPane>
   </children>

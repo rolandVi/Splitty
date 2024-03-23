@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 import java.util.Set;
 
 @Repository
@@ -38,5 +40,20 @@ public interface EventRepository extends JpaRepository<EventEntity, Long> {
 //     */
 //    @Query("select e.title from EventEntity e where e.id=:id")
 //    String getEventTitleById(@Param(value = "id") long id);
+
+    /**
+     * Return the participants in an event
+     * @param id the id of the event
+     * @return the participants
+     */
+    @Query("select e.participants from EventEntity e where e.id=:id")
+    Set<UserEntity> findEventParticipants(@Param(value = "id") long id);
+
+    /**
+     * find the event entity with eh given invite code
+     * @param inviteCode the invite code
+     * @return the event entity
+     */
+    Optional<EventEntity> findEventEntityByInviteCode(String inviteCode);
 
 }

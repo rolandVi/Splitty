@@ -23,7 +23,7 @@ public class UserEntity {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "participants")
     private Set<EventEntity> events;
 
     @OneToOne
@@ -151,5 +151,23 @@ public class UserEntity {
      */
     public void setBankAccount(BankAccountEntity bankAccount) {
         this.bankAccount = bankAccount;
+    }
+
+    /**
+     * leaves a particular event
+     * @param event the event to leave
+     */
+    public void leave(EventEntity event) {
+        this.events.remove(event);
+        event.getParticipants().remove(this);
+    }
+
+    /**
+     * join an event
+     * @param event the event
+     */
+    public void join(EventEntity event) {
+        this.events.add(event);
+        event.getParticipants().add(this);
     }
 }
