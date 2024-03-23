@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import server.dto.view.EventDetailsDto;
 import server.dto.view.EventOverviewDto;
 import server.dto.view.EventTitleDto;
+import server.dto.view.UserNameDto;
 import server.service.EventService;
 
 import java.util.List;
@@ -84,6 +85,31 @@ public class EventRestController {
     public ResponseEntity<Void> addParticipant(@PathVariable(name = "id") long eventId,
                                                @RequestBody long userId){
         this.eventService.addParticipant(eventId, userId);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * Retrieves a list of all participants of a particular event
+     * @param eventId the id of the event
+     * @return a set of UserNameDto representing participants
+     */
+    @GetMapping("/{id}/get_participants")
+    public ResponseEntity<List<UserNameDto>> getAllParticipants
+    (@PathVariable(name = "id") long eventId){
+        System.out.println("raaaaahhh" + eventService.getParticipantsById(eventId));
+        return ResponseEntity.ok(eventService.getParticipantsById(eventId));
+    }
+
+    /**
+     * Adding an expense to an event
+     * @param eventId the event id
+     * @param expenseId the expense id
+     * @return the response entity, defining whether the operation was successful
+     */
+    @PatchMapping("/{id}/add_expense")
+    public ResponseEntity<Void> addExpense(@PathVariable(name = "id") long eventId,
+                                           @RequestBody long expenseId){
+        this.eventService.addExpense(eventId, expenseId);
         return ResponseEntity.ok().build();
     }
 

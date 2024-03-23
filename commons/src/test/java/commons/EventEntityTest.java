@@ -25,7 +25,7 @@ public class EventEntityTest {
                 new HashSet<>(), new BankAccountEntity());
 
         expense = new ExpenseEntity(11L, 420.69D, user, new HashSet<>(), "Title",
-                new Date(2024 -1900, Calendar.JANUARY, 24));
+                new Date(2024 -1900, Calendar.JANUARY, 24), event);
 
         event = new EventEntity(1L, "test_invite_code",
                 "title", expenses, users);

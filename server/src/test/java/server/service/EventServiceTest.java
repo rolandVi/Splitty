@@ -1,6 +1,7 @@
 package server.service;
 
 import commons.EventEntity;
+import commons.ExpenseEntity;
 import commons.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,13 +29,16 @@ class EventServiceTest {
     @Mock
     private UserService userService;
 
+    @Mock
+    private ExpenseService expenseService;
+
     private EventService eventService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         ModelMapper modelMapper = new ModelMapper();
-        eventService = new EventService(eventRepository, modelMapper, userService);
+        eventService = new EventService(eventRepository, modelMapper, userService, expenseService);
     }
 
     @Test

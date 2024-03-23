@@ -34,10 +34,10 @@ class ExpenseServiceTest {
         expenseService = new ExpenseService(expenseRepository, modelMapper);
 
         expectedDto = new ExpenseEntity(1L, 100.0, new UserEntity(),
-                new HashSet<>(), "Expense Title", new Date());
+                new HashSet<>(), "Expense Title", new Date(), null);
 
         ExpenseEntity requestDto = new ExpenseEntity(2L, 200.0, new UserEntity(),
-                new HashSet<>(), "Another Expense Title", new Date());
+                new HashSet<>(), "Another Expense Title", new Date(), null);
 
         expectedExpenses = new ArrayList<>(Arrays.asList(expectedDto, requestDto));
     }

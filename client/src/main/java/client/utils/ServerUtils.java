@@ -9,10 +9,7 @@ import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import server.dto.UserCreationDto;
-import server.dto.view.EventDetailsDto;
-import server.dto.view.EventOverviewDto;
-import server.dto.view.EventTitleDto;
-import server.dto.view.UserNameDto;
+import server.dto.view.*;
 import server.exceptions.PasswordExpiredException;
 
 import java.io.IOException;
@@ -183,8 +180,11 @@ public class ServerUtils {
      * @return List of participants as List<UserNameDto>
      */
     public List<UserNameDto> getParticipantsByEvent(long eventId) {
-        return null;
-        // TODO
+        return client
+                .target(SERVER).path("/api/events/" + eventId + "/get_participants")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<List<UserNameDto>>() {});
     }
 
     /**
@@ -204,5 +204,29 @@ public class ServerUtils {
      */
     public void deleteEventParticipant(long eventId, long participantId) {
         //TODO
+    }
+
+    /**
+     * Adds a new expense to the event
+     * @param eventId the id of the event
+     * @param expenseDetailsDto the details of the expense
+     * @return a boolean, whether the operation has been successful
+     */
+    public boolean addExpense(long eventId, ExpenseDetailsDto expenseDetailsDto) {
+
+        Response expenseCreationResponse = client.target(SERVER)
+                .path("api/expenses/")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(expenseDetailsDto, APPLICATION_JSON));
+
+
+        Response expendeAdditionResponse = client.target(SERVER)
+                .path("api/events/"+eventId+"/add_expense")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(expenseDetailsDto.getId(), APPLICATION_JSON));
+
+        return true;
     }
 }

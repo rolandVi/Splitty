@@ -6,13 +6,12 @@ import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import server.controller.exception.ObjectNotFoundException;
-import server.dto.view.EventDetailsDto;
-import server.dto.view.EventOverviewDto;
-import server.dto.view.EventTitleDto;
+import server.dto.view.*;
 import server.repository.EventRepository;
 
 import java.time.LocalTime;
 import java.util.List;
+
 import java.util.stream.Collectors;
 
 @Service
@@ -20,6 +19,7 @@ public class EventService {
     private final EventRepository eventRepository;
     private final ModelMapper modelMapper;
     private final UserService userService;
+    private final ExpenseService expenseService;
 
     /**
      * Constructor Injection
@@ -27,12 +27,15 @@ public class EventService {
      * @param eventRepository the EventEntity repository
      * @param modelMapper     the ModelMapper injected by Spring
      * @param userService     the userService
+     * @param expenseService the expense service
      */
     public EventService(EventRepository eventRepository,
-                        ModelMapper modelMapper, UserService userService) {
+                        ModelMapper modelMapper, UserService userService,
+                        ExpenseService expenseService) {
         this.eventRepository = eventRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
+        this.expenseService = expenseService;
     }
 
     /**
@@ -140,6 +143,30 @@ public class EventService {
                         .orElseThrow(IllegalArgumentException::new);
         event.getParticipants().remove(this.userService.findById(userId));
         this.eventRepository.save(event);
+        return true;
+    }
+
+    /**
+     * Retrieves all participants of the specified event
+     * @param eventId the id of the event
+     * @return the list of all participants of the event
+     */
+    public List<UserNameDto> getParticipantsById(long eventId) {
+        return eventRepository.getParticipantsById(eventId).stream()
+                .map(p -> this.modelMapper.map(p, UserNameDto.class))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Assigns an expense the event
+     * @param eventId the id of the event
+     * @param expenseId the id of the expense
+     * @return the boolean, whether the operation was successful
+     */
+    public boolean addExpense(long eventId, long expenseId){
+        EventEntity event = this.eventRepository.findById(eventId)
+                .orElseThrow(ObjectNotFoundException::new);
+        event.getExpenses().add(this.expenseService.getEntityById(expenseId));
         return true;
     }
 

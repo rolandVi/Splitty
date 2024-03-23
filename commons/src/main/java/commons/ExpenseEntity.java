@@ -23,6 +23,9 @@ public class ExpenseEntity {
     @ManyToMany
     private Set<UserEntity> debtors;
 
+    @ManyToOne
+    private EventEntity event;
+
     private String title;
 
     @Temporal(TemporalType.DATE)
@@ -42,15 +45,17 @@ public class ExpenseEntity {
      * @param debtors list of debtors
      * @param title title summarizing the expense
      * @param date date of the expense
+     * @param event the parent event entitty
      */
     public ExpenseEntity(Long id, Double money, UserEntity author,
-                         Set<UserEntity> debtors, String title, Date date) {
+                         Set<UserEntity> debtors, String title, Date date, EventEntity event) {
         this.id = id;
         this.money = money;
         this.author = author;
         this.debtors = debtors;
         this.title = title;
         this.date = date;
+        this.event = event;
     }
 
     /**
@@ -102,6 +107,14 @@ public class ExpenseEntity {
     }
 
     /**
+     * Getter for the parent event of the expense
+     * @return - the event entity
+     */
+    public EventEntity getEvent(){
+        return event;
+    }
+
+    /**
      * Setter for the amount of money for the expense
      * @param money the amount as Double
      */
@@ -147,7 +160,8 @@ public class ExpenseEntity {
                 && Objects.equals(author, expenseEntity.author)
                 && Objects.equals(debtors, expenseEntity.debtors)
                 && Objects.equals(title, expenseEntity.title)
-                && Objects.equals(date, expenseEntity.date);
+                && Objects.equals(date, expenseEntity.date)
+                &&Objects.equals(event, expenseEntity.event);
     }
 
     /**

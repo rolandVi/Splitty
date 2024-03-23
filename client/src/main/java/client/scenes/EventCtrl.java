@@ -60,7 +60,6 @@ public class EventCtrl {
     public Button leaveButton;
     @FXML
     private VBox participantsContainer;
-    private EventDetailsDto eventDetailsDto;
 
 
     /**
@@ -221,7 +220,7 @@ public class EventCtrl {
      * Loads the participants and displays them on the page
      */
     public void loadParticipants() {
-        long eventId= this.eventDetailsDto.getId();
+        long eventId= this.event.getId();
 
         List<UserNameDto> participants = this.serverUtils.getParticipantsByEvent(eventId);
         Node[] nodes=new Node[participants.size()];

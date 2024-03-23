@@ -50,6 +50,16 @@ public class ExpenseService {
     }
 
     /**
+     * returns ExpenseEntity by id
+     * @param id the id of the expense
+     * @return the corresponding expense
+     */
+    public ExpenseEntity getEntityById(long id) {
+        return this.expenseRepository.findById(id)
+                .orElseThrow(ObjectNotFoundException::new);
+    }
+
+    /**
      * Removing an expense by its id
      * @param id the id of the expense we want to delete
      */

@@ -71,6 +71,11 @@ public class NewExpenseCtrl {
      * creates new expense based on the input
      */
     public void  createExpense(){
+        String title = titleField.getText();
+        double amount = Double.parseDouble(amountField.getText());
+        UserNameDto author = authorChoiceBox.getValue();
+
+        mainCtrl.showEventDetails(parentEvent.getId());
 
     }
 }
