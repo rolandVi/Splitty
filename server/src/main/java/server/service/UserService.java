@@ -1,10 +1,14 @@
 package server.service;
 
+import commons.EventEntity;
 import commons.UserEntity;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import server.controller.exception.ObjectNotFoundException;
 import server.dto.UserCreationDto;
 import server.dto.view.EventOverviewDto;
+import server.dto.view.EventTitleDto;
 import server.dto.view.UserNameDto;
 import server.repository.UserRepository;
 
@@ -17,16 +21,21 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final EventService eventService;
+
 
     /**
      * Constructor
      *
-     * @param modelMapper           the ModelMapper injected by Spring
-     * @param userRepository        the UserRepository injected by Spring
+     * @param modelMapper    the ModelMapper injected by Spring
+     * @param userRepository the UserRepository injected by Spring
+     * @param eventService the event service
      */
-    public UserService(ModelMapper modelMapper, UserRepository userRepository) {
+    public UserService(ModelMapper modelMapper, UserRepository userRepository,
+                       EventService eventService) {
         this.modelMapper = modelMapper;
         this.userRepository = userRepository;
+        this.eventService = eventService;
     }
 
     /**
@@ -86,5 +95,49 @@ public class UserService {
      */
     public boolean emailExists(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    /**
+     * Leaves a particular event
+     * @param eventId the event id
+     * @param userId the user id
+     * @return  true if the operation was successful
+     */
+    @Transactional
+    public boolean leave(long eventId, long userId) {
+        EventEntity event=eventService.findEntityById(eventId);
+        UserEntity user= this.userRepository.findById(userId)
+                        .orElseThrow(IllegalArgumentException::new);
+        user.leave(event);
+        this.userRepository.saveAndFlush(user);
+        return true;
+    }
+
+
+    /**
+     * Adding a participant in the event
+     * @param inviteCode the event invite code
+     * @param userId the user id
+     * @return  true if the operation was successful
+     */
+    public boolean join(String inviteCode, long userId) {
+        UserEntity user=this.userRepository.findById(userId)
+                .orElseThrow(ObjectNotFoundException::new);
+        EventEntity event = eventService.findEntityByInviteCode(inviteCode);
+        user.join(event);
+        userRepository.save(user);
+        return true;
+    }
+
+    /**
+     * Creates and event and joins the creator
+     * @param title the title of the event
+     * @param id the id of the creator
+     * @return the created event
+     */
+    public EventTitleDto createEvent(String title, Long id) {
+        EventEntity event = this.eventService.createEvent(title);
+        this.join(event.getInviteCode(), id);
+        return this.modelMapper.map(event, EventTitleDto.class);
     }
 }

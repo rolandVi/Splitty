@@ -3,6 +3,7 @@ package commons;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -39,6 +40,8 @@ public class EventEntity {
         creationDate = new Date(System.currentTimeMillis());
         lastModifiedDate = new Date(System.currentTimeMillis());
 
+        this.expenses=new HashSet<>();
+        this.participants=new HashSet<>();
     }
 
     /**

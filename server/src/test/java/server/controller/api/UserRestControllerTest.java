@@ -76,4 +76,37 @@ class UserRestControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         verifyNoInteractions(userService);
     }
+
+    @Test
+    void testCreateUser() {
+        UserCreationDto userCreationDto = new UserCreationDto(); // Initialize user DTO with necessary fields
+        when(userService.createUser(userCreationDto)).thenReturn(new UserNameDto()); // Mock userService
+
+        ResponseEntity<UserNameDto> responseEntity = userRestController.createUser(userCreationDto);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        verify(userService, times(1)).createUser(userCreationDto); // Verify userService method called
+    }
+
+    @Test
+    void testJoinEvent() {
+        String inviteCode = "sampleInviteCode"; // Sample invite code
+        long userId = 1L; // Sample user ID
+
+        ResponseEntity<Void> responseEntity = userRestController.joinEvent(inviteCode, userId);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        verify(userService, times(1)).join(inviteCode, userId); // Verify userService method called
+    }
+
+    @Test
+    void testLeaveEvent() {
+        long eventId = 1L; // Sample event ID
+        long userId = 1L; // Sample user ID
+
+        ResponseEntity<Void> responseEntity = userRestController.leaveEvent(eventId, userId);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        verify(userService, times(1)).leave(eventId, userId); // Verify userService method called
+    }
 }
