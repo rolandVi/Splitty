@@ -23,6 +23,7 @@ public class UserNameDto {
      * @param lastName  the lastName
      */
     public UserNameDto(Long id, String firstName, String lastName) {
+        this.id=id;
         this.firstName = firstName;
         this.lastName = lastName;
     }

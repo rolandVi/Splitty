@@ -64,9 +64,22 @@ public class Main extends Application {
         var newExpense = FXML.load(NewExpenseCtrl.class,
                 "client.scenes", "newExpense.fxml");
 
-        mainCtrl.initialize(primaryStage, startPage,
-                eventOverview, paymentPage,
-                eventPage, eventCreationPage, eventItemPage, newParticipant, newExpense);
+        var participantItem = FXML.load(ParticipantItemCtrl.class,
+                "client.scenes", "participantItem.fxml");
+        var participant = FXML.load(ParticipantCtrl.class,
+                "client.scenes", "Participant.fxml");
+        var addBankInfo = FXML.load(AddBankInfoCtrl.class,
+                "client.scenes", "addBankInfo.fxml");
+
+        var enrollEventPage=FXML.load(EnrollEventCtrl.class,
+                "client.scenes", "enroll.fxml");
+
+        mainCtrl.initialize(
+                new SceneInputWrapper(primaryStage, startPage,
+                        eventOverview, paymentPage, eventPage,
+                        eventCreationPage, eventItemPage, newParticipant,
+                        participantItem, participant, enrollEventPage,
+                        addBankInfo, newExpense));
     }
 
     /**

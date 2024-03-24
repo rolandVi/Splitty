@@ -1,5 +1,6 @@
 package server.dto.view;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class EventOverviewDto {
@@ -10,17 +11,26 @@ public class EventOverviewDto {
 
     private String inviteCode;
 
+    private Date creationDate;
+    private Date lastModifiedDate;
+
+
     /**
      * Constructs a new EventOverviewDto with the specified ID, title, and invite code.
      *
      * @param id         The unique identifier of the event.
      * @param title      The title of the event.
      * @param inviteCode The invite code associated with the event.
+     * @param creationDate The creation Date
+     * @param lastModifiedDate the last modified date
      */
-    public EventOverviewDto(long id, String title, String inviteCode) {
+    public EventOverviewDto(long id, String title, String inviteCode,
+                            Date creationDate, Date lastModifiedDate) {
         this.id = id;
         this.title = title;
         this.inviteCode = inviteCode;
+        this.creationDate = creationDate;
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     /**
@@ -68,6 +78,43 @@ public class EventOverviewDto {
         this.title = title;
         return this;
     }
+
+    /**
+     * Getter for creation daet
+     * @return The creation date
+     */
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    /**
+     * Setter for creation date
+     * @param creationDate The creation Date
+     * @return The creation Date
+     */
+    public EventOverviewDto setCreationDate(Date creationDate){
+        this.creationDate = creationDate;
+        return this;
+    }
+
+    /**
+     * Setter for last modified
+     * @param lastModifiedDate The last modified Date
+     * @return The last modified Date
+     */
+    public EventOverviewDto setLastModifiedDate(Date lastModifiedDate){
+        this.lastModifiedDate = lastModifiedDate;
+        return this;
+    }
+
+    /**
+     * Getter for last modified Date
+     * @return The last modified date
+     */
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
 
     /**
      * Retrieves the invite code associated with the event.

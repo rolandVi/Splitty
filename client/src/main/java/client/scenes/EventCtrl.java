@@ -14,7 +14,21 @@ import server.dto.view.EventDetailsDto;
 import server.dto.view.ExpenseDetailsDto;
 
 
-public class EventCtrl {
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import server.dto.view.UserNameDto;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.List;
+
+import java.util.ResourceBundle;
+
+public class EventCtrl implements MultiLanguages{
     private final MainCtrl mainCtrl;
 
     private final ServerUtils serverUtils;
@@ -38,12 +52,17 @@ public class EventCtrl {
     public Button addParticipant;
     @FXML
     public Text tempText;
-
-    private EventDetailsDto event;
+    @FXML
+    public Label expensesLabel;
 
     private NewExpenseCtrl newExpenseCtrl;
 
     private final EventCtrl self = this;
+    public Button leaveButton;
+    @FXML
+    private VBox participantsContainer;
+    private EventDetailsDto eventDetailsDto;
+    private long eventId;
 
     /**
      * Injector for Event Controller
@@ -56,6 +75,23 @@ public class EventCtrl {
         this.mainCtrl = mainCtrl;
         this.serverUtils = serverUtils;
         this.newExpenseCtrl = newExpenseCtrl;
+    }
+    /**
+     * Updates the language of the scene using the resource bundle
+     */
+    @Override
+    public void updateLanguage() {
+        try {
+            ResourceBundle lang = mainCtrl.lang;
+            returnButton.setText(lang.getString("return"));
+            changeTextField.setPromptText(lang.getString("event_name"));
+            changeButton.setText(lang.getString("change"));
+            participantsLabel.setText(lang.getString("participants"));
+            expensesLabel.setText(lang.getString("expenses"));
+            addExpenseButton.setText(lang.getString("add_expense"));
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -71,9 +107,13 @@ public class EventCtrl {
      * @param id the id of the event
      */
     public void init(long id) {
-        event = serverUtils.getEventDetails(id);
-        eventNameLabel.setText(event.getTitle());
+        eventDetailsDto = serverUtils.getEventDetails(id);
+        eventNameLabel.setText(eventDetailsDto.getTitle());
         loadExpenseList();
+        this.eventId = id;
+        this.eventDetailsDto=serverUtils.getEventDetails(id);
+        eventNameLabel.setText(eventDetailsDto.getTitle());
+        this.loadParticipants();
     }
 
     /**
@@ -99,7 +139,7 @@ public class EventCtrl {
 //        expenses.add(expenseDetailsDto2);
 //        event = new EventDetailsDto(1L, "ABC01", "Test Event 1", expenses, participants);
         ObservableList<ExpenseDetailsDto> items = FXCollections
-                .observableArrayList(event.getExpenses());
+                .observableArrayList(eventDetailsDto.getExpenses());
         expenseList.setCellFactory(new Callback<ListView<ExpenseDetailsDto>,
                 ListCell<ExpenseDetailsDto>>() {
             @Override
@@ -127,7 +167,7 @@ public class EventCtrl {
      * Will show add expense scene, allowing the user to add an expense
      */
     public void addExpense(){
-        newExpenseCtrl.init(event);
+        newExpenseCtrl.init(eventDetailsDto);
         mainCtrl.showNewExpense();
     }
 
@@ -136,7 +176,7 @@ public class EventCtrl {
      * @return the Data transfer object of current event showing
      */
     public EventDetailsDto getEventDetailsDto() {
-        return event;
+        return eventDetailsDto;
     }
 
     /**
@@ -144,7 +184,7 @@ public class EventCtrl {
      * @param eventDetailsDto the Data transfer object of current event showing
      */
     public void setEventDetailsDto(EventDetailsDto eventDetailsDto) {
-        this.event = eventDetailsDto;
+        this.eventDetailsDto = eventDetailsDto;
     }
 
     /**
@@ -153,6 +193,7 @@ public class EventCtrl {
     public void newParticipant(){
         mainCtrl.showNewParticipant();
     }
+
 
     private static class ExpenseListCell extends ListCell<ExpenseDetailsDto>{
         private final Button button;
@@ -195,5 +236,56 @@ public class EventCtrl {
                 }
             }
         }
+    }
+
+    /**
+     * Loads the participants and displays them on the page
+     */
+    public void loadParticipants() {
+        long eventId= this.eventDetailsDto.getId();
+
+        List<UserNameDto> participants = this.serverUtils.getParticipantsByEvent(eventId);
+        Node[] nodes=new Node[participants.size()];
+
+
+        for (int i = 0; i < nodes.length; i++) {
+            var loader=new FXMLLoader();
+            loader.setLocation(getClass().getClassLoader()
+                    .getResource(Path.of("client.scenes", "participantItem.fxml").toString()));
+            try {
+                nodes[i]=loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            Node currentNode=nodes[i];
+            final UserNameDto participant=participants.get(i);
+
+            Button eventButton = (Button) currentNode.lookup("#participantName");
+            eventButton.setText(participants.get(i).getFirstName() + " "
+                    + participants.get(i).getLastName());
+
+            eventButton.setOnAction(e -> showParticipantEdit(participant.getId(), eventId));
+        }
+        this.participantsContainer.getChildren().clear();
+        this.participantsContainer.getChildren().addAll(nodes);
+    }
+
+    /**
+     * Show the page for editing a participant
+     * @param parID id of the participant
+     * @param eventId id of the event (for deletion of participant)
+     */
+    private void showParticipantEdit(long parID, long eventId) {
+        mainCtrl.showParticipantEdit(parID, eventId);
+    }
+
+    /**
+     * The current user leaves the event
+     */
+    public void leave(){
+        long userId = 1L; // TODO replace with the actual user id
+        serverUtils.deleteEventParticipant(this.eventId, userId);
+        returnToOverview();
     }
 }

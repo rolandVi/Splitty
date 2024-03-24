@@ -15,10 +15,12 @@
  */
 package client.scenes;
 
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.util.Pair;
+
+import java.util.Locale;
+import java.util.ResourceBundle;
+import client.sceneUtils.LanguageComboBoxUtil;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -43,6 +45,7 @@ public class MainCtrl {
     private EventCreationCtrl eventCreationCtrl;
     private Scene eventPage;
     private Scene eventCreationPage;
+    protected ResourceBundle lang;
 
     private Scene eventItemPage;
 
@@ -50,64 +53,76 @@ public class MainCtrl {
 
     private Scene newParticipant;
     private NewParticipantCtrl newParticipantCtrl;
+    private Scene participantItem;
+    private Scene participantEdit;
+    private ParticipantCtrl participantCtrl;
+
+    private EnrollEventCtrl enrollEventCtrl;
+
+    private Scene enrollPage;
+
+    private AddBankInfoCtrl bankInfoCtrl;
+    private Scene addBankInfo;
 
     private Scene newExpensePage;
     private NewExpenseCtrl newExpenseCtrl;
 
     /**
      * The initialize method
-     *
-     * @param primaryStage      The primary Stage
-     * @param startPage         The start Page
-     * @param eventOverview     The event Overview
-     * @param paymentPage       The payment page
-     * @param eventPage         The event page
-     * @param eventCreationPage The create an event page
-     * @param eventItemPage
-     * @param newParticipant page to add new participants to event
-     * @param newExpensePage the new expense page
+     * @param sceneInputWrapper Wrapper for the inputs because of high number of parameters
      */
-    public void initialize(Stage primaryStage, Pair<StartPageCtrl, Parent> startPage,
-                           Pair<EventOverviewCtrl, Parent> eventOverview,
-                           Pair<PaymentPageCtrl, Parent> paymentPage,
-                           Pair<EventCtrl, Parent> eventPage,
-                           Pair<EventCreationCtrl, Parent> eventCreationPage,
-                           Pair<EventItemCtrl, Parent> eventItemPage,
-                           Pair<NewParticipantCtrl, Parent> newParticipant,
-                           Pair<NewExpenseCtrl, Parent> newExpensePage) {
-        this.primaryStage = primaryStage;
+    public void initialize(SceneInputWrapper sceneInputWrapper){
+        this.primaryStage = sceneInputWrapper.primaryStage();
 
-        this.startPageCtrl = startPage.getKey();
-        this.eventOverviewCtrl = eventOverview.getKey();
-        this.paymentPageCtrl = paymentPage.getKey();
-        this.eventCtrl = eventPage.getKey();
-        this.eventCreationCtrl = eventCreationPage.getKey();
-        this.eventItemCtrl=eventItemPage.getKey();
-        this.newParticipantCtrl = newParticipant.getKey();
-        this.newExpenseCtrl = newExpensePage.getKey();
+        this.startPageCtrl = sceneInputWrapper.startPage().getKey();
+        this.eventOverviewCtrl = sceneInputWrapper.eventOverview().getKey();
+        this.paymentPageCtrl = sceneInputWrapper.paymentPage().getKey();
+        this.eventCtrl = sceneInputWrapper.eventPage().getKey();
+        this.eventCreationCtrl = sceneInputWrapper.eventCreationPage().getKey();
+        this.eventItemCtrl= sceneInputWrapper.eventItemPage().getKey();
+        this.newParticipantCtrl = sceneInputWrapper.newParticipant().getKey();
+        this.participantCtrl = sceneInputWrapper.participantPage().getKey();
+        this.bankInfoCtrl = sceneInputWrapper.bankInfoPage().getKey();
 
-        this.startPage = new Scene(startPage.getValue());
-        this.eventOverview = new Scene(eventOverview.getValue());
+        this.startPage = new Scene(sceneInputWrapper.startPage().getValue());
+        this.eventOverview = new Scene(sceneInputWrapper.eventOverview().getValue());
 
-        this.paymentPage = new Scene(paymentPage.getValue());
+        this.paymentPage = new Scene(sceneInputWrapper.paymentPage().getValue());
 
-        this.eventPage = new Scene(eventPage.getValue());
-        this.eventCreationPage = new Scene(eventCreationPage.getValue());
+        this.eventPage = new Scene(sceneInputWrapper.eventPage().getValue());
+        this.eventCreationPage = new Scene(sceneInputWrapper.eventCreationPage().getValue());
 
-        this.eventItemPage=new Scene(eventItemPage.getValue());
+        this.eventItemPage=new Scene(sceneInputWrapper.eventItemPage().getValue());
 
-        this.newExpensePage = new Scene(newExpensePage.getValue());
+        this.newExpensePage = new Scene(sceneInputWrapper.newExpensePage().getValue());
 
         this.eventOverview.getStylesheets().add(
                 Objects.requireNonNull(this.getClass().getClassLoader()
                         .getResource(Path.of("stylesheets", "eventOverview.css").toString()))
                         .toExternalForm());
 
-        this.newParticipant = new Scene(newParticipant.getValue());
-
+        this.newParticipant = new Scene(sceneInputWrapper.newParticipant().getValue());
+        this.participantItem = new Scene(sceneInputWrapper.participantItemPage().getValue());
+        this.participantEdit = new Scene(sceneInputWrapper.participantPage().getValue());
+        this.addBankInfo = new Scene(sceneInputWrapper.bankInfoPage().getValue());
+        this.enrollPage=new Scene(sceneInputWrapper.enrollEventPage().getValue());
 
         showStart();
-        primaryStage.show();
+        sceneInputWrapper.primaryStage().show();
+        updateLanguagesOfScenes();
+    }
+
+    /**
+     * Updates the languages of all scenes (except admin)
+     */
+    protected void updateLanguagesOfScenes() {
+        Locale.setDefault(LanguageComboBoxUtil.getLocaleFromConfig());
+        lang = ResourceBundle.getBundle("languages.lang");
+        eventCtrl.updateLanguage();
+        eventOverviewCtrl.updateLanguage();
+        eventCreationCtrl.updateLanguage();
+        paymentPageCtrl.updateLanguage();
+        startPageCtrl.updateLanguage();
     }
 
     /**
@@ -120,9 +135,7 @@ public class MainCtrl {
         startPage.setOnKeyPressed(e -> {
             try {
                 startPageCtrl.keyPressed(e);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            } catch (InterruptedException ex) {
+            } catch (IOException | InterruptedException ex) {
                 throw new RuntimeException(ex);
             }
         });
@@ -183,4 +196,30 @@ public class MainCtrl {
         primaryStage.setScene(newParticipant);
     }
 
+    /**
+     * Shows the enroll page
+     */
+    public void showEnrollPage(){
+        primaryStage.setTitle("Enroll");
+        primaryStage.setScene(enrollPage);
+    }
+
+    /**
+     * Creates the participant edit page and sets it as the scene
+     * @param parID id of the participant
+     * @param eventId id of the scene
+     */
+    public void showParticipantEdit(long parID, long eventId) {
+        participantCtrl.init(parID, eventId);
+        primaryStage.setTitle("editParticipant page");
+        primaryStage.setScene(participantEdit);
+    }
+
+    /**
+     * Shows the addBankInfo page such that a user may add bank credentials to their accounts
+     */
+    public void showAddNewBank() {
+        primaryStage.setTitle("addNewBank page");
+        primaryStage.setScene(addBankInfo);
+    }
 }

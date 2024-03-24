@@ -6,11 +6,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+
 import javafx.scene.control.Label;
+
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
-import server.dto.BankAccountCreationDto;
 import server.dto.UserCreationDto;
 
 import java.io.IOException;
@@ -20,7 +21,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Optional;
 
-public class StartPageCtrl {
+import java.util.ResourceBundle;
+
+public class StartPageCtrl implements MultiLanguages{
 
     private final MainCtrl mainCtrl;
 
@@ -46,6 +49,9 @@ public class StartPageCtrl {
 
     @FXML
     public Button tempSkip;
+    public Button connectButton;
+    @FXML
+    public Button openAdminButton;
 
 
     /**
@@ -58,6 +64,19 @@ public class StartPageCtrl {
     public StartPageCtrl(MainCtrl mainCtrl, ServerUtils serverUtils) {
         this.mainCtrl = mainCtrl;
         this.serverUtils = serverUtils;
+    }
+    /**
+     * Updates the language of the scene using the resource bundle
+     */
+    @Override
+    public void updateLanguage() {
+        try {
+            ResourceBundle lang = mainCtrl.lang;
+            connectButton.setText(lang.getString("connect"));
+            openAdminButton.setText(lang.getString("open_admin"));
+        } catch (Exception e) {
+            System.out.println("Incorrect key");
+        }
     }
 
     /**
@@ -81,11 +100,7 @@ public class StartPageCtrl {
             this.incorrectData.setVisible(true);
             return;
         }
-        Optional<HttpResponse<String>> bankAccountResponse = createBankAccount();
-        if (bankAccountResponse.isEmpty() || bankAccountResponse.get().statusCode()==400){
-            this.incorrectData.setVisible(true);
-            return;
-        }
+
         Optional<HttpResponse<String>> userResponse = createUser(user);
         if (userResponse.isEmpty() || userResponse.get().statusCode()==400){
             this.incorrectData.setVisible(true);
@@ -175,46 +190,5 @@ public class StartPageCtrl {
 
         return user;
     }
-
-    /**
-     * Creates HTTP request to the server using the contents of text fields as user info
-     * @return HTTP response from the server
-     */
-    public Optional<HttpResponse<String>> createBankAccount()
-            throws IOException, InterruptedException {
-        // Todo: replace temporary value with host selected at start
-        String url = "http://localhost:8080";
-
-        // Prepare user data from text fields
-        String holder = firstNameField.getText() + " " + surNameField.getText();
-        String iban = ibanField.getText();
-        String bic = bicField.getText();
-        BankAccountCreationDto bankAccount = new BankAccountCreationDto();
-        bankAccount.setIban(iban);
-        bankAccount.setHolder(holder); // Assuming holder's email is the same as the user's email
-        bankAccount.setBic(bic);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String requestBody = objectMapper.writeValueAsString(bankAccount);
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .uri(URI.create(url + "/api/bankaccounts/"))
-                .header("Content-Type", "application/json")
-                .build();
-
-        // Send HTTP request to server
-        // Return HTTP response from server
-        Optional<HttpResponse<String>> response;
-        try {
-            response = Optional.of(HttpClient
-                    .newHttpClient()
-                    .send(request, HttpResponse.BodyHandlers.ofString()));
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return response;
-    }
-
 
 }

@@ -1,11 +1,18 @@
 package client.scenes;
 
+import client.sceneUtils.LanguageComboBoxUtil;
+
 import client.utils.ServerUtils;
+
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.VBox;
@@ -15,20 +22,29 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
-public class EventOverviewCtrl {
+import java.util.ResourceBundle;
 
-
-
+public class EventOverviewCtrl implements MultiLanguages {
     private final MainCtrl mainCtrl;
     private final ServerUtils serverUtils;
-
+    @FXML
+    public Label titleLabel;
+    @FXML
+    public Label newEventLabel;
     @FXML
     public Button newEventButton;
     @FXML
+    public Label paymentLabel;
+    @FXML
     public Button paymentButton;
+    @FXML
+    public ComboBox<String> languageComboBox;
 
     @FXML
     private VBox eventContainer;
+
+    @FXML
+    private Button enrollBtn;
 
 
     /**
@@ -43,12 +59,43 @@ public class EventOverviewCtrl {
     }
 
     /**
+     * Updates the languages of all scenes (except admin)
+     */
+    public void initialize() {
+        LanguageComboBoxUtil.updateLanguageComboBox(languageComboBox);
+    }
+
+    /**
+     * When a language has been selected
+     * Update the config file
+     * Update all scenes with the new languages
+     */
+    public void uponSelectionLanguage() {
+        String[] selection = languageComboBox.getValue().split("-");
+        LanguageComboBoxUtil.setLocaleFromConfig(selection[0], selection[1]);
+        mainCtrl.updateLanguagesOfScenes();
+    }
+    /**
+     * Updates the language of the scene using the resource bundle
+     */
+    @Override
+    public void updateLanguage() {
+        try {
+            ResourceBundle lang = mainCtrl.lang;
+            titleLabel.setText(lang.getString("event_overview"));
+            newEventLabel.setText(lang.getString("new_event"));
+            paymentLabel.setText(lang.getString("payments"));
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    /**
      * Will take the user to create a new event
      */
     public void newEvent(){
         mainCtrl.showNewEvent();
     }
-
     /**
      * Will take the user to the payment screen, where they can settle their debts
      */
@@ -105,5 +152,12 @@ public class EventOverviewCtrl {
         ClipboardContent content = new ClipboardContent();
         content.putString(inviteCode);
         clipboard.setContent(content);
+    }
+
+    /**
+     * Shows the enroll page
+     */
+    public void showEnrollPage(){
+        mainCtrl.showEnrollPage();
     }
 }

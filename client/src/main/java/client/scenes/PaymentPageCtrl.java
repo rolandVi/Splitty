@@ -5,7 +5,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
 
-public class PaymentPageCtrl {
+import java.util.ResourceBundle;
+
+public class PaymentPageCtrl implements MultiLanguages {
 
     private final MainCtrl mainCtrl;
     @FXML
@@ -16,6 +18,8 @@ public class PaymentPageCtrl {
     public Button showAllButton;
     @FXML
     public Button goBackButton;
+    @FXML
+    public Button addBank;
 
     /**
      * Injector for PaymentPageCtrl
@@ -24,6 +28,21 @@ public class PaymentPageCtrl {
     @Inject
     public PaymentPageCtrl(MainCtrl mainCtrl){
         this.mainCtrl = mainCtrl;
+    }
+    /**
+     * Updates the language of the scene using the resource bundle
+     */
+    @Override
+    public void updateLanguage() {
+        try {
+            ResourceBundle lang = mainCtrl.lang;
+            showOpenButton.setText(lang.getString("open"));
+            showAllButton.setText(lang.getString("all"));
+            goBackButton.setText(lang.getString("return"));
+            sendButton.setText(lang.getString("send"));
+        } catch (Exception e) {
+            System.out.println("Incorrect key");
+        }
     }
 
     /**
@@ -60,6 +79,13 @@ public class PaymentPageCtrl {
             default:
                 break;
         }
+    }
+
+    /**
+     * Allows the user to access the page to add bank information to their accounts
+     */
+    public void addBankInfo(){
+        mainCtrl.showAddNewBank();
     }
 
 
