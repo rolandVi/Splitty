@@ -29,6 +29,14 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Set<EventEntity> getEventsByUserId(@Param(value="id") long id);
 
     /**
+     * Query to get the id of a specific user
+     * @param email the email of the user
+     * @return the id
+     */
+    @Query("select u.id from UserEntity u where u.email=:email")
+    Long getUserIdByUserEmail(@Param(value="email") String email);
+
+    /**
      * Checks if such an email exists
      * @param email the email
      * @return true if it exists and false otherwise

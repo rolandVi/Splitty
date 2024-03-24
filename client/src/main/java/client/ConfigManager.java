@@ -1,5 +1,6 @@
 package client;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,7 +10,6 @@ import java.util.Set;
 public class ConfigManager {
 
     private String configFilePath;
-    private String fileName;
 //    private final String CONFIG_FILE_PATH="client/src/main/resources/config.properties";
 
 //    private ConfigManager instance;
@@ -35,17 +35,46 @@ public class ConfigManager {
     }
 
     /**
+     * Checks if the config file exists or not
+     * @param configFilePath relative path to the config file with project folder as working directory
+     * @return boolean value indicating if config file exists
+     */
+    public static boolean configFileExists(String configFilePath) {
+        File config = new File(configFilePath);
+        return config.exists();
+    }
+
+    /**
+     * Creates a new config file to save locale and user info (incl. ID)
+     * @param configFilePath path to where the new config file should be created
+     */
+    public static void createConfig(String configFilePath) {
+        Properties properties = new Properties();
+        // Required properties
+        properties.setProperty("country", "GB");
+        properties.setProperty("language", "en");
+        properties.setProperty("userID", "NOT SET");
+        properties.setProperty("loggedIn", "FALSE");
+        // Not really necessary at the moment, however could be useful later
+        properties.setProperty("userFirstName", "NOT SET");
+        properties.setProperty("userLastName", "NOT SET");
+        properties.setProperty("userMail", "NOT SET");
+        // When storing properties, they will be stored in alphabetical order based on key
+        try (FileWriter writer = new FileWriter(configFilePath)){
+            properties.store(writer, "Application configuration");
+        }catch (IOException e){
+            throw new RuntimeException();
+        }
+    }
+
+    /**
      * Loads the contents of the config file into the properties object
      */
     public void loadConfig(){
         try (FileReader fileReader = new FileReader(configFilePath)) {
             properties.load(fileReader);
         } catch (IOException e){
-            if (configFilePath.contains("client/")) e.printStackTrace();
-            else {
-                configFilePath += "client/";
-                loadConfig();
-            }
+            throw new RuntimeException();
         }
     }
 
@@ -56,11 +85,7 @@ public class ConfigManager {
         try (FileWriter writer = new FileWriter(configFilePath)){
             properties.store(writer, "Application configuration");
         }catch (IOException e){
-            if (configFilePath.contains("client/")) e.printStackTrace();
-            else {
-                configFilePath += "client/";
-                saveConfig();
-            }
+            throw new RuntimeException();
         }
     }
 

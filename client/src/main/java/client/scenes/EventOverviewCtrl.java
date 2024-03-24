@@ -1,6 +1,6 @@
 package client.scenes;
 
-import client.sceneUtils.LanguageComboBoxUtil;
+import client.utils.LanguageComboBoxUtil;
 
 import client.utils.ServerUtils;
 

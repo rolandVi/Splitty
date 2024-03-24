@@ -22,6 +22,7 @@ import client.scenes.admin.AdminOverviewPageCtrl;
 import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import org.checkerframework.checker.units.qual.C;
 
 import static com.google.inject.Guice.createInjector;
 
@@ -29,12 +30,16 @@ public class Main extends Application {
 
     private static final Injector INJECTOR = createInjector(new MyModule());
     private static final MyFXML FXML = new MyFXML(INJECTOR);
+    public static final String CONFIG_FILE_PATH = "client/src/main/resources/config.properties";
+
 
     /**
      * Main function
      * @param args the args
      */
     public static void main(String[] args) {
+        if (!ConfigManager.configFileExists(CONFIG_FILE_PATH))
+            ConfigManager.createConfig(CONFIG_FILE_PATH);
         launch();
     }
 
