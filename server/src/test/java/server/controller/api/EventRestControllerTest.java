@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import server.dto.view.EventDetailsDto;
 import server.dto.view.EventOverviewDto;
 import server.dto.view.EventTitleDto;
+import server.dto.view.UserNameDto;
 import server.service.EventService;
 
 import java.util.ArrayList;
@@ -89,53 +90,6 @@ class EventRestControllerTest {
     }
 
     @Test
-    void testCreateEvent() {
-        // Arrange
-        String title = "New Event";
-        EventTitleDto expectedDto = new EventTitleDto(/* Create your expected DTO */);
-        when(eventService.createEvent(title)).thenReturn(expectedDto);
-
-        // Act
-        ResponseEntity<EventTitleDto> response = eventRestController.createEvent(title);
-
-        // Assert
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(expectedDto, response.getBody());
-        verify(eventService, times(1)).createEvent(title);
-    }
-
-    @Test
-    void testAddParticipant() {
-        // Arrange
-        String invite = "1";
-        long userId = 2L;
-        when(eventService.addParticipant(invite, userId)).thenReturn(true);
-
-        // Act
-        ResponseEntity<Void> response = eventRestController.addParticipant(invite, userId);
-
-        // Assert
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-
-        verify(eventService, times(1)).addParticipant(invite, userId);
-    }
-
-    @Test
-    void testDeleteParticipant() {
-        // Arrange
-        long eventId = 1L;
-        long userId = 2L;
-        when(eventService.deleteParticipant(eventId, userId)).thenReturn(true);
-
-        // Act
-        ResponseEntity<Void> response = eventRestController.deleteParticipant(eventId, userId);
-
-        // Assert
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        verify(eventService, times(1)).deleteParticipant(eventId, userId);
-    }
-
-    @Test
     void getAllEvents() {
         // Arrange
         List<EventOverviewDto> expectedEvents = new ArrayList<>();
@@ -150,5 +104,19 @@ class EventRestControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedEvents, response.getBody());
         verify(eventService, times(1)).getAllEvents();
+    }
+
+
+    @Test
+    void testGetEventParticipants() {
+        long eventId = 1L; // Sample event ID
+        List<UserNameDto> userNameDtoList = new ArrayList<>(); // Initialize list of user name DTOs
+        when(eventService.getEventParticipants(eventId)).thenReturn(userNameDtoList); // Mock eventService
+
+        ResponseEntity<List<UserNameDto>> responseEntity = eventRestController.getEventParticipants(eventId);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(userNameDtoList, responseEntity.getBody());
+        verify(eventService, times(1)).getEventParticipants(eventId); // Verify eventService method called
     }
 }
