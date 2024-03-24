@@ -117,7 +117,8 @@ public class StartPageCtrl implements MultiLanguages{
         mainCtrl.configManager.setProperty("userFirstName", firstNameField.getText());
         mainCtrl.configManager.setProperty("userLastName", surNameField.getText());
         mainCtrl.configManager.setProperty("userMail", emailField.getText());
-        mainCtrl.configManager.setProperty("userID", String.valueOf(getUserID(emailField.getText())));
+        mainCtrl.configManager
+                .setProperty("userID", String.valueOf(getUserID(emailField.getText())));
         mainCtrl.configManager.saveConfig();
     }
 
@@ -156,7 +157,8 @@ public class StartPageCtrl implements MultiLanguages{
      * @param user th user to create
      * @return HTTP response from the server
      */
-    public Optional<HttpResponse<String>> createUser(UserCreationDto user) throws JsonProcessingException {
+    public Optional<HttpResponse<String>> createUser(UserCreationDto user)
+            throws JsonProcessingException {
         String url = "http://localhost:8080";
         // Prepare user data from text fields
         ObjectMapper objectMapper = new ObjectMapper();

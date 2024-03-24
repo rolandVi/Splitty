@@ -162,7 +162,7 @@ class ConfigManagerTest {
             assertTrue(scanner.hasNextLine());
             assertEquals("language=en", scanner.nextLine());
             assertTrue(scanner.hasNextLine());
-            assertEquals("loggedIn=false", scanner.nextLine());
+            assertEquals("loggedIn=FALSE", scanner.nextLine());
             assertTrue(scanner.hasNextLine());
             assertEquals("userFirstName=NOT SET", scanner.nextLine());
             assertTrue(scanner.hasNextLine());

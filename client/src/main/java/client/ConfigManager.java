@@ -36,7 +36,8 @@ public class ConfigManager {
 
     /**
      * Checks if the config file exists or not
-     * @param configFilePath relative path to the config file with project folder as working directory
+     * @param configFilePath relative path to the config file
+     *                      with project folder as working directory
      * @return boolean value indicating if config file exists
      */
     public static boolean configFileExists(String configFilePath) {

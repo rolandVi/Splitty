@@ -22,7 +22,6 @@ import client.scenes.admin.AdminOverviewPageCtrl;
 import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import org.checkerframework.checker.units.qual.C;
 
 import static com.google.inject.Guice.createInjector;
 
