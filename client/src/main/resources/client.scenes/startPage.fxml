@@ -20,11 +20,11 @@
          <font>
             <Font size="8.0" />
          </font></Text>
-      <Button layoutX="443.0" layoutY="355.0" mnemonicParsing="false" onAction="#enterAdmin" text="Open admin overview" />
-      <TextField fx:id="firstNameField" layoutX="226.0" layoutY="104.0" promptText="First name" />
-      <TextField fx:id="surNameField" layoutX="226.0" layoutY="137.0" promptText="Surname" />
-      <TextField fx:id="emailField" layoutX="225.0" layoutY="169.0" promptText="Email" />
-      <Label fx:id="incorrectData" layoutX="220.0" layoutY="269.0" prefHeight="17.0" prefWidth="161.0" text="Please enter valid information" textFill="RED" visible="false" />
-      <Button fx:id="tempSkip" layoutX="457.0" layoutY="137.0" mnemonicParsing="false" onAction="#skip" text="Skip" />
+
+      <Button fx:id="openAdminButton" layoutX="443.0" layoutY="355.0" mnemonicParsing="false" onAction="#enterAdmin" text="Open admin overview" />
+      <TextField fx:id="firstNameField" layoutX="226.0" layoutY="127.0" promptText="First name" />
+      <TextField fx:id="surNameField" layoutX="226.0" layoutY="160.0" promptText="Surname" />
+      <TextField fx:id="emailField" layoutX="225.0" layoutY="192.0" promptText="Email" />
+      <Label fx:id="incorrectData" layoutX="220.0" layoutY="331.0" prefHeight="17.0" prefWidth="161.0" text="Please enter valid information" textFill="RED" visible="false" />
    </children>
 </AnchorPane>

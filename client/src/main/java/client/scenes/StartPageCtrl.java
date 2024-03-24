@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.Main;
 import client.utils.ServerUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
@@ -16,9 +17,11 @@ import server.dto.UserCreationDto;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 import java.util.ResourceBundle;
@@ -75,7 +78,7 @@ public class StartPageCtrl implements MultiLanguages{
             connectButton.setText(lang.getString("connect"));
             openAdminButton.setText(lang.getString("open_admin"));
         } catch (Exception e) {
-            System.out.println("Incorrect key");
+            throw new RuntimeException(e);
         }
     }
 
@@ -107,11 +110,23 @@ public class StartPageCtrl implements MultiLanguages{
             return;
         }
 
+        saveUserToConfig();
+
         if (!serverInserted.equals("http://localhost:8080")) {
             errorMessage.setOpacity(1.0d);
         } else {
             mainCtrl.showOverview();
         }
+    }
+
+    private void saveUserToConfig(){
+        mainCtrl.configManager.setProperty("loggedIn", "TRUE");
+        mainCtrl.configManager.setProperty("userFirstName", firstNameField.getText());
+        mainCtrl.configManager.setProperty("userLastName", surNameField.getText());
+        mainCtrl.configManager.setProperty("userMail", emailField.getText());
+        mainCtrl.configManager
+                .setProperty("userID", String.valueOf(getUserID(emailField.getText())));
+        mainCtrl.configManager.saveConfig();
     }
 
     /**
@@ -150,7 +165,7 @@ public class StartPageCtrl implements MultiLanguages{
      * @return HTTP response from the server
      */
     public Optional<HttpResponse<String>> createUser(UserCreationDto user)
-            throws IOException, InterruptedException {
+            throws JsonProcessingException {
         String url = "http://localhost:8080";
         // Prepare user data from text fields
         ObjectMapper objectMapper = new ObjectMapper();
@@ -189,6 +204,36 @@ public class StartPageCtrl implements MultiLanguages{
         user.setEmail(email);
 
         return user;
+    }
+
+    /**
+     * Creates HTTP request to the server using the email as a parameter
+     * @param email the email of the user
+     * @return ID of user with the email
+     */
+    private Long getUserID(String email) {
+        String url = "http://localhost:8080";
+        // Prepare user data from text fields
+        email = URLEncoder.encode(email, StandardCharsets.UTF_8);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create(url + "/api/users/" + email))
+                .header("Content-Type", "application/json")
+                .build();
+
+        // Send HTTP request to server
+        // Return HTTP response from server
+        Optional<HttpResponse<String>> response;
+        try {
+            response = Optional.of(HttpClient
+                    .newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString()));
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Long.valueOf(response.get().body());
     }
 
 }

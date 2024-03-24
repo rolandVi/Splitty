@@ -109,4 +109,20 @@ class UserRestControllerTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         verify(userService, times(1)).leave(eventId, userId); // Verify userService method called
     }
+
+    @Test
+    void getUserIDByEmail() {
+        // Arrange
+        String email = "email@mail.com";
+        Long expectedID = 1L;
+        when(userService.findIdByEmail(email)).thenReturn(expectedID);
+
+        // Act
+        ResponseEntity<Long> response = userRestController.getUserIDByEmail(email);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedID, response.getBody());
+        verify(userService, times(1)).findIdByEmail(email);
+    }
 }

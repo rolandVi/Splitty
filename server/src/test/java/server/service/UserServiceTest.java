@@ -254,4 +254,11 @@ public class UserServiceTest {
         // Verify
         verify(userRepository, never()).save(any());
     }
+
+    @Test
+    void findIdByEmail() {
+        String email = "email@mail.com";
+        when(this.userRepository.getUserIdByUserEmail(email)).thenReturn(1L);
+        assertEquals(1L, userService.findIdByEmail(email));
+    }
 }
