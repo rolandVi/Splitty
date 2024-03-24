@@ -78,7 +78,7 @@ public class StartPageCtrl implements MultiLanguages{
             connectButton.setText(lang.getString("connect"));
             openAdminButton.setText(lang.getString("open_admin"));
         } catch (Exception e) {
-            System.out.println("Incorrect key");
+            throw new RuntimeException(e);
         }
     }
 
