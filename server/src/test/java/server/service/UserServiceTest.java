@@ -94,4 +94,11 @@ public class UserServiceTest {
 
         assertEquals(modifiedEvents, this.userService.getUserEvents(id));
     }
+
+    @Test
+    void findIdByEmail() {
+        String email = "email@mail.com";
+        when(this.userRepository.getUserIdByUserEmail(email)).thenReturn(1L);
+        assertEquals(1L, userService.findIdByEmail(email));
+    }
 }

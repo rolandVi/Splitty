@@ -53,7 +53,7 @@ public class UserRestController {
      * @return the ID of this user
      */
     @GetMapping("/{email}")
-    public ResponseEntity<Long> getUserEvents(@PathVariable(name = "email") String email){
+    public ResponseEntity<Long> getUserIDByEmail(@PathVariable(name = "email") String email){
         email = URLDecoder.decode(email, StandardCharsets.UTF_8);
         return ResponseEntity.ok(this.userService.findIdByEmail(email));
     }
