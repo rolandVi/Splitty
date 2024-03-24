@@ -1,4 +1,4 @@
-package client.sceneUtils;
+package client.utils;
 
 import client.ConfigManager;
 import javafx.collections.FXCollections;
