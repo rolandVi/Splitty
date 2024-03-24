@@ -102,7 +102,6 @@ public class NewParticipantCtrl {
             throw new RuntimeException(e);
         }
         return response;
-
     }
 
     private UserCreationDto getUserEntity() {

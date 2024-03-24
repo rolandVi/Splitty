@@ -6,6 +6,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import server.dto.ExpenseCreationDto;
+import server.dto.view.EventDetailsDto;
 import server.dto.view.ExpenseDetailsDto;
 import server.dto.view.UserNameDto;
 import server.service.ExpenseService;
@@ -72,16 +74,30 @@ class ExpenseRestControllerTest {
 
     @Test
     void testCreateExpense() {
+
+//        ExpenseCreationDto creationDto = new ExpenseCreationDto(
+//                "TestTitle",
+//                10.0,
+//                new UserNameDto(),
+//                new HashSet<>(Collections.singletonList(new UserNameDto())),
+//                new Date());
+        ExpenseCreationDto creationDto = new ExpenseCreationDto(
+                "TestTitle",
+                10.0,
+                new UserNameDto(),
+                new EventDetailsDto(),
+                new Date());
+
         // Arrange
-        when(expenseService.createExpense(requestDto)).thenReturn(expectedDto);
+        when(expenseService.createExpense(creationDto)).thenReturn(expectedDto);
 
         // Act
-        ResponseEntity<ExpenseDetailsDto> response = expenseRestController.createExpense(requestDto);
+        ResponseEntity<ExpenseDetailsDto> response = expenseRestController.createExpense(creationDto);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedDto, response.getBody());
-        verify(expenseService, times(1)).createExpense(requestDto);
+        verify(expenseService, times(1)).createExpense(creationDto);
     }
 
     @Test

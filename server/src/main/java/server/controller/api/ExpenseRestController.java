@@ -3,6 +3,7 @@ package server.controller.api;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import server.dto.ExpenseCreationDto;
 import server.dto.view.ExpenseDetailsDto;
 import server.service.ExpenseService;
 
@@ -44,8 +45,10 @@ public class ExpenseRestController {
      */
     @PostMapping("/")
     public ResponseEntity<ExpenseDetailsDto> createExpense
-    (@Valid @RequestBody ExpenseDetailsDto expense) {
+    (@Valid @RequestBody ExpenseCreationDto expense) {
+        System.out.println("raah");
         ExpenseDetailsDto createdExpense = expenseService.createExpense(expense);
+        System.out.println("Created expense: " + createdExpense);
         return ResponseEntity.ok(createdExpense);
     }
 

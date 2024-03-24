@@ -1,9 +1,12 @@
 package server.dto.view;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ExpenseDetailsDto {
     private Long id;
 

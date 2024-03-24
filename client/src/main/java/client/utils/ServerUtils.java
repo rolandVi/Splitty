@@ -9,6 +9,7 @@ import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import server.dto.CreatorToTitleDto;
+import server.dto.ExpenseCreationDto;
 import server.dto.UserCreationDto;
 import server.dto.view.*;
 import server.exceptions.PasswordExpiredException;
@@ -261,23 +262,35 @@ public class ServerUtils {
     /**
      * Adds a new expense to the event
      * @param eventId the id of the event
-     * @param expenseDetailsDto the details of the expense
+     * @param expenseCreationDto the details of the expense
      * @return a boolean, whether the operation has been successful
      */
-    public boolean addExpense(long eventId, ExpenseDetailsDto expenseDetailsDto) {
+    public boolean addExpense(long eventId, ExpenseCreationDto expenseCreationDto) {
 
         Response expenseCreationResponse = client.target(SERVER)
                 .path("api/expenses/")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .post(Entity.entity(expenseDetailsDto, APPLICATION_JSON));
+                .post(Entity.entity(expenseCreationDto, APPLICATION_JSON));
+
+        ExpenseDetailsDto expense = expenseCreationResponse.readEntity(ExpenseDetailsDto.class);
+
+        System.out.println("expense in utils id: " + expense.getId());
 
 
-        Response expendeAdditionResponse = client.target(SERVER)
-                .path("api/events/"+eventId+"/add_expense")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .post(Entity.entity(expenseDetailsDto.getId(), APPLICATION_JSON));
+//        WebTarget webTarget = client.target(SERVER).path("api/events/"+eventId+"/add_expense");
+//        webTarget.property(HttpUrlConnectorProvider.SET_METHOD_WORKAROUND, true);
+//
+//        Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+//                //.header(HttpUtils.AUTHORISATION_HEADER_NAME, "Bearer " + theAccessToken);
+//        Response response = invocationBuilder
+//        .method(HttpMethod.PATCH, Entity.entity(expense.getId(), APPLICATION_JSON));
+
+//        Response expenseAdditionResponse = client.target(SERVER)
+//                .path("api/events/"+eventId+"/add_expense")
+//                .request(APPLICATION_JSON)
+//                .accept(APPLICATION_JSON)
+//                .patch(Entity.entity(expense.getId(), APPLICATION_JSON));
 
         return true;
     }

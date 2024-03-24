@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import server.controller.exception.ObjectNotFoundException;
+import server.dto.ExpenseCreationDto;
 import server.dto.view.ExpenseDetailsDto;
 import server.repository.ExpenseRepository;
 
@@ -86,10 +87,12 @@ public class ExpenseService {
      * @return The created expense DTO
      */
     @Transactional
-    public ExpenseDetailsDto createExpense(@Valid ExpenseDetailsDto expenseDto) {
-        ExpenseEntity expenseEntity = modelMapper.map(expenseDto, ExpenseEntity.class);
-        ExpenseEntity savedExpense = expenseRepository.save(expenseEntity);
-        return modelMapper.map(savedExpense, ExpenseDetailsDto.class);
+    public ExpenseDetailsDto createExpense(@Valid ExpenseCreationDto expenseDto) {
+        ExpenseEntity expenseEntity = expenseRepository
+                .save(modelMapper.map(expenseDto, ExpenseEntity.class));
+        System.out.println("Expense id: " + expenseEntity.getId());
+        //ExpenseEntity savedExpense = expenseRepository.save(expenseEntity);
+        return modelMapper.map(expenseEntity, ExpenseDetailsDto.class);
     }
 
     /**

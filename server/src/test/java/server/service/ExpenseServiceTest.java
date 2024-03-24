@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import server.controller.exception.ObjectNotFoundException;
+import server.dto.ExpenseCreationDto;
 import server.dto.view.ExpenseDetailsDto;
 import server.repository.ExpenseRepository;
 
@@ -206,7 +207,7 @@ class ExpenseServiceTest {
     @Test
     void createExpense_ReturnsCreatedExpenseDto() {
         // Arrange
-        ExpenseDetailsDto expenseDto = new ExpenseDetailsDto();
+        ExpenseCreationDto expenseDto = new ExpenseCreationDto();
         ExpenseEntity expenseEntity = new ExpenseEntity();
         when(expenseRepository.save(any())).thenReturn(expenseEntity);
 

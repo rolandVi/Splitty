@@ -175,6 +175,7 @@ public class MainCtrl {
      */
     public void showNewExpense(){
         primaryStage.setTitle("New Expense");
+        newExpenseCtrl.init(eventCtrl.getEventDetailsDto());
         primaryStage.setScene(newExpensePage);
     }
 

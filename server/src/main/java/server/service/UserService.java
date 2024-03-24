@@ -74,6 +74,7 @@ public class UserService {
      */
     public UserNameDto createUser(UserCreationDto user) {
         UserEntity result = this.userRepository.save(this.modelMapper.map(user, UserEntity.class));
+        System.out.println("User entity id: " + result.getId());
         return modelMapper.map(result, UserNameDto.class);
     }
 
