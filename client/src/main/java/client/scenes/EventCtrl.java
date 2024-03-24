@@ -101,6 +101,7 @@ public class EventCtrl implements MultiLanguages{
      * turn the EventTitleDto into Json format string
      */
     public void changeEventName() throws JsonProcessingException {
+        //todo: id has to be variable
         serverUtils.changeEventName(1L, changeTextField.getText());
         this.eventNameLabel.setText(this.changeTextField.getText());
         this.changeTextField.setText("");
