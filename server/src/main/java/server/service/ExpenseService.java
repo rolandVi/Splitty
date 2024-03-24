@@ -1,6 +1,8 @@
 package server.service;
 
+import commons.EventEntity;
 import commons.ExpenseEntity;
+import commons.UserEntity;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -9,6 +11,8 @@ import server.controller.exception.ObjectNotFoundException;
 import server.dto.view.ExpenseDetailsDto;
 import server.repository.ExpenseRepository;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -122,7 +126,21 @@ public class ExpenseService {
         return mapToExpenseDetailsDtoList(userExpenses);
     }
 
+    public ExpenseEntity findExpenseEntityById(Long id){
+        return this.expenseRepository.findById(id)
+                .orElseThrow(ObjectNotFoundException::new);
+    }
 
+
+
+    @Transactional
+    public double payDebt(ExpenseEntity expense, UserEntity receiver, UserEntity sender) {
+        double owedMoney=roundToNDecimals(expense.getMoney()/expense.getDebtors().size(), 2);
+        expense.setMoney(expense.getMoney()-owedMoney);
+        expense.getDebtors().remove(sender);
+        this.expenseRepository.save(expense);
+        return owedMoney;
+    }
 
 
     /**
@@ -150,5 +168,13 @@ public class ExpenseService {
         dto.setTitle(expense.getTitle());
         dto.setDate(expense.getDate());
         return dto;
+    }
+
+    private double roundToNDecimals(double value, int n){
+        if (n < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(n, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }

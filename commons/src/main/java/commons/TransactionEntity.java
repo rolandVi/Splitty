@@ -18,6 +18,9 @@ public class TransactionEntity {
     @JoinColumn(nullable = false)
     private UserEntity receiver;
 
+    @ManyToOne
+    private ExpenseEntity expense;
+
     /**
      * Default constructor for JBA
      */
@@ -71,6 +74,64 @@ public class TransactionEntity {
     }
 
     /**
+     * Getter for the expanse
+     * @return teh expanse entity
+     */
+    public ExpenseEntity getExpense() {
+        return expense;
+    }
+
+    /**
+     * Setter for the ID of the transaction.
+     * @param id unique ID to identify a transaction
+     * @return the TransactionEntity object with the updated ID
+     */
+    public TransactionEntity setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Setter for the amount of money that has been transferred.
+     * @param money amount of money
+     * @return the TransactionEntity object with the updated money amount
+     */
+    public TransactionEntity setMoney(double money) {
+        this.money = money;
+        return this;
+    }
+
+    /**
+     * Setter for the user sending the money.
+     * @param sender user sending the money
+     * @return the TransactionEntity object with the updated sender
+     */
+    public TransactionEntity setSender(UserEntity sender) {
+        this.sender = sender;
+        return this;
+    }
+
+    /**
+     * Setter for the user receiving the money.
+     * @param receiver user receiving the money
+     * @return the TransactionEntity object with the updated receiver
+     */
+    public TransactionEntity setReceiver(UserEntity receiver) {
+        this.receiver = receiver;
+        return this;
+    }
+
+    /**
+     * Setter for the expense associated with the transaction.
+     * @param expense the expense entity
+     * @return the TransactionEntity object with the updated expense
+     */
+    public TransactionEntity setExpense(ExpenseEntity expense) {
+        this.expense = expense;
+        return this;
+    }
+
+    /**
      * Compares this transaction to the object o
      * @param o the object to compare if it is equal to this
      * @return returns true if they are equal and false if not
@@ -83,7 +144,8 @@ public class TransactionEntity {
         return Double.compare(money, that.money) == 0
                 && Objects.equals(id, that.id)
                 && Objects.equals(sender, that.sender)
-                && Objects.equals(receiver, that.receiver);
+                && Objects.equals(receiver, that.receiver)
+                && Objects.equals(expense, that.expense);
     }
 
     /**
@@ -92,6 +154,6 @@ public class TransactionEntity {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, money, sender, receiver);
+        return Objects.hash(id, money, sender, receiver, expense);
     }
 }
