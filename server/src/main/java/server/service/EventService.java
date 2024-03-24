@@ -4,6 +4,7 @@ import commons.EventEntity;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import server.controller.exception.ObjectNotFoundException;
 import server.dto.view.EventDetailsDto;
@@ -20,17 +21,21 @@ import java.util.stream.Collectors;
 public class EventService {
     private final EventRepository eventRepository;
     private final ModelMapper modelMapper;
+    private final JdbcTemplate jdbcTemplate;
 
     /**
      * Constructor Injection
      *
      * @param eventRepository the EventEntity repository
      * @param modelMapper     the ModelMapper injected by Spring
+     * @param jdbcTemplate
      */
     public EventService(EventRepository eventRepository,
-                        ModelMapper modelMapper) {
+                        ModelMapper modelMapper, JdbcTemplate jdbcTemplate) {
         this.eventRepository = eventRepository;
         this.modelMapper = modelMapper;
+//        this.jdbcTemplate = jdbcTemplate;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     /**
@@ -149,6 +154,14 @@ public class EventService {
     public EventEntity findEntityByInviteCode(String inviteCode) {
         return this.eventRepository.findEventEntityByInviteCode(inviteCode)
                 .orElseThrow(ObjectNotFoundException::new);
+    }
+
+    /**
+     * Creates a dump of the whole database
+     */
+    public void dumpTables() throws Exception {
+
+        jdbcTemplate.execute("SCRIPT TO 'dump.sql'");
     }
 
 

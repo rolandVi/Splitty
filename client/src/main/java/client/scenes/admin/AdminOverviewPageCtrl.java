@@ -17,8 +17,12 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.VBox;
 import server.dto.view.EventOverviewDto;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
@@ -26,11 +30,14 @@ import java.util.Comparator;
 
 
 public class AdminOverviewPageCtrl {
-
     private final AdminMainCtrl adminMainCtrl;
     private final ServerUtils serverUtils;
     @FXML
     public MenuButton orderButton;
+    @FXML
+    public Button backup;
+    @FXML
+    public Button restore;
 
     @FXML
     private VBox eventContainer;
@@ -202,8 +209,30 @@ public class AdminOverviewPageCtrl {
     public void getJSON(Long id){
         Clipboard clipboard = Clipboard.getSystemClipboard();
         ClipboardContent content = new ClipboardContent();
-        //TODO: get the JSON dump
-        clipboard.setContent(content);
+        try {
+            URL url = new URL("http://localhost:8080/api/events/" + id); // Assuming each event has its own endpoint
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+
+            if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String inputLine;
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                // Set the retrieved JSON content to clipboard
+                content.putString(response.toString());
+                clipboard.setContent(content);
+                System.out.println("JSON copied to clipboard.");
+            } else {
+                System.out.println("Error dumping database: " + con.getResponseMessage());
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
     /**
@@ -214,5 +243,25 @@ public class AdminOverviewPageCtrl {
         loadEvents();
     }
 
+
+    /**
+     * creates a backup of the entire database, might be handy in some cases
+     */
+    public void dumpTables() {
+        try {
+            URL url = new URL("http://localhost:8080/api/events/dump-tables");
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("POST");
+
+            if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                System.out.println("Database dump successful");
+            } else {
+                System.out.println("Error dumping database: " + con.getResponseMessage());
+            }
+            con.disconnect();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
 
 }
