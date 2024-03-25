@@ -1,10 +1,12 @@
 package server.controller.api;
 
+import commons.ExpenseEntity;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.dto.ExpenseCreationDto;
 import server.dto.view.ExpenseDetailsDto;
+import server.service.EventService;
 import server.service.ExpenseService;
 
 import java.util.List;
@@ -14,13 +16,17 @@ import java.util.List;
 public class ExpenseRestController {
 
     private final ExpenseService expenseService;
+    private final EventService eventService;
 
     /**
      * Constructor injection
-     * @param expenseService the Service for the Expense Entity
+     * @param expenseService the Service for the Expense
+     * @param eventService the event service
      */
-    public ExpenseRestController(ExpenseService expenseService) {
+    public ExpenseRestController(ExpenseService expenseService,
+                                 EventService eventService) {
         this.expenseService = expenseService;
+        this.eventService = eventService;
     }
 
     /**
@@ -44,11 +50,18 @@ public class ExpenseRestController {
      * @return ResponseEntity containing the created expense details
      */
     @PostMapping("/")
-    public ResponseEntity<ExpenseDetailsDto> createExpense
+    public ResponseEntity<ExpenseEntity> createExpense
     (@Valid @RequestBody ExpenseCreationDto expense) {
-        System.out.println("raah");
-        ExpenseDetailsDto createdExpense = expenseService.createExpense(expense);
-        System.out.println("Created expense: " + createdExpense);
+        //for some reason, here expense has author id 0/null
+        System.out.println("Expense: "+expense);
+        System.out.println("Expense title: " + expense.getTitle());
+        System.out.println("Expense money:"+expense.getMoney());
+        System.out.println("Expense eventId: " + expense.getEventId());
+        System.out.println("Expense date: " + expense.getDate());
+        System.out.println("Debtors' ids: " + expense.getDebtorsIds());
+        System.out.println("Expense authorId: "+expense.getAuthorId());
+        ExpenseEntity createdExpense = expenseService.createExpense(expense);
+        System.out.println("createdExpense in expenseController: " + createdExpense);
         return ResponseEntity.ok(createdExpense);
     }
 

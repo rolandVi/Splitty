@@ -41,7 +41,7 @@ class EventServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         ModelMapper modelMapper = new ModelMapper();
-        eventService = new EventService(eventRepository, modelMapper, expenseService);
+        eventService = new EventService(eventRepository, modelMapper);
     }
 
     @Test

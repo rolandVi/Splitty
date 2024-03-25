@@ -36,6 +36,7 @@ dependencies {
 	implementation 'org.openjfx:javafx-controls:21.0.2'
 	implementation 'org.openjfx:javafx-fxml:21.0.2'
     implementation project(path: ':server')
+	implementation project(path: ':commons')
 
 	testImplementation 'org.testfx:testfx-junit5:4.0.16-alpha'
 

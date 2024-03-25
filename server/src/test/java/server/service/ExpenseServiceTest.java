@@ -23,6 +23,8 @@ class ExpenseServiceTest {
     private ExpenseRepository expenseRepository;
 
     private ExpenseService expenseService;
+    private EventService eventService;
+    private UserService userService;
 
     private ExpenseEntity expectedDto;
     private List<ExpenseEntity> expectedExpenses;
@@ -32,7 +34,7 @@ class ExpenseServiceTest {
         MockitoAnnotations.openMocks(this);
         ModelMapper modelMapper = new ModelMapper();
 
-        expenseService = new ExpenseService(expenseRepository, modelMapper);
+        expenseService = new ExpenseService(expenseRepository, modelMapper, userService, eventService);
 
         expectedDto = new ExpenseEntity(1L, 100.0, new UserEntity(),
                 new HashSet<>(), "Expense Title", new Date(), null);
@@ -212,7 +214,7 @@ class ExpenseServiceTest {
         when(expenseRepository.save(any())).thenReturn(expenseEntity);
 
         // Act
-        ExpenseDetailsDto createdExpense = expenseService.createExpense(expenseDto);
+        ExpenseEntity createdExpense = expenseService.createExpense(expenseDto);
 
         // Assert
         assertNotNull(createdExpense);

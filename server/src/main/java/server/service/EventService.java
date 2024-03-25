@@ -1,6 +1,7 @@
 package server.service;
 
 import commons.EventEntity;
+import commons.ExpenseEntity;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -18,8 +19,6 @@ import java.util.stream.Collectors;
 public class EventService {
     private final EventRepository eventRepository;
     private final ModelMapper modelMapper;
-    //private final UserService userService;
-    private final ExpenseService expenseService;
 
 
     /**
@@ -27,15 +26,11 @@ public class EventService {
      *
      * @param eventRepository the EventEntity repository
      * @param modelMapper     the ModelMapper injected by Spring
-     * @param expenseService the expense service
      */
     public EventService(EventRepository eventRepository,
-                        ModelMapper modelMapper,
-                        ExpenseService expenseService) {
+                        ModelMapper modelMapper) {
         this.eventRepository = eventRepository;
         this.modelMapper = modelMapper;
-        //this.userService = userService;
-        this.expenseService = expenseService;
     }
 
     /**
@@ -116,15 +111,13 @@ public class EventService {
 
     /**
      * Assigns an expense the event
-     * @param eventId the id of the event
-     * @param expenseId the id of the expense
+     * @param expense expense to be added
      * @return the boolean, whether the operation was successful
      */
-    public boolean addExpense(long eventId, long expenseId){
-        EventEntity event = this.eventRepository.findById(eventId)
-                .orElseThrow(ObjectNotFoundException::new);
-        event.getExpenses().add(this.expenseService.getEntityById(expenseId));
-        return true;
+    public EventEntity addExpense(ExpenseEntity expense){
+        EventEntity modifiedEvent = expense.getEvent();
+        modifiedEvent.getExpenses().add(expense);
+        return eventRepository.save(modifiedEvent);
     }
 
     /**

@@ -10,6 +10,7 @@ import server.dto.ExpenseCreationDto;
 import server.dto.view.ExpenseDetailsDto;
 import server.repository.ExpenseRepository;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,17 +19,26 @@ import java.util.stream.Collectors;
 public class ExpenseService {
     private final ExpenseRepository expenseRepository;
     private final ModelMapper modelMapper;
+    private final UserService userService;
+    private final EventService eventService;
 
     /**
      * Constructor Injection
      *
      * @param expenseRepository the ExpenseEntity repository
      * @param modelMapper      the ModelMapper injected by Spring
+     * @param userService the user service
+     * @param eventService the event service
      */
     public ExpenseService(ExpenseRepository expenseRepository,
-                          ModelMapper modelMapper) {
+                          ModelMapper modelMapper,
+                          UserService userService,
+                          EventService eventService) {
         this.expenseRepository = expenseRepository;
         this.modelMapper = modelMapper;
+        this.userService = userService;
+        this.eventService = eventService;
+
     }
 
     /**
@@ -87,12 +97,35 @@ public class ExpenseService {
      * @return The created expense DTO
      */
     @Transactional
-    public ExpenseDetailsDto createExpense(@Valid ExpenseCreationDto expenseDto) {
-        ExpenseEntity expenseEntity = expenseRepository
-                .save(modelMapper.map(expenseDto, ExpenseEntity.class));
+    public ExpenseEntity createExpense(ExpenseCreationDto expenseDto) {
+        //Create new expenseEntity
+        ExpenseEntity expenseEntity = new ExpenseEntity();
+        //Set the debtors
+        expenseEntity.setDebtors(new HashSet<>());
+        for (Long id : expenseDto.getDebtorsIds()){
+            expenseEntity.addDebtor(userService.findById(id));
+        }
+        //Set the money
+        expenseEntity.setMoney(expenseDto.getMoney());
+        //Set author
+        //System.out.println("Author id: " + userService.findById(expenseDto.getAuthorId()));
+        System.out.println("Expected author: " + userService.findById(1).getFirstName());
+        System.out.println("Actual author id: " + expenseDto.getAuthorId());
+        expenseEntity.setAuthor(userService.findById(expenseDto.getAuthorId()));
+        //Set title
+        expenseEntity.setTitle(expenseDto.getTitle());
+        //Set date
+        expenseEntity.setDate(expenseDto.getDate());
+        //Set parent event
+        expenseEntity.setEvent(eventService.findEntityById(expenseDto.getEventId()));
+
+        expenseEntity = expenseRepository.save(expenseEntity);
+//        ExpenseEntity expenseEntity = expenseRepository
+//                .save(modelMapper.map(expenseDto, ExpenseEntity.class));
+        eventService.addExpense(expenseEntity);
         System.out.println("Expense id: " + expenseEntity.getId());
         //ExpenseEntity savedExpense = expenseRepository.save(expenseEntity);
-        return modelMapper.map(expenseEntity, ExpenseDetailsDto.class);
+        return expenseEntity;
     }
 
     /**

@@ -5,13 +5,15 @@ import jakarta.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "expenses")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ExpenseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(nullable = false)
@@ -136,6 +138,30 @@ public class ExpenseEntity {
      */
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    /**
+     * Setter for the author
+     * @param author the author
+     */
+    public void setAuthor(UserEntity author) {
+        this.author = author;
+    }
+
+    /**
+     * Setter for the debtors field
+     * @param debtors the set of debtors
+     */
+    public void setDebtors(Set<UserEntity> debtors){
+        this.debtors = debtors;
+    }
+
+    /**
+     * Setter for the parent event
+     * @param event the parent event
+     */
+    public void setEvent(EventEntity event) {
+        this.event = event;
     }
 
     /**

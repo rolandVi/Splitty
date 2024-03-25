@@ -40,7 +40,7 @@ public class NewExpenseCtrl {
     @FXML
     public Button returnButton;
 
-    Set<UserNameDto> debtors;
+    Set<Long> debtors;
 
     /**
      * Constructor injection
@@ -105,14 +105,15 @@ public class NewExpenseCtrl {
         String title = titleField.getText();
         double amount = Double.parseDouble(amountField.getText());
         UserNameDto author = authorBox.getValue();
-//        for (int i=0; i<debtorsCheckList.getItems().size(); i++) {
-//            if (debtorsCheckList.getSelectionModel().isSelected(i)) {
-//                debtors.add(debtorsCheckList.getItems().get(i));
-//            }
-//        }
+        for (int i=0; i<debtorsCheckList.getItems().size(); i++) {
+            if (debtorsCheckList.getSelectionModel().isSelected(i)) {
+                debtors.add(debtorsCheckList.getItems().get(i).getId());
+            }
+        }
 
         serverUtils.addExpense(parentEvent.getId(),
-                new ExpenseCreationDto(title, amount, author, parentEvent, new Date()));
+                new ExpenseCreationDto(title, amount, author.getId(),
+                        debtors, parentEvent.getId(), new Date()));
         mainCtrl.showEventDetails(parentEvent.getId());
 
     }
@@ -136,8 +137,8 @@ public class NewExpenseCtrl {
     }
 
     private static class DebtorsListCell extends ListCell<UserNameDto>{
-        Set<UserNameDto> debtors;
-        public DebtorsListCell(Set<UserNameDto> debtors){
+        Set<Long> debtors;
+        public DebtorsListCell(Set<Long> debtors){
             this.debtors = debtors;
             HBox hBox = new HBox();
             setGraphic(hBox);
@@ -152,7 +153,7 @@ public class NewExpenseCtrl {
 
                 checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
                     if (newValue){
-                        debtors.add(item);
+                        debtors.add(item.getId());
                     }else {
                         debtors.remove(item);
                     }

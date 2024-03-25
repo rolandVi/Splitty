@@ -1,18 +1,27 @@
 package server.dto;
 
-import server.dto.view.EventDetailsDto;
-import server.dto.view.UserNameDto;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 import java.util.Objects;
+import java.util.Set;
 
 
 public class ExpenseCreationDto {
+    //@NotEmpty
     private String title;
-    private double money;
-    private UserNameDto author;
-//    private Set<UserNameDto> debtors;
-    private EventDetailsDto event;
+    //@NotNull
+    private Double money;
+    //@NotNull
+    private Long authorId;
+    //@NotNull
+    private Set<Long> debtorsIds;
+    //@NotNull
+    private Long eventId;
+    //@NotNull
     private Date date;
 
     /**
@@ -24,17 +33,18 @@ public class ExpenseCreationDto {
      * Constructor injections
      * @param title title of the expense
      * @param money the amount in the expense
-     * @param author the author of the expense
-     * @param parentEvent the parent event of the expense
+     * @param authorId the id of the author of the expense
+     * @param debtorsIds the set of debtors' ids
+     * @param parentEventId the id of the parent event of the expense
      * @param date the date of the expense
      */
-    public ExpenseCreationDto(String title, double money, UserNameDto author,
-                              EventDetailsDto parentEvent, Date date){
+    public ExpenseCreationDto(String title, Double money, Long authorId,
+                              Set<Long> debtorsIds, Long parentEventId, Date date){
         this.title = title;
         this.money = money;
-        this.author = author;
-//        this.debtors = debtors;
-        this.event = parentEvent;
+        this.authorId = authorId;
+        this.debtorsIds = debtorsIds;
+        this.eventId = parentEventId;
         this.date = date;
     }
 
@@ -74,16 +84,64 @@ public class ExpenseCreationDto {
      * Getter for the author
      * @return the UserNameDto author object
      */
-    public UserNameDto getAuthor() {
-        return author;
+    public long getAuthorId() {
+        return authorId;
     }
 
     /**
      * Setter for author field
      * @param author the new author
      */
-    public void setAuthor(UserNameDto author) {
-        this.author = author;
+    public void setAuthorId(long author) {
+        this.authorId = authorId;
+    }
+
+    /**
+     * Getter for the debtorsIds field
+     * @return the set of debtors ids
+     */
+    public Set<Long> getDebtorsIds() {
+        return debtorsIds;
+    }
+
+    /**
+     * Setter for the debtorsIds field
+     * @param debtorsIds new value of the debtorsIds field
+     */
+    public void setDebtorsIds(Set<Long> debtorsIds) {
+        this.debtorsIds = debtorsIds;
+    }
+
+    /**
+     * Getter for eventId
+     * @return the event id
+     */
+    public long getEventId() {
+        return eventId;
+    }
+
+    /**
+     * Setter for the event id
+     * @param eventId new event id
+     */
+    public void setEventId(long eventId) {
+        this.eventId = eventId;
+    }
+
+    /**
+     * Getter for the date of the expense
+     * @return the date
+     */
+    public Date getDate() {
+        return date;
+    }
+
+    /**
+     * Setter for the date of the expense
+     * @param date the new date
+     */
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     /**
@@ -97,7 +155,7 @@ public class ExpenseCreationDto {
         if (o == null || getClass() != o.getClass()) return false;
         ExpenseCreationDto that = (ExpenseCreationDto) o;
         return Double.compare(money, that.money) == 0
-                && Objects.equals(title, that.title) && Objects.equals(author, that.author);
+                && Objects.equals(title, that.title) && Objects.equals(authorId, that.authorId);
     }
 
     /**
@@ -105,6 +163,6 @@ public class ExpenseCreationDto {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(title, money, author);
+        return Objects.hash(title, money, authorId);
     }
 }

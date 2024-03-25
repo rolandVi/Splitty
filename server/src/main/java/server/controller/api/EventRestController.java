@@ -1,5 +1,6 @@
 package server.controller.api;
 
+import commons.ExpenseEntity;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -69,13 +70,13 @@ public class EventRestController {
     /**
      * Adding an expense to an event
      * @param eventId the event id
-     * @param expenseId the expense id
+     * @param expense the expense creation details
      * @return the response entity, defining whether the operation was successful
      */
     @PatchMapping("/{id}/add_expense")
     public ResponseEntity<Void> addExpense(@PathVariable(name = "id") long eventId,
-                                           @RequestBody long expenseId){
-        this.eventService.addExpense(eventId, expenseId);
+                                           @RequestBody ExpenseEntity expense){
+        this.eventService.addExpense(expense);
         return ResponseEntity.ok().build();
     }
 

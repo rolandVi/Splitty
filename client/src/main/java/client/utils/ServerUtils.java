@@ -1,6 +1,8 @@
 package client.utils;
 
+
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import jakarta.ws.rs.client.Client;
@@ -13,6 +15,8 @@ import server.dto.ExpenseCreationDto;
 import server.dto.UserCreationDto;
 import server.dto.view.*;
 import server.exceptions.PasswordExpiredException;
+
+import commons.ExpenseEntity;
 
 import java.io.IOException;
 import java.net.URI;
@@ -267,15 +271,17 @@ public class ServerUtils {
      */
     public boolean addExpense(long eventId, ExpenseCreationDto expenseCreationDto) {
 
+        //expenseCreationDto has all fields null in the rest controller, but here is fine
+        System.out.println("Author id in server utils: " + expenseCreationDto.getAuthorId());
         Response expenseCreationResponse = client.target(SERVER)
                 .path("api/expenses/")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(expenseCreationDto, APPLICATION_JSON));
 
-        ExpenseDetailsDto expense = expenseCreationResponse.readEntity(ExpenseDetailsDto.class);
+        ExpenseEntity expense = expenseCreationResponse.readEntity(ExpenseEntity.class);
 
-        System.out.println("expense in utils id: " + expense.getId());
+        System.out.println("expense in utils id: " + expense.getAuthor().getId());
 
 
 //        WebTarget webTarget = client.target(SERVER).path("api/events/"+eventId+"/add_expense");
