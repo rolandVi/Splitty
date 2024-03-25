@@ -37,28 +37,35 @@ public class AdminMainCtrl {
 
     private AdminLoginPageCtrl loginPageCtrl;
     private AdminOverviewPageCtrl overviewPageCtrl;
+    private AdminRestoreCtrl adminRestoreCtrl;
 
     private Scene loginPage;
     private Scene overviewPage;
+
+    private Scene restorePage;
 
     /**
      * The initialize method
      * @param adminOverviewStage The admin overview stage
      * @param loginPage The login page
      * @param overviewPage the admin overview page
-     *
+     * @param restorePage the restore page
      */
     public void initialize(Stage adminOverviewStage,
                            Pair<AdminLoginPageCtrl, Parent> loginPage,
-                           Pair<AdminOverviewPageCtrl, Parent> overviewPage) {
+                           Pair<AdminOverviewPageCtrl, Parent> overviewPage,
+                           Pair<AdminRestoreCtrl, Parent> restorePage) {
         this.config = new ConfigManager("client/src/main/resources/config.properties");
         this.adminOverviewStage = adminOverviewStage;
 
         this.loginPageCtrl = loginPage.getKey();
         this.overviewPageCtrl = overviewPage.getKey();
+        this.adminRestoreCtrl = restorePage.getKey();
 
         this.loginPage = new Scene(loginPage.getValue());
         this.overviewPage = new Scene(overviewPage.getValue());
+
+        this.restorePage = new Scene(restorePage.getValue());
 
 
         showLogin();
@@ -103,6 +110,11 @@ public class AdminMainCtrl {
         adminOverviewStage.setScene(overviewPage);
         overviewPageCtrl.loadEvents();
         overviewPageCtrl.loadOrder();
+    }
+
+    public void showRestore(){
+        adminOverviewStage.setTitle("Admin Restore");
+        adminOverviewStage.setScene(restorePage);
     }
 
 }

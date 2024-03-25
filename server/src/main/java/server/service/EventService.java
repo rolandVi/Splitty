@@ -156,13 +156,4 @@ public class EventService {
                 .orElseThrow(ObjectNotFoundException::new);
     }
 
-    /**
-     * Creates a dump of the whole database
-     */
-    public void dumpTables() throws Exception {
-
-        jdbcTemplate.execute("SCRIPT TO 'dump.sql'");
-    }
-
-
 }

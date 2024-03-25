@@ -19,6 +19,7 @@ import client.scenes.*;
 import client.scenes.admin.AdminLoginPageCtrl;
 import client.scenes.admin.AdminMainCtrl;
 import client.scenes.admin.AdminOverviewPageCtrl;
+import client.scenes.admin.AdminRestoreCtrl;
 import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -95,8 +96,11 @@ public class Main extends Application {
                 "client.scenes", "adminLoginPage.fxml");
         var adminOverviewPage = FXML.load(AdminOverviewPageCtrl.class,
                 "client.scenes", "adminOverviewPage.fxml");
+        var adminRestorePage = FXML.load(AdminRestoreCtrl.class,
+                "client.scenes", "adminRestorePage.fxml");
 
-        adminMainCtrl.initialize(adminOverviewStage, adminLoginPage, adminOverviewPage);
+        adminMainCtrl.initialize(adminOverviewStage, adminLoginPage,
+                adminOverviewPage, adminRestorePage);
     }
 
 }

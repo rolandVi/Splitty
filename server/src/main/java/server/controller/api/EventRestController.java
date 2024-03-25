@@ -85,22 +85,6 @@ public class EventRestController {
         return ResponseEntity.ok(this.eventService.getEventParticipants(eventId));
     }
 
-    /**
-     *
-     * @return Http response. Successful if the dump was executed correctly
-     * Otherwise a 5xx will be thrown
-     */
-    @PostMapping("/dump-tables")
-    public ResponseEntity<String> dumpTables() {
-        try {
-            eventService.dumpTables(); // Call your service method
-            return ResponseEntity.ok("Database dump successful");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error dumping database: " + e.getMessage());
-        }
-    }
-
 
     /**
      * Helper method to check if and id is valid
