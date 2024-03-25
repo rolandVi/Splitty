@@ -6,7 +6,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
-
 import javafx.scene.control.Button;
 
 import javafx.scene.control.Label;
@@ -52,6 +51,7 @@ public class StartPageCtrl implements MultiLanguages{
     public Label incorrectData;
 
     @FXML
+    public Button tempSkip;
     public Button connectButton;
     @FXML
     public Button openAdminButton;
@@ -80,6 +80,13 @@ public class StartPageCtrl implements MultiLanguages{
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Temporary function for skipping the login page for development purposes
+     */
+    public void skip(){
+        mainCtrl.showOverview();
     }
 
     /**

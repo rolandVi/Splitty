@@ -11,24 +11,30 @@
             <Font size="30.0" />
          </font>
       </Label>
+      <Label alignment="TOP_CENTER" layoutX="15.0" layoutY="116.0" text="Participants"/>
+
       <Label fx:id="participantsLabel" alignment="TOP_CENTER" layoutX="17.0" layoutY="103.0" text="Participants">
+
          <font>
             <Font size="15.0" />
          </font>
       </Label>
+      <Label alignment="TOP_CENTER" layoutX="359.0" layoutY="127.0" text="Expenses"/>
+
       <Label fx:id="expensesLabel" alignment="TOP_CENTER" layoutX="14.0" layoutY="179.0" text="Expenses">
+
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label fx:id="participantsLabel" layoutX="15.0" layoutY="124.0" text="[PARTICPANTS]" />
-      <Label fx:id="expensesLabel" layoutX="389.0" layoutY="125.0" text="[EXPENSES]" />
-      <Button fx:id="addExpenseButton" layoutX="490.0" layoutY="102.0" mnemonicParsing="false" onAction="#addExpense" text="Add Expense" />
-      <Label fx:id="inviteCode" layoutX="115.0" layoutY="105.0" text="[INVITE_CODE]" />
+      <Button fx:id="addExpenseButton" layoutX="467.0" layoutY="125.0" mnemonicParsing="false" onAction="#addExpense" text="Add Expense" />
+      <Label fx:id="inviteCode" layoutX="389.0" layoutY="63.0" text="[INVITE_CODE]" />
       <TextField fx:id="changeTextField" layoutX="15.0" layoutY="59.0" promptText="Event name" />
       <Button fx:id="changeButton" layoutX="173.0" layoutY="59.0" mnemonicParsing="false" onAction="#changeEventName" text="Change" />
       <Button fx:id="returnButton" layoutX="534.0" layoutY="14.0" mnemonicParsing="false" onAction="#returnToOverview" text="Return" />
-      <Button fx:id="addParticipant" layoutX="204.0" layoutY="101.0" mnemonicParsing="false" onAction="#newParticipant" text="Add participant" />
+      <Button fx:id="addParticipant" layoutX="124.0" layoutY="125.0" mnemonicParsing="false" onAction="#newParticipant" text="Add participant" />
+      <ListView fx:id="expenseList" layoutX="351.0" layoutY="161.0" prefHeight="200.0" prefWidth="200.0" />
+      <Text fx:id="tempText" layoutX="359.0" layoutY="382.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
       <ScrollPane layoutX="29.0" layoutY="168.0" prefHeight="176.0" prefWidth="287.0">
          <content>
             <VBox fx:id="participantsContainer" prefHeight="175.0" prefWidth="270.0" />

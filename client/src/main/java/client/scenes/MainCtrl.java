@@ -65,9 +65,11 @@ public class MainCtrl {
     private AddBankInfoCtrl bankInfoCtrl;
     private Scene addBankInfo;
 
+    private Scene newExpensePage;
+    private NewExpenseCtrl newExpenseCtrl;
+
     /**
      * The initialize method
-     *
      * @param sceneInputWrapper Wrapper for the inputs because of high number of parameters
      */
     public void initialize(SceneInputWrapper sceneInputWrapper){
@@ -91,6 +93,8 @@ public class MainCtrl {
         this.eventPage = new Scene(sceneInputWrapper.eventPage().getValue());
         this.eventCreationPage = new Scene(sceneInputWrapper.eventCreationPage().getValue());
         this.eventItemPage=new Scene(sceneInputWrapper.eventItemPage().getValue());
+
+        this.newExpensePage = new Scene(sceneInputWrapper.newExpensePage().getValue());
 
         this.eventOverview.getStylesheets().add(
                 Objects.requireNonNull(this.getClass().getClassLoader()
@@ -178,7 +182,7 @@ public class MainCtrl {
      */
     public void showNewExpense(){
         primaryStage.setTitle("New Expense");
-//        primaryStage.setScene(expensePage); expense page has not been created yet
+        primaryStage.setScene(newExpensePage);
     }
 
 
