@@ -92,6 +92,15 @@ public class EventEntity {
     }
 
     /**
+     * Setter for the creation date
+     * @param creationDate the creation date
+     */
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+
+    /**
      * Get the last modified Date
      * @return The last modified Date
      */
@@ -214,4 +223,6 @@ public class EventEntity {
     public void removeExpense(ExpenseEntity expense) {
         this.expenses.remove(expense);
     }
+
+
 }

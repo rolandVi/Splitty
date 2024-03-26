@@ -1,6 +1,8 @@
 package server.service;
 
 import commons.EventEntity;
+import commons.ExpenseEntity;
+import commons.UserEntity;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -12,9 +14,11 @@ import server.dto.view.EventOverviewDto;
 import server.dto.view.EventTitleDto;
 import server.dto.view.UserNameDto;
 import server.repository.EventRepository;
+import server.repository.UserRepository;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,6 +26,7 @@ public class EventService {
     private final EventRepository eventRepository;
     private final ModelMapper modelMapper;
     private final JdbcTemplate jdbcTemplate;
+    private final UserRepository userRepository;
 
     /**
      * Constructor Injection
@@ -29,13 +34,15 @@ public class EventService {
      * @param eventRepository the EventEntity repository
      * @param modelMapper     the ModelMapper injected by Spring
      * @param jdbcTemplate
+     * @param userRepository
      */
     public EventService(EventRepository eventRepository,
-                        ModelMapper modelMapper, JdbcTemplate jdbcTemplate) {
+                        ModelMapper modelMapper, JdbcTemplate jdbcTemplate, UserRepository userRepository) {
         this.eventRepository = eventRepository;
         this.modelMapper = modelMapper;
 //        this.jdbcTemplate = jdbcTemplate;
         this.jdbcTemplate = jdbcTemplate;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -154,6 +161,39 @@ public class EventService {
     public EventEntity findEntityByInviteCode(String inviteCode) {
         return this.eventRepository.findEventEntityByInviteCode(inviteCode)
                 .orElseThrow(ObjectNotFoundException::new);
+    }
+
+    public EventDetailsDto saveEvent(EventDetailsDto eventDetailsDto) {
+        EventEntity entity = new EventEntity();
+        entity.setInviteCode(eventDetailsDto.getInviteCode());
+        entity.setTitle(eventDetailsDto.getTitle());
+        entity.setCreationDate(eventDetailsDto.getCreationDate());
+
+        // Map expenses DTOs to entities
+        //todo implement this since I don't have access to expenses yet
+        /*
+        Set<ExpenseEntity> expenseEntities = eventDetailsDto.getExpenses().stream()
+                .map(expenseDto -> modelMapper.map(expenseDto, ExpenseEntity.class))
+                .collect(Collectors.toSet());
+        entity.setExpenses(expenseEntities);
+        */
+
+        // Map participants DTOs to entities
+//        Set<UserEntity> userEntities = eventDetailsDto.getParticipants().stream()
+//                .map(userDto -> modelMapper.map(userDto, UserEntity.class))
+//                .collect(Collectors.toSet());
+
+//        Set<UserNameDto> userDtos = eventDetailsDto.getParticipants();
+//        for (UserNameDto userNameDto: userDtos){
+//            joinRestore(entity.getInviteCode(), userNameDto.getId());
+//        }
+
+        // Save the entity and return the saved details
+        EventEntity savedEntity = eventRepository.save(entity);
+
+        // Map saved entity back to DTO
+        EventDetailsDto savedDto = modelMapper.map(savedEntity, EventDetailsDto.class);
+        return savedDto;
     }
 
 }

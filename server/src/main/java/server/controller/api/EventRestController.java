@@ -85,6 +85,17 @@ public class EventRestController {
         return ResponseEntity.ok(this.eventService.getEventParticipants(eventId));
     }
 
+    /**
+     * Create a new event and persist it in the database
+     * @param eventDetailsDto JSON object representing the event details
+     * @return ResponseEntity with the created event details
+     */
+    @PostMapping("/restore")
+    public ResponseEntity<EventDetailsDto> createEvent(@RequestBody EventDetailsDto eventDetailsDto) {
+        EventDetailsDto createdEvent = eventService.saveEvent(eventDetailsDto);
+        return new ResponseEntity<>(createdEvent, HttpStatus.CREATED);
+    }
+
 
     /**
      * Helper method to check if and id is valid
@@ -95,4 +106,6 @@ public class EventRestController {
     private boolean checkIdValidity(long id){
         return id>0 && this.eventService.existsById(id);
     }
+
+
 }

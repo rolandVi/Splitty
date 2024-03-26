@@ -15,6 +15,7 @@ import server.dto.view.EventOverviewDto;
 import server.dto.view.EventTitleDto;
 import server.dto.view.UserNameDto;
 import server.repository.EventRepository;
+import server.repository.UserRepository;
 
 import java.util.*;
 
@@ -27,6 +28,9 @@ class EventServiceTest {
     @Mock
     private EventRepository eventRepository;
 
+    @Mock
+    private UserRepository userRepository;
+
     private EventService eventService;
 
     @BeforeEach
@@ -34,7 +38,7 @@ class EventServiceTest {
         MockitoAnnotations.openMocks(this);
         ModelMapper modelMapper = new ModelMapper();
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        eventService = new EventService(eventRepository, modelMapper, jdbcTemplate);
+        eventService = new EventService(eventRepository, modelMapper, jdbcTemplate, userRepository);
     }
 
     @Test
