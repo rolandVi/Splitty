@@ -2,6 +2,7 @@ package commons;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
 import java.util.Objects;
 @Entity
 @Table(name = "transactions")
@@ -11,15 +12,18 @@ public class TransactionEntity {
     private Long id;
     @Column(nullable = false)
     private double money;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(nullable = false)
     private UserEntity sender;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(nullable = false)
     private UserEntity receiver;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     private ExpenseEntity expense;
+
+    @Temporal(TemporalType.DATE)
+    private Date date;
 
     /**
      * Default constructor for JBA
@@ -34,12 +38,18 @@ public class TransactionEntity {
      * @param money amount of money that has been transferred
      * @param sender user sending the money
      * @param receiver user receiver money from sender
+     * @param expense the expense of the transaction
+     * @param date the date of the transaction
      */
-    public TransactionEntity(Long id, double money, UserEntity sender, UserEntity receiver) {
+    public TransactionEntity(Long id, double money, UserEntity sender,
+                             UserEntity receiver, ExpenseEntity expense,
+                             Date date) {
         this.id = id;
         this.money = money;
         this.sender = sender;
         this.receiver = receiver;
+        this.expense = expense;
+        this.date = date;
     }
 
     /**
@@ -132,6 +142,24 @@ public class TransactionEntity {
     }
 
     /**
+     * Getter for the date
+     * @return the date
+     */
+    public Date getDate() {
+        return date;
+    }
+
+    /**
+     * Setter for the date
+     * @param date the new date
+     * @return the new transaction
+     */
+    public TransactionEntity setDate(Date date) {
+        this.date = date;
+        return this;
+    }
+
+    /**
      * Compares this transaction to the object o
      * @param o the object to compare if it is equal to this
      * @return returns true if they are equal and false if not
@@ -145,7 +173,8 @@ public class TransactionEntity {
                 && Objects.equals(id, that.id)
                 && Objects.equals(sender, that.sender)
                 && Objects.equals(receiver, that.receiver)
-                && Objects.equals(expense, that.expense);
+                && Objects.equals(expense, that.expense)
+                && Objects.equals(date, that.date);
     }
 
     /**
@@ -154,6 +183,6 @@ public class TransactionEntity {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, money, sender, receiver, expense);
+        return Objects.hash(id, money, sender, receiver, expense, date);
     }
 }
