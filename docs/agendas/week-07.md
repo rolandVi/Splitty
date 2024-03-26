@@ -20,10 +20,10 @@
 
 
 - Talking Points: (Brainstorm/ decision-making/ discuss)
-    - Are we on track? (2 min)
+    - Are we on track? What has everyone done? (5 min)
     - Discuss function of the commons component and dependencies between client and server. Consequently, discuss whether to use DTOs   or entities (8 min)
     - Discuss where to add the button for opening admin overview and assign an issue (2 min)
-    - Brainstorm on websockets (8 min)
+    - Brainstorm on websockets (5 min)
     - Plans for next week (5 min)
 
   
