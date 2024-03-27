@@ -3,7 +3,7 @@ package server.dto;
 
 import java.util.Objects;
 
-public class TransactionDetailsDto {
+public class TransactionCreationDto {
     private Long senderId;
 
     private Long receiverId;
@@ -18,7 +18,7 @@ public class TransactionDetailsDto {
      * @param receiverId the ID of the receiver
      * @param expenseId  the ID of the expense
      */
-    public TransactionDetailsDto(Long senderId, Long receiverId, Long expenseId) {
+    public TransactionCreationDto(Long senderId, Long receiverId, Long expenseId) {
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.expenseId = expenseId;
@@ -39,7 +39,7 @@ public class TransactionDetailsDto {
      * @param senderId the ID of the sender
      * @return this TransactionDetailsDto instance
      */
-    public TransactionDetailsDto setSenderId(Long senderId) {
+    public TransactionCreationDto setSenderId(Long senderId) {
         this.senderId = senderId;
         return this;
     }
@@ -59,7 +59,7 @@ public class TransactionDetailsDto {
      * @param receiverId the ID of the receiver
      * @return this TransactionDetailsDto instance
      */
-    public TransactionDetailsDto setReceiverId(Long receiverId) {
+    public TransactionCreationDto setReceiverId(Long receiverId) {
         this.receiverId = receiverId;
         return this;
     }
@@ -79,7 +79,7 @@ public class TransactionDetailsDto {
      * @param expenseId the ID of the expense
      * @return this TransactionDetailsDto instance
      */
-    public TransactionDetailsDto setExpenseId(Long expenseId) {
+    public TransactionCreationDto setExpenseId(Long expenseId) {
         this.expenseId = expenseId;
         return this;
     }
@@ -96,7 +96,7 @@ public class TransactionDetailsDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TransactionDetailsDto that = (TransactionDetailsDto) o;
+        TransactionCreationDto that = (TransactionCreationDto) o;
         return Objects.equals(senderId, that.senderId)
                 && Objects.equals(receiverId, that.receiverId)
                 && Objects.equals(expenseId, that.expenseId);

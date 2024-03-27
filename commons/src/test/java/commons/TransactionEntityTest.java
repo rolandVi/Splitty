@@ -3,7 +3,9 @@ package commons;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -11,14 +13,21 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class TransactionEntityTest {
     private UserEntity sender;
     private UserEntity receiver;
+
+    private ExpenseEntity expense;
+
+    private Date date;
     private TransactionEntity transaction;
     @BeforeEach
     void setup() {
+        this.date=new Date();
         this.sender = new UserEntity(1L, "Sender", "LastName",
                 "email@gmail.com", new HashSet<>(), new BankAccountEntity());
         this.receiver = new UserEntity(2L, "Receiver", "LastName",
                 "email@gmail.com", new HashSet<>(), new BankAccountEntity());
-        this.transaction = new TransactionEntity(1234L, 19.99, sender, receiver);
+        this.expense= new ExpenseEntity(1L, 20d, receiver,
+                new HashSet<>(List.of(this.sender)), "title", date);
+        this.transaction = new TransactionEntity(1234L, 19.99, sender, receiver, expense, date);
     }
 
     @Test
@@ -42,14 +51,25 @@ class TransactionEntityTest {
     }
 
     @Test
+    void getExpense() {
+        assertEquals(expense, transaction.getExpense());
+    }
+
+
+    @Test
+    void getDate() {
+        assertEquals(date, transaction.getDate());
+    }
+
+    @Test
     void testEquals() {
-        TransactionEntity transaction2 = new TransactionEntity(1234L, 19.99, sender, receiver);
+        TransactionEntity transaction2 = new TransactionEntity(1234L, 19.99, sender, receiver, expense, date);
         assertEquals(transaction, transaction2);
     }
 
     @Test
     void testHashCode() {
-        TransactionEntity transaction2 = new TransactionEntity(1234L, 19.99, sender, receiver);
+        TransactionEntity transaction2 = new TransactionEntity(1234L, 19.99, sender, receiver, expense, date);
         assertEquals(transaction.hashCode(), transaction2.hashCode());
     }
 

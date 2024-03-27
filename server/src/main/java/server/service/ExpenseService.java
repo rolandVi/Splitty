@@ -1,6 +1,5 @@
 package server.service;
 
-import commons.EventEntity;
 import commons.ExpenseEntity;
 import commons.UserEntity;
 import jakarta.transaction.Transactional;
@@ -126,13 +125,24 @@ public class ExpenseService {
         return mapToExpenseDetailsDtoList(userExpenses);
     }
 
+    /**
+     * Finds the expense entity by id
+     * @param id the id of the entity
+     * @return the expense entity
+     */
     public ExpenseEntity findExpenseEntityById(Long id){
         return this.expenseRepository.findById(id)
                 .orElseThrow(ObjectNotFoundException::new);
     }
 
 
-
+    /**
+     * Pays the debt of a specific debtor
+     * @param expense the expense entity
+     * @param receiver the receiver of the money
+     * @param sender the sender of the money
+     * @return the money paid
+     */
     @Transactional
     public double payDebt(ExpenseEntity expense, UserEntity receiver, UserEntity sender) {
         double owedMoney=roundToNDecimals(expense.getMoney()/expense.getDebtors().size(), 2);
@@ -140,6 +150,21 @@ public class ExpenseService {
         expense.getDebtors().remove(sender);
         this.expenseRepository.save(expense);
         return owedMoney;
+    }
+
+
+    /**
+     * Resets a transaction and includes the sender again
+     * @param expense the expense
+     * @param receiver the receiver
+     * @param sender the sender
+     */
+    @Transactional
+    public void resetDebt(ExpenseEntity expense, UserEntity receiver, UserEntity sender) {
+        double owedMoney=roundToNDecimals(expense.getMoney()/expense.getDebtors().size(), 2);
+        expense.setMoney(expense.getMoney()+owedMoney);
+        expense.getDebtors().add(sender);
+        this.expenseRepository.save(expense);
     }
 
 
@@ -170,6 +195,12 @@ public class ExpenseService {
         return dto;
     }
 
+    /**
+     * Rounds the value to n decimals
+     * @param value the value to round
+     * @param n the numbers after the decimal point
+     * @return the rounded number
+     */
     private double roundToNDecimals(double value, int n){
         if (n < 0) throw new IllegalArgumentException();
 
