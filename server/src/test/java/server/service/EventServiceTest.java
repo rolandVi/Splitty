@@ -33,6 +33,8 @@ class EventServiceTest {
 
     private EventService eventService;
 
+
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);

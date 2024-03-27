@@ -1,7 +1,6 @@
 package server.service;
 
 import commons.EventEntity;
-import commons.ExpenseEntity;
 import commons.UserEntity;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -28,6 +27,7 @@ public class EventService {
     private final JdbcTemplate jdbcTemplate;
     private final UserRepository userRepository;
 
+
     /**
      * Constructor Injection
      *
@@ -43,6 +43,7 @@ public class EventService {
 //        this.jdbcTemplate = jdbcTemplate;
         this.jdbcTemplate = jdbcTemplate;
         this.userRepository = userRepository;
+
     }
 
     /**
@@ -167,7 +168,6 @@ public class EventService {
         EventEntity entity = new EventEntity();
         entity.setInviteCode(eventDetailsDto.getInviteCode());
         entity.setTitle(eventDetailsDto.getTitle());
-        entity.setCreationDate(eventDetailsDto.getCreationDate());
 
         // Map expenses DTOs to entities
         //todo implement this since I don't have access to expenses yet
@@ -178,22 +178,48 @@ public class EventService {
         entity.setExpenses(expenseEntities);
         */
 
-        // Map participants DTOs to entities
+        // Map participants DTOs to entities ,chatgpt
 //        Set<UserEntity> userEntities = eventDetailsDto.getParticipants().stream()
 //                .map(userDto -> modelMapper.map(userDto, UserEntity.class))
 //                .collect(Collectors.toSet());
 
+        //
 //        Set<UserNameDto> userDtos = eventDetailsDto.getParticipants();
 //        for (UserNameDto userNameDto: userDtos){
 //            joinRestore(entity.getInviteCode(), userNameDto.getId());
 //        }
 
+        Set<UserEntity> userEntities = eventDetailsDto.getParticipants().stream()
+                .map(userNameDto -> {
+                    // Assuming there's a service or repository method to retrieve UserEntity by ID
+                    UserEntity userEntity = findById(userNameDto.getId());
+                    // If userEntity is null, you might want to handle this case (e.g., throw an exception)
+                    if (userEntity == null) {
+                        throw new IllegalArgumentException("User with ID " + userNameDto.getId() + " not found.");
+                    }
+                    return userEntity;
+                })
+                .collect(Collectors.toSet());
+        entity.setParticipants(userEntities);
+
         // Save the entity and return the saved details
-        EventEntity savedEntity = eventRepository.save(entity);
+        EventEntity savedEntity = modelMapper.map(eventDetailsDto, EventEntity.class);
+        savedEntity = eventRepository.save(savedEntity);
 
         // Map saved entity back to DTO
         EventDetailsDto savedDto = modelMapper.map(savedEntity, EventDetailsDto.class);
         return savedDto;
     }
+
+    /**
+     * Get and entity by id
+     * @param userId the id
+     * @return the entity
+     */
+    public UserEntity findById(long userId) {
+        return this.userRepository.findById(userId)
+                .orElseThrow(IllegalArgumentException::new);
+    }
+
 
 }

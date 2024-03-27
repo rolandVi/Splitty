@@ -225,4 +225,7 @@ public class EventEntity {
     }
 
 
+    public void setParticipants(Set<UserEntity> participants) {
+        this.participants = participants;
+    }
 }
