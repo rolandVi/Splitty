@@ -27,7 +27,7 @@ public class EventEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.DETACH)
     private Set<ExpenseEntity> expenses;
 
     @ManyToMany
@@ -159,6 +159,15 @@ public class EventEntity {
         return participants;
     }
 
+    /**
+     * Setter for the last modified date
+     * @param lastModifiedDate the new date
+     * @return the new event
+     */
+    public EventEntity setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+        return this;
+    }
 
     /**
      * Generate a hash code value for the event entity.

@@ -5,7 +5,7 @@ import commons.UserEntity;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import server.controller.exception.ObjectNotFoundException;
 import server.dto.view.EventDetailsDto;
@@ -13,9 +13,9 @@ import server.dto.view.EventOverviewDto;
 import server.dto.view.EventTitleDto;
 import server.dto.view.UserNameDto;
 import server.repository.EventRepository;
-import server.repository.UserRepository;
 
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,8 +24,9 @@ import java.util.stream.Collectors;
 public class EventService {
     private final EventRepository eventRepository;
     private final ModelMapper modelMapper;
-    private final JdbcTemplate jdbcTemplate;
-    private final UserRepository userRepository;
+    private final UserService userService;
+
+    private final ExpenseService expenseService;
 
 
     /**
@@ -33,17 +34,15 @@ public class EventService {
      *
      * @param eventRepository the EventEntity repository
      * @param modelMapper     the ModelMapper injected by Spring
-     * @param jdbcTemplate
-     * @param userRepository
+     * @param userService     the user service
+     * @param expenseService the expense service
      */
     public EventService(EventRepository eventRepository,
-                        ModelMapper modelMapper, JdbcTemplate jdbcTemplate, UserRepository userRepository) {
+                        ModelMapper modelMapper, @Lazy UserService userService, ExpenseService expenseService) {
         this.eventRepository = eventRepository;
         this.modelMapper = modelMapper;
-//        this.jdbcTemplate = jdbcTemplate;
-        this.jdbcTemplate = jdbcTemplate;
-        this.userRepository = userRepository;
-
+        this.userService = userService;
+        this.expenseService = expenseService;
     }
 
     /**
@@ -168,6 +167,8 @@ public class EventService {
         EventEntity entity = new EventEntity();
         entity.setInviteCode(eventDetailsDto.getInviteCode());
         entity.setTitle(eventDetailsDto.getTitle());
+        entity.setCreationDate(eventDetailsDto.getCreationDate());
+        entity=this.eventRepository.save(entity);
 
         // Map expenses DTOs to entities
         //todo implement this since I don't have access to expenses yet
@@ -189,37 +190,29 @@ public class EventService {
 //            joinRestore(entity.getInviteCode(), userNameDto.getId());
 //        }
 
-        Set<UserEntity> userEntities = eventDetailsDto.getParticipants().stream()
-                .map(userNameDto -> {
-                    // Assuming there's a service or repository method to retrieve UserEntity by ID
-                    UserEntity userEntity = findById(userNameDto.getId());
-                    // If userEntity is null, you might want to handle this case (e.g., throw an exception)
-                    if (userEntity == null) {
-                        throw new IllegalArgumentException("User with ID " + userNameDto.getId() + " not found.");
-                    }
-                    return userEntity;
-                })
-                .collect(Collectors.toSet());
-        entity.setParticipants(userEntities);
+        for (UserNameDto user : eventDetailsDto.getParticipants()) {
+            this.userService.join(entity.getInviteCode(), user.getId());
+        }
+
+//        Set<UserEntity> userEntities = eventDetailsDto.getParticipants().stream()
+//                .map(userNameDto -> {
+//                    // Assuming there's a service or repository method to retrieve UserEntity by ID
+//                    UserEntity userEntity = findById(userNameDto.getId());
+//                    // If userEntity is null, you might want to handle this case (e.g., throw an exception)
+//                    if (userEntity == null) {
+//                        throw new IllegalArgumentException("User with ID " + userNameDto.getId() + " not found.");
+//                    }
+//                    return userEntity;
+//                })
+//                .collect(Collectors.toSet());
+//        entity.setParticipants(userEntities);
 
         // Save the entity and return the saved details
-        EventEntity savedEntity = modelMapper.map(eventDetailsDto, EventEntity.class);
-        savedEntity = eventRepository.save(savedEntity);
+//        EventEntity savedEntity = modelMapper.map(eventDetailsDto, EventEntity.class);
+//        savedEntity = eventRepository.save(savedEntity);
 
         // Map saved entity back to DTO
-        EventDetailsDto savedDto = modelMapper.map(savedEntity, EventDetailsDto.class);
+        EventDetailsDto savedDto = modelMapper.map(entity, EventDetailsDto.class);
         return savedDto;
     }
-
-    /**
-     * Get and entity by id
-     * @param userId the id
-     * @return the entity
-     */
-    public UserEntity findById(long userId) {
-        return this.userRepository.findById(userId)
-                .orElseThrow(IllegalArgumentException::new);
-    }
-
-
 }
