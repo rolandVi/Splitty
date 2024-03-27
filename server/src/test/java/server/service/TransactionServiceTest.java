@@ -1,16 +1,16 @@
 package server.service;
 
-import commons.ExpenseEntity;
 import commons.TransactionEntity;
-import commons.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
-import server.controller.exception.ObjectNotFoundException;
-import server.dto.TransactionDetailsDto;
+import server.dto.TransactionCreationDto;
+import server.dto.view.TransactionDetailsDto;
 import server.repository.TransactionRepository;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -18,53 +18,84 @@ import static org.mockito.Mockito.*;
 class TransactionServiceTest {
 
     private TransactionService transactionService;
+    private TransactionRepository transactionRepository;
+    private ExpenseService expenseService;
 
     @BeforeEach
     void setUp() {
-        // Initialize TransactionService with mocked dependencies
-        transactionService = new TransactionService(
-                mock(TransactionRepository.class),
-                mock(ModelMapper.class),
-                mock(UserService.class),
-                mock(ExpenseService.class)
-        );
+        transactionRepository = mock(TransactionRepository.class);
+        ModelMapper modelMapper = new ModelMapper();
+        UserService userService = mock(UserService.class);
+        expenseService = mock(ExpenseService.class);
+
+        transactionService = new TransactionService(transactionRepository, modelMapper, userService, expenseService);
     }
 
     @Test
-    void executeTransaction_Successful() {
-        // Mock TransactionDetailsDto
-        TransactionDetailsDto transactionDto = new TransactionDetailsDto(1L, 2L, 3L);
+    void executeTransaction() {
+        TransactionCreationDto transactionDto = new TransactionCreationDto(1L, 2L, 3L);
 
-        // Mock necessary methods for execution
-        when(transactionService.expenseService.findExpenseEntityById(3L)).thenReturn(mock(ExpenseEntity.class));
-        when(transactionService.userService.findById(1L)).thenReturn(mock(UserEntity.class));
-        when(transactionService.userService.findById(2L)).thenReturn(mock(UserEntity.class));
-        when(transactionService.expenseService.payDebt(any(), any(), any())).thenReturn(10.0);
+        transactionService.executeTransaction(transactionDto);
 
-        // Execute transaction
-        assertDoesNotThrow(() -> transactionService.executeTransaction(transactionDto));
+        // Verify that expenseService.payDebt was called with the correct parameters
+        verify(expenseService, times(1)).payDebt(any(), any(), any());
+
+        // Verify that transactionRepository.save was called
+        verify(transactionRepository, times(1)).save(any());
     }
 
     @Test
-    void executeTransaction_InvalidExpenseId() {
-        TransactionDetailsDto transactionDto = new TransactionDetailsDto(1L, 2L, 999L);
+    void revertTransaction() {
 
-        // Mock necessary methods for execution
-        when(transactionService.expenseService.findExpenseEntityById(999L)).thenThrow(ObjectNotFoundException.class);
+        Long transactionId = 1L;
+        when(transactionRepository.findById(transactionId))
+                .thenReturn(java.util.Optional.of(new TransactionEntity()));
 
-        // Execute transaction
-        assertThrows(ObjectNotFoundException.class, () -> transactionService.executeTransaction(transactionDto));
+        transactionService.revertTransaction(transactionId);
+
+        // Verify that transactionRepository.findById was called with the correct parameter
+        verify(transactionRepository, times(1)).findById(transactionId);
+
+        // Verify that expenseService.resetDebt was called with the correct parameters
+        verify(expenseService, times(1)).resetDebt(any(), any(), any());
+
+        // Verify that transactionRepository.delete was called with the correct parameter
+        verify(transactionRepository, times(1)).delete(any());
     }
 
     @Test
-    void revertTransaction_Successful() {
-        // Mock TransactionDetailsDto
-        TransactionDetailsDto transactionDto = new TransactionDetailsDto(1L, 2L, 3L);
+    void findSentTransactions() {
+        Long senderId = 1L;
+        List<TransactionDetailsDto> expectedTransactions = new ArrayList<>();
 
-        // Mock necessary methods for reversion
-        when(transactionService.transactionRepository.findById(any())).thenReturn(Optional.of(mock(TransactionEntity.class)));
+        // Mock behavior of transactionRepository.findTransactionEntitiesBySenderId
+        when(transactionRepository.findTransactionEntitiesBySenderId(senderId))
+                .thenReturn(new HashSet<>());
 
-        // Revert transaction
-        assertDoesNotThrow(() -> transactionService.revertTransaction(transactionDto));
+        List<TransactionDetailsDto> result = transactionService.findSentTransactions(senderId);
+
+        // Verify that transactionRepository.findTransactionEntitiesBySenderId was called with the correct parameter
+        verify(transactionRepository, times(1)).findTransactionEntitiesBySenderId(senderId);
+
+        // Verify that the result matches the expected transactions
+        assertEquals(expectedTransactions, result);
+    }
+
+    @Test
+    void findReceivedTransactions() {
+        Long receiverId = 1L;
+        List<TransactionDetailsDto> expectedTransactions = new ArrayList<>();
+
+        // Mock behavior of transactionRepository.findTransactionEntitiesByReceiverId
+        when(transactionRepository.findTransactionEntitiesByReceiverId(receiverId))
+                .thenReturn(new HashSet<>());
+
+        List<TransactionDetailsDto> result = transactionService.findReceivedTransactions(receiverId);
+
+        // Verify that transactionRepository.findTransactionEntitiesByReceiverId was called with the correct parameter
+        verify(transactionRepository, times(1)).findTransactionEntitiesByReceiverId(receiverId);
+
+        // Verify that the result matches the expected transactions
+        assertEquals(expectedTransactions, result);
     }
 }
