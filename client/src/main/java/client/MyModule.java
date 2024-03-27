@@ -28,5 +28,6 @@ public class MyModule implements Module {
         binder.bind(AdminOverviewPageCtrl.class).in(Scopes.SINGLETON);
         binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
         binder.bind(Client.class).toProvider(ClientProvider.class);
+        binder.bind(NewExpenseCtrl.class).in(Scopes.SINGLETON);
     }
 }
