@@ -27,7 +27,7 @@ public class EventEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.DETACH)
     private Set<ExpenseEntity> expenses;
 
     @ManyToMany
@@ -92,6 +92,15 @@ public class EventEntity {
     }
 
     /**
+     * Setter for the creation date
+     * @param creationDate the creation date
+     */
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+
+    /**
      * Get the last modified Date
      * @return The last modified Date
      */
@@ -150,6 +159,15 @@ public class EventEntity {
         return participants;
     }
 
+    /**
+     * Setter for the last modified date
+     * @param lastModifiedDate the new date
+     * @return the new event
+     */
+    public EventEntity setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+        return this;
+    }
 
     /**
      * Generate a hash code value for the event entity.

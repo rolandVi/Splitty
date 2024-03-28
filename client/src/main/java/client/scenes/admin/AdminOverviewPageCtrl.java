@@ -36,8 +36,6 @@ public class AdminOverviewPageCtrl {
     @FXML
     public MenuButton orderButton;
     @FXML
-    public Button backup;
-    @FXML
     public Button restore;
 
     @FXML
@@ -49,7 +47,7 @@ public class AdminOverviewPageCtrl {
 
     private String currentOrder = "title";
 
-    private ConfigManager config;
+    public ConfigManager config;
 
 
     /**
@@ -61,7 +59,7 @@ public class AdminOverviewPageCtrl {
     public AdminOverviewPageCtrl( AdminMainCtrl adminMainCtrl, ServerUtils serverUtils){
         this.adminMainCtrl = adminMainCtrl;
         this.serverUtils=serverUtils;
-        config = new ConfigManager("client/src/main/resources/config.properties");
+        this.config = new ConfigManager("client/src/main/resources/config.properties");
 
     }
 
@@ -247,25 +245,11 @@ public class AdminOverviewPageCtrl {
         loadEvents();
     }
 
-
     /**
-     * creates a backup of the entire database, might be handy in some cases
+     * Shows the restoring page for an admin to restore the JSON dump of an event
      */
-    public void dumpTables() {
-        try {
-            URL url = new URL(config.getProperty("serverURL"));
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("POST");
-
-            if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                System.out.println("Database dump successful");
-            } else {
-                System.out.println("Error dumping database: " + con.getResponseMessage());
-            }
-            con.disconnect();
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+    public void showRestore(){
+        adminMainCtrl.showRestore();
     }
 
 }
