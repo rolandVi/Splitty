@@ -103,7 +103,7 @@ public class EventCtrl implements MultiLanguages{
 
 
     /**
-     * Updates teh view information with the details of the event with the given id
+     * Updates the view information with the details of the event with the given id
      * @param id the id of the event
      */
     public void init(long id) {
@@ -140,8 +140,7 @@ public class EventCtrl implements MultiLanguages{
      * turn the EventTitleDto into Json format string
      */
     public void changeEventName() throws JsonProcessingException {
-        //todo: id has to be variable
-        serverUtils.changeEventName(1L, changeTextField.getText());
+        serverUtils.changeEventName(eventId, changeTextField.getText());
         this.eventNameLabel.setText(this.changeTextField.getText());
         this.changeTextField.setText("");
     }

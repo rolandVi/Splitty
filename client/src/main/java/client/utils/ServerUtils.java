@@ -30,9 +30,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class ServerUtils {
 
-    private static final String SERVER =
-            new ConfigManager("client/src/main/resources/config.properties")
-                    .getProperty("serverURL") + "/";
+    private static final String SERVER = "http://localhost:8080/";
 
     private final Client client;
 
