@@ -212,7 +212,7 @@ public class AdminOverviewPageCtrl {
         Clipboard clipboard = Clipboard.getSystemClipboard();
         ClipboardContent content = new ClipboardContent();
         try {
-            URL url = new URL(config.getProperty("serverURL") + id);
+            URL url = new URL(config.getProperty("serverURL") + "/api/events/" + id);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
 

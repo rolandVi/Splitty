@@ -130,6 +130,31 @@ public class ServerUtils {
     }
 
     /**
+     * Restores the data of old event
+     * @param jsonData The data used to restore
+     */
+    public void restoreData(String jsonData){
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/api/events/restore"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(jsonData)).build();
+
+        HttpClient client = HttpClient.newHttpClient();
+        try {
+            HttpResponse<String> response =
+                    client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 201) {
+                throw new RuntimeException("Failed to restore data. HTTP status code: "
+                        + response.statusCode());
+            }
+            // Data restored successfully
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace(); // Handle the exception appropriately, e.g., log it
+            throw new RuntimeException("Failed to restore data due to an exception: "
+                    + e.getMessage(), e);
+        }
+    }
+
+    /**
      * Get the event details of a specific event with the given id
      * @param id the id of the event
      * @return the event details
@@ -259,5 +284,85 @@ public class ServerUtils {
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(currentUserId, APPLICATION_JSON));
+    }
+
+    /**
+     * Creates bank account
+     * @param requestBody The request bodu
+     * @param url The url
+     * @return The response
+     */
+    public Optional<HttpResponse<String>> createBankAccount(String requestBody, String url) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .uri(URI.create(url + "/api/bankaccounts/"))
+                .header("Content-Type", "application/json")
+                .build();
+
+        // Send HTTP request to server
+        // Return HTTP response from server
+        Optional<HttpResponse<String>> response;
+        try {
+            response = Optional.of(HttpClient
+                    .newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString()));
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return response;
+    }
+
+    /**
+     * Creates the user
+     * @param url The url
+     * @param requestBody The request body
+     * @return The response
+     */
+    public Optional<HttpResponse<String>> createUser(String url, String requestBody) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .uri(URI.create(url + "/api/users/"))
+                .header("Content-Type", "application/json")
+                .build();
+
+        // Send HTTP request to server
+        // Return HTTP response from server
+        Optional<HttpResponse<String>> response;
+        try {
+            response = Optional.of(HttpClient
+                    .newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString()));
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        return response;
+    }
+
+    /**
+     * Gets the user id
+     * @param url The URL
+     * @param email the e-mail
+     * @return The user id
+     */
+    public Long getUserId(String url, String email) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create(url + "/api/users/" + email))
+                .header("Content-Type", "application/json")
+                .build();
+
+        // Send HTTP request to server
+        // Return HTTP response from server
+        Optional<HttpResponse<String>> response;
+        try {
+            response = Optional.of(HttpClient
+                    .newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString()));
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Long.valueOf(response.get().body());
     }
 }

@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.utils.ServerUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
@@ -10,9 +11,6 @@ import server.dto.BankAccountCreationDto;
 import server.dto.UserCreationDto;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Optional;
 
@@ -34,13 +32,17 @@ public class NewParticipantCtrl {
     @FXML
     public Button addButton;
 
+    private final ServerUtils serverUtils;
+
     /**
      * Injector for PaymentPageCtrl
      * @param mainCtrl The Main Controller
+     * @param  serverUtils The ServerUtils
      */
     @Inject
-    public NewParticipantCtrl(MainCtrl mainCtrl){
+    public NewParticipantCtrl(MainCtrl mainCtrl, ServerUtils serverUtils){
         this.mainCtrl = mainCtrl;
+        this.serverUtils = serverUtils;
     }
 
     /**
@@ -84,24 +86,7 @@ public class NewParticipantCtrl {
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(user);
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .uri(URI.create(url + "/api/users/"))
-                .header("Content-Type", "application/json")
-                .build();
-        showEvent();
-        // Send HTTP request to server
-        // Return HTTP response from server
-        Optional<HttpResponse<String>> response;
-        try {
-            response = Optional.of(HttpClient
-                    .newHttpClient()
-                    .send(request, HttpResponse.BodyHandlers.ofString()));
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return response;
-
+        return serverUtils.createUser(url, requestBody);
     }
 
     private UserCreationDto getUserEntity() {
@@ -136,24 +121,7 @@ public class NewParticipantCtrl {
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(bankAccount);
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .uri(URI.create(url + "/api/bankaccounts/"))
-                .header("Content-Type", "application/json")
-                .build();
-
-        // Send HTTP request to server
-        // Return HTTP response from server
-        Optional<HttpResponse<String>> response;
-        try {
-            response = Optional.of(HttpClient
-                    .newHttpClient()
-                    .send(request, HttpResponse.BodyHandlers.ofString()));
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return response;
-
+        return serverUtils.createBankAccount(requestBody, url);
     }
 
 }

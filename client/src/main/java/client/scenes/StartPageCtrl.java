@@ -16,10 +16,7 @@ import javafx.scene.text.Text;
 import server.dto.UserCreationDto;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URLEncoder;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
@@ -42,16 +39,9 @@ public class StartPageCtrl implements MultiLanguages{
     public TextField surNameField;
     @FXML
     public TextField emailField;
-    @FXML
-    public TextField ibanField;
-    @FXML
-    public TextField bicField;
 
     @FXML
     public Label incorrectData;
-
-    @FXML
-    public Button tempSkip;
     public Button connectButton;
     @FXML
     public Button openAdminButton;
@@ -82,17 +72,11 @@ public class StartPageCtrl implements MultiLanguages{
         }
     }
 
-    /**
-     * Temporary function for skipping the login page for development purposes
-     */
-    public void skip(){
-        mainCtrl.showOverview();
-    }
 
     /**
      * The button press activates this
      */
-    public void connect() throws IOException, InterruptedException {
+    public void connect() throws IOException {
         this.incorrectData.setVisible(false);
         this.errorMessage.setOpacity(0d);
 
@@ -169,29 +153,10 @@ public class StartPageCtrl implements MultiLanguages{
     public Optional<HttpResponse<String>> createUser(UserCreationDto user)
             throws JsonProcessingException {
         String url = mainCtrl.configManager.getProperty("serverURL");
-        // Prepare user data from text fields
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(user);
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .uri(URI.create(url + "/api/users/"))
-                .header("Content-Type", "application/json")
-                .build();
-
-        // Send HTTP request to server
-        // Return HTTP response from server
-        Optional<HttpResponse<String>> response;
-        try {
-            response = Optional.of(HttpClient
-                    .newHttpClient()
-                    .send(request, HttpResponse.BodyHandlers.ofString()));
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        return response;
-
+        return serverUtils.createUser(url, requestBody);
     }
 
     private UserCreationDto getUserEntity() {
@@ -218,24 +183,7 @@ public class StartPageCtrl implements MultiLanguages{
         // Prepare user data from text fields
         email = URLEncoder.encode(email, StandardCharsets.UTF_8);
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(url + "/api/users/" + email))
-                .header("Content-Type", "application/json")
-                .build();
-
-        // Send HTTP request to server
-        // Return HTTP response from server
-        Optional<HttpResponse<String>> response;
-        try {
-            response = Optional.of(HttpClient
-                    .newHttpClient()
-                    .send(request, HttpResponse.BodyHandlers.ofString()));
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        return Long.valueOf(response.get().body());
+        return serverUtils.getUserId(url, email);
     }
 
 }
