@@ -86,19 +86,15 @@ public class EventRestController {
     }
 
     /**
-     *
-     * @return Http response. Successful if the dump was executed correctly
-     * Otherwise a 5xx will be thrown
+     * Create a new event and persist it in the database
+     * @param eventDetailsDto JSON object representing the event details
+     * @return ResponseEntity with the created event details
      */
-    @PostMapping("/dump-tables")
-    public ResponseEntity<String> dumpTables() {
-        try {
-            eventService.dumpTables(); // Call your service method
-            return ResponseEntity.ok("Database dump successful");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error dumping database: " + e.getMessage());
-        }
+    @PostMapping("/restore")
+    public ResponseEntity<EventDetailsDto> createEvent
+    (@Valid @RequestBody EventDetailsDto eventDetailsDto) {
+        EventDetailsDto createdEvent = eventService.saveEvent(eventDetailsDto);
+        return new ResponseEntity<>(createdEvent, HttpStatus.CREATED);
     }
 
 
@@ -111,4 +107,6 @@ public class EventRestController {
     private boolean checkIdValidity(long id){
         return id>0 && this.eventService.existsById(id);
     }
+
+
 }

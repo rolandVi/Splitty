@@ -4,7 +4,7 @@ import commons.EventEntity;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import server.controller.exception.ObjectNotFoundException;
 import server.dto.view.EventDetailsDto;
@@ -21,21 +21,26 @@ import java.util.stream.Collectors;
 public class EventService {
     private final EventRepository eventRepository;
     private final ModelMapper modelMapper;
-    private final JdbcTemplate jdbcTemplate;
+    private final UserService userService;
+
+    private final ExpenseService expenseService;
+
 
     /**
      * Constructor Injection
      *
      * @param eventRepository the EventEntity repository
      * @param modelMapper     the ModelMapper injected by Spring
-     * @param jdbcTemplate
+     * @param userService     the user service
+     * @param expenseService the expense service
      */
     public EventService(EventRepository eventRepository,
-                        ModelMapper modelMapper, JdbcTemplate jdbcTemplate) {
+                        ModelMapper modelMapper, @Lazy UserService userService,
+                        ExpenseService expenseService) {
         this.eventRepository = eventRepository;
         this.modelMapper = modelMapper;
-//        this.jdbcTemplate = jdbcTemplate;
-        this.jdbcTemplate = jdbcTemplate;
+        this.userService = userService;
+        this.expenseService = expenseService;
     }
 
     /**
@@ -157,12 +162,26 @@ public class EventService {
     }
 
     /**
-     * Creates a dump of the whole database
+     * Method for restoring an event via the admin restore scene
+     * @param eventDetailsDto An eventDetailsDto from the imported JSON dump
+     * @return the eventDetailsDto from the mapped entity from the initial Dto
      */
-    public void dumpTables() throws Exception {
+    public EventDetailsDto saveEvent(EventDetailsDto eventDetailsDto) {
+        EventEntity entity = new EventEntity();
+        entity.setInviteCode(eventDetailsDto.getInviteCode());
+        entity.setTitle(eventDetailsDto.getTitle());
+        entity.setCreationDate(eventDetailsDto.getCreationDate());
+        entity=this.eventRepository.save(entity);
 
-        jdbcTemplate.execute("SCRIPT TO 'dump.sql'");
+        // Map expenses DTOs to entities
+        //todo implement this since I don't have access to expenses yet
+
+        for (UserNameDto user : eventDetailsDto.getParticipants()) {
+            this.userService.join(entity.getInviteCode(), user.getId());
+        }
+
+        // Map saved entity back to DTO
+        EventDetailsDto savedDto = modelMapper.map(entity, EventDetailsDto.class);
+        return savedDto;
     }
-
-
 }

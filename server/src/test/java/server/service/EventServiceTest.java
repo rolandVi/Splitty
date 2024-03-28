@@ -28,13 +28,17 @@ class EventServiceTest {
     private EventRepository eventRepository;
 
     private EventService eventService;
+    private UserService userService;
+    private ExpenseService expenseService;
+
+
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         ModelMapper modelMapper = new ModelMapper();
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        eventService = new EventService(eventRepository, modelMapper, jdbcTemplate);
+        eventService = new EventService(eventRepository, modelMapper, userService, expenseService);
     }
 
     @Test

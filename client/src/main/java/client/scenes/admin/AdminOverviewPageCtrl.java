@@ -35,8 +35,6 @@ public class AdminOverviewPageCtrl {
     @FXML
     public MenuButton orderButton;
     @FXML
-    public Button backup;
-    @FXML
     public Button restore;
 
     @FXML
@@ -243,25 +241,11 @@ public class AdminOverviewPageCtrl {
         loadEvents();
     }
 
-
     /**
-     * creates a backup of the entire database, might be handy in some cases
+     * Shows the restoring page for an admin to restore the JSON dump of an event
      */
-    public void dumpTables() {
-        try {
-            URL url = new URL("http://localhost:8080/api/events/dump-tables");
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("POST");
-
-            if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                System.out.println("Database dump successful");
-            } else {
-                System.out.println("Error dumping database: " + con.getResponseMessage());
-            }
-            con.disconnect();
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+    public void showRestore(){
+        adminMainCtrl.showRestore();
     }
 
 }
