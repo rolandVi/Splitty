@@ -108,9 +108,6 @@ public class ExpenseService {
         //Set the money
         expenseEntity.setMoney(expenseDto.getMoney());
         //Set author
-        //System.out.println("Author id: " + userService.findById(expenseDto.getAuthorId()));
-        System.out.println("Expected author: " + userService.findById(1).getFirstName());
-        System.out.println("Actual author id: " + expenseDto.getAuthorId());
         expenseEntity.setAuthor(userService.findById(expenseDto.getAuthorId()));
         //Set title
         expenseEntity.setTitle(expenseDto.getTitle());
@@ -120,11 +117,7 @@ public class ExpenseService {
         expenseEntity.setEvent(eventService.findEntityById(expenseDto.getEventId()));
 
         expenseEntity = expenseRepository.save(expenseEntity);
-//        ExpenseEntity expenseEntity = expenseRepository
-//                .save(modelMapper.map(expenseDto, ExpenseEntity.class));
         eventService.addExpense(expenseEntity);
-        System.out.println("Expense id: " + expenseEntity.getId());
-        //ExpenseEntity savedExpense = expenseRepository.save(expenseEntity);
         return expenseEntity;
     }
 

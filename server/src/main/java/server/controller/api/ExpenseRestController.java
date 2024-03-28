@@ -52,14 +52,6 @@ public class ExpenseRestController {
     @PostMapping("/")
     public ResponseEntity<ExpenseEntity> createExpense
     (@Valid @RequestBody ExpenseCreationDto expense) {
-        //for some reason, here expense has author id 0/null
-        System.out.println("Expense: "+expense);
-        System.out.println("Expense title: " + expense.getTitle());
-        System.out.println("Expense money:"+expense.getMoney());
-        System.out.println("Expense eventId: " + expense.getEventId());
-        System.out.println("Expense date: " + expense.getDate());
-        System.out.println("Debtors' ids: " + expense.getDebtorsIds());
-        System.out.println("Expense authorId: "+expense.getAuthorId());
         ExpenseEntity createdExpense = expenseService.createExpense(expense);
         System.out.println("createdExpense in expenseController: " + createdExpense);
         return ResponseEntity.ok(createdExpense);

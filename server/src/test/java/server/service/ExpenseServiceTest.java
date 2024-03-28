@@ -23,7 +23,10 @@ class ExpenseServiceTest {
     private ExpenseRepository expenseRepository;
 
     private ExpenseService expenseService;
+
+    @Mock
     private EventService eventService;
+    @Mock
     private UserService userService;
 
     private ExpenseEntity expectedDto;
@@ -209,7 +212,7 @@ class ExpenseServiceTest {
     @Test
     void createExpense_ReturnsCreatedExpenseDto() {
         // Arrange
-        ExpenseCreationDto expenseDto = new ExpenseCreationDto();
+        ExpenseCreationDto expenseDto = new ExpenseCreationDto("Test", 10.0, 1L, new HashSet<>(), 1L, new Date());
         ExpenseEntity expenseEntity = new ExpenseEntity();
         when(expenseRepository.save(any())).thenReturn(expenseEntity);
 

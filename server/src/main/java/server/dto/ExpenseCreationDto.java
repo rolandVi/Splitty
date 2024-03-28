@@ -1,9 +1,6 @@
 package server.dto;
 
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 import java.util.Objects;
@@ -68,7 +65,7 @@ public class ExpenseCreationDto {
      * Getter for the money field
      * @return the money value
      */
-    public double getMoney() {
+    public Double getMoney() {
         return money;
     }
 
@@ -84,15 +81,15 @@ public class ExpenseCreationDto {
      * Getter for the author
      * @return the UserNameDto author object
      */
-    public long getAuthorId() {
+    public Long getAuthorId() {
         return authorId;
     }
 
     /**
      * Setter for author field
-     * @param author the new author
+     * @param authorId the new author
      */
-    public void setAuthorId(long author) {
+    public void setAuthorId(Long authorId) {
         this.authorId = authorId;
     }
 
@@ -116,7 +113,7 @@ public class ExpenseCreationDto {
      * Getter for eventId
      * @return the event id
      */
-    public long getEventId() {
+    public Long getEventId() {
         return eventId;
     }
 
