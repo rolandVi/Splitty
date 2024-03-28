@@ -1,6 +1,7 @@
 package client.scenes.admin;
 
 
+import client.ConfigManager;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.event.ActionEvent;
@@ -48,6 +49,8 @@ public class AdminOverviewPageCtrl {
 
     private String currentOrder = "title";
 
+    private ConfigManager config;
+
 
     /**
      * Injector for EventOverviewCtrl
@@ -58,6 +61,7 @@ public class AdminOverviewPageCtrl {
     public AdminOverviewPageCtrl( AdminMainCtrl adminMainCtrl, ServerUtils serverUtils){
         this.adminMainCtrl = adminMainCtrl;
         this.serverUtils=serverUtils;
+        config = new ConfigManager("client/src/main/resources/config.properties");
 
     }
 
@@ -210,7 +214,7 @@ public class AdminOverviewPageCtrl {
         Clipboard clipboard = Clipboard.getSystemClipboard();
         ClipboardContent content = new ClipboardContent();
         try {
-            URL url = new URL("http://localhost:8080/api/events/" + id); // Assuming each event has its own endpoint
+            URL url = new URL(config.getProperty("serverURL") + id);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
 
@@ -249,7 +253,7 @@ public class AdminOverviewPageCtrl {
      */
     public void dumpTables() {
         try {
-            URL url = new URL("http://localhost:8080/api/events/dump-tables");
+            URL url = new URL(config.getProperty("serverURL"));
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
 

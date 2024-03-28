@@ -77,8 +77,7 @@ public class NewParticipantCtrl {
      * @return HTTP response from the server
      */
     public Optional<HttpResponse<String>> createUser() throws IOException, InterruptedException {
-        // Todo: replace temporary value with host selected at start
-        String url = "http://localhost:8080";
+        String url = mainCtrl.configManager.getProperty("serverURL");
         createBankAccount();
         // Prepare user data from text fields
         UserCreationDto user = getUserEntity();
@@ -124,9 +123,7 @@ public class NewParticipantCtrl {
      */
     public Optional<HttpResponse<String>> createBankAccount()
             throws IOException, InterruptedException {
-        // Todo: replace temporary value with host selected at start
-        String url = "http://localhost:8080";
-
+        String url = mainCtrl.configManager.getProperty("serverURL");
         // Prepare user data from text fields
         String email = emailField.getText();
         String iban = ibanField.getText();

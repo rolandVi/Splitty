@@ -1,5 +1,6 @@
 package client.utils;
 
+import client.ConfigManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
@@ -29,8 +30,9 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class ServerUtils {
 
-    // to be changed to pull from the file
-    private static final String SERVER = "http://localhost:8080/";
+    private static final String SERVER =
+            new ConfigManager("client/src/main/resources/config.properties")
+                    .getProperty("serverURL") + "/";
 
     private final Client client;
 

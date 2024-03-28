@@ -114,7 +114,9 @@ public class StartPageCtrl implements MultiLanguages{
 
         if (!serverInserted.equals("http://localhost:8080")) {
             errorMessage.setOpacity(1.0d);
+
         } else {
+            mainCtrl.configManager.setProperty("serverURL", serverInserted);
             mainCtrl.showOverview();
         }
     }
@@ -166,7 +168,7 @@ public class StartPageCtrl implements MultiLanguages{
      */
     public Optional<HttpResponse<String>> createUser(UserCreationDto user)
             throws JsonProcessingException {
-        String url = "http://localhost:8080";
+        String url = mainCtrl.configManager.getProperty("serverURL");
         // Prepare user data from text fields
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(user);
@@ -212,7 +214,7 @@ public class StartPageCtrl implements MultiLanguages{
      * @return ID of user with the email
      */
     private Long getUserID(String email) {
-        String url = "http://localhost:8080";
+        String url = mainCtrl.configManager.getProperty("serverURL");
         // Prepare user data from text fields
         email = URLEncoder.encode(email, StandardCharsets.UTF_8);
 
