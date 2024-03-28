@@ -109,7 +109,7 @@ public class EventOverviewCtrl implements MultiLanguages {
     public void loadEvents() {
         long userId = Long.parseLong(mainCtrl.configManager.getProperty("userID"));
 
-        List<EventOverviewDto> events = this.serverUtils.getAllEvents();
+        List<EventOverviewDto> events = this.serverUtils.getEventsByUser(userId);
         Node[] nodes=new Node[events.size()];
 
 

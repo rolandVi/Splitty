@@ -88,19 +88,18 @@ public class StartPageCtrl implements MultiLanguages{
             return;
         }
 
-        Optional<HttpResponse<String>> userResponse = createUser(user);
-        if (userResponse.isEmpty() || userResponse.get().statusCode()==400){
-            this.incorrectData.setVisible(true);
-            return;
-        }
-
-        saveUserToConfig();
 
         if (!serverInserted.equals("http://localhost:8080")) {
             errorMessage.setOpacity(1.0d);
 
         } else {
             mainCtrl.configManager.setProperty("serverURL", serverInserted);
+            Optional<HttpResponse<String>> userResponse = createUser(user);
+            if (userResponse.isEmpty() || userResponse.get().statusCode()==400){
+                this.incorrectData.setVisible(true);
+                return;
+            }
+            saveUserToConfig();
             mainCtrl.showOverview();
         }
     }
@@ -152,7 +151,7 @@ public class StartPageCtrl implements MultiLanguages{
      */
     public Optional<HttpResponse<String>> createUser(UserCreationDto user)
             throws JsonProcessingException {
-        String url = mainCtrl.configManager.getProperty("serverURL");
+        String url = serverField.getText();
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(user);
 
