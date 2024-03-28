@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.URI;
@@ -19,6 +20,8 @@ public class AdminRestoreCtrl {
     public TextArea textField;
     @FXML
     public Button returnBtn;
+    @FXML
+    private AnchorPane rootPane;
 
 
     /**
@@ -63,5 +66,28 @@ public class AdminRestoreCtrl {
             throw new RuntimeException("Failed to restore data due to an exception: "
                     + e.getMessage(), e);
         }
+    }
+
+    /**
+     * Method to ensure that when the scene is left and re-entered the text field will be cleared
+     */
+    @FXML
+    public void initialize() {
+        // Add listener to scene property to handle scene showing event
+        rootPane.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            if (oldScene == null && newScene != null) {
+                // Scene is being shown for the first time
+                // Add listener to handle scene hiding event
+                newScene.windowProperty().addListener((observableWindow, oldWindow, newWindow) -> {
+                    if (oldWindow != null && newWindow == null) {
+                        // Scene is being hidden
+                        if (!textField.getText().isEmpty()) {
+                            // If text field is not empty, clear it
+                            textField.clear();
+                        }
+                    }
+                });
+            }
+        });
     }
 }
