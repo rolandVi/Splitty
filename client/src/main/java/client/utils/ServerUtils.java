@@ -15,8 +15,6 @@ import server.dto.UserCreationDto;
 import server.dto.view.*;
 import server.exceptions.PasswordExpiredException;
 
-import commons.ExpenseEntity;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -276,7 +274,7 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(expenseCreationDto, APPLICATION_JSON));
 
-        ExpenseEntity expense = expenseCreationResponse.readEntity(ExpenseEntity.class);
+        ExpenseDetailsDto expense = expenseCreationResponse.readEntity(ExpenseDetailsDto.class);
 
         return true;
     }

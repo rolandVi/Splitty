@@ -1,15 +1,19 @@
 package server.controller.api;
 
 import commons.ExpenseEntity;
+import commons.UserEntity;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.dto.ExpenseCreationDto;
 import server.dto.view.ExpenseDetailsDto;
+import server.dto.view.UserNameDto;
 import server.service.EventService;
 import server.service.ExpenseService;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/expenses")
@@ -50,11 +54,27 @@ public class ExpenseRestController {
      * @return ResponseEntity containing the created expense details
      */
     @PostMapping("/")
-    public ResponseEntity<ExpenseEntity> createExpense
+    public ResponseEntity<ExpenseDetailsDto> createExpense
     (@Valid @RequestBody ExpenseCreationDto expense) {
         ExpenseEntity createdExpense = expenseService.createExpense(expense);
-        System.out.println("createdExpense in expenseController: " + createdExpense);
-        return ResponseEntity.ok(createdExpense);
+
+        UserNameDto author = new UserNameDto(createdExpense.getAuthor().getId(),
+                createdExpense.getAuthor().getFirstName(),
+                createdExpense.getAuthor().getLastName());
+
+        Set<UserNameDto> debtors = new HashSet<>();
+        for (UserEntity u : createdExpense.getDebtors()){
+            debtors.add(new UserNameDto(u.getId(), u.getFirstName(), u.getLastName()));
+        }
+
+        ExpenseDetailsDto details = new ExpenseDetailsDto(createdExpense.getId(),
+                createdExpense.getMoney(),
+                author,
+                createdExpense.getTitle(),
+                debtors,
+                createdExpense.getDate());
+
+        return ResponseEntity.ok(details);
     }
 
     /**
