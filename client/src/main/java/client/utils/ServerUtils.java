@@ -1,6 +1,5 @@
 package client.utils;
 
-import client.ConfigManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
@@ -274,16 +273,14 @@ public class ServerUtils {
     /**
      * Enrolls the current user to the event with this invite code
      * @param inviteCode the invite code
+     * @param userId the user id
      */
-    public void enrollInEvent(String inviteCode) {
-        ConfigManager config = new ConfigManager("client/src/main/resources/config.properties");
-        long currentUserId= Long.parseLong(config.getProperty("userID"));
-
+    public void enrollInEvent(String inviteCode, long userId) {
         client
                 .target(SERVER).path("/api/users/events/"+inviteCode)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .post(Entity.entity(currentUserId, APPLICATION_JSON));
+                .post(Entity.entity(userId, APPLICATION_JSON));
     }
 
     /**
