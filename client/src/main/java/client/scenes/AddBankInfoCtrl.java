@@ -68,8 +68,7 @@ public class AddBankInfoCtrl {
      */
     public Optional<HttpResponse<String>> createBankAccount()
             throws IOException, InterruptedException {
-        // Todo: replace temporary value with host selected at start
-        String url = "http://localhost:8080";
+        String url = mainCtrl.configManager.getProperty("serverURL");
 
 
         // Prepare user data from text fields

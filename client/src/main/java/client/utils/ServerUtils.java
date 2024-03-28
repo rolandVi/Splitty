@@ -253,8 +253,8 @@ public class ServerUtils {
      * @param inviteCode the invite code
      */
     public void enrollInEvent(String inviteCode) {
-        //TODO: get the id of the current user (not hard code it)
-        long currentUserId= 1L;
+        ConfigManager config = new ConfigManager("client/src/main/resources/config.properties");
+        long currentUserId= Long.parseLong(config.getProperty("userID"));
 
         client
                 .target(SERVER).path("/api/users/events/"+inviteCode)

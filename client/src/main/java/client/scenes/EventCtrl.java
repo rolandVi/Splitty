@@ -260,7 +260,7 @@ public class EventCtrl implements MultiLanguages{
      * The current user leaves the event
      */
     public void leave(){
-        long userId = 1L; // TODO replace with the actual user id
+        long userId = Long.parseLong(mainCtrl.configManager.getProperty("userID"));
         serverUtils.deleteEventParticipant(this.eventId, userId);
         returnToOverview();
     }
