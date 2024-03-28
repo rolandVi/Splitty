@@ -28,6 +28,8 @@ class EventServiceTest {
     private EventRepository eventRepository;
 
     private EventService eventService;
+    private UserService userService;
+    private ExpenseService expenseService;
 
 
 

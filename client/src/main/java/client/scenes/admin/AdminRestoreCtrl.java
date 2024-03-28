@@ -21,16 +21,27 @@ public class AdminRestoreCtrl {
     public Button returnBtn;
 
 
+    /**
+     * Injector for Restore control
+     * @param adminMainCtrl the admin main control
+     */
     @Inject
     public AdminRestoreCtrl(AdminMainCtrl adminMainCtrl) {
         this.adminMainCtrl = adminMainCtrl;
     }
 
+    /**
+     * Will return to the admin overview
+     */
     public void returnOverview() {
         adminMainCtrl.showAdminOverview();
     }
 
 
+    /**
+     * Method to create a POST to the server with the,
+     * which if correct will restore the event related to the JSON dump
+     */
     public void restoreData() {
         String jsonData = textField.getText(); // Get JSON data from TextArea
 

@@ -241,6 +241,9 @@ public class AdminOverviewPageCtrl {
         loadEvents();
     }
 
+    /**
+     * Shows the restoring page for an admin to restore the JSON dump of an event
+     */
     public void showRestore(){
         adminMainCtrl.showRestore();
     }

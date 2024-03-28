@@ -232,9 +232,4 @@ public class EventEntity {
     public void removeExpense(ExpenseEntity expense) {
         this.expenses.remove(expense);
     }
-
-
-    public void setParticipants(Set<UserEntity> participants) {
-        this.participants = participants;
-    }
 }

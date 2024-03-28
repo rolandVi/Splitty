@@ -112,6 +112,9 @@ public class AdminMainCtrl {
         overviewPageCtrl.loadOrder();
     }
 
+    /**
+     * Shows the restore page, to restore the JSON dump of an event
+     */
     public void showRestore(){
         adminOverviewStage.setTitle("Admin Restore");
         adminOverviewStage.setScene(restorePage);

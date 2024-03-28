@@ -1,7 +1,6 @@
 package server.service;
 
 import commons.EventEntity;
-import commons.UserEntity;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -15,9 +14,7 @@ import server.dto.view.UserNameDto;
 import server.repository.EventRepository;
 
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,7 +35,8 @@ public class EventService {
      * @param expenseService the expense service
      */
     public EventService(EventRepository eventRepository,
-                        ModelMapper modelMapper, @Lazy UserService userService, ExpenseService expenseService) {
+                        ModelMapper modelMapper, @Lazy UserService userService,
+                        ExpenseService expenseService) {
         this.eventRepository = eventRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
@@ -163,6 +161,11 @@ public class EventService {
                 .orElseThrow(ObjectNotFoundException::new);
     }
 
+    /**
+     * Method for restoring an event via the admin restore scene
+     * @param eventDetailsDto An eventDetailsDto from the imported JSON dump
+     * @return the eventDetailsDto from the mapped entity from the initial Dto
+     */
     public EventDetailsDto saveEvent(EventDetailsDto eventDetailsDto) {
         EventEntity entity = new EventEntity();
         entity.setInviteCode(eventDetailsDto.getInviteCode());
@@ -172,44 +175,10 @@ public class EventService {
 
         // Map expenses DTOs to entities
         //todo implement this since I don't have access to expenses yet
-        /*
-        Set<ExpenseEntity> expenseEntities = eventDetailsDto.getExpenses().stream()
-                .map(expenseDto -> modelMapper.map(expenseDto, ExpenseEntity.class))
-                .collect(Collectors.toSet());
-        entity.setExpenses(expenseEntities);
-        */
-
-        // Map participants DTOs to entities ,chatgpt
-//        Set<UserEntity> userEntities = eventDetailsDto.getParticipants().stream()
-//                .map(userDto -> modelMapper.map(userDto, UserEntity.class))
-//                .collect(Collectors.toSet());
-
-        //
-//        Set<UserNameDto> userDtos = eventDetailsDto.getParticipants();
-//        for (UserNameDto userNameDto: userDtos){
-//            joinRestore(entity.getInviteCode(), userNameDto.getId());
-//        }
 
         for (UserNameDto user : eventDetailsDto.getParticipants()) {
             this.userService.join(entity.getInviteCode(), user.getId());
         }
-
-//        Set<UserEntity> userEntities = eventDetailsDto.getParticipants().stream()
-//                .map(userNameDto -> {
-//                    // Assuming there's a service or repository method to retrieve UserEntity by ID
-//                    UserEntity userEntity = findById(userNameDto.getId());
-//                    // If userEntity is null, you might want to handle this case (e.g., throw an exception)
-//                    if (userEntity == null) {
-//                        throw new IllegalArgumentException("User with ID " + userNameDto.getId() + " not found.");
-//                    }
-//                    return userEntity;
-//                })
-//                .collect(Collectors.toSet());
-//        entity.setParticipants(userEntities);
-
-        // Save the entity and return the saved details
-//        EventEntity savedEntity = modelMapper.map(eventDetailsDto, EventEntity.class);
-//        savedEntity = eventRepository.save(savedEntity);
 
         // Map saved entity back to DTO
         EventDetailsDto savedDto = modelMapper.map(entity, EventDetailsDto.class);

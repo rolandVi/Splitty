@@ -91,7 +91,8 @@ public class EventRestController {
      * @return ResponseEntity with the created event details
      */
     @PostMapping("/restore")
-    public ResponseEntity<EventDetailsDto> createEvent(@RequestBody EventDetailsDto eventDetailsDto) {
+    public ResponseEntity<EventDetailsDto> createEvent
+    (@Valid @RequestBody EventDetailsDto eventDetailsDto) {
         EventDetailsDto createdEvent = eventService.saveEvent(eventDetailsDto);
         return new ResponseEntity<>(createdEvent, HttpStatus.CREATED);
     }
