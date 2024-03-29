@@ -1,0 +1,15 @@
+.loginButton{
+
+}
+
+.loginButton:hover{
+
+}
+
+.generateButton{
+    -fx-background-color: red;
+}
+
+.generateButton:hover{
+    -fx-background-color: green;
+}

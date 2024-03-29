@@ -52,6 +52,8 @@ public class AdminRestoreCtrl {
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(jsonData)).build();
 
+        textField.clear();
+
         HttpClient client = HttpClient.newHttpClient();
         try {
             HttpResponse<String> response =
