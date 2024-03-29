@@ -6,8 +6,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import server.dto.view.ExpenseDetailsDto;
-import server.dto.view.UserNameDto;
+import dto.view.ExpenseDetailsDto;
+import dto.view.UserNameDto;
 import server.service.ExpenseService;
 
 import java.util.*;

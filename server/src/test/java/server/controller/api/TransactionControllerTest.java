@@ -6,8 +6,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import server.dto.TransactionCreationDto;
-import server.dto.view.TransactionDetailsDto;
+import dto.TransactionCreationDto;
+import dto.view.TransactionDetailsDto;
 import server.service.TransactionService;
 
 import java.util.Arrays;

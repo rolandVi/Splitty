@@ -3,6 +3,7 @@ package client.scenes.admin;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import dto.view.EventOverviewDto;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +16,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.VBox;
-import server.dto.view.EventOverviewDto;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

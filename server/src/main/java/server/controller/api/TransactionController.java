@@ -4,8 +4,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.dto.TransactionCreationDto;
-import server.dto.view.TransactionDetailsDto;
+import dto.TransactionCreationDto;
+import dto.view.TransactionDetailsDto;
 import server.service.TransactionService;
 
 import java.util.List;

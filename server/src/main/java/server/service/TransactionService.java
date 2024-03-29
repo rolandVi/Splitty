@@ -7,8 +7,8 @@ import commons.UserEntity;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import server.dto.TransactionCreationDto;
-import server.dto.view.TransactionDetailsDto;
+import dto.TransactionCreationDto;
+import dto.view.TransactionDetailsDto;
 import server.repository.TransactionRepository;
 
 import java.util.Comparator;

@@ -4,8 +4,8 @@ import commons.TransactionEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
-import server.dto.TransactionCreationDto;
-import server.dto.view.TransactionDetailsDto;
+import dto.TransactionCreationDto;
+import dto.view.TransactionDetailsDto;
 import server.repository.TransactionRepository;
 
 import java.util.ArrayList;

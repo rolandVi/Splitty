@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import server.controller.exception.ObjectNotFoundException;
-import server.dto.view.ExpenseDetailsDto;
+import dto.view.ExpenseDetailsDto;
 import server.repository.ExpenseRepository;
 
 import java.util.*;

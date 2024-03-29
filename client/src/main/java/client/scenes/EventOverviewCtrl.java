@@ -5,6 +5,7 @@ import client.sceneUtils.LanguageComboBoxUtil;
 import client.utils.ServerUtils;
 
 import com.google.inject.Inject;
+import dto.view.EventOverviewDto;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -16,7 +17,6 @@ import javafx.scene.control.Label;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.VBox;
-import server.dto.view.EventOverviewDto;
 
 import java.io.IOException;
 import java.nio.file.Path;
