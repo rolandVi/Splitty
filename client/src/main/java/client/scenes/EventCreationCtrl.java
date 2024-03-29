@@ -61,8 +61,7 @@ public class EventCreationCtrl implements MultiLanguages{
      * Creates HTTP request to the server using the contents of text field as name of event
      */
     public void createEvent() {
-        //TODO: change to current user
-        long userId=1L;
+        long userId= Long.parseLong(mainCtrl.configManager.getProperty("userID"));
         serverUtils.createEvent(eventNameTextField.getText(), userId);
         mainCtrl.showOverview();
         this.eventNameTextField.setText("");

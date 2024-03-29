@@ -60,6 +60,7 @@ public class ConfigManager {
         properties.setProperty("userFirstName", "NOT SET");
         properties.setProperty("userLastName", "NOT SET");
         properties.setProperty("userMail", "NOT SET");
+        properties.setProperty("serverURL", "http://localhost:8080");
         // When storing properties, they will be stored in alphabetical order based on key
         try (FileWriter writer = new FileWriter(configFilePath)){
             properties.store(writer, "Application configuration");

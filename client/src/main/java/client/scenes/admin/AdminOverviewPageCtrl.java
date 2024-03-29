@@ -1,6 +1,7 @@
 package client.scenes.admin;
 
 
+import client.ConfigManager;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.event.ActionEvent;
@@ -46,6 +47,8 @@ public class AdminOverviewPageCtrl {
 
     private String currentOrder = "title";
 
+    public ConfigManager config;
+
 
     /**
      * Injector for EventOverviewCtrl
@@ -56,6 +59,7 @@ public class AdminOverviewPageCtrl {
     public AdminOverviewPageCtrl( AdminMainCtrl adminMainCtrl, ServerUtils serverUtils){
         this.adminMainCtrl = adminMainCtrl;
         this.serverUtils=serverUtils;
+        this.config = new ConfigManager("client/src/main/resources/config.properties");
 
     }
 
@@ -208,7 +212,7 @@ public class AdminOverviewPageCtrl {
         Clipboard clipboard = Clipboard.getSystemClipboard();
         ClipboardContent content = new ClipboardContent();
         try {
-            URL url = new URL("http://localhost:8080/api/events/" + id); // Assuming each event has its own endpoint
+            URL url = new URL(config.getProperty("serverURL") + "/api/events/" + id);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
 

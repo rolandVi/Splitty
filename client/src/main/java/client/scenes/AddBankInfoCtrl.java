@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.utils.ServerUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
@@ -10,9 +11,6 @@ import javafx.scene.input.KeyEvent;
 import server.dto.BankAccountCreationDto;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Optional;
 
@@ -30,13 +28,17 @@ public class AddBankInfoCtrl {
     @FXML
     public Label incorrectData;
 
+    private final ServerUtils serverUtils;
+
     /**
      * Injector for PaymentPageCtrl
      * @param mainCtrl The Main Controller
+     * @param serverUtils The ServerUtils
      */
     @Inject
-    public AddBankInfoCtrl(MainCtrl mainCtrl){
+    public AddBankInfoCtrl(MainCtrl mainCtrl, ServerUtils serverUtils){
         this.mainCtrl = mainCtrl;
+        this.serverUtils = serverUtils;
     }
 
 
@@ -67,13 +69,8 @@ public class AddBankInfoCtrl {
      * @return HTTP response from the server
      */
     public Optional<HttpResponse<String>> createBankAccount()
-            throws IOException, InterruptedException {
-        // Todo: replace temporary value with host selected at start
-        String url = "http://localhost:8080";
-
-
-        // Prepare user data from text fields
-//        String holder = firstNameField.getText() + " " + surNameField.getText();
+            throws IOException {
+        String url = mainCtrl.configManager.getProperty("serverURL");
         String iban = ibanField.getText();
         String bic = bicField.getText();
         BankAccountCreationDto bankAccount = new BankAccountCreationDto();
@@ -86,25 +83,9 @@ public class AddBankInfoCtrl {
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(bankAccount);
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .uri(URI.create(url + "/api/bankaccounts/"))
-                .header("Content-Type", "application/json")
-                .build();
-
         returnToOverview();
 
-        // Send HTTP request to server
-        // Return HTTP response from server
-        Optional<HttpResponse<String>> response;
-        try {
-            response = Optional.of(HttpClient
-                    .newHttpClient()
-                    .send(request, HttpResponse.BodyHandlers.ofString()));
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return response;
+        return serverUtils.createBankAccount(requestBody, url);
     }
 
     // todo : implement checking for the credentials
