@@ -1,6 +1,7 @@
 package server.controller.api;
 
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import dto.view.EventDetailsDto;
@@ -84,6 +85,18 @@ public class EventRestController {
         return ResponseEntity.ok(this.eventService.getEventParticipants(eventId));
     }
 
+    /**
+     * Create a new event and persist it in the database
+     * @param eventDetailsDto JSON object representing the event details
+     * @return ResponseEntity with the created event details
+     */
+    @PostMapping("/restore")
+    public ResponseEntity<EventDetailsDto> createEvent
+    (@Valid @RequestBody EventDetailsDto eventDetailsDto) {
+        EventDetailsDto createdEvent = eventService.saveEvent(eventDetailsDto);
+        return new ResponseEntity<>(createdEvent, HttpStatus.CREATED);
+    }
+
 
     /**
      * Helper method to check if and id is valid
@@ -94,4 +107,6 @@ public class EventRestController {
     private boolean checkIdValidity(long id){
         return id>0 && this.eventService.existsById(id);
     }
+
+
 }

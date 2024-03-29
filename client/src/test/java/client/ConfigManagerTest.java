@@ -41,7 +41,6 @@ class ConfigManagerTest {
         }
 
         configManager = new ConfigManager(TEST_CONFIG_PATH);
-        WFM();
         assertEquals("value1", configManager.getProperty("property1"));
         assertEquals("value2", configManager.getProperty("property2"));
         assertNull(configManager.getProperty("property3"));
@@ -139,12 +138,43 @@ class ConfigManagerTest {
             e.printStackTrace();
         }
     }
-    private void WFM() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+    @Test
+    void configFileExists() {
+        File testFile = new File(TEST_CONFIG_PATH);
+        assertTrue(ConfigManager.configFileExists(TEST_CONFIG_PATH));
+        assertTrue(testFile.delete());
+        assertFalse(ConfigManager.configFileExists(TEST_CONFIG_PATH));
+    }
+
+    @Test
+    void createConfig() {
+        ConfigManager.createConfig(TEST_CONFIG_PATH);
+        try(Scanner scanner = new Scanner(new File(TEST_CONFIG_PATH))){
+            // Skipping first 2 lines of the config file,
+            // containing the comment on the file and the date/time when the file has been updated
+            assertTrue(scanner.hasNextLine());
+            scanner.nextLine();
+            assertTrue(scanner.hasNextLine());
+            scanner.nextLine();
+
+            assertTrue(scanner.hasNextLine());
+            assertEquals("country=GB", scanner.nextLine());
+            assertTrue(scanner.hasNextLine());
+            assertEquals("language=en", scanner.nextLine());
+            assertTrue(scanner.hasNextLine());
+            assertEquals("loggedIn=FALSE", scanner.nextLine());
+            assertTrue(scanner.hasNextLine());
+            assertEquals("serverURL=http\\://localhost\\:8080", scanner.nextLine());
+            assertEquals("userFirstName=NOT SET", scanner.nextLine());
+            assertTrue(scanner.hasNextLine());
+            assertEquals("userID=NOT SET", scanner.nextLine());
+            assertTrue(scanner.hasNextLine());
+            assertEquals("userLastName=NOT SET", scanner.nextLine());
+            assertTrue(scanner.hasNextLine());
+            assertEquals("userMail=NOT SET", scanner.nextLine());
+            assertFalse(scanner.hasNextLine());
+        }catch(IOException e){
+            e.printStackTrace();
         }
-        configManager.loadConfig();
     }
 }

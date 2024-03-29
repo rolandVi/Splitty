@@ -1,6 +1,6 @@
 package client.scenes;
 
-import client.sceneUtils.LanguageComboBoxUtil;
+import client.utils.LanguageComboBoxUtil;
 
 import client.utils.ServerUtils;
 
@@ -107,10 +107,9 @@ public class EventOverviewCtrl implements MultiLanguages {
      * Loads the events and displays them on the page
      */
     public void loadEvents() {
-        long userId=1L; //TODO: get the id of the current user
+        long userId = Long.parseLong(mainCtrl.configManager.getProperty("userID"));
 
-//        List<EventOverviewDto> events = this.serverUtils.getEventsByUser(userId);
-        List<EventOverviewDto> events = this.serverUtils.getAllEvents();
+        List<EventOverviewDto> events = this.serverUtils.getEventsByUser(userId);
         Node[] nodes=new Node[events.size()];
 
 

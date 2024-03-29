@@ -3,9 +3,18 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import dto.view.EventDetailsDto;
+import dto.view.ExpenseDetailsDto;
 import dto.view.UserNameDto;
 import jakarta.inject.Inject;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
+import javafx.util.Callback;
+
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -36,12 +45,19 @@ public class EventCtrl implements MultiLanguages{
     @FXML
     public Label inviteCode;
     @FXML
-    public Label expensesLabel;
+    public ListView<ExpenseDetailsDto> expenseList;
     @FXML
     public Button addExpenseButton;
     @FXML
     public Button addParticipant;
     @FXML
+    public Text tempText;
+    @FXML
+    public Label expensesLabel;
+
+    private NewExpenseCtrl newExpenseCtrl;
+
+    private final EventCtrl self = this;
     public Button leaveButton;
     @FXML
     private VBox participantsContainer;
@@ -52,11 +68,13 @@ public class EventCtrl implements MultiLanguages{
      * Injector for Event Controller
      * @param mainCtrl The Main Controller
      * @param serverUtils The Server Utilities
+     * @param newExpenseCtrl The new expense page controller
      */
     @Inject
-    public EventCtrl(MainCtrl mainCtrl, ServerUtils serverUtils) {
+    public EventCtrl(MainCtrl mainCtrl, ServerUtils serverUtils, NewExpenseCtrl newExpenseCtrl) {
         this.mainCtrl = mainCtrl;
         this.serverUtils = serverUtils;
+        this.newExpenseCtrl = newExpenseCtrl;
     }
     /**
      * Updates the language of the scene using the resource bundle
@@ -85,10 +103,13 @@ public class EventCtrl implements MultiLanguages{
 
 
     /**
-     * Updates teh view information with the details of the event with the given id
+     * Updates the view information with the details of the event with the given id
      * @param id the id of the event
      */
     public void init(long id) {
+        eventDetailsDto = serverUtils.getEventDetails(id);
+        eventNameLabel.setText(eventDetailsDto.getTitle());
+        loadExpenseList();
         this.eventId = id;
         this.eventDetailsDto=serverUtils.getEventDetails(id);
         eventNameLabel.setText(eventDetailsDto.getTitle());
@@ -96,12 +117,30 @@ public class EventCtrl implements MultiLanguages{
     }
 
     /**
+     * Load the list of expenses
+     */
+    public void loadExpenseList(){
+        ObservableList<ExpenseDetailsDto> items = FXCollections
+                .observableArrayList(eventDetailsDto.getExpenses());
+        expenseList.setCellFactory(new Callback<ListView<ExpenseDetailsDto>,
+                ListCell<ExpenseDetailsDto>>() {
+            @Override
+            public ListCell<ExpenseDetailsDto> call(ListView<ExpenseDetailsDto> param) {
+                return new ExpenseListCell(self);
+            }
+        });
+        expenseList.setItems(items);
+        //set amount of rows visible
+    }
+
+
+    /**
      * Will update the event name to the server and update the current event name
      * @throws JsonProcessingException when the objectMapper cannot properly
      * turn the EventTitleDto into Json format string
      */
     public void changeEventName() throws JsonProcessingException {
-        serverUtils.changeEventName(1L, changeTextField.getText());
+        serverUtils.changeEventName(eventId, changeTextField.getText());
         this.eventNameLabel.setText(this.changeTextField.getText());
         this.changeTextField.setText("");
     }
@@ -110,6 +149,7 @@ public class EventCtrl implements MultiLanguages{
      * Will show add expense scene, allowing the user to add an expense
      */
     public void addExpense(){
+        newExpenseCtrl.init(eventDetailsDto);
         mainCtrl.showNewExpense();
     }
 
@@ -134,6 +174,43 @@ public class EventCtrl implements MultiLanguages{
      */
     public void newParticipant(){
         mainCtrl.showNewParticipant();
+    }
+
+
+    private static class ExpenseListCell extends ListCell<ExpenseDetailsDto>{
+        private final Button button;
+
+        public ExpenseListCell(EventCtrl ctrl){
+            button = new Button("Edit");
+
+            button.setOnAction(event -> {
+                ExpenseDetailsDto item = getItem();
+                if (item!=null){
+                    ctrl.tempText.setText("You pressed: " + item);
+                }
+            });
+
+            HBox hBox = new HBox();
+
+            hBox.getChildren().add(new Text());
+            hBox.setSpacing(10);
+
+            setGraphic(hBox);
+        }
+
+        @Override
+        protected void updateItem(ExpenseDetailsDto item, boolean empty){
+            super.updateItem(item, empty);
+            if (empty || item==null){
+                setText(null);
+            }else {
+                ((Text) ((HBox) getGraphic()).getChildren().get(0)).setText(item.getTitle());
+                // I'm using the if statement, due to a weird error
+                if (((HBox) getGraphic()).getChildren().size()<2){
+                    ((HBox) getGraphic()).getChildren().add(button);
+                }
+            }
+        }
     }
 
     /**
@@ -182,7 +259,7 @@ public class EventCtrl implements MultiLanguages{
      * The current user leaves the event
      */
     public void leave(){
-        long userId = 1L; // TODO replace with the actual user id
+        long userId = Long.parseLong(mainCtrl.configManager.getProperty("userID"));
         serverUtils.deleteEventParticipant(this.eventId, userId);
         returnToOverview();
     }

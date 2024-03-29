@@ -15,12 +15,13 @@
  */
 package client.scenes;
 
+import client.ConfigManager;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
-import client.sceneUtils.LanguageComboBoxUtil;
+import client.utils.LanguageComboBoxUtil;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -28,7 +29,9 @@ import java.util.Objects;
 
 
 public class MainCtrl {
-
+    public static final String CONFIG_FILE_PATH = "client/src/main/resources/config.properties";
+    protected ResourceBundle lang;
+    protected ConfigManager configManager;
     private StartPageCtrl startPageCtrl;
 
     private EventOverviewCtrl eventOverviewCtrl;
@@ -45,7 +48,6 @@ public class MainCtrl {
     private EventCreationCtrl eventCreationCtrl;
     private Scene eventPage;
     private Scene eventCreationPage;
-    protected ResourceBundle lang;
 
     private Scene eventItemPage;
 
@@ -58,18 +60,21 @@ public class MainCtrl {
     private ParticipantCtrl participantCtrl;
 
     private EnrollEventCtrl enrollEventCtrl;
-
     private Scene enrollPage;
 
     private AddBankInfoCtrl bankInfoCtrl;
     private Scene addBankInfo;
 
+    private Scene newExpensePage;
+    private NewExpenseCtrl newExpenseCtrl;
+
     /**
      * The initialize method
-     *
      * @param sceneInputWrapper Wrapper for the inputs because of high number of parameters
      */
     public void initialize(SceneInputWrapper sceneInputWrapper){
+        this.configManager = new ConfigManager(CONFIG_FILE_PATH);
+
         this.primaryStage = sceneInputWrapper.primaryStage();
 
         this.startPageCtrl = sceneInputWrapper.startPage().getKey();
@@ -84,13 +89,12 @@ public class MainCtrl {
 
         this.startPage = new Scene(sceneInputWrapper.startPage().getValue());
         this.eventOverview = new Scene(sceneInputWrapper.eventOverview().getValue());
-
         this.paymentPage = new Scene(sceneInputWrapper.paymentPage().getValue());
-
         this.eventPage = new Scene(sceneInputWrapper.eventPage().getValue());
         this.eventCreationPage = new Scene(sceneInputWrapper.eventCreationPage().getValue());
-
         this.eventItemPage=new Scene(sceneInputWrapper.eventItemPage().getValue());
+
+        this.newExpensePage = new Scene(sceneInputWrapper.newExpensePage().getValue());
 
         this.eventOverview.getStylesheets().add(
                 Objects.requireNonNull(this.getClass().getClassLoader()
@@ -103,17 +107,25 @@ public class MainCtrl {
         this.addBankInfo = new Scene(sceneInputWrapper.bankInfoPage().getValue());
         this.enrollPage=new Scene(sceneInputWrapper.enrollEventPage().getValue());
 
-        showStart();
+        if (configManager.getProperty("loggedIn").equals("TRUE")) {
+            showOverview();
+        } else {
+            showStart();
+        }
         sceneInputWrapper.primaryStage().show();
         updateLanguagesOfScenes();
     }
+
 
     /**
      * Updates the languages of all scenes (except admin)
      */
     protected void updateLanguagesOfScenes() {
+        // Gets the locale from recent session from config.properties
         Locale.setDefault(LanguageComboBoxUtil.getLocaleFromConfig());
         lang = ResourceBundle.getBundle("languages.lang");
+
+        // Update the language of each scene
         eventCtrl.updateLanguage();
         eventOverviewCtrl.updateLanguage();
         eventCreationCtrl.updateLanguage();
@@ -170,7 +182,7 @@ public class MainCtrl {
      */
     public void showNewExpense(){
         primaryStage.setTitle("New Expense");
-//        primaryStage.setScene(expensePage); expense page has not been created yet
+        primaryStage.setScene(newExpensePage);
     }
 
 

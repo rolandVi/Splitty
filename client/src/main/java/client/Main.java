@@ -19,6 +19,7 @@ import client.scenes.*;
 import client.scenes.admin.AdminLoginPageCtrl;
 import client.scenes.admin.AdminMainCtrl;
 import client.scenes.admin.AdminOverviewPageCtrl;
+import client.scenes.admin.AdminRestoreCtrl;
 import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -29,12 +30,16 @@ public class Main extends Application {
 
     private static final Injector INJECTOR = createInjector(new MyModule());
     private static final MyFXML FXML = new MyFXML(INJECTOR);
+    public static final String CONFIG_FILE_PATH = "client/src/main/resources/config.properties";
+
 
     /**
      * Main function
      * @param args the args
      */
     public static void main(String[] args) {
+        if (!ConfigManager.configFileExists(CONFIG_FILE_PATH))
+            ConfigManager.createConfig(CONFIG_FILE_PATH);
         launch();
     }
 
@@ -61,6 +66,9 @@ public class Main extends Application {
                 "client.scenes", "eventItem.fxml");
         var newParticipant = FXML.load(NewParticipantCtrl.class,
                 "client.scenes", "newParticipant.fxml");
+        var newExpense = FXML.load(NewExpenseCtrl.class,
+                "client.scenes", "newExpense.fxml");
+
         var participantItem = FXML.load(ParticipantItemCtrl.class,
                 "client.scenes", "participantItem.fxml");
         var participant = FXML.load(ParticipantCtrl.class,
@@ -76,7 +84,7 @@ public class Main extends Application {
                         eventOverview, paymentPage, eventPage,
                         eventCreationPage, eventItemPage, newParticipant,
                         participantItem, participant, enrollEventPage,
-                        addBankInfo));
+                        addBankInfo, newExpense));
     }
 
     /**
@@ -91,8 +99,11 @@ public class Main extends Application {
                 "client.scenes", "adminLoginPage.fxml");
         var adminOverviewPage = FXML.load(AdminOverviewPageCtrl.class,
                 "client.scenes", "adminOverviewPage.fxml");
+        var adminRestorePage = FXML.load(AdminRestoreCtrl.class,
+                "client.scenes", "adminRestorePage.fxml");
 
-        adminMainCtrl.initialize(adminOverviewStage, adminLoginPage, adminOverviewPage);
+        adminMainCtrl.initialize(adminOverviewStage, adminLoginPage,
+                adminOverviewPage, adminRestorePage);
     }
 
 }

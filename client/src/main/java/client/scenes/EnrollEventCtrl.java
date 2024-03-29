@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.ConfigManager;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
@@ -34,7 +35,10 @@ public class EnrollEventCtrl {
      * Enrolls the current user for the chosen event
      */
     public void enrollInEvent(){
-        serverUtils.enrollInEvent(inviteCodeField.getText().trim());
+        ConfigManager config = new ConfigManager("client/src/main/resources/config.properties");
+        long currentUserId= Long.parseLong(config.getProperty("userID"));
+
+        serverUtils.enrollInEvent(inviteCodeField.getText().trim(), currentUserId);
         inviteCodeField.setText("");
         this.mainCtrl.showOverview();
     }

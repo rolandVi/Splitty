@@ -11,6 +11,8 @@ import dto.view.EventTitleDto;
 import dto.view.UserNameDto;
 import server.service.UserService;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -49,6 +51,17 @@ public class UserRestController {
     @GetMapping("/{id}/events")
     public ResponseEntity<List<EventOverviewDto>> getUserEvents(@PathVariable(name = "id") long id){
         return ResponseEntity.ok(this.userService.getUserEvents(id));
+    }
+
+    /**
+     * Get the ID of a user
+     * @param email the email of the user
+     * @return the ID of this user
+     */
+    @GetMapping("/{email}")
+    public ResponseEntity<Long> getUserIDByEmail(@PathVariable(name = "email") String email){
+        email = URLDecoder.decode(email, StandardCharsets.UTF_8);
+        return ResponseEntity.ok(this.userService.findIdByEmail(email));
     }
 
     /**

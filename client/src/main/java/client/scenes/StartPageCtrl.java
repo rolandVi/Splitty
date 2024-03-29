@@ -2,11 +2,11 @@ package client.scenes;
 
 import client.Main;
 import client.utils.ServerUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import dto.UserCreationDto;
 import javafx.fxml.FXML;
-
 import javafx.scene.control.Button;
 
 import javafx.scene.control.Label;
@@ -16,10 +16,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
+import java.net.URLEncoder;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 import java.util.ResourceBundle;
@@ -40,15 +39,9 @@ public class StartPageCtrl implements MultiLanguages{
     public TextField surNameField;
     @FXML
     public TextField emailField;
-    @FXML
-    public TextField ibanField;
-    @FXML
-    public TextField bicField;
 
     @FXML
     public Label incorrectData;
-
-    @FXML
     public Button connectButton;
     @FXML
     public Button openAdminButton;
@@ -75,14 +68,15 @@ public class StartPageCtrl implements MultiLanguages{
             connectButton.setText(lang.getString("connect"));
             openAdminButton.setText(lang.getString("open_admin"));
         } catch (Exception e) {
-            System.out.println("Incorrect key");
+            throw new RuntimeException(e);
         }
     }
+
 
     /**
      * The button press activates this
      */
-    public void connect() throws IOException, InterruptedException {
+    public void connect() throws IOException {
         this.incorrectData.setVisible(false);
         this.errorMessage.setOpacity(0d);
 
@@ -94,17 +88,30 @@ public class StartPageCtrl implements MultiLanguages{
             return;
         }
 
-        Optional<HttpResponse<String>> userResponse = createUser(user);
-        if (userResponse.isEmpty() || userResponse.get().statusCode()==400){
-            this.incorrectData.setVisible(true);
-            return;
-        }
 
         if (!serverInserted.equals("http://localhost:8080")) {
             errorMessage.setOpacity(1.0d);
+
         } else {
+            mainCtrl.configManager.setProperty("serverURL", serverInserted);
+            Optional<HttpResponse<String>> userResponse = createUser(user);
+            if (userResponse.isEmpty() || userResponse.get().statusCode()==400){
+                this.incorrectData.setVisible(true);
+                return;
+            }
+            saveUserToConfig();
             mainCtrl.showOverview();
         }
+    }
+
+    private void saveUserToConfig(){
+        mainCtrl.configManager.setProperty("loggedIn", "TRUE");
+        mainCtrl.configManager.setProperty("userFirstName", firstNameField.getText());
+        mainCtrl.configManager.setProperty("userLastName", surNameField.getText());
+        mainCtrl.configManager.setProperty("userMail", emailField.getText());
+        mainCtrl.configManager
+                .setProperty("userID", String.valueOf(getUserID(emailField.getText())));
+        mainCtrl.configManager.saveConfig();
     }
 
     /**
@@ -143,31 +150,12 @@ public class StartPageCtrl implements MultiLanguages{
      * @return HTTP response from the server
      */
     public Optional<HttpResponse<String>> createUser(UserCreationDto user)
-            throws IOException, InterruptedException {
-        String url = "http://localhost:8080";
-        // Prepare user data from text fields
+            throws JsonProcessingException {
+        String url = serverField.getText();
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(user);
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .uri(URI.create(url + "/api/users/"))
-                .header("Content-Type", "application/json")
-                .build();
-
-        // Send HTTP request to server
-        // Return HTTP response from server
-        Optional<HttpResponse<String>> response;
-        try {
-            response = Optional.of(HttpClient
-                    .newHttpClient()
-                    .send(request, HttpResponse.BodyHandlers.ofString()));
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        return response;
-
+        return serverUtils.createUser(url, requestBody);
     }
 
     private UserCreationDto getUserEntity() {
@@ -182,6 +170,19 @@ public class StartPageCtrl implements MultiLanguages{
         user.setEmail(email);
 
         return user;
+    }
+
+    /**
+     * Creates HTTP request to the server using the email as a parameter
+     * @param email the email of the user
+     * @return ID of user with the email
+     */
+    private Long getUserID(String email) {
+        String url = mainCtrl.configManager.getProperty("serverURL");
+        // Prepare user data from text fields
+        email = URLEncoder.encode(email, StandardCharsets.UTF_8);
+
+        return serverUtils.getUserId(url, email);
     }
 
 }

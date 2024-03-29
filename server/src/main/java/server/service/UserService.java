@@ -68,6 +68,15 @@ public class UserService {
     }
 
     /**
+     * Get user ID by email
+     * @param userEmail the email
+     * @return the id
+     */
+    public Long findIdByEmail(String userEmail) {
+        return this.userRepository.getUserIdByUserEmail(userEmail);
+    }
+
+    /**
      * Create new user given credentials
      * @param user The user details
      * @return the user credentials
