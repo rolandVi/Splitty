@@ -18,13 +18,13 @@ import java.util.stream.Collectors;
 @Service
 public class TransactionService {
 
-    private final TransactionRepository transactionRepository;
+    final TransactionRepository transactionRepository;
 
     private final ModelMapper modelMapper;
 
-    private final UserService userService;
+    final UserService userService;
 
-    private final ExpenseService expenseService;
+    final ExpenseService expenseService;
 
     /**
      * Constructor
