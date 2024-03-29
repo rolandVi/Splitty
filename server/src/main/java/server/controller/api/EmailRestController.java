@@ -1,23 +1,15 @@
 package server.controller.api;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.simplejavamail.api.email.Email;
+import org.simplejavamail.email.EmailBuilder;
+import org.simplejavamail.mailer.MailerBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import server.service.EmailService;
 
 @RestController
 public class EmailRestController {
 
-    private final EmailService emailService;
 
-    /**
-     *
-     * @param emailService email service class
-     */
-    @Autowired
-    public EmailRestController(EmailService emailService) {
-        this.emailService = emailService;
-    }
 
     /**
      *
@@ -30,9 +22,19 @@ public class EmailRestController {
         String toTest = "rolikjr@gmail.com";
         String inviteTest = "#inviteCode#";
 
-        emailService.sendSimpleMessage(toTest, inviteTest);
+        Email email = EmailBuilder.startingBlank()
+                .from("From", "ssplittyteam37@gmail.com")
+                .to("To", toTest)
+                .withSubject("Invitation to an Event")
+                .withPlainText("You have been invited to an event with invite code: " + inviteTest)
+                .buildEmail();
 
-        return "Email Sent!";
+        MailerBuilder
+                .withSMTPServer("smtp.gmail.com", 587, "ssplittyteam37", "ldge ebrc wcrk zsjf")
+                .buildMailer()
+                .sendMail(email);
+
+        return "Email send successfully";
     }
 }
 

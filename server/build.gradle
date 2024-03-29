@@ -26,6 +26,5 @@ dependencies {
 
 	implementation project(":commons")
 
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
-	implementation 'com.sun.mail:javax.mail:1.6.2'
+	implementation group: 'org.simplejavamail', name: 'simple-java-mail', version: '7.5.0'
 }
