@@ -208,7 +208,6 @@ public class NewExpenseCtrl {
     public void editExpense(){
         try {
             expense.setAuthor(authorBox.getValue());
-            //expense.setDate();
             for (int i=0; i<debtorsCheckList.getItems().size(); i++){
                 if (debtorsCheckList.getSelectionModel().isSelected(i)) {
                     debtors.add(debtorsCheckList.getItems().get(i));
@@ -230,6 +229,8 @@ public class NewExpenseCtrl {
      * Control for the remove expense button
      */
     public void remove(){
+        serverUtils.removeExpense(parentEvent.getId(), expense.getId());
+        mainCtrl.showEventDetails(parentEvent.getId());
     }
 
     private static class ParticipantListCell extends ListCell<UserNameDto>{

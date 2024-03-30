@@ -122,6 +122,17 @@ public class EventService {
     }
 
     /**
+     * Removes an expense from the event
+     * @param eventId id of the event to remove expense from
+     * @param expense the expense entity to remove
+     */
+    public void removeExpense(Long eventId, ExpenseEntity expense){
+        EventEntity modifiedEvent = findEntityById(eventId);
+        modifiedEvent.removeExpense(expense);
+        eventRepository.save(modifiedEvent);
+    }
+
+    /**
      * Get all events
      * @return all events from the database
      */

@@ -18,8 +18,6 @@ public class ExpenseDetailsDto {
 
     private Set<UserNameDto> debtors;
 
-    //private EventDetailsDto event;
-
     private Date date;
 
     /**
@@ -46,7 +44,6 @@ public class ExpenseDetailsDto {
         this.author = author;
         this.title = title;
         this.debtors = debtors;
-        //this.event = event;
         this.date = date;
     }
 
@@ -75,22 +72,6 @@ public class ExpenseDetailsDto {
     public Double getMoney() {
         return money;
     }
-
-//    /**
-//     * Getter for parent event
-//     * @return the parent event
-//     */
-//    public EventDetailsDto getEvent(){
-//        return event;
-//    }
-//
-//    /**
-//     * Setter for the parent event
-//     * @param event new event
-//     */
-//    public void setEvent(EventDetailsDto event){
-//        this.event = event;
-//    }
 
     /**
      * Money setter

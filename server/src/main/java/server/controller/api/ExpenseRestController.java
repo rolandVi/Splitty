@@ -68,14 +68,6 @@ public class ExpenseRestController {
             debtors.add(new UserNameDto(u.getId(), u.getFirstName(), u.getLastName()));
         }
 
-//        EventDetailsDto event = new EventDetailsDto(createdExpense.getEvent().getId(),
-//                createdExpense.getEvent().getInviteCode(),
-//                createdExpense.getEvent().getTitle(),
-//                createdExpense.getEvent().getExpenses(),
-//                createdExpense.getEvent().getParticipants(),
-//                createdExpense.getEvent().getCreationDate(),
-//                );
-
         ExpenseDetailsDto details = new ExpenseDetailsDto(createdExpense.getId(),
                 createdExpense.getMoney(),
                 author,
@@ -100,23 +92,6 @@ public class ExpenseRestController {
 
         ExpenseDetailsDto updatedExpense = expenseService.updateExpense(expense);
 
-//        UserNameDto author = new UserNameDto(updatedExpense.getAuthor().getId(),
-//                updatedExpense.getAuthor().getFirstName(),
-//                updatedExpense.getAuthor().getLastName());
-//
-//        Set<UserNameDto> debtors = new HashSet<>();
-//        for (UserEntity u : updatedExpense.getDebtors()){
-//            debtors.add(new UserNameDto(u.getId(), u.getFirstName(), u.getLastName()));
-//        }
-//
-//
-//        ExpenseDetailsDto details = new ExpenseDetailsDto(updatedExpense.getId(),
-//                updatedExpense.getMoney(),
-//                author,
-//                updatedExpense.getTitle(),
-//                debtors,
-//                updatedExpense.getDate());
-
         return ResponseEntity.ok(updatedExpense);
     }
 
@@ -127,13 +102,14 @@ public class ExpenseRestController {
      * @return ResponseEntity with badRequest status if invalid id was presented
      *         or ok status if it was deleted successfully
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}/{eventId}")
     public ResponseEntity<Void> removeById(@PathVariable(name = "id") Long id,
-                                           @RequestBody Long eventId){
+                                           @PathVariable(name = "eventId") Long eventId){
         if (!checkIdValidity(id)){
             return ResponseEntity.badRequest().build();
         }
         try {
+            eventService.removeExpense(eventId, expenseService.getEntityById(id));
             expenseService.deleteExpense(id);
             return ResponseEntity.ok().build();
         }catch (ObjectNotFoundException e){

@@ -264,9 +264,9 @@ public class ServerUtils {
      * Adds a new expense to the event
      * @param eventId the id of the event
      * @param expenseCreationDto the details of the expense
-     * @return a boolean, whether the operation has been successful
+     * @return the dreated expense details
      */
-    public boolean addExpense(long eventId, ExpenseCreationDto expenseCreationDto) {
+    public ExpenseDetailsDto addExpense(long eventId, ExpenseCreationDto expenseCreationDto) {
 
         Response expenseCreationResponse = client.target(SERVER)
                 .path("api/expenses/")
@@ -274,9 +274,7 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(expenseCreationDto, APPLICATION_JSON));
 
-        ExpenseDetailsDto expense = expenseCreationResponse.readEntity(ExpenseDetailsDto.class);
-
-        return true;
+        return expenseCreationResponse.readEntity(ExpenseDetailsDto.class);
     }
 
     /**
@@ -301,9 +299,9 @@ public class ServerUtils {
      */
     public void removeExpense(Long eventId, Long expenseId){
         client.target(SERVER)
-                .path("api/expenses/" + expenseId)
+                .path("api/expenses/" + expenseId + "/" + eventId)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .put(Entity.entity(eventId, APPLICATION_JSON));
+                .delete();
     }
 }
