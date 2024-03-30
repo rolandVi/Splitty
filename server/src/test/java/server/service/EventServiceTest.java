@@ -9,8 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import server.controller.exception.ObjectNotFoundException;
 import server.dto.view.EventDetailsDto;
 import server.dto.view.EventOverviewDto;
@@ -32,16 +31,16 @@ class EventServiceTest {
     @Mock
     private UserService userService;
 
-    @Mock
-    private ExpenseService expenseService;
-
     private EventService eventService;
+
+
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         ModelMapper modelMapper = new ModelMapper();
-        eventService = new EventService(eventRepository, modelMapper);
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        eventService = new EventService(eventRepository, modelMapper, userService);
     }
 
     @Test

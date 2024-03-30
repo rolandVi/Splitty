@@ -19,7 +19,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import server.dto.view.EventDetailsDto;
 import server.dto.view.UserNameDto;
 
 import java.io.IOException;
@@ -59,11 +58,10 @@ public class EventCtrl implements MultiLanguages{
 
     private final EventCtrl self = this;
 
+    @FXML
     public Button leaveButton;
     @FXML
     private VBox participantsContainer;
-    private long eventId;
-
 
     /**
      * Injector for Event Controller
@@ -104,15 +102,15 @@ public class EventCtrl implements MultiLanguages{
 
 
     /**
-     * Updates teh view information with the details of the event with the given id
+     * Updates the view information with the details of the event with the given id
      * @param id the id of the event
      */
     public void init(long id) {
-        this.eventId = id;
         this.eventDetailsDto=serverUtils.getEventDetails(id);
         eventNameLabel.setText(eventDetailsDto.getTitle());
-        this.loadParticipants();
+        eventNameLabel.setText(eventDetailsDto.getTitle());
         loadExpenseList();
+        loadParticipants();
     }
 
     /**
@@ -138,7 +136,7 @@ public class EventCtrl implements MultiLanguages{
      * turn the EventTitleDto into Json format string
      */
     public void changeEventName() throws JsonProcessingException {
-        serverUtils.changeEventName(1L, changeTextField.getText());
+        serverUtils.changeEventName(eventDetailsDto.getId(), changeTextField.getText());
         this.eventNameLabel.setText(this.changeTextField.getText());
         this.changeTextField.setText("");
     }
@@ -190,7 +188,6 @@ public class EventCtrl implements MultiLanguages{
             });
 
             HBox hBox = new HBox();
-
 
             hBox.getChildren().add(new Text());
             hBox.setSpacing(10);
@@ -260,9 +257,8 @@ public class EventCtrl implements MultiLanguages{
      * The current user leaves the event
      */
     public void leave(){
-        long userId = 1L; // TODO replace with the actual user id
+        long userId = Long.parseLong(mainCtrl.configManager.getProperty("userID"));
         serverUtils.deleteEventParticipant(this.eventDetailsDto.getId(), userId);
         returnToOverview();
     }
-
 }

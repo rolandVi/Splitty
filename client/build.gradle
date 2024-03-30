@@ -40,5 +40,4 @@ dependencies {
 
 	testImplementation 'org.testfx:testfx-junit5:4.0.16-alpha'
 
-
 }

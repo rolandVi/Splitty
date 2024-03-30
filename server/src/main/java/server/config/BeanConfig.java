@@ -9,7 +9,6 @@ import java.util.Random;
 
 @Configuration
 public class BeanConfig {
-
     /**
      *
      * @return random Result
