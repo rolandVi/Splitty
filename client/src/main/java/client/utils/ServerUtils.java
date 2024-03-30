@@ -220,6 +220,21 @@ public class ServerUtils {
     }
 
     /**
+     * Check for user existence
+     * @param user user to check for existence
+     * @return whether the user exists
+     */
+    public boolean userExists(UserNameDto user){
+        return client
+                .target(SERVER).path("/api/users/exists")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(user, APPLICATION_JSON))
+                .getStatus()!=404;
+    }
+
+
+    /**
      * Check the validity of the given user credentials
      * @param user the user credentials
      * @return true if they are valid and false otherwise

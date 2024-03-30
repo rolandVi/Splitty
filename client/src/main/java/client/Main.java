@@ -20,6 +20,7 @@ import client.scenes.admin.AdminLoginPageCtrl;
 import client.scenes.admin.AdminMainCtrl;
 import client.scenes.admin.AdminOverviewPageCtrl;
 import client.scenes.admin.AdminRestoreCtrl;
+import client.utils.ServerUtils;
 import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -55,6 +56,8 @@ public class Main extends Application {
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 
+        ServerUtils serverUtils = INJECTOR.getInstance(ServerUtils.class);
+
         var startPage = FXML.load(StartPageCtrl.class, "client.scenes", "startPage.fxml");
         var eventOverview = FXML.load(EventOverviewCtrl.class,
                 "client.scenes", "eventOverview.fxml");
@@ -83,7 +86,8 @@ public class Main extends Application {
                 new SceneInputWrapper(primaryStage, startPage,
                         eventOverview, paymentPage, eventPage,
                         eventCreationPage, eventItemPage, newParticipant,
-                        participantItem, participant, newExpense, enrollEventPage, addBankInfo));
+                        participantItem, participant, newExpense, enrollEventPage,
+                        addBankInfo), serverUtils);
     }
 
     /**
