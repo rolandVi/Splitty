@@ -25,7 +25,6 @@
         <items>
         </items>
       </MenuButton>
-      <Button fx:id="backup" layoutX="512.0" layoutY="31.0" mnemonicParsing="false" onAction="#dumpTables" text="Backup" />
-      <Button fx:id="restore" layoutX="511.0" layoutY="60.0" mnemonicParsing="false" text="Restore" />
+      <Button fx:id="restore" layoutX="501.0" layoutY="31.0" mnemonicParsing="false" onAction="#showRestore" prefHeight="25.0" prefWidth="79.0" text="Restore" />
    </children>
 </AnchorPane>

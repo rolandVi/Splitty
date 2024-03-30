@@ -1,6 +1,7 @@
 package client.scenes.admin;
 
 
+import client.ConfigManager;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.event.ActionEvent;
@@ -35,8 +36,6 @@ public class AdminOverviewPageCtrl {
     @FXML
     public MenuButton orderButton;
     @FXML
-    public Button backup;
-    @FXML
     public Button restore;
 
     @FXML
@@ -48,6 +47,8 @@ public class AdminOverviewPageCtrl {
 
     private String currentOrder = "title";
 
+    public ConfigManager config;
+
 
     /**
      * Injector for EventOverviewCtrl
@@ -58,6 +59,7 @@ public class AdminOverviewPageCtrl {
     public AdminOverviewPageCtrl( AdminMainCtrl adminMainCtrl, ServerUtils serverUtils){
         this.adminMainCtrl = adminMainCtrl;
         this.serverUtils=serverUtils;
+        this.config = new ConfigManager("client/src/main/resources/config.properties");
 
     }
 
@@ -210,7 +212,7 @@ public class AdminOverviewPageCtrl {
         Clipboard clipboard = Clipboard.getSystemClipboard();
         ClipboardContent content = new ClipboardContent();
         try {
-            URL url = new URL("http://localhost:8080/api/events/" + id); // Assuming each event has its own endpoint
+            URL url = new URL(config.getProperty("serverURL") + "/api/events/" + id);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
 
@@ -243,25 +245,11 @@ public class AdminOverviewPageCtrl {
         loadEvents();
     }
 
-
     /**
-     * creates a backup of the entire database, might be handy in some cases
+     * Shows the restoring page for an admin to restore the JSON dump of an event
      */
-    public void dumpTables() {
-        try {
-            URL url = new URL("http://localhost:8080/api/events/dump-tables");
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("POST");
-
-            if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                System.out.println("Database dump successful");
-            } else {
-                System.out.println("Error dumping database: " + con.getResponseMessage());
-            }
-            con.disconnect();
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+    public void showRestore(){
+        adminMainCtrl.showRestore();
     }
 
 }
