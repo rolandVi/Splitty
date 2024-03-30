@@ -61,7 +61,8 @@ public class EventOverviewCtrl implements MultiLanguages {
      * Updates the languages of all scenes (except admin)
      */
     public void initialize() {
-        String locale = configManager.getProperty("language") + "_" + configManager.getProperty("country");
+        String locale = configManager.getProperty("language")
+                + "_" + configManager.getProperty("country");
         updateLanguageBox(languageBox, locale);
     }
 

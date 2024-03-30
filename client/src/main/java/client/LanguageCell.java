@@ -18,7 +18,7 @@ public class LanguageCell extends ListCell<String> {
         super.updateItem(item, empty);
         setGraphic(null);
         setText(null);
-        if(item!=null){
+        if (item!=null){
             String flagPath = "/images/flags/flag_" + item + ".png";
             Image flagImage = null;
             try {

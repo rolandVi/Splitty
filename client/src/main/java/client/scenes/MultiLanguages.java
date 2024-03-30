@@ -22,9 +22,9 @@ public interface MultiLanguages {
     /**
      * A method that updates the scene.
      * This means the language and possible the language dropbox
+     * @param path
+     * @return arraylist with the names of all languages that are supported
      */
-
-
     default ArrayList<String> getListOfSupportedLanguages(String path) {
         ArrayList<String> locales = new ArrayList<>();
         // Retrieve array with all the file names in directory found with path
@@ -48,6 +48,7 @@ public interface MultiLanguages {
      * - Add supported languages
      * - Sets the starting value based on config file
      * @param comboBox the dropdown menu to configure
+     * @param language the selected language that the dropdown menu needs to display
      */
     default void updateLanguageBox(ComboBox<String> comboBox, String language) {
         // Setup cell-factory
