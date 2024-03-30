@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.Main;
+import client.utils.LanguageComboBoxUtil;
 import client.utils.ServerUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,6 +9,7 @@ import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 
 import javafx.scene.control.TextField;
@@ -22,6 +24,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 import java.util.Optional;
 
 import java.util.ResourceBundle;
@@ -55,6 +58,8 @@ public class StartPageCtrl implements MultiLanguages{
     public Button connectButton;
     @FXML
     public Button openAdminButton;
+    @FXML
+    public ComboBox<String> languageBox;
 
 
     /**
@@ -68,11 +73,35 @@ public class StartPageCtrl implements MultiLanguages{
         this.mainCtrl = mainCtrl;
         this.serverUtils = serverUtils;
     }
+
+    /**
+     * Updates the languages of all scenes (except admin)
+     */
+    public void initialize() {
+        String locale = configManager.getProperty("language") + "_" + configManager.getProperty("country");
+        updateLanguageBox(languageBox, locale);
+    }
+
+    /**
+     * When a language has been selected
+     * Update the config file
+     * Update all scenes with the new languages
+     */
+    public void uponSelectionLanguage() {
+        String[] selection = languageBox.getValue().split("_");
+        LanguageComboBoxUtil.setLocaleFromConfig(selection[0], selection[1]);
+        mainCtrl.updateLanguagesOfScenes();
+    }
+
     /**
      * Updates the language of the scene using the resource bundle
      */
     @Override
     public void updateLanguage() {
+        Locale l = Locale.getDefault();
+        String locale = l.getLanguage() + "_" + l.getCountry();
+
+        languageBox.setValue(locale);
         try {
             ResourceBundle lang = mainCtrl.lang;
             connectButton.setText(lang.getString("connect"));
