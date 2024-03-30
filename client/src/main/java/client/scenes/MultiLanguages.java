@@ -6,14 +6,11 @@ import javafx.collections.FXCollections;
 import javafx.scene.control.ComboBox;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Locale;
 
 public interface MultiLanguages {
     ConfigManager configManager = new ConfigManager("client/src/main/resources/config.properties");
-    String IMAGE_PATH = "client/src/main/resources/images";
     String LANGUAGE_PATH = "client/src/main/resources/languages";
 
     /**
@@ -30,11 +27,15 @@ public interface MultiLanguages {
 
     default ArrayList<String> getListOfSupportedLanguages(String path) {
         ArrayList<String> locales = new ArrayList<>();
+        // Retrieve array with all the file names in directory found with path
         File directory = new File(path);
         String[] arr = directory.list();
 
+        // If array is null, then there are no files in directory
+        // Return empty arraylist
         if (arr == null) return locales;
         for (String s : arr) {
+            // Skip over lang.properties, since they are the same as lang_en_GB.properties
             if (!s.contains("lang_")) continue;
             locales.add(s.replace("lang_", "").replace(".properties", ""));
         }

@@ -1,7 +1,5 @@
 package client.scenes;
 
-import client.utils.LanguageComboBoxUtil;
-
 import client.utils.ServerUtils;
 
 import com.google.inject.Inject;
@@ -74,7 +72,7 @@ public class EventOverviewCtrl implements MultiLanguages {
      */
     public void uponSelectionLanguage() {
         String[] selection = languageBox.getValue().split("_");
-        LanguageComboBoxUtil.setLocaleFromConfig(selection[0], selection[1]);
+        MultiLanguages.setLocaleFromConfig(selection[0], selection[1]);
         updateLanguageBox(languageBox, languageBox.getValue());
         mainCtrl.updateLanguagesOfScenes();
     }

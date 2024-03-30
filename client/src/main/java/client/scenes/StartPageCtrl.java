@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.Main;
-import client.utils.LanguageComboBoxUtil;
 import client.utils.ServerUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -89,7 +88,8 @@ public class StartPageCtrl implements MultiLanguages{
      */
     public void uponSelectionLanguage() {
         String[] selection = languageBox.getValue().split("_");
-        LanguageComboBoxUtil.setLocaleFromConfig(selection[0], selection[1]);
+        MultiLanguages.setLocaleFromConfig(selection[0], selection[1]);
+        updateLanguageBox(languageBox, languageBox.getValue());
         mainCtrl.updateLanguagesOfScenes();
     }
 
