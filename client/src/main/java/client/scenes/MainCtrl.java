@@ -179,6 +179,15 @@ public class MainCtrl {
         primaryStage.setScene(newExpensePage);
     }
 
+    /**
+     * Calls init method that initializes the edition page and displays it
+     */
+    public void showEditExpense(){
+        primaryStage.setTitle("Edit Expense");
+        newExpenseCtrl.initEdit(eventCtrl.getEventDetailsDto(), newExpenseCtrl.getExpenseDetails());
+        primaryStage.setScene(newExpensePage);
+    }
+
 
     /**
      * Creates the event details page and sets it as the scene

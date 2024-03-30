@@ -52,8 +52,6 @@ public class EventCtrl implements MultiLanguages{
     public Button addExpenseButton;
     @FXML
     public Button addParticipant;
-    @FXML
-    public Text tempText;
 
     private EventDetailsDto eventDetailsDto;
 
@@ -121,24 +119,6 @@ public class EventCtrl implements MultiLanguages{
      * Load the list of expenses
      */
     public void loadExpenseList(){
-//        Set<UserNameDto> debtors = new HashSet<>();
-//        UserNameDto user2 = new UserNameDto(2L, "debtor1", "Surname1");
-//        UserNameDto user3 = new UserNameDto(3L, "debtor2", "Surname2");
-//        UserNameDto user1 = new UserNameDto(1L, "Tymon", "Slepowronski");
-//        Set<UserNameDto> participants = new HashSet<>();
-//        participants.add(user1);
-//        participants.add(user2);
-//        participants.add(user3);
-//        debtors.add(user2);
-//        debtors.add(user3);
-//        ExpenseDetailsDto expenseDetailsDto1 = new ExpenseDetailsDto(1L, 12.50, user1,
-//        "Test expense 1", debtors, new Date(2024, 03, 19) );
-//        ExpenseDetailsDto expenseDetailsDto2 = new ExpenseDetailsDto(1L, 12.50, user1,
-//        "Test expense 2", debtors, new Date(2024, 03, 19) );
-//        Set<ExpenseDetailsDto> expenses = new HashSet<>();
-//        expenses.add(expenseDetailsDto1);
-//        expenses.add(expenseDetailsDto2);
-//        event = new EventDetailsDto(1L, "ABC01", "Test Event 1", expenses, participants);
         ObservableList<ExpenseDetailsDto> items = FXCollections
                 .observableArrayList(eventDetailsDto.getExpenses());
         expenseList.setCellFactory(new Callback<ListView<ExpenseDetailsDto>,
@@ -149,7 +129,6 @@ public class EventCtrl implements MultiLanguages{
             }
         });
         expenseList.setItems(items);
-        //set amount of rows visible
     }
 
 
@@ -205,20 +184,15 @@ public class EventCtrl implements MultiLanguages{
             button.setOnAction(event -> {
                 ExpenseDetailsDto item = getItem();
                 if (item!=null){
-                    ctrl.tempText.setText("You pressed: " + item);
+                    ctrl.newExpenseCtrl.initEdit(ctrl.eventDetailsDto, item);
+                    ctrl.mainCtrl.showEditExpense();
                 }
             });
 
             HBox hBox = new HBox();
-            //HBox.setHgrow(text, Priority.ALWAYS);
-            //HBox.setMargin(button, new javafx.geometry.Insets(0, 0, 0, 1));
+
 
             hBox.getChildren().add(new Text());
-            //System.out.println(getItem());
-//            if (getItem()!=null){
-//                hBox.getChildren().add(button);
-//            }
-            //hBox.getChildren().add(button);
             hBox.setSpacing(10);
 
             setGraphic(hBox);
@@ -230,7 +204,8 @@ public class EventCtrl implements MultiLanguages{
             if (empty || item==null){
                 setText(null);
             }else {
-                ((Text) ((HBox) getGraphic()).getChildren().get(0)).setText(item.getTitle());
+                ((Text) ((HBox) getGraphic()).getChildren().get(0)).setText(item.getTitle() + "\n"
+                    + item.getAuthor().toString() + " paid: " + item.getMoney() + " euro");
                 // I'm using the if statement, due to a weird error
                 if (((HBox) getGraphic()).getChildren().size()<2){
                     ((HBox) getGraphic()).getChildren().add(button);

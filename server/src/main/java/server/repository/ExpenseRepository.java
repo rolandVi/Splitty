@@ -34,6 +34,5 @@ public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long> {
      */
     @Query("SELECT SUM(e.money) FROM ExpenseEntity e")
     Double getTotalSumOfExpenses();
-
 }
 

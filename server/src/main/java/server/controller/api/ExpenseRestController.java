@@ -5,6 +5,7 @@ import commons.UserEntity;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import server.controller.exception.ObjectNotFoundException;
 import server.dto.ExpenseCreationDto;
 import server.dto.view.ExpenseDetailsDto;
 import server.dto.view.UserNameDto;
@@ -67,6 +68,14 @@ public class ExpenseRestController {
             debtors.add(new UserNameDto(u.getId(), u.getFirstName(), u.getLastName()));
         }
 
+//        EventDetailsDto event = new EventDetailsDto(createdExpense.getEvent().getId(),
+//                createdExpense.getEvent().getInviteCode(),
+//                createdExpense.getEvent().getTitle(),
+//                createdExpense.getEvent().getExpenses(),
+//                createdExpense.getEvent().getParticipants(),
+//                createdExpense.getEvent().getCreationDate(),
+//                );
+
         ExpenseDetailsDto details = new ExpenseDetailsDto(createdExpense.getId(),
                 createdExpense.getMoney(),
                 author,
@@ -79,34 +88,57 @@ public class ExpenseRestController {
 
     /**
      * Update an existing expense
-     * @param id the ID of the expense to update
      * @param expense the updated expense details
      * @return ResponseEntity containing the updated expense details
      */
-    @PutMapping("/{id}")
+    @PutMapping("/")
     public ResponseEntity<ExpenseDetailsDto> updateExpense
-    (@PathVariable(name = "id") long id, @Valid @RequestBody ExpenseDetailsDto expense) {
-        if (!checkIdValidity(id)){
+    (@Valid @RequestBody ExpenseDetailsDto expense) {
+        if (!checkIdValidity(expense.getId())){
             return ResponseEntity.badRequest().build();
         }
-        expense.setId(id);
+
         ExpenseDetailsDto updatedExpense = expenseService.updateExpense(expense);
+
+//        UserNameDto author = new UserNameDto(updatedExpense.getAuthor().getId(),
+//                updatedExpense.getAuthor().getFirstName(),
+//                updatedExpense.getAuthor().getLastName());
+//
+//        Set<UserNameDto> debtors = new HashSet<>();
+//        for (UserEntity u : updatedExpense.getDebtors()){
+//            debtors.add(new UserNameDto(u.getId(), u.getFirstName(), u.getLastName()));
+//        }
+//
+//
+//        ExpenseDetailsDto details = new ExpenseDetailsDto(updatedExpense.getId(),
+//                updatedExpense.getMoney(),
+//                author,
+//                updatedExpense.getTitle(),
+//                debtors,
+//                updatedExpense.getDate());
+
         return ResponseEntity.ok(updatedExpense);
     }
 
     /**
      * Delete an expense with the given id
      * @param id the id of the expense to access
+     * @param eventId the id of the parent event
      * @return ResponseEntity with badRequest status if invalid id was presented
      *         or ok status if it was deleted successfully
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> removeById(@PathVariable(name = "id") long id){
+    public ResponseEntity<Void> removeById(@PathVariable(name = "id") Long id,
+                                           @RequestBody Long eventId){
         if (!checkIdValidity(id)){
             return ResponseEntity.badRequest().build();
         }
-        this.expenseService.removeById(id);
-        return ResponseEntity.ok().build();
+        try {
+            expenseService.deleteExpense(id);
+            return ResponseEntity.ok().build();
+        }catch (ObjectNotFoundException e){
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**

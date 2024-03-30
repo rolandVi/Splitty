@@ -1,6 +1,7 @@
 package server.service;
 
 import commons.ExpenseEntity;
+import commons.UserEntity;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -8,10 +9,12 @@ import org.springframework.stereotype.Service;
 import server.controller.exception.ObjectNotFoundException;
 import server.dto.ExpenseCreationDto;
 import server.dto.view.ExpenseDetailsDto;
+import server.dto.view.UserNameDto;
 import server.repository.ExpenseRepository;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -88,7 +91,38 @@ public class ExpenseService {
         if (!this.existsById(expense.getId())) {
             throw new ObjectNotFoundException();
         }
-        return modelMapper.map(expense, ExpenseDetailsDto.class);
+
+        ExpenseEntity expenseEntity = getEntityById(expense.getId());
+
+        expenseEntity.setMoney(expense.getMoney());
+        expenseEntity.setAuthor(userService.findById(expense.getAuthor().getId()));
+        expenseEntity.setTitle(expense.getTitle());
+        expenseEntity.setDebtors(new HashSet<>());
+        for (UserNameDto u  : expense.getDebtors()){
+            expenseEntity.addDebtor(userService.findById(u.getId()));
+        }
+        expenseEntity.setDate(expense.getDate());
+
+        expenseEntity =  expenseRepository.save(expenseEntity);
+
+        UserNameDto author = new UserNameDto(expenseEntity.getAuthor().getId(),
+                expenseEntity.getAuthor().getFirstName(),
+                expenseEntity.getAuthor().getLastName());
+
+        Set<UserNameDto> debtors = new HashSet<>();
+        for (UserEntity u : expenseEntity.getDebtors()){
+            debtors.add(new UserNameDto(u.getId(), u.getFirstName(), u.getLastName()));
+        }
+
+
+        ExpenseDetailsDto details = new ExpenseDetailsDto(expenseEntity.getId(),
+                expenseEntity.getMoney(),
+                author,
+                expenseEntity.getTitle(),
+                debtors,
+                expenseEntity.getDate());
+
+        return details;
     }
 
     /**
@@ -102,8 +136,8 @@ public class ExpenseService {
         ExpenseEntity expenseEntity = new ExpenseEntity();
         //Set the debtors
         expenseEntity.setDebtors(new HashSet<>());
-        for (Long id : expenseDto.getDebtorsIds()){
-            expenseEntity.addDebtor(userService.findById(id));
+        for (UserNameDto u  : expenseDto.getDebtors()){
+            expenseEntity.addDebtor(userService.findById(u.getId()));
         }
         //Set the money
         expenseEntity.setMoney(expenseDto.getMoney());

@@ -2,6 +2,8 @@ package server.dto;
 
 
 
+import server.dto.view.UserNameDto;
+
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
@@ -15,7 +17,7 @@ public class ExpenseCreationDto {
     //@NotNull
     private Long authorId;
     //@NotNull
-    private Set<Long> debtorsIds;
+    private Set<UserNameDto> debtors;
     //@NotNull
     private Long eventId;
     //@NotNull
@@ -31,16 +33,16 @@ public class ExpenseCreationDto {
      * @param title title of the expense
      * @param money the amount in the expense
      * @param authorId the id of the author of the expense
-     * @param debtorsIds the set of debtors' ids
+     * @param debtors the set of debtors' ids
      * @param parentEventId the id of the parent event of the expense
      * @param date the date of the expense
      */
     public ExpenseCreationDto(String title, Double money, Long authorId,
-                              Set<Long> debtorsIds, Long parentEventId, Date date){
+                              Set<UserNameDto> debtors, Long parentEventId, Date date){
         this.title = title;
         this.money = money;
         this.authorId = authorId;
-        this.debtorsIds = debtorsIds;
+        this.debtors = debtors;
         this.eventId = parentEventId;
         this.date = date;
     }
@@ -97,16 +99,16 @@ public class ExpenseCreationDto {
      * Getter for the debtorsIds field
      * @return the set of debtors ids
      */
-    public Set<Long> getDebtorsIds() {
-        return debtorsIds;
+    public Set<UserNameDto> getDebtors() {
+        return debtors;
     }
 
     /**
      * Setter for the debtorsIds field
-     * @param debtorsIds new value of the debtorsIds field
+     * @param debtors new value of the debtorsIds field
      */
-    public void setDebtorsIds(Set<Long> debtorsIds) {
-        this.debtorsIds = debtorsIds;
+    public void setDebtorsIds(Set<UserNameDto> debtors) {
+        this.debtors = debtors;
     }
 
     /**

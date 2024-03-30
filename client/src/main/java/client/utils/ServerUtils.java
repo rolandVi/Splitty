@@ -278,4 +278,32 @@ public class ServerUtils {
 
         return true;
     }
+
+    /**
+     * Request for editing expenses
+     * @param expanse details of the expense
+     * @return the edited expense
+     */
+    public ExpenseDetailsDto editExpense(ExpenseDetailsDto expanse){
+        Response response = client.target(SERVER)
+                .path("api/expenses/")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(expanse, APPLICATION_JSON));
+
+        return response.readEntity(ExpenseDetailsDto.class);
+    }
+
+    /**
+     * Removes the expense
+     * @param eventId the id of the parent event
+     * @param expenseId the id of the expense
+     */
+    public void removeExpense(Long eventId, Long expenseId){
+        client.target(SERVER)
+                .path("api/expenses/" + expenseId)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(eventId, APPLICATION_JSON));
+    }
 }

@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.NewExpenseCtrl">
    <children>
@@ -18,7 +19,10 @@
       <Button fx:id="addExpenseButton" layoutX="262.0" layoutY="332.0" mnemonicParsing="false" onAction="#createExpense" text="Create" />
       <Button fx:id="returnButton" layoutX="26.0" layoutY="24.0" mnemonicParsing="false" onAction="#returnToEvent" text="Return" />
       <ComboBox fx:id="authorBox" layoutX="26.0" layoutY="202.0" prefWidth="150.0" />
-      <ToggleButton fx:id="splitEquallyButton" layoutX="383.0" layoutY="96.0" mnemonicParsing="false" text="SplitEqually" />
+      <ToggleButton fx:id="splitEquallyButton" layoutX="383.0" layoutY="96.0" mnemonicParsing="false" onAction="#splitEqually" text="SplitEqually" />
       <ListView fx:id="debtorsCheckList" layoutX="321.0" layoutY="132.0" prefHeight="113.0" prefWidth="200.0" />
+      <Button fx:id="removeButton" layoutX="495.0" layoutY="332.0" mnemonicParsing="false" onAction="#remove" text="Test update" />
+      <Button fx:id="editButton" layoutX="261.0" layoutY="332.0" mnemonicParsing="false" onAction="#editExpense" text="Edit" />
+      <Text fx:id="errorField" fill="RED" layoutX="91.0" layoutY="265.0" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
    </children>
 </Pane>
