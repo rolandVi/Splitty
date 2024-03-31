@@ -22,7 +22,6 @@ import javafx.stage.Stage;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
-import client.utils.LanguageComboBoxUtil;
 import server.dto.view.UserNameDto;
 
 import java.io.IOException;
@@ -132,7 +131,7 @@ public class MainCtrl {
      */
     protected void updateLanguagesOfScenes() {
         // Gets the locale from recent session from config.properties
-        Locale.setDefault(LanguageComboBoxUtil.getLocaleFromConfig());
+        Locale.setDefault(MultiLanguages.getLocaleFromConfig());
         lang = ResourceBundle.getBundle("languages.lang");
 
         // Update the language of each scene
