@@ -13,7 +13,6 @@ import javafx.util.Callback;
 import server.dto.view.EventDetailsDto;
 import server.dto.view.ExpenseDetailsDto;
 
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -45,24 +44,24 @@ public class EventCtrl implements MultiLanguages{
     @FXML
     public Label inviteCode;
     @FXML
+    public Label expensesLabel;
+    @FXML
     public ListView<ExpenseDetailsDto> expenseList;
     @FXML
     public Button addExpenseButton;
     @FXML
     public Button addParticipant;
-    @FXML
-    public Text tempText;
-    @FXML
-    public Label expensesLabel;
+
+    private EventDetailsDto eventDetailsDto;
 
     private NewExpenseCtrl newExpenseCtrl;
 
     private final EventCtrl self = this;
+
+    @FXML
     public Button leaveButton;
     @FXML
     private VBox participantsContainer;
-    private EventDetailsDto eventDetailsDto;
-    private long eventId;
 
     /**
      * Injector for Event Controller
@@ -107,13 +106,11 @@ public class EventCtrl implements MultiLanguages{
      * @param id the id of the event
      */
     public void init(long id) {
-        eventDetailsDto = serverUtils.getEventDetails(id);
-        eventNameLabel.setText(eventDetailsDto.getTitle());
-        loadExpenseList();
-        this.eventId = id;
         this.eventDetailsDto=serverUtils.getEventDetails(id);
         eventNameLabel.setText(eventDetailsDto.getTitle());
-        this.loadParticipants();
+        eventNameLabel.setText(eventDetailsDto.getTitle());
+        loadExpenseList();
+        loadParticipants();
     }
 
     /**
@@ -130,7 +127,6 @@ public class EventCtrl implements MultiLanguages{
             }
         });
         expenseList.setItems(items);
-        //set amount of rows visible
     }
 
 
@@ -140,7 +136,7 @@ public class EventCtrl implements MultiLanguages{
      * turn the EventTitleDto into Json format string
      */
     public void changeEventName() throws JsonProcessingException {
-        serverUtils.changeEventName(eventId, changeTextField.getText());
+        serverUtils.changeEventName(eventDetailsDto.getId(), changeTextField.getText());
         this.eventNameLabel.setText(this.changeTextField.getText());
         this.changeTextField.setText("");
     }
@@ -186,7 +182,8 @@ public class EventCtrl implements MultiLanguages{
             button.setOnAction(event -> {
                 ExpenseDetailsDto item = getItem();
                 if (item!=null){
-                    ctrl.tempText.setText("You pressed: " + item);
+                    ctrl.newExpenseCtrl.initEdit(ctrl.eventDetailsDto, item);
+                    ctrl.mainCtrl.showEditExpense();
                 }
             });
 
@@ -204,7 +201,8 @@ public class EventCtrl implements MultiLanguages{
             if (empty || item==null){
                 setText(null);
             }else {
-                ((Text) ((HBox) getGraphic()).getChildren().get(0)).setText(item.getTitle());
+                ((Text) ((HBox) getGraphic()).getChildren().get(0)).setText(item.getTitle() + "\n"
+                    + item.getAuthor().toString() + " paid: " + item.getMoney() + " euro");
                 // I'm using the if statement, due to a weird error
                 if (((HBox) getGraphic()).getChildren().size()<2){
                     ((HBox) getGraphic()).getChildren().add(button);
@@ -260,7 +258,7 @@ public class EventCtrl implements MultiLanguages{
      */
     public void leave(){
         long userId = Long.parseLong(mainCtrl.configManager.getProperty("userID"));
-        serverUtils.deleteEventParticipant(this.eventId, userId);
+        serverUtils.deleteEventParticipant(this.eventDetailsDto.getId(), userId);
         returnToOverview();
     }
 }

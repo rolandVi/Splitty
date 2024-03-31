@@ -42,6 +42,7 @@ public class StartPageCtrl implements MultiLanguages{
 
     @FXML
     public Label incorrectData;
+    @FXML
     public Button connectButton;
     @FXML
     public Button openAdminButton;

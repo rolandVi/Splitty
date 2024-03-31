@@ -1,20 +1,19 @@
 package server.service;
 
 import commons.EventEntity;
+import commons.ExpenseEntity;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import server.controller.exception.ObjectNotFoundException;
-import server.dto.view.EventDetailsDto;
-import server.dto.view.EventOverviewDto;
-import server.dto.view.EventTitleDto;
-import server.dto.view.UserNameDto;
+import server.dto.view.*;
 import server.repository.EventRepository;
 
 import java.time.LocalTime;
 import java.util.List;
+
 import java.util.stream.Collectors;
 
 @Service
@@ -23,7 +22,6 @@ public class EventService {
     private final ModelMapper modelMapper;
     private final UserService userService;
 
-    private final ExpenseService expenseService;
 
 
     /**
@@ -32,15 +30,12 @@ public class EventService {
      * @param eventRepository the EventEntity repository
      * @param modelMapper     the ModelMapper injected by Spring
      * @param userService     the user service
-     * @param expenseService the expense service
      */
     public EventService(EventRepository eventRepository,
-                        ModelMapper modelMapper, @Lazy UserService userService,
-                        ExpenseService expenseService) {
+                        ModelMapper modelMapper, @Lazy UserService userService) {
         this.eventRepository = eventRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
-        this.expenseService = expenseService;
     }
 
     /**
@@ -61,6 +56,7 @@ public class EventService {
     public EventDetailsDto getById(long id) {
         var event=this.eventRepository.findById(id)
                 .orElseThrow(ObjectNotFoundException::new);
+
         return this.modelMapper.map(event, EventDetailsDto.class);
     }
 
@@ -117,6 +113,28 @@ public class EventService {
         newEntity.setTitle(title);
         newEntity.setInviteCode(generateInviteCode(title));
         return this.eventRepository.save(newEntity);
+    }
+
+    /**
+     * Assigns an expense the event
+     * @param expense expense to be added
+     * @return the boolean, whether the operation was successful
+     */
+    public EventEntity addExpense(ExpenseEntity expense){
+        EventEntity modifiedEvent = expense.getEvent();
+        modifiedEvent.getExpenses().add(expense);
+        return eventRepository.save(modifiedEvent);
+    }
+
+    /**
+     * Removes an expense from the event
+     * @param eventId id of the event to remove expense from
+     * @param expense the expense entity to remove
+     */
+    public void removeExpense(Long eventId, ExpenseEntity expense){
+        EventEntity modifiedEvent = findEntityById(eventId);
+        modifiedEvent.removeExpense(expense);
+        eventRepository.save(modifiedEvent);
     }
 
     /**
