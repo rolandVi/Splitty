@@ -2,15 +2,16 @@ package server.controller.api;
 
 import commons.ExpenseEntity;
 import commons.UserEntity;
+import dto.view.UserNameDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import dto.view.ExpenseDetailsDto;
 import server.controller.exception.ObjectNotFoundException;
-import server.dto.ExpenseCreationDto;
-import server.dto.view.ExpenseDetailsDto;
-import server.dto.view.UserNameDto;
+import dto.ExpenseCreationDto;
 import server.service.EventService;
 import server.service.ExpenseService;
+
 
 import java.util.HashSet;
 import java.util.List;

@@ -6,9 +6,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import server.dto.UserCreationDto;
-import server.dto.view.EventOverviewDto;
-import server.dto.view.UserNameDto;
+import dto.UserCreationDto;
+import dto.view.EventOverviewDto;
+import dto.view.UserNameDto;
 import server.service.UserService;
 
 import java.util.ArrayList;

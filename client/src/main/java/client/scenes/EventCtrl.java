@@ -2,6 +2,9 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import dto.view.EventDetailsDto;
+import dto.view.ExpenseDetailsDto;
+import dto.view.UserNameDto;
 import jakarta.inject.Inject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,8 +13,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
-import server.dto.view.EventDetailsDto;
-import server.dto.view.ExpenseDetailsDto;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -19,7 +20,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import server.dto.view.UserNameDto;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -261,4 +261,5 @@ public class EventCtrl implements MultiLanguages{
         serverUtils.deleteEventParticipant(this.eventDetailsDto.getId(), userId);
         returnToOverview();
     }
+
 }

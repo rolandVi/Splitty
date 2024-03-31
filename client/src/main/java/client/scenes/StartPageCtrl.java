@@ -5,6 +5,7 @@ import client.utils.ServerUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import dto.UserCreationDto;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
@@ -14,7 +15,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
-import server.dto.UserCreationDto;
 
 import java.io.IOException;
 import java.net.URLEncoder;

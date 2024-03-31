@@ -1,7 +1,7 @@
 package server.service;
 
 import org.springframework.stereotype.Service;
-import server.exceptions.PasswordExpiredException;
+import dto.exceptions.PasswordExpiredException;
 
 import java.security.SecureRandom;
 import java.util.Base64;
