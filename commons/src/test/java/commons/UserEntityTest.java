@@ -117,4 +117,13 @@ public class UserEntityTest {
         assertFalse(user.getEvents().contains(event));
         assertFalse(event.getParticipants().contains(user));
     }
+
+    @Test
+    void testJoinEvent() {
+        EventEntity event = new EventEntity(1L, "code", "title",
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
+        this.user.join(event);
+        assertTrue(user.getEvents().contains(event));
+        assertTrue(event.getParticipants().contains(user));
+    }
 }
