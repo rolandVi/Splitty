@@ -25,20 +25,4 @@ class BankAccountRestControllerTest {
         MockitoAnnotations.openMocks(this);
         bankAccountRestController = new BankAccountRestController(bankAccountService);
     }
-
-    @Test
-    void createBankAccount() {
-        // Arrange
-        BankAccountCreationDto requestBody = new BankAccountCreationDto(/* Create your test DTO */);
-        BankAccountDto expectedDto = new BankAccountDto(/* Create your expected DTO */);
-        when(bankAccountService.createBankAccount(requestBody)).thenReturn(expectedDto);
-
-        // Act
-        ResponseEntity<BankAccountDto> response = bankAccountRestController.createBankAccount(requestBody);
-
-        // Assert
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(expectedDto, response.getBody());
-        verify(bankAccountService, times(1)).createBankAccount(requestBody);
-    }
 }

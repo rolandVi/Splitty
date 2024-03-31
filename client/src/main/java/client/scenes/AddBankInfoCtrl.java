@@ -76,6 +76,7 @@ public class AddBankInfoCtrl {
         BankAccountCreationDto bankAccount = new BankAccountCreationDto();
         bankAccount.setIban(iban);
         bankAccount.setHolder("holder");
+        bankAccount.setUserId(Long.parseLong(mainCtrl.configManager.getProperty("userID")));
         // Temporary solution since we can't link the bankAccount to the user
         // ,yet we also don't have access to the email of the user.
         bankAccount.setBic(bic);

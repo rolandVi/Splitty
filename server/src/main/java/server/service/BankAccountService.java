@@ -17,8 +17,7 @@ public class BankAccountService {
     private final BankAccountRepository bankAccountRepository;
 
     /**
-     *
-     * @param modelMapper the ModelMapper injected by Spring
+     * @param modelMapper           the ModelMapper injected by Spring
      * @param bankAccountRepository the bankAccountRepository
      */
     public BankAccountService(ModelMapper modelMapper,
@@ -73,11 +72,11 @@ public class BankAccountService {
      * @param bankAccountEntity the bank account information
      * @return BankAccountDto + id
      */
-    public BankAccountDto createBankAccount(BankAccountCreationDto bankAccountEntity){
+    public BankAccountEntity createBankAccount(BankAccountCreationDto bankAccountEntity){
         BankAccountEntity newEntity = this.modelMapper
                 .map(bankAccountEntity, BankAccountEntity.class);
         BankAccountEntity result = this.bankAccountRepository.save(newEntity);
-        return modelMapper.map(result, BankAccountDto.class);
+        return result;
     }
 
     /**

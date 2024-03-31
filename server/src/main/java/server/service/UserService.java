@@ -1,8 +1,12 @@
 package server.service;
 
+import commons.BankAccountEntity;
 import commons.EventEntity;
 import commons.UserEntity;
+import dto.BankAccountCreationDto;
+import dto.view.BankAccountDto;
 import jakarta.transaction.Transactional;
+import org.apache.catalina.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import server.controller.exception.ObjectNotFoundException;
@@ -23,19 +27,23 @@ public class UserService {
 
     private final EventService eventService;
 
+    private final BankAccountService bankAccountService;
+
 
     /**
      * Constructor
      *
-     * @param modelMapper    the ModelMapper injected by Spring
-     * @param userRepository the UserRepository injected by Spring
-     * @param eventService the event service
+     * @param modelMapper        the ModelMapper injected by Spring
+     * @param userRepository     the UserRepository injected by Spring
+     * @param eventService       the event service
+     * @param bankAccountService the bank account service
      */
     public UserService(ModelMapper modelMapper, UserRepository userRepository,
-                       EventService eventService) {
+                       EventService eventService, BankAccountService bankAccountService) {
         this.modelMapper = modelMapper;
         this.userRepository = userRepository;
         this.eventService = eventService;
+        this.bankAccountService = bankAccountService;
     }
 
     /**
@@ -148,5 +156,20 @@ public class UserService {
         EventEntity event = this.eventService.createEvent(title);
         this.join(event.getInviteCode(), id);
         return this.modelMapper.map(event, EventTitleDto.class);
+    }
+
+    /**
+     * Creates a bank account
+     * @param bankAccountCreationDto the bank account info
+     * @return the new bank account
+     */
+    public BankAccountDto createBankAccount(BankAccountCreationDto bankAccountCreationDto) {
+        BankAccountEntity bankAccount=this.bankAccountService
+                .createBankAccount(bankAccountCreationDto);
+        UserEntity currentUser=this.userRepository.findById(bankAccountCreationDto.getUserId())
+                .orElseThrow(ObjectNotFoundException::new);
+        currentUser.setBankAccount(bankAccount);
+        this.userRepository.save(currentUser);
+        return this.modelMapper.map(bankAccount, BankAccountDto.class);
     }
 }

@@ -1,6 +1,8 @@
 package server.controller.api;
 
 import commons.UserEntity;
+import dto.BankAccountCreationDto;
+import dto.view.BankAccountDto;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -132,5 +134,11 @@ public class UserRestController {
                 return ResponseEntity.notFound().build();
             }
         }
+    }
+
+    @PostMapping("/account")
+    public ResponseEntity<BankAccountDto> createBankAccount(
+            @Valid @RequestBody BankAccountCreationDto bankAccountCreationDto){
+        return ResponseEntity.ok(this.userService.createBankAccount(bankAccountCreationDto));
     }
 }
