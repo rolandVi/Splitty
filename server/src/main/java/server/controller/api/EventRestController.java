@@ -1,5 +1,6 @@
 package server.controller.api;
 
+import commons.ExpenseEntity;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,6 +64,21 @@ public class EventRestController {
     public ResponseEntity<EventTitleDto> updateEventTitleById(@PathVariable(name = "id") long id,
                                                    @Valid @RequestBody EventTitleDto eventTitle){
         return ResponseEntity.ok(this.eventService.updateById(id, eventTitle));
+    }
+
+
+
+    /**
+     * Adding an expense to an event
+     * @param eventId the event id
+     * @param expense the expense creation details
+     * @return the response entity, defining whether the operation was successful
+     */
+    @PatchMapping("/{id}/add_expense")
+    public ResponseEntity<Void> addExpense(@PathVariable(name = "id") long eventId,
+                                           @RequestBody ExpenseEntity expense){
+        this.eventService.addExpense(expense);
+        return ResponseEntity.ok().build();
     }
 
     /**
