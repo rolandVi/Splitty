@@ -16,6 +16,8 @@ class TransactionEntityTest {
 
     private ExpenseEntity expense;
 
+    private EventEntity event;
+
     private Date date;
     private TransactionEntity transaction;
     @BeforeEach
@@ -25,8 +27,9 @@ class TransactionEntityTest {
                 "email@gmail.com", new HashSet<>(), new BankAccountEntity());
         this.receiver = new UserEntity(2L, "Receiver", "LastName",
                 "email@gmail.com", new HashSet<>(), new BankAccountEntity());
+        this.event=new EventEntity();
         this.expense= new ExpenseEntity(1L, 20d, receiver,
-                new HashSet<>(List.of(this.sender)), "title", date);
+                new HashSet<>(List.of(this.sender)), "title", date, event);
         this.transaction = new TransactionEntity(1234L, 19.99, sender, receiver, expense, date);
     }
 
