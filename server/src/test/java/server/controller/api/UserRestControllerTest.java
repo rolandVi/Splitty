@@ -6,8 +6,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import server.dto.CreatorToTitleDto;
 import server.dto.UserCreationDto;
+import server.dto.view.EventDetailsDto;
 import server.dto.view.EventOverviewDto;
+import server.dto.view.EventTitleDto;
 import server.dto.view.UserNameDto;
 import server.service.UserService;
 
@@ -62,6 +65,22 @@ class UserRestControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedEvents, response.getBody());
         verify(userService, times(1)).getUserEvents(userId);
+    }
+
+    @Test
+    void testCreateEvent() {
+        // Arrange
+        CreatorToTitleDto requestDto = new CreatorToTitleDto();
+        EventTitleDto expectedDto = new EventTitleDto();
+        when(userService.createEvent(requestDto.getTitle(), requestDto.getId())).thenReturn(expectedDto);
+
+        // Act
+        ResponseEntity<EventTitleDto> response = userRestController.createEvent(requestDto);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedDto, response.getBody());
+        verify(userService, times(1)).createEvent(requestDto.getTitle(), requestDto.getId());
     }
 
     @Test

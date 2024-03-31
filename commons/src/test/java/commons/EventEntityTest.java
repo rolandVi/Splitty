@@ -142,6 +142,20 @@ public class EventEntityTest {
     }
 
     @Test
+    public void testSetCreationDate() {
+        Date newCreationDate = new Date();
+        event.setCreationDate(newCreationDate);
+        assertEquals(newCreationDate, event.getCreationDate());
+    }
+
+    @Test
+    public void testSetLastModifiedDate() {
+        Date newLastModifiedDate = new Date();
+        event.setLastModifiedDate(newLastModifiedDate);
+        assertEquals(newLastModifiedDate, event.getLastModifiedDate());
+    }
+
+    @Test
     public void testGetCreationDate() {
         assertNotNull(event.getCreationDate());
     }

@@ -3,6 +3,7 @@ package commons;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Date;
 import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -105,5 +106,15 @@ public class UserEntityTest {
 
         this.user.setBankAccount(newBankAccount);
         assertEquals(newBankAccount, this.user.getBankAccount());
+    }
+
+    @Test
+    void testLeaveEvent() {
+        EventEntity event = new EventEntity(1L, "code", "title",
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
+        this.user.join(event);
+        this.user.leave(event);
+        assertFalse(user.getEvents().contains(event));
+        assertFalse(event.getParticipants().contains(user));
     }
 }
