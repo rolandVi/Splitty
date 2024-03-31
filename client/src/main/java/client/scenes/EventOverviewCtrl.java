@@ -74,7 +74,6 @@ public class EventOverviewCtrl implements MultiLanguages {
     public void uponSelectionLanguage() {
         String[] selection = languageBox.getValue().split("_");
         MultiLanguages.setLocaleFromConfig(selection[0], selection[1]);
-        updateLanguageBox(languageBox, languageBox.getValue());
         mainCtrl.updateLanguagesOfScenes();
     }
 
