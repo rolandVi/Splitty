@@ -16,11 +16,14 @@
 package client.scenes;
 
 import client.ConfigManager;
+import client.utils.ServerUtils;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
+import client.utils.LanguageComboBoxUtil;
+import server.dto.view.UserNameDto;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -67,11 +70,14 @@ public class MainCtrl {
     private Scene newExpensePage;
     private NewExpenseCtrl newExpenseCtrl;
 
+    private ServerUtils serverUtils;
+
     /**
      * The initialize method
      * @param sceneInputWrapper Wrapper for the inputs because of high number of parameters
+     * @param serverUtils The server utilities
      */
-    public void initialize(SceneInputWrapper sceneInputWrapper){
+    public void initialize(SceneInputWrapper sceneInputWrapper, ServerUtils serverUtils){
         this.configManager = new ConfigManager(CONFIG_FILE_PATH);
 
         this.primaryStage = sceneInputWrapper.primaryStage();
@@ -85,6 +91,7 @@ public class MainCtrl {
         this.newParticipantCtrl = sceneInputWrapper.newParticipant().getKey();
         this.participantCtrl = sceneInputWrapper.participantPage().getKey();
         this.bankInfoCtrl = sceneInputWrapper.bankInfoPage().getKey();
+        this.newExpenseCtrl = sceneInputWrapper.newExpensePage().getKey();
 
         this.startPage = new Scene(sceneInputWrapper.startPage().getValue());
         this.eventOverview = new Scene(sceneInputWrapper.eventOverview().getValue());
@@ -106,7 +113,11 @@ public class MainCtrl {
         this.addBankInfo = new Scene(sceneInputWrapper.bankInfoPage().getValue());
         this.enrollPage=new Scene(sceneInputWrapper.enrollEventPage().getValue());
 
-        if (configManager.getProperty("loggedIn").equals("TRUE")) {
+        UserNameDto user = new UserNameDto(Long.parseLong(configManager.getProperty("userID")),
+                configManager.getProperty("userFirstName"),
+                configManager.getProperty("userLastName"));
+
+        if (configManager.getProperty("loggedIn").equals("TRUE") && serverUtils.userExists(user)) {
             showOverview();
         } else {
             showStart();
@@ -121,7 +132,7 @@ public class MainCtrl {
      */
     protected void updateLanguagesOfScenes() {
         // Gets the locale from recent session from config.properties
-        Locale.setDefault(MultiLanguages.getLocaleFromConfig());
+        Locale.setDefault(LanguageComboBoxUtil.getLocaleFromConfig());
         lang = ResourceBundle.getBundle("languages.lang");
 
         // Update the language of each scene
@@ -181,6 +192,16 @@ public class MainCtrl {
      */
     public void showNewExpense(){
         primaryStage.setTitle("New Expense");
+        newExpenseCtrl.init(eventCtrl.getEventDetailsDto());
+        primaryStage.setScene(newExpensePage);
+    }
+
+    /**
+     * Calls init method that initializes the edition page and displays it
+     */
+    public void showEditExpense(){
+        primaryStage.setTitle("Edit Expense");
+        newExpenseCtrl.initEdit(eventCtrl.getEventDetailsDto(), newExpenseCtrl.getExpenseDetails());
         primaryStage.setScene(newExpensePage);
     }
 
@@ -192,6 +213,8 @@ public class MainCtrl {
     public void showEventDetails(long id) {
         eventCtrl.init(id);
         primaryStage.setTitle("Page");
+        eventCtrl.loadExpenseList();
+        eventCtrl.loadParticipants();
         primaryStage.setScene(eventPage);
     }
 

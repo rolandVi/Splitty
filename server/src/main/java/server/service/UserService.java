@@ -52,7 +52,7 @@ public class UserService {
      * @param userId the id
      * @return the entity
      */
-    public UserEntity findById(long userId) {
+    public UserEntity findById(Long userId) {
         return this.userRepository.findById(userId)
                 .orElseThrow(IllegalArgumentException::new);
     }
