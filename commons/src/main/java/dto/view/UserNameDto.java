@@ -113,4 +113,12 @@ public class UserNameDto {
     public int hashCode() {
         return Objects.hash(id, firstName, lastName);
     }
+
+    /**
+     * @return a string containing the first and last name of the user
+     */
+    @Override
+    public String toString() {
+        return getFirstName() + " " + getLastName();
+    }
 }

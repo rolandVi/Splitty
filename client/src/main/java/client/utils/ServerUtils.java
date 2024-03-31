@@ -1,15 +1,14 @@
 package client.utils;
 
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import dto.CreatorToTitleDto;
+import dto.ExpenseCreationDto;
 import dto.UserCreationDto;
 import dto.exceptions.PasswordExpiredException;
-import dto.view.EventDetailsDto;
-import dto.view.EventOverviewDto;
-import dto.view.EventTitleDto;
-import dto.view.UserNameDto;
+import dto.view.*;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
@@ -221,6 +220,21 @@ public class ServerUtils {
     }
 
     /**
+     * Check for user existence
+     * @param user user to check for existence
+     * @return whether the user exists
+     */
+    public boolean userExists(UserNameDto user){
+        return client
+                .target(SERVER).path("/api/users/exists")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(user, APPLICATION_JSON))
+                .getStatus()!=404;
+    }
+
+
+    /**
      * Check the validity of the given user credentials
      * @param user the user credentials
      * @return true if they are valid and false otherwise
@@ -361,5 +375,50 @@ public class ServerUtils {
         }
 
         return Long.valueOf(response.get().body());
+    }
+
+    /**
+     * Adds a new expense to the event
+     * @param eventId the id of the event
+     * @param expenseCreationDto the details of the expense
+     * @return the dreated expense details
+     */
+    public ExpenseDetailsDto addExpense(long eventId, ExpenseCreationDto expenseCreationDto) {
+
+        Response expenseCreationResponse = client.target(SERVER)
+                .path("api/expenses/")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(expenseCreationDto, APPLICATION_JSON));
+
+        return expenseCreationResponse.readEntity(ExpenseDetailsDto.class);
+    }
+
+    /**
+     * Request for editing expenses
+     * @param expanse details of the expense
+     * @return the edited expense
+     */
+    public ExpenseDetailsDto editExpense(ExpenseDetailsDto expanse){
+        Response response = client.target(SERVER)
+                .path("api/expenses/")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(expanse, APPLICATION_JSON));
+
+        return response.readEntity(ExpenseDetailsDto.class);
+    }
+
+    /**
+     * Removes the expense
+     * @param eventId the id of the parent event
+     * @param expenseId the id of the expense
+     */
+    public void removeExpense(Long eventId, Long expenseId){
+        client.target(SERVER)
+                .path("api/expenses/" + expenseId + "/" + eventId)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .delete();
     }
 }

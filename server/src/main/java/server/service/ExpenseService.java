@@ -2,17 +2,21 @@ package server.service;
 
 import commons.ExpenseEntity;
 import commons.UserEntity;
+import dto.view.UserNameDto;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import server.controller.exception.ObjectNotFoundException;
 import dto.view.ExpenseDetailsDto;
+import dto.ExpenseCreationDto;
 import server.repository.ExpenseRepository;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -20,17 +24,26 @@ import java.util.stream.Collectors;
 public class ExpenseService {
     private final ExpenseRepository expenseRepository;
     private final ModelMapper modelMapper;
+    private final UserService userService;
+    private final EventService eventService;
 
     /**
      * Constructor Injection
      *
      * @param expenseRepository the ExpenseEntity repository
      * @param modelMapper      the ModelMapper injected by Spring
+     * @param userService the user service
+     * @param eventService the event service
      */
     public ExpenseService(ExpenseRepository expenseRepository,
-                          ModelMapper modelMapper) {
+                          ModelMapper modelMapper,
+                          UserService userService,
+                          EventService eventService) {
         this.expenseRepository = expenseRepository;
         this.modelMapper = modelMapper;
+        this.userService = userService;
+        this.eventService = eventService;
+
     }
 
     /**
@@ -53,6 +66,16 @@ public class ExpenseService {
     }
 
     /**
+     * returns ExpenseEntity by id
+     * @param id the id of the expense
+     * @return the corresponding expense
+     */
+    public ExpenseEntity getEntityById(long id) {
+        return this.expenseRepository.findById(id)
+                .orElseThrow(ObjectNotFoundException::new);
+    }
+
+    /**
      * Removing an expense by its id
      * @param id the id of the expense we want to delete
      */
@@ -70,7 +93,38 @@ public class ExpenseService {
         if (!this.existsById(expense.getId())) {
             throw new ObjectNotFoundException();
         }
-        return modelMapper.map(expense, ExpenseDetailsDto.class);
+
+        ExpenseEntity expenseEntity = getEntityById(expense.getId());
+
+        expenseEntity.setMoney(expense.getMoney());
+        expenseEntity.setAuthor(userService.findById(expense.getAuthor().getId()));
+        expenseEntity.setTitle(expense.getTitle());
+        expenseEntity.setDebtors(new HashSet<>());
+        for (UserNameDto u  : expense.getDebtors()){
+            expenseEntity.addDebtor(userService.findById(u.getId()));
+        }
+        expenseEntity.setDate(expense.getDate());
+
+        expenseEntity =  expenseRepository.save(expenseEntity);
+
+        UserNameDto author = new UserNameDto(expenseEntity.getAuthor().getId(),
+                expenseEntity.getAuthor().getFirstName(),
+                expenseEntity.getAuthor().getLastName());
+
+        Set<UserNameDto> debtors = new HashSet<>();
+        for (UserEntity u : expenseEntity.getDebtors()){
+            debtors.add(new UserNameDto(u.getId(), u.getFirstName(), u.getLastName()));
+        }
+
+
+        ExpenseDetailsDto details = new ExpenseDetailsDto(expenseEntity.getId(),
+                expenseEntity.getMoney(),
+                author,
+                expenseEntity.getTitle(),
+                debtors,
+                expenseEntity.getDate());
+
+        return details;
     }
 
     /**
@@ -79,10 +133,28 @@ public class ExpenseService {
      * @return The created expense DTO
      */
     @Transactional
-    public ExpenseDetailsDto createExpense(@Valid ExpenseDetailsDto expenseDto) {
-        ExpenseEntity expenseEntity = modelMapper.map(expenseDto, ExpenseEntity.class);
-        ExpenseEntity savedExpense = expenseRepository.save(expenseEntity);
-        return modelMapper.map(savedExpense, ExpenseDetailsDto.class);
+    public ExpenseEntity createExpense(ExpenseCreationDto expenseDto) {
+        //Create new expenseEntity
+        ExpenseEntity expenseEntity = new ExpenseEntity();
+        //Set the debtors
+        expenseEntity.setDebtors(new HashSet<>());
+        for (UserNameDto u  : expenseDto.getDebtors()){
+            expenseEntity.addDebtor(userService.findById(u.getId()));
+        }
+        //Set the money
+        expenseEntity.setMoney(expenseDto.getMoney());
+        //Set author
+        expenseEntity.setAuthor(userService.findById(expenseDto.getAuthorId()));
+        //Set title
+        expenseEntity.setTitle(expenseDto.getTitle());
+        //Set date
+        expenseEntity.setDate(expenseDto.getDate());
+        //Set parent event
+        expenseEntity.setEvent(eventService.findEntityById(expenseDto.getEventId()));
+
+        expenseEntity = expenseRepository.save(expenseEntity);
+        eventService.addExpense(expenseEntity);
+        return expenseEntity;
     }
 
     /**

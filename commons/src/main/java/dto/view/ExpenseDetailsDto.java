@@ -1,9 +1,12 @@
 package dto.view;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ExpenseDetailsDto {
     private Long id;
 
@@ -29,7 +32,7 @@ public class ExpenseDetailsDto {
      * @param money the money
      * @param author the author
      * @param title the title
-     * @param debtors the debitors
+     * @param debtors the debtors
      * @param date the date
      */
     public ExpenseDetailsDto(Long id, Double money,

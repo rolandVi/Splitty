@@ -20,6 +20,7 @@ import client.scenes.admin.AdminLoginPageCtrl;
 import client.scenes.admin.AdminMainCtrl;
 import client.scenes.admin.AdminOverviewPageCtrl;
 import client.scenes.admin.AdminRestoreCtrl;
+import client.utils.ServerUtils;
 import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -55,6 +56,8 @@ public class Main extends Application {
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 
+        ServerUtils serverUtils = INJECTOR.getInstance(ServerUtils.class);
+
         var startPage = FXML.load(StartPageCtrl.class, "client.scenes", "startPage.fxml");
         var eventOverview = FXML.load(EventOverviewCtrl.class,
                 "client.scenes", "eventOverview.fxml");
@@ -66,8 +69,6 @@ public class Main extends Application {
                 "client.scenes", "eventItem.fxml");
         var newParticipant = FXML.load(NewParticipantCtrl.class,
                 "client.scenes", "newParticipant.fxml");
-        var newExpense = FXML.load(NewExpenseCtrl.class,
-                "client.scenes", "newExpense.fxml");
 
         var participantItem = FXML.load(ParticipantItemCtrl.class,
                 "client.scenes", "participantItem.fxml");
@@ -75,6 +76,8 @@ public class Main extends Application {
                 "client.scenes", "Participant.fxml");
         var addBankInfo = FXML.load(AddBankInfoCtrl.class,
                 "client.scenes", "addBankInfo.fxml");
+        var newExpense = FXML.load(NewExpenseCtrl.class,
+                "client.scenes", "newExpense.fxml");
 
         var enrollEventPage=FXML.load(EnrollEventCtrl.class,
                 "client.scenes", "enroll.fxml");
@@ -83,8 +86,8 @@ public class Main extends Application {
                 new SceneInputWrapper(primaryStage, startPage,
                         eventOverview, paymentPage, eventPage,
                         eventCreationPage, eventItemPage, newParticipant,
-                        participantItem, participant, enrollEventPage,
-                        addBankInfo, newExpense));
+                        participantItem, participant, newExpense, enrollEventPage,
+                        addBankInfo), serverUtils);
     }
 
     /**
