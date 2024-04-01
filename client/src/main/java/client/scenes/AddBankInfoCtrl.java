@@ -15,6 +15,9 @@ import java.io.IOException;
 public class AddBankInfoCtrl {
 
     private final MainCtrl mainCtrl;
+
+    @FXML
+    public Label headLabel;
     @FXML
     public TextField ibanField;
     @FXML
@@ -48,6 +51,32 @@ public class AddBankInfoCtrl {
      */
     public void returnToOverview(){
         mainCtrl.showOverview();
+    }
+
+
+    public void init(){
+        var bankInfo=this.serverUtils.findBankDetails(mainCtrl.configManager.getProperty("userID"),
+                mainCtrl.configManager.getProperty("serverURL"));
+        if (bankInfo.getIban()!=null){
+            headLabel.setText("Edit Bank Account");
+            ibanField.setText(bankInfo.getIban());
+            bicField.setText(bankInfo.getBic());
+            holder.setText(bankInfo.getHolder());
+            addButton.setText("Edit");
+            addButton.setOnAction(e -> editBankAccount());
+        }
+    }
+
+    private void editBankAccount() {
+        String url = mainCtrl.configManager.getProperty("serverURL");
+        BankAccountCreationDto bankAccount = new BankAccountCreationDto();
+        bankAccount.setIban(ibanField.getText());
+        bankAccount.setHolder(holder.getText());
+        Long userId=Long.parseLong(mainCtrl.configManager.getProperty("userID"));
+        bankAccount.setBic(bicField.getText());
+
+        serverUtils.editBankAccount(userId, bankAccount, url);
+        returnToOverview();
     }
 
     /**

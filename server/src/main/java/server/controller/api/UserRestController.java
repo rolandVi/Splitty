@@ -151,4 +151,19 @@ public class UserRestController {
         return ResponseEntity.ok(this.userService
                 .createBankAccount(bankAccountCreationDto, userId));
     }
+
+    @GetMapping("/{userId}/account")
+    public ResponseEntity<BankAccountDto> findBankDetails(
+            @PathVariable(name = "userId") Long id){
+        return ResponseEntity.ok(this.userService
+                .getBankAccount(id));
+    }
+
+    @PatchMapping("/{userId}/account")
+    public ResponseEntity<BankAccountDto> editBankAccount(
+            @PathVariable(name = "userId") Long userId,
+            @Valid @RequestBody BankAccountCreationDto bankAccountCreationDto){
+        return ResponseEntity.ok(this.userService
+                .editBankAccount(bankAccountCreationDto, userId));
+    }
 }

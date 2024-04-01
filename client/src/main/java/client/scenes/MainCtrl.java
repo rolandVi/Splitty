@@ -248,6 +248,7 @@ public class MainCtrl {
      * Shows the addBankInfo page such that a user may add bank credentials to their accounts
      */
     public void showAddNewBank() {
+        bankInfoCtrl.init();
         primaryStage.setTitle("addNewBank page");
         primaryStage.setScene(addBankInfo);
     }

@@ -9,7 +9,7 @@
       <TextField fx:id="ibanField" layoutX="225.0" layoutY="150.0" promptText="IBAN" />
       <TextField fx:id="bicField" layoutX="225.0" layoutY="190.0" promptText="BIC" />
       <TextField fx:id="holder" layoutX="225.0" layoutY="230.0" promptText="Holder" />
-      <Label layoutX="204.0" layoutY="110.0" text="Add bankaccount">
+      <Label fx:id = "headLabel" layoutX="204.0" layoutY="110.0" text="Add Bank Account">
          <font>
             <Font size="25.0" />
          </font>

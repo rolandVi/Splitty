@@ -4,6 +4,7 @@ package client.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import dto.BankAccountCreationDto;
 import dto.CreatorToTitleDto;
 import dto.ExpenseCreationDto;
 import dto.UserCreationDto;
@@ -312,22 +313,6 @@ public class ServerUtils {
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(requestBody, APPLICATION_JSON));
-
-//        HttpRequest request = HttpRequest.newBuilder()
-//                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-//                .uri(URI.create(url + "/api/users/" + userId + "/account"))
-//                .header("Content-Type", "application/json")
-//                .build();
-//
-//        Optional<HttpResponse<String>> response;
-//        try {
-//            response = Optional.of(HttpClient
-//                    .newHttpClient()
-//                    .send(request, HttpResponse.BodyHandlers.ofString()));
-//        } catch (IOException | InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return response;
     }
 
     /**
@@ -427,5 +412,40 @@ public class ServerUtils {
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .delete();
+    }
+
+    public BankAccountDto findBankDetails(String userID, String serverURL) {
+        return client.target(serverURL)
+                .path("/api/users/" + userID + "/account")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<BankAccountDto>() {});
+    }
+
+    public void editBankAccount(Long userId, BankAccountCreationDto bankAccount, String url) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody;
+        try {
+            requestBody = objectMapper.writeValueAsString(bankAccount);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Create HTTP request
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url + "/api/users/" + userId + "/account"))
+                .header("Content-Type", "application/json")
+                .method("PATCH", HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        Optional<HttpResponse<String>> response;
+        try {
+            response = Optional.of(HttpClient
+                    .newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString()));
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

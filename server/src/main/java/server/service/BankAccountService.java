@@ -92,4 +92,18 @@ public class BankAccountService {
     public boolean ibanExists(String iban) {
         return bankAccountRepository.existsByIban(iban);
     }
+
+    public BankAccountEntity editBankAccount(
+            BankAccountEntity bankAccount,
+            BankAccountCreationDto bankAccountCreationDto) {
+        if (!bankAccount.getIban().equals(bankAccountCreationDto.getIban())
+                && this.bankAccountRepository.existsByIban(bankAccountCreationDto.getIban())){
+            throw new UniqueFieldValidationException("Iban should be unique");
+        }
+
+        bankAccount.setBic(bankAccountCreationDto.getBic());
+        bankAccount.setIban(bankAccountCreationDto.getIban());
+        bankAccount.setHolder(bankAccountCreationDto.getHolder());
+        return this.bankAccountRepository.save(bankAccount);
+    }
 }

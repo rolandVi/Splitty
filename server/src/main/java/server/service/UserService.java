@@ -176,4 +176,25 @@ public class UserService {
         this.userRepository.save(currentUser);
         return this.modelMapper.map(bankAccount, BankAccountDto.class);
     }
+
+    public BankAccountDto getBankAccount(Long id) {
+        UserEntity user=this.userRepository.findById(id)
+                .orElseThrow(ObjectNotFoundException::new);
+        if (user.getBankAccount()==null){
+            return new BankAccountDto();
+        }
+
+        return this.modelMapper.map(user.getBankAccount(), BankAccountDto.class);
+    }
+
+    public BankAccountDto editBankAccount(
+            BankAccountCreationDto bankAccountCreationDto, Long userId) {
+        UserEntity user=this.userRepository.findById(userId)
+                .orElseThrow(ObjectNotFoundException::new);
+        BankAccountEntity bankAccount=this.bankAccountService
+                .editBankAccount(user.getBankAccount(), bankAccountCreationDto);
+        user.setBankAccount(bankAccount);
+        this.userRepository.save(user);
+        return this.modelMapper.map(bankAccount, BankAccountDto.class);
+    }
 }
