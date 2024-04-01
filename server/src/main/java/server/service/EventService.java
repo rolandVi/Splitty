@@ -35,7 +35,8 @@ public class EventService {
      * @param expenseService  the expense service
      */
     public EventService(EventRepository eventRepository,
-                        ModelMapper modelMapper, @Lazy UserService userService, @Lazy ExpenseService expenseService) {
+                        ModelMapper modelMapper, @Lazy UserService userService,
+                        @Lazy ExpenseService expenseService) {
         this.eventRepository = eventRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
