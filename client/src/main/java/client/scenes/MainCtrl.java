@@ -17,12 +17,12 @@ package client.scenes;
 
 import client.ConfigManager;
 import client.utils.ServerUtils;
+import dto.view.UserNameDto;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
-import server.dto.view.UserNameDto;
 
 import java.io.IOException;
 import java.nio.file.Path;

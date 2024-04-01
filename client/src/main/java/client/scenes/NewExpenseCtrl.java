@@ -3,19 +3,20 @@ package client.scenes;
 import client.scenes.MainCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import dto.ExpenseCreationDto;
+import dto.view.EventDetailsDto;
+import dto.view.ExpenseDetailsDto;
+import dto.view.UserNameDto;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 
 import javafx.scene.text.Text;
 import javafx.util.Callback;
-
-import server.dto.ExpenseCreationDto;
-import server.dto.view.EventDetailsDto;
-import server.dto.view.ExpenseDetailsDto;
-import server.dto.view.UserNameDto;
 
 import java.util.*;
 

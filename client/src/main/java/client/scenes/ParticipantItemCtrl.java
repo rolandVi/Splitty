@@ -1,8 +1,8 @@
 package client.scenes;
 
 
+import dto.view.UserNameDto;
 import javafx.fxml.FXML;
-import server.dto.view.UserNameDto;
 
 import java.awt.*;
 

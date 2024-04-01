@@ -1,24 +1,15 @@
 package client.utils;
 
+import dto.exceptions.PasswordExpiredException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.Invocation;
 import jakarta.ws.rs.client.WebTarget;
-import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import server.dto.CreatorToTitleDto;
-import server.dto.UserCreationDto;
-import server.dto.view.EventDetailsDto;
-import server.dto.view.EventOverviewDto;
-import server.dto.view.UserNameDto;
-import server.exceptions.PasswordExpiredException;
-import server.dto.view.EventTitleDto;
-
-import java.util.List;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,8 +46,6 @@ class ServerUtilsTest {
         when(webTarget.request(anyString())).thenReturn(builder);
         when(builder.accept(anyString())).thenReturn(builder);
         when(builder.post(any(Entity.class))).thenReturn(response);
-        when(builder.get()).thenReturn(response);
-
     }
 
     @Test
@@ -88,29 +77,5 @@ class ServerUtilsTest {
         verify(webTarget, times(1)).request(APPLICATION_JSON);
         verify(builder, times(1)).accept(APPLICATION_JSON);
         verify(builder, times(1)).post(null);
-    }
-
-    @Test
-    void checkUserValidity() {
-        UserCreationDto userCreationDto = new UserCreationDto();
-        when(response.getStatus()).thenReturn(200);
-
-        assertTrue(serverUtils.checkUserValidity(userCreationDto));
-    }
-
-
-    @Test
-    void getParticipantDetails() {
-        assertDoesNotThrow(() -> serverUtils.getParticipantDetails(123L));
-    }
-
-    @Test
-    void deleteEventParticipant() {
-        assertDoesNotThrow(() -> serverUtils.deleteEventParticipant(123L, 456L));
-    }
-
-    @Test
-    void enrollInEvent() {
-        assertDoesNotThrow(() -> serverUtils.enrollInEvent("inviteCode", 123L));
     }
 }

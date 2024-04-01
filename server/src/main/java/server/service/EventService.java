@@ -8,7 +8,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import server.controller.exception.ObjectNotFoundException;
-import server.dto.view.*;
+import dto.view.EventDetailsDto;
+import dto.view.EventOverviewDto;
+import dto.view.EventTitleDto;
+import dto.view.UserNameDto;
 import server.repository.EventRepository;
 
 import java.time.LocalTime;

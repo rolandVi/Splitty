@@ -31,12 +31,10 @@ dependencies {
 	implementation group: 'jakarta.validation', name: 'jakarta.validation-api', version: '3.0.2'
 	implementation 'com.google.inject:guice:7.0.0'
 
-	implementation project(":server")
+	implementation project(":commons")
 
 	implementation 'org.openjfx:javafx-controls:21.0.2'
 	implementation 'org.openjfx:javafx-fxml:21.0.2'
-    implementation project(path: ':server')
-	implementation project(path: ':commons')
 
 	testImplementation 'org.testfx:testfx-junit5:4.0.16-alpha'
 

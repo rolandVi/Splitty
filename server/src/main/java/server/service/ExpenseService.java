@@ -2,16 +2,18 @@ package server.service;
 
 import commons.ExpenseEntity;
 import commons.UserEntity;
+import dto.view.UserNameDto;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import server.controller.exception.ObjectNotFoundException;
-import server.dto.ExpenseCreationDto;
-import server.dto.view.ExpenseDetailsDto;
-import server.dto.view.UserNameDto;
+import dto.view.ExpenseDetailsDto;
+import dto.ExpenseCreationDto;
 import server.repository.ExpenseRepository;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -195,7 +197,47 @@ public class ExpenseService {
         return mapToExpenseDetailsDtoList(userExpenses);
     }
 
+    /**
+     * Finds the expense entity by id
+     * @param id the id of the entity
+     * @return the expense entity
+     */
+    public ExpenseEntity findExpenseEntityById(Long id){
+        return this.expenseRepository.findById(id)
+                .orElseThrow(ObjectNotFoundException::new);
+    }
 
+
+    /**
+     * Pays the debt of a specific debtor
+     * @param expense the expense entity
+     * @param receiver the receiver of the money
+     * @param sender the sender of the money
+     * @return the money paid
+     */
+    @Transactional
+    public double payDebt(ExpenseEntity expense, UserEntity receiver, UserEntity sender) {
+        double owedMoney=roundToNDecimals(expense.getMoney()/expense.getDebtors().size(), 2);
+        expense.setMoney(expense.getMoney()-owedMoney);
+        expense.getDebtors().remove(sender);
+        this.expenseRepository.save(expense);
+        return owedMoney;
+    }
+
+
+    /**
+     * Resets a transaction and includes the sender again
+     * @param expense the expense
+     * @param receiver the receiver
+     * @param sender the sender
+     */
+    @Transactional
+    public void resetDebt(ExpenseEntity expense, UserEntity receiver, UserEntity sender) {
+        double owedMoney=roundToNDecimals(expense.getMoney()/expense.getDebtors().size(), 2);
+        expense.setMoney(expense.getMoney()+owedMoney);
+        expense.getDebtors().add(sender);
+        this.expenseRepository.save(expense);
+    }
 
 
     /**
@@ -223,5 +265,19 @@ public class ExpenseService {
         dto.setTitle(expense.getTitle());
         dto.setDate(expense.getDate());
         return dto;
+    }
+
+    /**
+     * Rounds the value to n decimals
+     * @param value the value to round
+     * @param n the numbers after the decimal point
+     * @return the rounded number
+     */
+    private double roundToNDecimals(double value, int n){
+        if (n < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(n, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }
