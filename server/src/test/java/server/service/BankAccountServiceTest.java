@@ -7,8 +7,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import server.controller.exception.ObjectNotFoundException;
-import server.dto.BankAccountCreationDto;
-import server.dto.view.BankAccountDto;
+import dto.BankAccountCreationDto;
+import dto.view.BankAccountDto;
 import server.repository.BankAccountRepository;
 
 import java.util.Optional;
