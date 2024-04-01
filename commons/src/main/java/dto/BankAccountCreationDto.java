@@ -6,10 +6,6 @@ import jakarta.validation.constraints.Size;
 import java.util.Objects;
 
 public class BankAccountCreationDto {
-
-    @NotBlank
-    private Long userId;
-
     @NotBlank
     private String iban;
 
@@ -26,8 +22,7 @@ public class BankAccountCreationDto {
      * @param holder The name of the account holder.
      * @param bic The Bank Identifier Code (BIC) of the bank account.
      */
-    public BankAccountCreationDto(Long userId, String iban, String holder, String bic) {
-        this.userId=userId;
+    public BankAccountCreationDto(String iban, String holder, String bic) {
         this.iban = iban;
         this.holder = holder;
         this.bic = bic;
@@ -94,24 +89,6 @@ public class BankAccountCreationDto {
     }
 
     /**
-     * User id getter
-     * @return the user id
-     */
-    public Long getUserId() {
-        return userId;
-    }
-
-    /**
-     * User id setter
-     * @param userId the new user id
-     * @return the new user
-     */
-    public BankAccountCreationDto setUserId(Long userId) {
-        this.userId = userId;
-        return this;
-    }
-
-    /**
      * Indicates whether some other object is "equal to" this one.
      * @param o The reference object with which to compare.
      * @return true if this object is the same as the obj argument; false otherwise.
@@ -123,8 +100,7 @@ public class BankAccountCreationDto {
         BankAccountCreationDto that = (BankAccountCreationDto) o;
         return Objects.equals(iban, that.iban)
                 && Objects.equals(holder, that.holder)
-                && Objects.equals(bic, that.bic)
-                && Objects.equals(userId, that.userId);
+                && Objects.equals(bic, that.bic);
     }
 
     /**
@@ -133,6 +109,6 @@ public class BankAccountCreationDto {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(iban, holder, bic, userId);
+        return Objects.hash(iban, holder, bic);
     }
 }

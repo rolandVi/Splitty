@@ -299,28 +299,35 @@ public class ServerUtils {
 
     /**
      * Creates bank account
-     * @param requestBody The request bodu
+     *
+     * @param userId  the user id
+     * @param requestBody The request body
      * @param url The url
-     * @return The response
      */
-    public Optional<HttpResponse<String>> createBankAccount(String requestBody, String url) {
-        HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .uri(URI.create(url + "/api/bankaccounts/"))
-                .header("Content-Type", "application/json")
-                .build();
+    public void createBankAccount(Long userId, String requestBody,
+                                                            String url) {
 
-        // Send HTTP request to server
-        // Return HTTP response from server
-        Optional<HttpResponse<String>> response;
-        try {
-            response = Optional.of(HttpClient
-                    .newHttpClient()
-                    .send(request, HttpResponse.BodyHandlers.ofString()));
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return response;
+        client
+                .target(url).path("/api/users/" + userId + "/account")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(requestBody, APPLICATION_JSON));
+
+//        HttpRequest request = HttpRequest.newBuilder()
+//                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+//                .uri(URI.create(url + "/api/users/" + userId + "/account"))
+//                .header("Content-Type", "application/json")
+//                .build();
+//
+//        Optional<HttpResponse<String>> response;
+//        try {
+//            response = Optional.of(HttpClient
+//                    .newHttpClient()
+//                    .send(request, HttpResponse.BodyHandlers.ofString()));
+//        } catch (IOException | InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+//        return response;
     }
 
     /**

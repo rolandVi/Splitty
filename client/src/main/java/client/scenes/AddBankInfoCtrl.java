@@ -11,8 +11,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
 import java.io.IOException;
-import java.net.http.HttpResponse;
-import java.util.Optional;
 
 public class AddBankInfoCtrl {
 
@@ -21,6 +19,9 @@ public class AddBankInfoCtrl {
     public TextField ibanField;
     @FXML
     public TextField bicField;
+
+    @FXML
+    public TextField holder;
     @FXML
     public Button goBackButton;
     @FXML
@@ -66,27 +67,21 @@ public class AddBankInfoCtrl {
 
     /**
      * Creates HTTP request to the server using the contents of text fields as user info
-     * @return HTTP response from the server
      */
-    public Optional<HttpResponse<String>> createBankAccount()
+    public void createBankAccount()
             throws IOException {
         String url = mainCtrl.configManager.getProperty("serverURL");
-        String iban = ibanField.getText();
-        String bic = bicField.getText();
         BankAccountCreationDto bankAccount = new BankAccountCreationDto();
-        bankAccount.setIban(iban);
-        bankAccount.setHolder("holder");
-        bankAccount.setUserId(Long.parseLong(mainCtrl.configManager.getProperty("userID")));
-        // Temporary solution since we can't link the bankAccount to the user
-        // ,yet we also don't have access to the email of the user.
-        bankAccount.setBic(bic);
+        bankAccount.setIban(ibanField.getText());
+        bankAccount.setHolder(holder.getText());
+        Long userId=Long.parseLong(mainCtrl.configManager.getProperty("userID"));
+        bankAccount.setBic(bicField.getText());
 
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(bankAccount);
 
+        serverUtils.createBankAccount(userId, requestBody, url);
         returnToOverview();
-
-        return serverUtils.createBankAccount(requestBody, url);
     }
 
     // todo : implement checking for the credentials

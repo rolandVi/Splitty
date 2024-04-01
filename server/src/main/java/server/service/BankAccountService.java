@@ -4,9 +4,10 @@ import commons.BankAccountEntity;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import server.controller.exception.ObjectNotFoundException;
+import server.exception.ObjectNotFoundException;
 import dto.BankAccountCreationDto;
 import dto.view.BankAccountDto;
+import server.exception.UniqueFieldValidationException;
 import server.repository.BankAccountRepository;
 
 @Service
@@ -72,7 +73,11 @@ public class BankAccountService {
      * @param bankAccountEntity the bank account information
      * @return BankAccountDto + id
      */
-    public BankAccountEntity createBankAccount(BankAccountCreationDto bankAccountEntity){
+    public BankAccountEntity createBankAccount(BankAccountCreationDto bankAccountEntity)
+            throws UniqueFieldValidationException {
+        if (this.ibanExists(bankAccountEntity.getIban())){
+            throw new UniqueFieldValidationException("Iban should be unique");
+        }
         BankAccountEntity newEntity = this.modelMapper
                 .map(bankAccountEntity, BankAccountEntity.class);
         BankAccountEntity result = this.bankAccountRepository.save(newEntity);

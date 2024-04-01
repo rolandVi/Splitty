@@ -12,6 +12,7 @@ import dto.UserCreationDto;
 import dto.view.EventOverviewDto;
 import dto.view.EventTitleDto;
 import dto.view.UserNameDto;
+import server.exception.UniqueFieldValidationException;
 import server.service.UserService;
 
 import java.net.URLDecoder;
@@ -136,9 +137,18 @@ public class UserRestController {
         }
     }
 
-    @PostMapping("/account")
+    /**
+     * Endpoint for creating a bank account
+     * @param bankAccountCreationDto the bank account info
+     * @param userId the user id
+     * @return the newly created bank account information
+     */
+    @PostMapping("/{userId}/account")
     public ResponseEntity<BankAccountDto> createBankAccount(
-            @Valid @RequestBody BankAccountCreationDto bankAccountCreationDto){
-        return ResponseEntity.ok(this.userService.createBankAccount(bankAccountCreationDto));
+            @Valid @RequestBody BankAccountCreationDto bankAccountCreationDto,
+            @PathVariable(name = "userId") Long userId)
+            throws UniqueFieldValidationException {
+        return ResponseEntity.ok(this.userService
+                .createBankAccount(bankAccountCreationDto, userId));
     }
 }

@@ -1,4 +1,4 @@
-package server.controller.exception;
+package server.exception;
 
 public class ObjectNotFoundException extends RuntimeException {
 

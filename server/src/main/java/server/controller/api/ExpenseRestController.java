@@ -7,7 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import dto.view.ExpenseDetailsDto;
-import server.controller.exception.ObjectNotFoundException;
+import server.exception.ObjectNotFoundException;
 import dto.ExpenseCreationDto;
 import server.service.EventService;
 import server.service.ExpenseService;

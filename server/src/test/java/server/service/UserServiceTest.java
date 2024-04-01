@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
-import server.controller.exception.ObjectNotFoundException;
+import server.exception.ObjectNotFoundException;
 import dto.UserCreationDto;
 import dto.view.EventOverviewDto;
 import dto.view.EventTitleDto;
@@ -34,6 +34,9 @@ public class UserServiceTest {
     private EventService eventService;
 
     private UserService userService;
+
+    @Mock
+    private BankAccountService bankAccountService;
 
 
     @BeforeEach

@@ -7,7 +7,7 @@ import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import server.controller.exception.ObjectNotFoundException;
+import server.exception.ObjectNotFoundException;
 import dto.view.EventDetailsDto;
 import dto.view.EventOverviewDto;
 import dto.view.EventTitleDto;

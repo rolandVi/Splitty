@@ -6,14 +6,14 @@ import commons.UserEntity;
 import dto.BankAccountCreationDto;
 import dto.view.BankAccountDto;
 import jakarta.transaction.Transactional;
-import org.apache.catalina.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import server.controller.exception.ObjectNotFoundException;
+import server.exception.ObjectNotFoundException;
 import dto.UserCreationDto;
 import dto.view.EventOverviewDto;
 import dto.view.EventTitleDto;
 import dto.view.UserNameDto;
+import server.exception.UniqueFieldValidationException;
 import server.repository.UserRepository;
 
 import java.util.List;
@@ -160,13 +160,17 @@ public class UserService {
 
     /**
      * Creates a bank account
+     *
      * @param bankAccountCreationDto the bank account info
+     * @param userId
      * @return the new bank account
      */
-    public BankAccountDto createBankAccount(BankAccountCreationDto bankAccountCreationDto) {
+    public BankAccountDto createBankAccount(BankAccountCreationDto bankAccountCreationDto,
+                                            Long userId)
+            throws UniqueFieldValidationException {
         BankAccountEntity bankAccount=this.bankAccountService
                 .createBankAccount(bankAccountCreationDto);
-        UserEntity currentUser=this.userRepository.findById(bankAccountCreationDto.getUserId())
+        UserEntity currentUser=this.userRepository.findById(userId)
                 .orElseThrow(ObjectNotFoundException::new);
         currentUser.setBankAccount(bankAccount);
         this.userRepository.save(currentUser);

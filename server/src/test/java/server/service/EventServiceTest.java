@@ -2,7 +2,6 @@ package server.service;
 
 import commons.BankAccountEntity;
 import commons.EventEntity;
-import commons.ExpenseEntity;
 import commons.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import server.controller.exception.ObjectNotFoundException;
+import server.exception.ObjectNotFoundException;
 import dto.view.EventDetailsDto;
 import dto.view.EventOverviewDto;
 import dto.view.EventTitleDto;
