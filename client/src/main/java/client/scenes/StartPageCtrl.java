@@ -132,7 +132,6 @@ public class StartPageCtrl implements MultiLanguages {
             this.incorrectData.setText("Please enter valid information");
             this.incorrectData.setVisible(true);
             return;
-
         } else if (userResponse.get().statusCode() == 400) {
             this.incorrectData.setText(userResponse.get().body());
             this.incorrectData.setVisible(true);

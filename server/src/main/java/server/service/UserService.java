@@ -8,6 +8,7 @@ import dto.view.BankAccountDto;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import server.exception.FieldValidationException;
 import server.exception.ObjectNotFoundException;
 import dto.UserCreationDto;
 import dto.view.EventOverviewDto;
@@ -16,6 +17,7 @@ import dto.view.UserNameDto;
 import server.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -89,8 +91,18 @@ public class UserService {
      * @return the user credentials
      */
     public UserNameDto createUser(UserCreationDto user) {
-        UserEntity result = this.userRepository.save(this.modelMapper.map(user, UserEntity.class));
-        return modelMapper.map(result, UserNameDto.class);
+        Optional<UserEntity> existingUser=this.userRepository.
+                findUserEntityByEmail(user.getEmail());
+        if (existingUser.isEmpty()) {
+            UserEntity result = this.userRepository
+                    .save(this.modelMapper.map(user, UserEntity.class));
+            return modelMapper.map(result, UserNameDto.class);
+        } else if (!existingUser.get().getFirstName().equals(user.getFirstName())
+            || !existingUser.get().getLastName().equals(user.getLastName())){
+            throw new FieldValidationException("Email is already in use: enter valid credentials");
+        }
+
+        return this.modelMapper.map(existingUser, UserNameDto.class);
     }
 
     /**

@@ -46,9 +46,6 @@ public class UserRestController {
         if (result.hasErrors()) {
             throw new FieldValidationException("Invalid user credentials");
         }
-        if (this.userService.emailExists(user.getEmail())){
-            throw new FieldValidationException("Email should be unique");
-        }
         return ResponseEntity.ok(this.userService.createUser(user));
     }
 
