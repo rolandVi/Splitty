@@ -93,6 +93,12 @@ public class BankAccountService {
         return bankAccountRepository.existsByIban(iban);
     }
 
+    /**
+     * Edits the bank account detiails
+     * @param bankAccount the old bank account entity
+     * @param bankAccountCreationDto the new bank account details
+     * @return the new bank account
+     */
     public BankAccountEntity editBankAccount(
             BankAccountEntity bankAccount,
             BankAccountCreationDto bankAccountCreationDto) {

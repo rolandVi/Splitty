@@ -71,17 +71,6 @@ public class UserRestController {
     }
 
     /**
-     * Endpoint ot check if user credentials are valid
-     * @param user the user credentials
-     * @return status code ok if they are valid
-     */
-    @PostMapping("/check")
-    public ResponseEntity<Void> checkUserCredentialsValidity(
-            @Valid @RequestBody UserCreationDto user){
-        return ResponseEntity.ok().build();
-    }
-
-    /**
      * Creates an event with the given title
      * @param creatorToTitleDto the title of the new event along with the id of the creator
      * @return the newly created event title and id
@@ -153,6 +142,11 @@ public class UserRestController {
                 .createBankAccount(bankAccountCreationDto, userId));
     }
 
+    /**
+     * Retrieves the bank details of a user
+     * @param id the user id
+     * @return the bank details
+     */
     @GetMapping("/{userId}/account")
     public ResponseEntity<BankAccountDto> findBankDetails(
             @PathVariable(name = "userId") Long id){
@@ -160,6 +154,12 @@ public class UserRestController {
                 .getBankAccount(id));
     }
 
+    /**
+     * Edits bank details
+     * @param userId the user id
+     * @param bankAccountCreationDto the new bank info
+     * @return the new bank account
+     */
     @PatchMapping("/{userId}/account")
     public ResponseEntity<BankAccountDto> editBankAccount(
             @PathVariable(name = "userId") Long userId,

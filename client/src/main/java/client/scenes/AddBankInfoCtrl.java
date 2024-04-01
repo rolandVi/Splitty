@@ -1,16 +1,17 @@
 package client.scenes;
 
 import client.utils.ServerUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import dto.BankAccountCreationDto;
+import jakarta.ws.rs.core.Response;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
-import java.io.IOException;
+import java.net.http.HttpResponse;
+import java.util.Optional;
 
 public class AddBankInfoCtrl {
 
@@ -54,9 +55,13 @@ public class AddBankInfoCtrl {
     }
 
 
+    /**
+     *  Initializes the page before setting it as a view
+     */
     public void init(){
         var bankInfo=this.serverUtils.findBankDetails(mainCtrl.configManager.getProperty("userID"),
                 mainCtrl.configManager.getProperty("serverURL"));
+        this.incorrectData.setVisible(false);
         if (bankInfo.getIban()!=null){
             headLabel.setText("Edit Bank Account");
             ibanField.setText(bankInfo.getIban());
@@ -67,7 +72,16 @@ public class AddBankInfoCtrl {
         }
     }
 
+    /**
+     * Edits the bank account data of the current user with the data from the text fields
+     */
     private void editBankAccount() {
+        this.incorrectData.setVisible(false);
+
+        if (!checkFields()){
+            return;
+        }
+
         String url = mainCtrl.configManager.getProperty("serverURL");
         BankAccountCreationDto bankAccount = new BankAccountCreationDto();
         bankAccount.setIban(ibanField.getText());
@@ -75,7 +89,19 @@ public class AddBankInfoCtrl {
         Long userId=Long.parseLong(mainCtrl.configManager.getProperty("userID"));
         bankAccount.setBic(bicField.getText());
 
-        serverUtils.editBankAccount(userId, bankAccount, url);
+        Optional<HttpResponse<String>> response =
+                serverUtils.editBankAccount(userId, bankAccount, url);
+
+        if (response.isEmpty()){
+            this.incorrectData.setText("Invalid bank details");
+            this.incorrectData.setVisible(true);
+            return;
+        }
+        if (response.get().statusCode()==400){
+            this.incorrectData.setText(response.get().body());
+            this.incorrectData.setVisible(true);
+            return;
+        }
         returnToOverview();
     }
 
@@ -97,8 +123,13 @@ public class AddBankInfoCtrl {
     /**
      * Creates HTTP request to the server using the contents of text fields as user info
      */
-    public void createBankAccount()
-            throws IOException {
+    public void createBankAccount() {
+        this.incorrectData.setVisible(false);
+
+        if (!checkFields()){
+            return;
+        }
+
         String url = mainCtrl.configManager.getProperty("serverURL");
         BankAccountCreationDto bankAccount = new BankAccountCreationDto();
         bankAccount.setIban(ibanField.getText());
@@ -106,20 +137,29 @@ public class AddBankInfoCtrl {
         Long userId=Long.parseLong(mainCtrl.configManager.getProperty("userID"));
         bankAccount.setBic(bicField.getText());
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String requestBody = objectMapper.writeValueAsString(bankAccount);
+        Response response=serverUtils.createBankAccount(userId, bankAccount, url);
 
-        serverUtils.createBankAccount(userId, requestBody, url);
-        returnToOverview();
-    }
-
-    // todo : implement checking for the credentials
-     /* copied from startpagectrl
-        Optional<HttpResponse<String>> bankAccountResponse = createBankAccount();
-        if (bankAccountResponse.isEmpty() || bankAccountResponse.get().statusCode()==400){
+        if (response.getStatus()==400){
+            this.incorrectData.setText(response.readEntity(String.class));
             this.incorrectData.setVisible(true);
             return;
         }
-         */
+        returnToOverview();
+    }
+
+    /**
+     * Checks whether the fields of the bank account are empty
+     * @return whether they are empty or not
+     */
+    private boolean checkFields(){
+        if (ibanField.getText().isEmpty()
+            || holder.getText().isEmpty()
+            || bicField.getText().isEmpty()){
+            this.incorrectData.setText("Please fill all fields");
+            this.incorrectData.setVisible(true);
+            return false;
+        }
+        return true;
+    }
 
 }

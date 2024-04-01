@@ -7,7 +7,6 @@ import com.google.inject.Inject;
 import dto.BankAccountCreationDto;
 import dto.CreatorToTitleDto;
 import dto.ExpenseCreationDto;
-import dto.UserCreationDto;
 import dto.exceptions.PasswordExpiredException;
 import dto.view.*;
 import jakarta.ws.rs.client.Client;
@@ -234,21 +233,6 @@ public class ServerUtils {
                 .getStatus()!=404;
     }
 
-
-    /**
-     * Check the validity of the given user credentials
-     * @param user the user credentials
-     * @return true if they are valid and false otherwise
-     */
-    public boolean checkUserValidity(UserCreationDto user){
-        return client
-                .target(SERVER).path("/api/users/check")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .post(Entity.entity(user, APPLICATION_JSON))
-                .getStatus()!=400;
-    }
-
     /**
      * Get the participants of a specific event
      * @param eventId id of the event
@@ -301,14 +285,16 @@ public class ServerUtils {
     /**
      * Creates bank account
      *
-     * @param userId  the user id
+     * @param userId      the user id
      * @param requestBody The request body
-     * @param url The url
+     * @param url         The url
+     * @return the response of the request
      */
-    public void createBankAccount(Long userId, String requestBody,
-                                                            String url) {
+    public Response createBankAccount(Long userId,
+                                      BankAccountCreationDto requestBody,
+                                      String url) {
 
-        client
+        return client
                 .target(url).path("/api/users/" + userId + "/account")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
@@ -414,6 +400,12 @@ public class ServerUtils {
                 .delete();
     }
 
+    /**
+     * Retreives the bank details of the current user
+     * @param userID teh current user id
+     * @param serverURL the server url
+     * @return the bank details
+     */
     public BankAccountDto findBankDetails(String userID, String serverURL) {
         return client.target(serverURL)
                 .path("/api/users/" + userID + "/account")
@@ -422,7 +414,16 @@ public class ServerUtils {
                 .get(new GenericType<BankAccountDto>() {});
     }
 
-    public void editBankAccount(Long userId, BankAccountCreationDto bankAccount, String url) {
+    /**
+     * Edits the bank account detials of the current user
+     * @param userId the user id
+     * @param bankAccount
+     * @param url
+     * @return  the response from the server
+     */
+    public Optional<HttpResponse<String>> editBankAccount(Long userId,
+                                                          BankAccountCreationDto bankAccount,
+                                                          String url) {
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody;
         try {
@@ -447,5 +448,6 @@ public class ServerUtils {
             throw new RuntimeException(e);
         }
 
+        return response;
     }
 }

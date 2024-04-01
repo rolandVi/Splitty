@@ -67,16 +67,6 @@ public class UserService {
     }
 
     /**
-     * Persist a user to the database
-     * @param user the id of the user in a UserNameDto
-     * @return the created UserEntity
-     */
-    public UserEntity saveUserByID(UserNameDto user) {
-        UserEntity userEntity = this.modelMapper.map(user, UserEntity.class);
-        return this.userRepository.save(userEntity);
-    }
-
-    /**
      * Get user ID by email
      * @param userEmail the email
      * @return the id
@@ -114,15 +104,6 @@ public class UserService {
         var result=this.userRepository.getEventsByUserId(id);
         return result.stream().map(e-> this.modelMapper.map(e, EventOverviewDto.class))
                 .collect(Collectors.toList());
-    }
-
-    /**
-     * Checks if such an email exists
-     * @param email the email
-     * @return true if it exists and false otherwise
-     */
-    public boolean emailExists(String email) {
-        return userRepository.existsByEmail(email);
     }
 
     /**
@@ -187,6 +168,11 @@ public class UserService {
         return this.modelMapper.map(bankAccount, BankAccountDto.class);
     }
 
+    /**
+     * Returns the bank account of the user with the id
+     * @param id the user id
+     * @return the bank account info
+     */
     public BankAccountDto getBankAccount(Long id) {
         UserEntity user=this.userRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("No such user found"));
@@ -197,6 +183,12 @@ public class UserService {
         return this.modelMapper.map(user.getBankAccount(), BankAccountDto.class);
     }
 
+    /**
+     * Edits the bank account info
+     * @param bankAccountCreationDto the new bank account
+     * @param userId the user id
+     * @return the new bank account
+     */
     public BankAccountDto editBankAccount(
             BankAccountCreationDto bankAccountCreationDto, Long userId) {
         UserEntity user=this.userRepository.findById(userId)

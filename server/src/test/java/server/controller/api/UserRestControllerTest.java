@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import dto.UserCreationDto;
@@ -67,19 +66,6 @@ class UserRestControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedEvents, response.getBody());
         verify(userService, times(1)).getUserEvents(userId);
-    }
-
-    @Test
-    void checkUserCredentialsValidity() {
-        // Arrange
-        UserCreationDto requestBody = new UserCreationDto(/* Create your test DTO */);
-
-        // Act
-        ResponseEntity<Void> response = userRestController.checkUserCredentialsValidity(requestBody);
-
-        // Assert
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        verifyNoInteractions(userService);
     }
 
     @Test
