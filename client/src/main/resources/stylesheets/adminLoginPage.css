@@ -1,15 +1,43 @@
 .loginButton{
-
+    -fx-background-color: #462255;
+    -fx-text-fill: white;
+    -fx-font-family:sans-serif;
 }
 
 .loginButton:hover{
-
+    -fx-background-color: #313B72;
 }
 
 .generateButton{
-    -fx-background-color: red;
+    -fx-background-color: #462255;
+    -fx-text-fill: white;
+    -fx-font-family:sans-serif;
 }
 
 .generateButton:hover{
-    -fx-background-color: green;
+    -fx-background-color: #313B72;
 }
+
+.anchorpane{
+    -fx-background-color: #7EE081;
+}
+
+.password-field{
+    -fx-background-image: url('https://icon-library.com/images/admin-icon-png/admin-icon-png-28.jpg');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: right center;
+    -fx-background-size: contain;
+}
+
+.password-field:focused {
+    -fx-background-image: none; /* Remove the background image when the field is focused */
+}
+
+.label{
+    -fx-text-fill: white;
+    -fx-font-family:sans-serif;
+}
+
+
+
+
