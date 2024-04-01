@@ -1,13 +1,15 @@
 package server.controller.api;
 
+import commons.UserEntity;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.dto.CreatorToTitleDto;
-import server.dto.UserCreationDto;
-import server.dto.view.EventOverviewDto;
-import server.dto.view.EventTitleDto;
-import server.dto.view.UserNameDto;
+import dto.CreatorToTitleDto;
+import dto.UserCreationDto;
+import dto.view.EventOverviewDto;
+import dto.view.EventTitleDto;
+import dto.view.UserNameDto;
 import server.service.UserService;
 
 import java.net.URLDecoder;
@@ -36,6 +38,9 @@ public class UserRestController {
      */
     @PostMapping("/")
     public ResponseEntity<UserNameDto> createUser(@Valid @RequestBody UserCreationDto user) {
+        if (this.userService.emailExists(user.getEmail())){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
         return ResponseEntity.ok(this.userService.createUser(user));
     }
 
@@ -109,4 +114,23 @@ public class UserRestController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Check for user existence
+     * @param user User to check existence for
+     * @return whether the user exists
+     */
+    @PostMapping("/exists")
+    public ResponseEntity<Void> userExists(@RequestBody UserNameDto user){
+        if (!userService.existsById(user.getId())){
+            return ResponseEntity.notFound().build();
+        }else {
+            UserEntity userEntity = userService.findById(user.getId());
+            if (user.getFirstName().equals(userEntity.getFirstName())
+                    && user.getLastName().equals(userEntity.getLastName())){
+                return ResponseEntity.ok().build();
+            }else {
+                return ResponseEntity.notFound().build();
+            }
+        }
+    }
 }

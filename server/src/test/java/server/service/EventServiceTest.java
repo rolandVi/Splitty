@@ -2,6 +2,7 @@ package server.service;
 
 import commons.BankAccountEntity;
 import commons.EventEntity;
+import commons.ExpenseEntity;
 import commons.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,10 +11,10 @@ import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import server.controller.exception.ObjectNotFoundException;
-import server.dto.view.EventDetailsDto;
-import server.dto.view.EventOverviewDto;
-import server.dto.view.EventTitleDto;
-import server.dto.view.UserNameDto;
+import dto.view.EventDetailsDto;
+import dto.view.EventOverviewDto;
+import dto.view.EventTitleDto;
+import dto.view.UserNameDto;
 import server.repository.EventRepository;
 
 import java.util.*;
@@ -27,9 +28,10 @@ class EventServiceTest {
     @Mock
     private EventRepository eventRepository;
 
-    private EventService eventService;
+    @Mock
     private UserService userService;
-    private ExpenseService expenseService;
+
+    private EventService eventService;
 
 
 
@@ -38,7 +40,7 @@ class EventServiceTest {
         MockitoAnnotations.openMocks(this);
         ModelMapper modelMapper = new ModelMapper();
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        eventService = new EventService(eventRepository, modelMapper, userService, expenseService);
+        eventService = new EventService(eventRepository, modelMapper, userService);
     }
 
     @Test

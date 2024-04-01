@@ -2,6 +2,7 @@ package client.scenes.admin;
 
 
 import client.scenes.MultiLanguages;
+import dto.exceptions.PasswordExpiredException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -17,7 +18,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
-import server.exceptions.PasswordExpiredException;
 
 import java.util.ResourceBundle;
 

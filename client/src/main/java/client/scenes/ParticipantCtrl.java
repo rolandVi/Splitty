@@ -2,10 +2,10 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import dto.view.UserNameDto;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import server.dto.view.UserNameDto;
 
 public class ParticipantCtrl {
 

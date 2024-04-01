@@ -6,10 +6,10 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import server.controller.exception.ObjectNotFoundException;
-import server.dto.UserCreationDto;
-import server.dto.view.EventOverviewDto;
-import server.dto.view.EventTitleDto;
-import server.dto.view.UserNameDto;
+import dto.UserCreationDto;
+import dto.view.EventOverviewDto;
+import dto.view.EventTitleDto;
+import dto.view.UserNameDto;
 import server.repository.UserRepository;
 
 import java.util.List;
@@ -52,7 +52,7 @@ public class UserService {
      * @param userId the id
      * @return the entity
      */
-    public UserEntity findById(long userId) {
+    public UserEntity findById(Long userId) {
         return this.userRepository.findById(userId)
                 .orElseThrow(IllegalArgumentException::new);
     }

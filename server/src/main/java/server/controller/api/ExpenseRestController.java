@@ -1,25 +1,38 @@
 package server.controller.api;
 
+import commons.ExpenseEntity;
+import commons.UserEntity;
+import dto.view.UserNameDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.dto.view.ExpenseDetailsDto;
+import dto.view.ExpenseDetailsDto;
+import server.controller.exception.ObjectNotFoundException;
+import dto.ExpenseCreationDto;
+import server.service.EventService;
 import server.service.ExpenseService;
 
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/expenses")
 public class ExpenseRestController {
 
     private final ExpenseService expenseService;
+    private final EventService eventService;
 
     /**
      * Constructor injection
-     * @param expenseService the Service for the Expense Entity
+     * @param expenseService the Service for the Expense
+     * @param eventService the event service
      */
-    public ExpenseRestController(ExpenseService expenseService) {
+    public ExpenseRestController(ExpenseService expenseService,
+                                 EventService eventService) {
         this.expenseService = expenseService;
+        this.eventService = eventService;
     }
 
     /**
@@ -44,41 +57,65 @@ public class ExpenseRestController {
      */
     @PostMapping("/")
     public ResponseEntity<ExpenseDetailsDto> createExpense
-    (@Valid @RequestBody ExpenseDetailsDto expense) {
-        ExpenseDetailsDto createdExpense = expenseService.createExpense(expense);
-        return ResponseEntity.ok(createdExpense);
+    (@Valid @RequestBody ExpenseCreationDto expense) {
+        ExpenseEntity createdExpense = expenseService.createExpense(expense);
+
+        UserNameDto author = new UserNameDto(createdExpense.getAuthor().getId(),
+                createdExpense.getAuthor().getFirstName(),
+                createdExpense.getAuthor().getLastName());
+
+        Set<UserNameDto> debtors = new HashSet<>();
+        for (UserEntity u : createdExpense.getDebtors()){
+            debtors.add(new UserNameDto(u.getId(), u.getFirstName(), u.getLastName()));
+        }
+
+        ExpenseDetailsDto details = new ExpenseDetailsDto(createdExpense.getId(),
+                createdExpense.getMoney(),
+                author,
+                createdExpense.getTitle(),
+                debtors,
+                createdExpense.getDate());
+
+        return ResponseEntity.ok(details);
     }
 
     /**
      * Update an existing expense
-     * @param id the ID of the expense to update
      * @param expense the updated expense details
      * @return ResponseEntity containing the updated expense details
      */
-    @PutMapping("/{id}")
+    @PutMapping("/")
     public ResponseEntity<ExpenseDetailsDto> updateExpense
-    (@PathVariable(name = "id") long id, @Valid @RequestBody ExpenseDetailsDto expense) {
-        if (!checkIdValidity(id)){
+    (@Valid @RequestBody ExpenseDetailsDto expense) {
+        if (!checkIdValidity(expense.getId())){
             return ResponseEntity.badRequest().build();
         }
-        expense.setId(id);
+
         ExpenseDetailsDto updatedExpense = expenseService.updateExpense(expense);
+
         return ResponseEntity.ok(updatedExpense);
     }
 
     /**
      * Delete an expense with the given id
      * @param id the id of the expense to access
+     * @param eventId the id of the parent event
      * @return ResponseEntity with badRequest status if invalid id was presented
      *         or ok status if it was deleted successfully
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> removeById(@PathVariable(name = "id") long id){
+    @DeleteMapping("/{id}/{eventId}")
+    public ResponseEntity<Void> removeById(@PathVariable(name = "id") Long id,
+                                           @PathVariable(name = "eventId") Long eventId){
         if (!checkIdValidity(id)){
             return ResponseEntity.badRequest().build();
         }
-        this.expenseService.removeById(id);
-        return ResponseEntity.ok().build();
+        try {
+            eventService.removeExpense(eventId, expenseService.getEntityById(id));
+            expenseService.deleteExpense(id);
+            return ResponseEntity.ok().build();
+        }catch (ObjectNotFoundException e){
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**

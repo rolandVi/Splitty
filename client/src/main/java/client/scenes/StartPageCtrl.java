@@ -5,23 +5,22 @@ import client.utils.ServerUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import dto.UserCreationDto;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
-import server.dto.UserCreationDto;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URLEncoder;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 import java.util.Optional;
 
 import java.util.ResourceBundle;
@@ -42,19 +41,15 @@ public class StartPageCtrl implements MultiLanguages{
     public TextField surNameField;
     @FXML
     public TextField emailField;
-    @FXML
-    public TextField ibanField;
-    @FXML
-    public TextField bicField;
 
     @FXML
     public Label incorrectData;
-
     @FXML
-    public Button tempSkip;
     public Button connectButton;
     @FXML
     public Button openAdminButton;
+    @FXML
+    public ComboBox<String> languageBox;
 
 
     /**
@@ -68,11 +63,36 @@ public class StartPageCtrl implements MultiLanguages{
         this.mainCtrl = mainCtrl;
         this.serverUtils = serverUtils;
     }
+
+    /**
+     * Updates the languages of all scenes (except admin)
+     */
+    public void initialize() {
+        String locale = configManager.getProperty("language")
+                + "_" + configManager.getProperty("country");
+        updateLanguageBox(languageBox, locale);
+    }
+
+    /**
+     * When a language has been selected
+     * Update the config file
+     * Update all scenes with the new languages
+     */
+    public void uponSelectionLanguage() {
+        String[] selection = languageBox.getValue().split("_");
+        MultiLanguages.setLocaleFromConfig(selection[0], selection[1]);
+        mainCtrl.updateLanguagesOfScenes();
+    }
+
     /**
      * Updates the language of the scene using the resource bundle
      */
     @Override
     public void updateLanguage() {
+        Locale l = Locale.getDefault();
+        String locale = l.getLanguage() + "_" + l.getCountry();
+
+        languageBox.setValue(locale);
         try {
             ResourceBundle lang = mainCtrl.lang;
             connectButton.setText(lang.getString("connect"));
@@ -82,17 +102,11 @@ public class StartPageCtrl implements MultiLanguages{
         }
     }
 
-    /**
-     * Temporary function for skipping the login page for development purposes
-     */
-    public void skip(){
-        mainCtrl.showOverview();
-    }
 
     /**
      * The button press activates this
      */
-    public void connect() throws IOException, InterruptedException {
+    public void connect() throws IOException {
         this.incorrectData.setVisible(false);
         this.errorMessage.setOpacity(0d);
 
@@ -104,17 +118,18 @@ public class StartPageCtrl implements MultiLanguages{
             return;
         }
 
-        Optional<HttpResponse<String>> userResponse = createUser(user);
-        if (userResponse.isEmpty() || userResponse.get().statusCode()==400){
-            this.incorrectData.setVisible(true);
-            return;
-        }
-
-        saveUserToConfig();
 
         if (!serverInserted.equals("http://localhost:8080")) {
             errorMessage.setOpacity(1.0d);
+
         } else {
+            mainCtrl.configManager.setProperty("serverURL", serverInserted);
+            Optional<HttpResponse<String>> userResponse = createUser(user);
+            if (userResponse.isEmpty() || userResponse.get().statusCode()==400){
+                this.incorrectData.setVisible(true);
+                return;
+            }
+            saveUserToConfig();
             mainCtrl.showOverview();
         }
     }
@@ -166,30 +181,11 @@ public class StartPageCtrl implements MultiLanguages{
      */
     public Optional<HttpResponse<String>> createUser(UserCreationDto user)
             throws JsonProcessingException {
-        String url = "http://localhost:8080";
-        // Prepare user data from text fields
+        String url = serverField.getText();
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(user);
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .uri(URI.create(url + "/api/users/"))
-                .header("Content-Type", "application/json")
-                .build();
-
-        // Send HTTP request to server
-        // Return HTTP response from server
-        Optional<HttpResponse<String>> response;
-        try {
-            response = Optional.of(HttpClient
-                    .newHttpClient()
-                    .send(request, HttpResponse.BodyHandlers.ofString()));
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        return response;
-
+        return serverUtils.createUser(url, requestBody);
     }
 
     private UserCreationDto getUserEntity() {
@@ -212,28 +208,11 @@ public class StartPageCtrl implements MultiLanguages{
      * @return ID of user with the email
      */
     private Long getUserID(String email) {
-        String url = "http://localhost:8080";
+        String url = mainCtrl.configManager.getProperty("serverURL");
         // Prepare user data from text fields
         email = URLEncoder.encode(email, StandardCharsets.UTF_8);
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(url + "/api/users/" + email))
-                .header("Content-Type", "application/json")
-                .build();
-
-        // Send HTTP request to server
-        // Return HTTP response from server
-        Optional<HttpResponse<String>> response;
-        try {
-            response = Optional.of(HttpClient
-                    .newHttpClient()
-                    .send(request, HttpResponse.BodyHandlers.ofString()));
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        return Long.valueOf(response.get().body());
+        return serverUtils.getUserId(url, email);
     }
 
 }

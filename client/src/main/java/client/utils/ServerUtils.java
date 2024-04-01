@@ -1,20 +1,19 @@
 package client.utils;
 
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import dto.CreatorToTitleDto;
+import dto.ExpenseCreationDto;
+import dto.UserCreationDto;
+import dto.exceptions.PasswordExpiredException;
+import dto.view.*;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import server.dto.CreatorToTitleDto;
-import server.dto.UserCreationDto;
-import server.dto.view.EventDetailsDto;
-import server.dto.view.EventOverviewDto;
-import server.dto.view.EventTitleDto;
-import server.dto.view.UserNameDto;
-import server.exceptions.PasswordExpiredException;
 
 import java.io.IOException;
 import java.net.URI;
@@ -29,7 +28,6 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class ServerUtils {
 
-    // to be changed to pull from the file
     private static final String SERVER = "http://localhost:8080/";
 
     private final Client client;
@@ -130,6 +128,31 @@ public class ServerUtils {
     }
 
     /**
+     * Restores the data of old event
+     * @param jsonData The data used to restore
+     */
+    public void restoreData(String jsonData){
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/api/events/restore"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(jsonData)).build();
+
+        HttpClient client = HttpClient.newHttpClient();
+        try {
+            HttpResponse<String> response =
+                    client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 201) {
+                throw new RuntimeException("Failed to restore data. HTTP status code: "
+                        + response.statusCode());
+            }
+            // Data restored successfully
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace(); // Handle the exception appropriately, e.g., log it
+            throw new RuntimeException("Failed to restore data due to an exception: "
+                    + e.getMessage(), e);
+        }
+    }
+
+    /**
      * Get the event details of a specific event with the given id
      * @param id the id of the event
      * @return the event details
@@ -197,6 +220,21 @@ public class ServerUtils {
     }
 
     /**
+     * Check for user existence
+     * @param user user to check for existence
+     * @return whether the user exists
+     */
+    public boolean userExists(UserNameDto user){
+        return client
+                .target(SERVER).path("/api/users/exists")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(user, APPLICATION_JSON))
+                .getStatus()!=404;
+    }
+
+
+    /**
      * Check the validity of the given user credentials
      * @param user the user credentials
      * @return true if they are valid and false otherwise
@@ -249,15 +287,138 @@ public class ServerUtils {
     /**
      * Enrolls the current user to the event with this invite code
      * @param inviteCode the invite code
+     * @param userId the user id
      */
-    public void enrollInEvent(String inviteCode) {
-        //TODO: get the id of the current user (not hard code it)
-        long currentUserId= 1L;
-
+    public void enrollInEvent(String inviteCode, long userId) {
         client
                 .target(SERVER).path("/api/users/events/"+inviteCode)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .post(Entity.entity(currentUserId, APPLICATION_JSON));
+                .post(Entity.entity(userId, APPLICATION_JSON));
+    }
+
+    /**
+     * Creates bank account
+     * @param requestBody The request bodu
+     * @param url The url
+     * @return The response
+     */
+    public Optional<HttpResponse<String>> createBankAccount(String requestBody, String url) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .uri(URI.create(url + "/api/bankaccounts/"))
+                .header("Content-Type", "application/json")
+                .build();
+
+        // Send HTTP request to server
+        // Return HTTP response from server
+        Optional<HttpResponse<String>> response;
+        try {
+            response = Optional.of(HttpClient
+                    .newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString()));
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return response;
+    }
+
+    /**
+     * Creates the user
+     * @param url The url
+     * @param requestBody The request body
+     * @return The response
+     */
+    public Optional<HttpResponse<String>> createUser(String url, String requestBody) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .uri(URI.create(url + "/api/users/"))
+                .header("Content-Type", "application/json")
+                .build();
+
+        // Send HTTP request to server
+        // Return HTTP response from server
+        Optional<HttpResponse<String>> response;
+        try {
+            response = Optional.of(HttpClient
+                    .newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString()));
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        return response;
+    }
+
+    /**
+     * Gets the user id
+     * @param url The URL
+     * @param email the e-mail
+     * @return The user id
+     */
+    public Long getUserId(String url, String email) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create(url + "/api/users/" + email))
+                .header("Content-Type", "application/json")
+                .build();
+
+        // Send HTTP request to server
+        // Return HTTP response from server
+        Optional<HttpResponse<String>> response;
+        try {
+            response = Optional.of(HttpClient
+                    .newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString()));
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Long.valueOf(response.get().body());
+    }
+
+    /**
+     * Adds a new expense to the event
+     * @param eventId the id of the event
+     * @param expenseCreationDto the details of the expense
+     * @return the dreated expense details
+     */
+    public ExpenseDetailsDto addExpense(long eventId, ExpenseCreationDto expenseCreationDto) {
+
+        Response expenseCreationResponse = client.target(SERVER)
+                .path("api/expenses/")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(expenseCreationDto, APPLICATION_JSON));
+
+        return expenseCreationResponse.readEntity(ExpenseDetailsDto.class);
+    }
+
+    /**
+     * Request for editing expenses
+     * @param expanse details of the expense
+     * @return the edited expense
+     */
+    public ExpenseDetailsDto editExpense(ExpenseDetailsDto expanse){
+        Response response = client.target(SERVER)
+                .path("api/expenses/")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(expanse, APPLICATION_JSON));
+
+        return response.readEntity(ExpenseDetailsDto.class);
+    }
+
+    /**
+     * Removes the expense
+     * @param eventId the id of the parent event
+     * @param expenseId the id of the expense
+     */
+    public void removeExpense(Long eventId, Long expenseId){
+        client.target(SERVER)
+                .path("api/expenses/" + expenseId + "/" + eventId)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .delete();
     }
 }

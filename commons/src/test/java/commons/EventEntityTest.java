@@ -25,7 +25,7 @@ public class EventEntityTest {
                 new HashSet<>(), new BankAccountEntity());
 
         expense = new ExpenseEntity(11L, 420.69D, user, new HashSet<>(), "Title",
-                new Date(2024 -1900, Calendar.JANUARY, 24));
+                new Date(2024 -1900, Calendar.JANUARY, 24), event);
 
         event = new EventEntity(1L, "test_invite_code",
                 "title", expenses, users, new Date(), new Date());
@@ -139,6 +139,20 @@ public class EventEntityTest {
     void testEmptyConstructor() {
         EventEntity emptyEvent = new EventEntity();
         assertNotNull(emptyEvent);
+    }
+
+    @Test
+    public void testSetCreationDate() {
+        Date newCreationDate = new Date();
+        event.setCreationDate(newCreationDate);
+        assertEquals(newCreationDate, event.getCreationDate());
+    }
+
+    @Test
+    public void testSetLastModifiedDate() {
+        Date newLastModifiedDate = new Date();
+        event.setLastModifiedDate(newLastModifiedDate);
+        assertEquals(newLastModifiedDate, event.getLastModifiedDate());
     }
 
     @Test

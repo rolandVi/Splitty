@@ -1,8 +1,10 @@
 package client.scenes.admin;
 
 
+import client.ConfigManager;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import dto.view.EventOverviewDto;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +17,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.VBox;
-import server.dto.view.EventOverviewDto;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -46,6 +47,8 @@ public class AdminOverviewPageCtrl {
 
     private String currentOrder = "title";
 
+    public ConfigManager config;
+
 
     /**
      * Injector for EventOverviewCtrl
@@ -56,6 +59,7 @@ public class AdminOverviewPageCtrl {
     public AdminOverviewPageCtrl( AdminMainCtrl adminMainCtrl, ServerUtils serverUtils){
         this.adminMainCtrl = adminMainCtrl;
         this.serverUtils=serverUtils;
+        this.config = new ConfigManager("client/src/main/resources/config.properties");
 
     }
 
@@ -208,7 +212,7 @@ public class AdminOverviewPageCtrl {
         Clipboard clipboard = Clipboard.getSystemClipboard();
         ClipboardContent content = new ClipboardContent();
         try {
-            URL url = new URL("http://localhost:8080/api/events/" + id); // Assuming each event has its own endpoint
+            URL url = new URL(config.getProperty("serverURL") + "/api/events/" + id);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
 

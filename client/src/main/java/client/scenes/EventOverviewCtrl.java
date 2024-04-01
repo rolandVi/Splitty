@@ -1,10 +1,9 @@
 package client.scenes;
 
-import client.utils.LanguageComboBoxUtil;
-
 import client.utils.ServerUtils;
 
 import com.google.inject.Inject;
+import dto.view.EventOverviewDto;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -16,12 +15,12 @@ import javafx.scene.control.Label;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.VBox;
-import server.dto.view.EventOverviewDto;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class EventOverviewCtrl implements MultiLanguages {
@@ -38,7 +37,7 @@ public class EventOverviewCtrl implements MultiLanguages {
     @FXML
     public Button paymentButton;
     @FXML
-    public ComboBox<String> languageComboBox;
+    public ComboBox<String> languageBox;
 
     @FXML
     private VBox eventContainer;
@@ -62,7 +61,9 @@ public class EventOverviewCtrl implements MultiLanguages {
      * Updates the languages of all scenes (except admin)
      */
     public void initialize() {
-        LanguageComboBoxUtil.updateLanguageComboBox(languageComboBox);
+        String locale = configManager.getProperty("language")
+                + "_" + configManager.getProperty("country");
+        updateLanguageBox(languageBox, locale);
     }
 
     /**
@@ -71,15 +72,20 @@ public class EventOverviewCtrl implements MultiLanguages {
      * Update all scenes with the new languages
      */
     public void uponSelectionLanguage() {
-        String[] selection = languageComboBox.getValue().split("-");
-        LanguageComboBoxUtil.setLocaleFromConfig(selection[0], selection[1]);
+        String[] selection = languageBox.getValue().split("_");
+        MultiLanguages.setLocaleFromConfig(selection[0], selection[1]);
         mainCtrl.updateLanguagesOfScenes();
     }
+
     /**
      * Updates the language of the scene using the resource bundle
      */
     @Override
     public void updateLanguage() {
+        Locale l = Locale.getDefault();
+        String locale = l.getLanguage() + "_" + l.getCountry();
+
+        languageBox.setValue(locale);
         try {
             ResourceBundle lang = mainCtrl.lang;
             titleLabel.setText(lang.getString("event_overview"));
@@ -107,10 +113,9 @@ public class EventOverviewCtrl implements MultiLanguages {
      * Loads the events and displays them on the page
      */
     public void loadEvents() {
-        long userId=1L; //TODO: get the id of the current user
+        long userId = Long.parseLong(mainCtrl.configManager.getProperty("userID"));
 
-//        List<EventOverviewDto> events = this.serverUtils.getEventsByUser(userId);
-        List<EventOverviewDto> events = this.serverUtils.getAllEvents();
+        List<EventOverviewDto> events = this.serverUtils.getEventsByUser(userId);
         Node[] nodes=new Node[events.size()];
 
 

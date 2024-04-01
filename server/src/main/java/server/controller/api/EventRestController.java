@@ -1,13 +1,14 @@
 package server.controller.api;
 
+import commons.ExpenseEntity;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.dto.view.EventDetailsDto;
-import server.dto.view.EventOverviewDto;
-import server.dto.view.EventTitleDto;
-import server.dto.view.UserNameDto;
+import dto.view.EventDetailsDto;
+import dto.view.EventOverviewDto;
+import dto.view.EventTitleDto;
+import dto.view.UserNameDto;
 import server.service.EventService;
 
 import java.util.List;
@@ -63,6 +64,21 @@ public class EventRestController {
     public ResponseEntity<EventTitleDto> updateEventTitleById(@PathVariable(name = "id") long id,
                                                    @Valid @RequestBody EventTitleDto eventTitle){
         return ResponseEntity.ok(this.eventService.updateById(id, eventTitle));
+    }
+
+
+
+    /**
+     * Adding an expense to an event
+     * @param eventId the event id
+     * @param expense the expense creation details
+     * @return the response entity, defining whether the operation was successful
+     */
+    @PatchMapping("/{id}/add_expense")
+    public ResponseEntity<Void> addExpense(@PathVariable(name = "id") long eventId,
+                                           @RequestBody ExpenseEntity expense){
+        this.eventService.addExpense(expense);
+        return ResponseEntity.ok().build();
     }
 
     /**

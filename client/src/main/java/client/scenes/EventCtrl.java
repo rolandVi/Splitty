@@ -2,6 +2,9 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import dto.view.EventDetailsDto;
+import dto.view.ExpenseDetailsDto;
+import dto.view.UserNameDto;
 import jakarta.inject.Inject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,9 +13,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
-import server.dto.view.EventDetailsDto;
-import server.dto.view.ExpenseDetailsDto;
-
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -20,7 +20,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import server.dto.view.UserNameDto;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -45,24 +44,24 @@ public class EventCtrl implements MultiLanguages{
     @FXML
     public Label inviteCode;
     @FXML
+    public Label expensesLabel;
+    @FXML
     public ListView<ExpenseDetailsDto> expenseList;
     @FXML
     public Button addExpenseButton;
     @FXML
     public Button addParticipant;
-    @FXML
-    public Text tempText;
-    @FXML
-    public Label expensesLabel;
+
+    private EventDetailsDto eventDetailsDto;
 
     private NewExpenseCtrl newExpenseCtrl;
 
     private final EventCtrl self = this;
+
+    @FXML
     public Button leaveButton;
     @FXML
     private VBox participantsContainer;
-    private EventDetailsDto eventDetailsDto;
-    private long eventId;
 
     /**
      * Injector for Event Controller
@@ -103,17 +102,15 @@ public class EventCtrl implements MultiLanguages{
 
 
     /**
-     * Updates teh view information with the details of the event with the given id
+     * Updates the view information with the details of the event with the given id
      * @param id the id of the event
      */
     public void init(long id) {
-        eventDetailsDto = serverUtils.getEventDetails(id);
-        eventNameLabel.setText(eventDetailsDto.getTitle());
-        loadExpenseList();
-        this.eventId = id;
         this.eventDetailsDto=serverUtils.getEventDetails(id);
         eventNameLabel.setText(eventDetailsDto.getTitle());
-        this.loadParticipants();
+        eventNameLabel.setText(eventDetailsDto.getTitle());
+        loadExpenseList();
+        loadParticipants();
     }
 
     /**
@@ -130,7 +127,6 @@ public class EventCtrl implements MultiLanguages{
             }
         });
         expenseList.setItems(items);
-        //set amount of rows visible
     }
 
 
@@ -140,8 +136,7 @@ public class EventCtrl implements MultiLanguages{
      * turn the EventTitleDto into Json format string
      */
     public void changeEventName() throws JsonProcessingException {
-        //todo: id has to be variable
-        serverUtils.changeEventName(1L, changeTextField.getText());
+        serverUtils.changeEventName(eventDetailsDto.getId(), changeTextField.getText());
         this.eventNameLabel.setText(this.changeTextField.getText());
         this.changeTextField.setText("");
     }
@@ -187,7 +182,8 @@ public class EventCtrl implements MultiLanguages{
             button.setOnAction(event -> {
                 ExpenseDetailsDto item = getItem();
                 if (item!=null){
-                    ctrl.tempText.setText("You pressed: " + item);
+                    ctrl.newExpenseCtrl.initEdit(ctrl.eventDetailsDto, item);
+                    ctrl.mainCtrl.showEditExpense();
                 }
             });
 
@@ -205,7 +201,8 @@ public class EventCtrl implements MultiLanguages{
             if (empty || item==null){
                 setText(null);
             }else {
-                ((Text) ((HBox) getGraphic()).getChildren().get(0)).setText(item.getTitle());
+                ((Text) ((HBox) getGraphic()).getChildren().get(0)).setText(item.getTitle() + "\n"
+                    + item.getAuthor().toString() + " paid: " + item.getMoney() + " euro");
                 // I'm using the if statement, due to a weird error
                 if (((HBox) getGraphic()).getChildren().size()<2){
                     ((HBox) getGraphic()).getChildren().add(button);
@@ -260,8 +257,9 @@ public class EventCtrl implements MultiLanguages{
      * The current user leaves the event
      */
     public void leave(){
-        long userId = 1L; // TODO replace with the actual user id
-        serverUtils.deleteEventParticipant(this.eventId, userId);
+        long userId = Long.parseLong(mainCtrl.configManager.getProperty("userID"));
+        serverUtils.deleteEventParticipant(this.eventDetailsDto.getId(), userId);
         returnToOverview();
     }
+
 }

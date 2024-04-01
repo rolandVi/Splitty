@@ -6,7 +6,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import server.exceptions.PasswordExpiredException;
+import dto.exceptions.PasswordExpiredException;
 import server.service.PasswordService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
