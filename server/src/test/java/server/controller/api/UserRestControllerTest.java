@@ -4,11 +4,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import dto.UserCreationDto;
 import dto.view.EventOverviewDto;
 import dto.view.UserNameDto;
+import org.springframework.validation.BindingResult;
 import server.service.UserService;
 
 import java.util.ArrayList;
@@ -21,6 +23,9 @@ class UserRestControllerTest {
 
     @Mock
     private UserService userService;
+
+    @Mock
+    private BindingResult result;
 
     private UserRestController userRestController;
 
@@ -38,7 +43,7 @@ class UserRestControllerTest {
         when(userService.createUser(requestBody)).thenReturn(expectedDto);
 
         // Act
-        ResponseEntity<UserNameDto> response = userRestController.createUser(requestBody);
+        ResponseEntity<UserNameDto> response = userRestController.createUser(requestBody, result);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -82,7 +87,7 @@ class UserRestControllerTest {
         UserCreationDto userCreationDto = new UserCreationDto(); // Initialize user DTO with necessary fields
         when(userService.createUser(userCreationDto)).thenReturn(new UserNameDto()); // Mock userService
 
-        ResponseEntity<UserNameDto> responseEntity = userRestController.createUser(userCreationDto);
+        ResponseEntity<UserNameDto> responseEntity = userRestController.createUser(userCreationDto, result);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         verify(userService, times(1)).createUser(userCreationDto); // Verify userService method called

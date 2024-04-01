@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import server.exception.ObjectNotFoundException;
 import dto.BankAccountCreationDto;
 import dto.view.BankAccountDto;
-import server.exception.UniqueFieldValidationException;
+import server.exception.FieldValidationException;
 import server.repository.BankAccountRepository;
 
 @Service
@@ -43,7 +43,8 @@ public class BankAccountService {
      */
     public BankAccountDto getById(long id){
         return this.modelMapper.map(this.bankAccountRepository.findById(id)
-                .orElseThrow(ObjectNotFoundException::new), BankAccountDto.class);
+                .orElseThrow(()-> new ObjectNotFoundException("No such bank account found")),
+                BankAccountDto.class);
     }
 
     /**
@@ -73,10 +74,9 @@ public class BankAccountService {
      * @param bankAccountEntity the bank account information
      * @return BankAccountDto + id
      */
-    public BankAccountEntity createBankAccount(BankAccountCreationDto bankAccountEntity)
-            throws UniqueFieldValidationException {
+    public BankAccountEntity createBankAccount(BankAccountCreationDto bankAccountEntity) {
         if (this.ibanExists(bankAccountEntity.getIban())){
-            throw new UniqueFieldValidationException("Iban should be unique");
+            throw new FieldValidationException("Iban should be unique");
         }
         BankAccountEntity newEntity = this.modelMapper
                 .map(bankAccountEntity, BankAccountEntity.class);
@@ -98,7 +98,7 @@ public class BankAccountService {
             BankAccountCreationDto bankAccountCreationDto) {
         if (!bankAccount.getIban().equals(bankAccountCreationDto.getIban())
                 && this.bankAccountRepository.existsByIban(bankAccountCreationDto.getIban())){
-            throw new UniqueFieldValidationException("Iban should be unique");
+            throw new FieldValidationException("Iban should be unique");
         }
 
         bankAccount.setBic(bankAccountCreationDto.getBic());

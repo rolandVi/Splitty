@@ -62,7 +62,8 @@ public class ExpenseService {
      */
     public ExpenseDetailsDto getById(long id) {
         return this.modelMapper.map(this.expenseRepository.findById(id)
-                .orElseThrow(ObjectNotFoundException::new), ExpenseDetailsDto.class);
+                .orElseThrow(()-> new ObjectNotFoundException("No such expense found")),
+                ExpenseDetailsDto.class);
     }
 
     /**
@@ -72,7 +73,7 @@ public class ExpenseService {
      */
     public ExpenseEntity getEntityById(long id) {
         return this.expenseRepository.findById(id)
-                .orElseThrow(ObjectNotFoundException::new);
+                .orElseThrow(()-> new ObjectNotFoundException("No such expense found"));
     }
 
     /**
@@ -91,7 +92,7 @@ public class ExpenseService {
      */
     public ExpenseDetailsDto updateExpense(@Valid ExpenseDetailsDto expense) {
         if (!this.existsById(expense.getId())) {
-            throw new ObjectNotFoundException();
+            throw new ObjectNotFoundException("No such expense found");
         }
 
         ExpenseEntity expenseEntity = getEntityById(expense.getId());
@@ -164,7 +165,7 @@ public class ExpenseService {
     @Transactional
     public void deleteExpense(long id){
         if (!existsById(id)) {
-            throw new ObjectNotFoundException();
+            throw new ObjectNotFoundException("No such expense found");
         }
         this.expenseRepository.deleteById(id);
     }
@@ -204,7 +205,7 @@ public class ExpenseService {
      */
     public ExpenseEntity findExpenseEntityById(Long id){
         return this.expenseRepository.findById(id)
-                .orElseThrow(ObjectNotFoundException::new);
+                .orElseThrow(()-> new ObjectNotFoundException("No such expense found"));
     }
 
 

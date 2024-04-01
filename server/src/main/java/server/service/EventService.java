@@ -58,7 +58,7 @@ public class EventService {
      */
     public EventDetailsDto getById(long id) {
         var event=this.eventRepository.findById(id)
-                .orElseThrow(ObjectNotFoundException::new);
+                .orElseThrow(() -> new ObjectNotFoundException("No such event found"));
 
         return this.modelMapper.map(event, EventDetailsDto.class);
     }
@@ -82,7 +82,7 @@ public class EventService {
     public EventTitleDto updateById(long id, @Valid EventTitleDto title) {
         this.eventRepository.updateEventTitleById(id, title.getTitle());
         EventEntity eventTitleById = this.eventRepository.findById(id)
-                .orElseThrow(ObjectNotFoundException::new);
+                .orElseThrow(()-> new ObjectNotFoundException("No such event found"));
         eventTitleById.updateLastModifiedDate();
         EventTitleDto result=this.modelMapper
                 .map(eventTitleById, EventTitleDto.class);
@@ -169,7 +169,7 @@ public class EventService {
      */
     public EventEntity findEntityById(long eventId) {
         return this.eventRepository.findById(eventId)
-                .orElseThrow(ObjectNotFoundException::new);
+                .orElseThrow(() -> new ObjectNotFoundException("No such event found"));
     }
 
     /**
@@ -179,7 +179,7 @@ public class EventService {
      */
     public EventEntity findEntityByInviteCode(String inviteCode) {
         return this.eventRepository.findEventEntityByInviteCode(inviteCode)
-                .orElseThrow(ObjectNotFoundException::new);
+                .orElseThrow(() -> new ObjectNotFoundException("No such event found"));
     }
 
     /**

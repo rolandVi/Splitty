@@ -6,11 +6,11 @@ import jakarta.validation.constraints.NotBlank;
 import java.util.Objects;
 
 public class UserCreationDto {
-    @NotBlank
+    @NotBlank(message = "Please fill in first name")
     private String firstName;
-    @NotBlank
+    @NotBlank(message = "Please fill last name")
     private String lastName;
-    @Email
+    @Email(message = "Please enter valid email")
     private String email;
 
     /**

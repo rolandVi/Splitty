@@ -13,7 +13,6 @@ import dto.UserCreationDto;
 import dto.view.EventOverviewDto;
 import dto.view.EventTitleDto;
 import dto.view.UserNameDto;
-import server.exception.UniqueFieldValidationException;
 import server.repository.UserRepository;
 
 import java.util.List;
@@ -139,7 +138,7 @@ public class UserService {
      */
     public boolean join(String inviteCode, long userId) {
         UserEntity user=this.userRepository.findById(userId)
-                .orElseThrow(ObjectNotFoundException::new);
+                .orElseThrow(()-> new ObjectNotFoundException("No such user found"));
         EventEntity event = eventService.findEntityByInviteCode(inviteCode);
         user.join(event);
         userRepository.save(user);
@@ -166,12 +165,11 @@ public class UserService {
      * @return the new bank account
      */
     public BankAccountDto createBankAccount(BankAccountCreationDto bankAccountCreationDto,
-                                            Long userId)
-            throws UniqueFieldValidationException {
+                                            Long userId) {
         BankAccountEntity bankAccount=this.bankAccountService
                 .createBankAccount(bankAccountCreationDto);
         UserEntity currentUser=this.userRepository.findById(userId)
-                .orElseThrow(ObjectNotFoundException::new);
+                .orElseThrow(()-> new ObjectNotFoundException("No such user found"));
         currentUser.setBankAccount(bankAccount);
         this.userRepository.save(currentUser);
         return this.modelMapper.map(bankAccount, BankAccountDto.class);
@@ -179,7 +177,7 @@ public class UserService {
 
     public BankAccountDto getBankAccount(Long id) {
         UserEntity user=this.userRepository.findById(id)
-                .orElseThrow(ObjectNotFoundException::new);
+                .orElseThrow(() -> new ObjectNotFoundException("No such user found"));
         if (user.getBankAccount()==null){
             return new BankAccountDto();
         }
@@ -190,7 +188,7 @@ public class UserService {
     public BankAccountDto editBankAccount(
             BankAccountCreationDto bankAccountCreationDto, Long userId) {
         UserEntity user=this.userRepository.findById(userId)
-                .orElseThrow(ObjectNotFoundException::new);
+                .orElseThrow(() -> new ObjectNotFoundException("No such user found"));
         BankAccountEntity bankAccount=this.bankAccountService
                 .editBankAccount(user.getBankAccount(), bankAccountCreationDto);
         user.setBankAccount(bankAccount);

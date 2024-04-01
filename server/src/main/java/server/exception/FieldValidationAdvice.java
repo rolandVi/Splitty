@@ -1,27 +1,25 @@
 package server.exception;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class NotFoundAdvice extends ResponseEntityExceptionHandler {
+public class FieldValidationAdvice extends ResponseEntityExceptionHandler {
 
     /**
      * ObjectNotFoundException handler
-     * @param onfe the exception
+     * @param ufve the exception
      * @return ResponseEntity
      */
-    @ExceptionHandler({ObjectNotFoundException.class})
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<Object> handleObjectNotFound(ObjectNotFoundException onfe){
+    @ExceptionHandler({FieldValidationException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> handleObjectNotFound(FieldValidationException ufve){
         return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(onfe.getMessage());
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ufve.getMessage());
     }
 }

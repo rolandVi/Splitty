@@ -4,15 +4,15 @@ import commons.UserEntity;
 import dto.BankAccountCreationDto;
 import dto.view.BankAccountDto;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import dto.CreatorToTitleDto;
 import dto.UserCreationDto;
 import dto.view.EventOverviewDto;
 import dto.view.EventTitleDto;
 import dto.view.UserNameDto;
-import server.exception.UniqueFieldValidationException;
+import server.exception.FieldValidationException;
 import server.service.UserService;
 
 import java.net.URLDecoder;
@@ -37,12 +37,17 @@ public class UserRestController {
     /**
      * creates a user with the given parameters
      * @param user user
+     * @param result the validation result
      * @return the newly created user and id
      */
     @PostMapping("/")
-    public ResponseEntity<UserNameDto> createUser(@Valid @RequestBody UserCreationDto user) {
+    public ResponseEntity<UserNameDto> createUser(@Valid @RequestBody UserCreationDto user,
+                                                  BindingResult result) {
+        if (result.hasErrors()) {
+            throw new FieldValidationException("Invalid user credentials");
+        }
         if (this.userService.emailExists(user.getEmail())){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            throw new FieldValidationException("Email should be unique");
         }
         return ResponseEntity.ok(this.userService.createUser(user));
     }
@@ -146,8 +151,7 @@ public class UserRestController {
     @PostMapping("/{userId}/account")
     public ResponseEntity<BankAccountDto> createBankAccount(
             @Valid @RequestBody BankAccountCreationDto bankAccountCreationDto,
-            @PathVariable(name = "userId") Long userId)
-            throws UniqueFieldValidationException {
+            @PathVariable(name = "userId") Long userId) {
         return ResponseEntity.ok(this.userService
                 .createBankAccount(bankAccountCreationDto, userId));
     }

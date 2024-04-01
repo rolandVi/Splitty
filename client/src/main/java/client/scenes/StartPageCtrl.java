@@ -25,7 +25,7 @@ import java.util.Optional;
 
 import java.util.ResourceBundle;
 
-public class StartPageCtrl implements MultiLanguages{
+public class StartPageCtrl implements MultiLanguages {
 
     private final MainCtrl mainCtrl;
 
@@ -110,31 +110,40 @@ public class StartPageCtrl implements MultiLanguages{
         this.incorrectData.setVisible(false);
         this.errorMessage.setOpacity(0d);
 
-        UserCreationDto user = getUserEntity();
-
         String serverInserted = serverField.getText();
-        if (!this.serverUtils.checkUserValidity(user)){
+
+        if (!serverInserted.equals("http://localhost:8080")) {
+            errorMessage.setOpacity(1.0d);
+            return;
+        }
+
+        UserCreationDto user = getUserEntity();
+        if (user.getFirstName().isBlank()
+                || user.getLastName().isBlank()
+                || user.getEmail().isBlank()) {
+            this.incorrectData.setText("Please fill in all the fields");
             this.incorrectData.setVisible(true);
             return;
         }
 
+        mainCtrl.configManager.setProperty("serverURL", serverInserted);
+        Optional<HttpResponse<String>> userResponse = createUser(user);
+        if (userResponse.isEmpty()) {
+            this.incorrectData.setText("Please enter valid information");
+            this.incorrectData.setVisible(true);
+            return;
 
-        if (!serverInserted.equals("http://localhost:8080")) {
-            errorMessage.setOpacity(1.0d);
-
-        } else {
-            mainCtrl.configManager.setProperty("serverURL", serverInserted);
-            Optional<HttpResponse<String>> userResponse = createUser(user);
-            if (userResponse.isEmpty() || userResponse.get().statusCode()==400){
-                this.incorrectData.setVisible(true);
-                return;
-            }
-            saveUserToConfig();
-            mainCtrl.showOverview();
+        } else if (userResponse.get().statusCode() == 400) {
+            this.incorrectData.setText(userResponse.get().body());
+            this.incorrectData.setVisible(true);
+            return;
         }
+
+        saveUserToConfig();
+        mainCtrl.showOverview();
     }
 
-    private void saveUserToConfig(){
+    private void saveUserToConfig() {
         mainCtrl.configManager.setProperty("loggedIn", "TRUE");
         mainCtrl.configManager.setProperty("userFirstName", firstNameField.getText());
         mainCtrl.configManager.setProperty("userLastName", surNameField.getText());
@@ -147,7 +156,7 @@ public class StartPageCtrl implements MultiLanguages{
     /**
      * Open new admin overview window through Main
      */
-    public void enterAdmin(){
+    public void enterAdmin() {
         Main.openAdminOverview();
     }
 
@@ -176,6 +185,7 @@ public class StartPageCtrl implements MultiLanguages{
 
     /**
      * Creates HTTP request to the server using the contents of text fields as user info
+     *
      * @param user th user to create
      * @return HTTP response from the server
      */
@@ -204,6 +214,7 @@ public class StartPageCtrl implements MultiLanguages{
 
     /**
      * Creates HTTP request to the server using the email as a parameter
+     *
      * @param email the email of the user
      * @return ID of user with the email
      */

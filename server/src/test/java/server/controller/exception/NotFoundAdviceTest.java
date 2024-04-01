@@ -22,14 +22,14 @@ class NotFoundAdviceTest {
     @Test
     void handleObjectNotFound() {
         // Arrange
-        ObjectNotFoundException exception = new ObjectNotFoundException();
+        ObjectNotFoundException exception = new ObjectNotFoundException("Message");
         WebRequest request = null; // Mock web request
         ResponseEntity<Object> expectedResponse = ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body("Could not found such resource");
 
         // Act
-        ResponseEntity<Object> response = notFoundAdvice.handleObjectNotFound(exception, request);
+        ResponseEntity<Object> response = notFoundAdvice.handleObjectNotFound(exception);
 
         // Assert
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
