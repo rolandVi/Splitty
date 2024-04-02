@@ -5,7 +5,7 @@
 /*#7EE081*/
 
 .anchorPane{
-    -fx-background-color: #777777;
+    -fx-background-color: #C3F3C0;
 }
 
 .text-field{
@@ -14,6 +14,7 @@
 
 
 .adminBtn{
+    -fx-background-color: #62A87C;
     -fx-alignment: center-left;
     -fx-background-image: url('https://icon-library.com/images/admin-icon-png/admin-icon-png-28.jpg');
     -fx-background-repeat: no-repeat;
@@ -28,4 +29,31 @@
 .connectBtn:hover{
     -fx-text-fill: white;
     -fx-background-color: #313B72;
+}
+
+.emptyLabel{
+    -fx-background-image: url("../images/splittyLogo.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: right center;
+    -fx-background-size: contain;
+}
+
+.serverField{
+    -fx-background-color: #62A87C;
+}
+
+.ball1{
+    -fx-fill: #62A87C;
+}
+
+.ball2{
+    -fx-fill: #7EE081;
+}
+
+.ball3{
+    -fx-fill: #313B72;
+}
+
+.euro{
+    -fx-text-fill: #C3F3C0 ;
 }

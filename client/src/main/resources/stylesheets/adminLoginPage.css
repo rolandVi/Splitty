@@ -1,25 +1,25 @@
 .loginButton{
-    -fx-background-color: #462255;
-    -fx-text-fill: white;
+    -fx-background-color: #62A87C;
     -fx-font-family:sans-serif;
 }
 
 .loginButton:hover{
     -fx-background-color: #313B72;
+    -fx-text-fill: white;
 }
 
 .generateButton{
-    -fx-background-color: #462255;
-    -fx-text-fill: white;
+    -fx-background-color: #62A87C;
     -fx-font-family:sans-serif;
 }
 
 .generateButton:hover{
     -fx-background-color: #313B72;
+    -fx-text-fill: white;
 }
 
 .anchorpane{
-    -fx-background-color: #777777;
+    -fx-background-color: #C3F3C0;
 }
 
 .password-field{

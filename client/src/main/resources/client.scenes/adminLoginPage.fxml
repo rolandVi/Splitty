@@ -9,7 +9,7 @@
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" styleClass="anchorpane" stylesheets="@../stylesheets/adminLoginPage.css" VBox.vgrow="ALWAYS">
       <children>
             <TextField fx:id="passwordField" layoutX="245.0" layoutY="184.0" promptText="Password" styleClass="password-field" />
-            <Text fx:id="incorrectPasswordError" fill="RED" layoutX="238.0" layoutY="197.0" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Incorrect or expired password! Try again..." textAlignment="CENTER" wrappingWidth="163.388671875" />
+            <Text fx:id="incorrectPasswordError" fill="RED" layoutX="238.0" layoutY="305.0" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Incorrect or expired password! Try again..." textAlignment="CENTER" wrappingWidth="163.388671875" />
             <Button fx:id="loginButton" layoutX="297.0" layoutY="253.0" mnemonicParsing="false" onAction="#login" styleClass="loginButton" text="Login" />
             <Button fx:id="generateButton" layoutX="261.0" layoutY="220.0" mnemonicParsing="false" onAction="#generatePassword" styleClass="generateButton" stylesheets="@../stylesheets/adminLoginPage.css" text="Generate password" />
       </children>

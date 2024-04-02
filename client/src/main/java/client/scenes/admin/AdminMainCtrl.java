@@ -75,6 +75,17 @@ public class AdminMainCtrl {
                                         "adminLoginPage.css").toString()))
                         .toExternalForm());
 
+        this.overviewPage.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets",
+                                        "adminOverview.css").toString()))
+                        .toExternalForm());
+
+        this.restorePage.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets",
+                                        "adminRestore.css").toString()))
+                        .toExternalForm());
 
         showLogin();
         adminOverviewStage.show();
