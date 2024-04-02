@@ -19,7 +19,7 @@
 }
 
 .anchorpane{
-    -fx-background-color: #7EE081;
+    -fx-background-color: #777777;
 }
 
 .password-field{
@@ -34,9 +34,9 @@
 }
 
 .label{
-    -fx-text-fill: white;
     -fx-font-family:sans-serif;
 }
+
 
 
 
