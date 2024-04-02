@@ -17,7 +17,7 @@ package client.scenes;
 
 import client.ConfigManager;
 import client.utils.ServerUtils;
-import dto.view.UserNameDto;
+import dto.view.ParticipantNameDto;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -112,7 +112,7 @@ public class MainCtrl {
         this.addBankInfo = new Scene(sceneInputWrapper.bankInfoPage().getValue());
         this.enrollPage=new Scene(sceneInputWrapper.enrollEventPage().getValue());
 
-        UserNameDto user = new UserNameDto(Long.parseLong(configManager.getProperty("userID")),
+        ParticipantNameDto user = new ParticipantNameDto(Long.parseLong(configManager.getProperty("userID")),
                 configManager.getProperty("userFirstName"),
                 configManager.getProperty("userLastName"));
 

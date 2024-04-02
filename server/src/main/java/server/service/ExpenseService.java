@@ -1,8 +1,8 @@
 package server.service;
 
 import commons.ExpenseEntity;
-import commons.UserEntity;
-import dto.view.UserNameDto;
+import commons.ParticipantEntity;
+import dto.view.ParticipantNameDto;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class ExpenseService {
     private final ExpenseRepository expenseRepository;
     private final ModelMapper modelMapper;
-    private final UserService userService;
+    private final ParticipantService userService;
     private final EventService eventService;
 
     /**
@@ -37,7 +37,7 @@ public class ExpenseService {
      */
     public ExpenseService(ExpenseRepository expenseRepository,
                           ModelMapper modelMapper,
-                          UserService userService,
+                          ParticipantService userService,
                           EventService eventService) {
         this.expenseRepository = expenseRepository;
         this.modelMapper = modelMapper;
@@ -101,20 +101,20 @@ public class ExpenseService {
         expenseEntity.setAuthor(userService.findById(expense.getAuthor().getId()));
         expenseEntity.setTitle(expense.getTitle());
         expenseEntity.setDebtors(new HashSet<>());
-        for (UserNameDto u  : expense.getDebtors()){
+        for (ParticipantNameDto u  : expense.getDebtors()){
             expenseEntity.addDebtor(userService.findById(u.getId()));
         }
         expenseEntity.setDate(expense.getDate());
 
         expenseEntity =  expenseRepository.save(expenseEntity);
 
-        UserNameDto author = new UserNameDto(expenseEntity.getAuthor().getId(),
+        ParticipantNameDto author = new ParticipantNameDto(expenseEntity.getAuthor().getId(),
                 expenseEntity.getAuthor().getFirstName(),
                 expenseEntity.getAuthor().getLastName());
 
-        Set<UserNameDto> debtors = new HashSet<>();
-        for (UserEntity u : expenseEntity.getDebtors()){
-            debtors.add(new UserNameDto(u.getId(), u.getFirstName(), u.getLastName()));
+        Set<ParticipantNameDto> debtors = new HashSet<>();
+        for (ParticipantEntity u : expenseEntity.getDebtors()){
+            debtors.add(new ParticipantNameDto(u.getId(), u.getFirstName(), u.getLastName()));
         }
 
 
@@ -139,7 +139,7 @@ public class ExpenseService {
         ExpenseEntity expenseEntity = new ExpenseEntity();
         //Set the debtors
         expenseEntity.setDebtors(new HashSet<>());
-        for (UserNameDto u  : expenseDto.getDebtors()){
+        for (ParticipantNameDto u  : expenseDto.getDebtors()){
             expenseEntity.addDebtor(userService.findById(u.getId()));
         }
         //Set the money
@@ -217,7 +217,7 @@ public class ExpenseService {
      * @return the money paid
      */
     @Transactional
-    public double payDebt(ExpenseEntity expense, UserEntity receiver, UserEntity sender) {
+    public double payDebt(ExpenseEntity expense, ParticipantEntity receiver, ParticipantEntity sender) {
         double owedMoney=roundToNDecimals(expense.getMoney()/expense.getDebtors().size(), 2);
         expense.setMoney(expense.getMoney()-owedMoney);
         expense.getDebtors().remove(sender);
@@ -233,7 +233,7 @@ public class ExpenseService {
      * @param sender the sender
      */
     @Transactional
-    public void resetDebt(ExpenseEntity expense, UserEntity receiver, UserEntity sender) {
+    public void resetDebt(ExpenseEntity expense, ParticipantEntity receiver, ParticipantEntity sender) {
         double owedMoney=roundToNDecimals(expense.getMoney()/expense.getDebtors().size(), 2);
         expense.setMoney(expense.getMoney()+owedMoney);
         expense.getDebtors().add(sender);

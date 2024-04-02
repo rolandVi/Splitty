@@ -2,7 +2,7 @@ package server.service;
 
 import commons.BankAccountEntity;
 import commons.EventEntity;
-import commons.UserEntity;
+import commons.ParticipantEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -13,7 +13,7 @@ import server.exception.ObjectNotFoundException;
 import dto.view.EventDetailsDto;
 import dto.view.EventOverviewDto;
 import dto.view.EventTitleDto;
-import dto.view.UserNameDto;
+import dto.view.ParticipantNameDto;
 import server.repository.EventRepository;
 
 import java.util.*;
@@ -28,7 +28,7 @@ class EventServiceTest {
     private EventRepository eventRepository;
 
     @Mock
-    private UserService userService;
+    private ParticipantService userService;
 
     private EventService eventService;
 
@@ -223,23 +223,23 @@ class EventServiceTest {
     void getEventParticipants_ReturnsListOfUserNameDto() {
         // Arrange
         long eventId = 1L;
-        List<UserEntity> userEntities = Arrays.asList(
-                new UserEntity(1L, "John", "Doe", "john@example.com", new HashSet<>(), new BankAccountEntity()),
-                new UserEntity(2L, "Alice", "Smith", "alice@example.com", new HashSet<>(), new BankAccountEntity())
+        List<ParticipantEntity> userEntities = Arrays.asList(
+                new ParticipantEntity(1L, "John", "Doe", "john@example.com", new HashSet<>(), new BankAccountEntity()),
+                new ParticipantEntity(2L, "Alice", "Smith", "alice@example.com", new HashSet<>(), new BankAccountEntity())
         );
-        List<UserNameDto> expectedDtos = Arrays.asList(
-                new UserNameDto(1L, "John", "Doe"),
-                new UserNameDto(2L, "Alice", "Smith")
+        List<ParticipantNameDto> expectedDtos = Arrays.asList(
+                new ParticipantNameDto(1L, "John", "Doe"),
+                new ParticipantNameDto(2L, "Alice", "Smith")
         );
         when(eventRepository.findEventParticipants(eventId)).thenReturn(new HashSet<>(userEntities));
 
         // Act
-        List<UserNameDto> resultDtos = eventService.getEventParticipants(eventId);
+        List<ParticipantNameDto> resultDtos = eventService.getEventParticipants(eventId);
 
         // Assert
         assertNotNull(resultDtos);
         assertEquals(expectedDtos.size(), resultDtos.size());
-        for (UserNameDto expectedDto : expectedDtos) {
+        for (ParticipantNameDto expectedDto : expectedDtos) {
             assertTrue(resultDtos.contains(expectedDto));
         }
     }

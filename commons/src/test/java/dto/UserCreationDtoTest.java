@@ -1,6 +1,5 @@
 package dto;
 
-import dto.UserCreationDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,11 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class UserCreationDtoTest {
 
-    private UserCreationDto userCreationDto;
+    private ParticipantCreationDto userCreationDto;
 
     @BeforeEach
     void setUp() {
-        userCreationDto = new UserCreationDto("John", "Doe", "john.doe@example.com");
+        userCreationDto = new ParticipantCreationDto("John", "Doe", "john.doe@example.com");
     }
 
     @Test
@@ -52,8 +51,8 @@ class UserCreationDtoTest {
 
     @Test
     void testEquals() {
-        UserCreationDto sameDto = new UserCreationDto("John", "Doe", "john.doe@example.com");
-        UserCreationDto differentDto = new UserCreationDto("Jane", "Smith", "jane.smith@example.com");
+        ParticipantCreationDto sameDto = new ParticipantCreationDto("John", "Doe", "john.doe@example.com");
+        ParticipantCreationDto differentDto = new ParticipantCreationDto("Jane", "Smith", "jane.smith@example.com");
 
         // Test equality with itself
         Assertions.assertEquals(userCreationDto, userCreationDto);
@@ -73,7 +72,7 @@ class UserCreationDtoTest {
 
     @Test
     void testHashCode() {
-        UserCreationDto sameDto = new UserCreationDto("John", "Doe", "john.doe@example.com");
+        ParticipantCreationDto sameDto = new ParticipantCreationDto("John", "Doe", "john.doe@example.com");
 
         // Hash code should be the same for objects with the same content
         Assertions.assertEquals(userCreationDto.hashCode(), sameDto.hashCode());

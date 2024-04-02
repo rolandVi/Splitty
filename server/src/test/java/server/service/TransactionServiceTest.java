@@ -25,7 +25,7 @@ class TransactionServiceTest {
     void setUp() {
         transactionRepository = mock(TransactionRepository.class);
         ModelMapper modelMapper = new ModelMapper();
-        UserService userService = mock(UserService.class);
+        ParticipantService userService = mock(ParticipantService.class);
         expenseService = mock(ExpenseService.class);
 
         transactionService = new TransactionService(transactionRepository, modelMapper, userService, expenseService);

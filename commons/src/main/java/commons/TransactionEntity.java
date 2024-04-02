@@ -14,10 +14,10 @@ public class TransactionEntity {
     private double money;
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(nullable = false)
-    private UserEntity sender;
+    private ParticipantEntity sender;
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(nullable = false)
-    private UserEntity receiver;
+    private ParticipantEntity receiver;
 
     @ManyToOne(cascade = CascadeType.DETACH)
     private ExpenseEntity expense;
@@ -41,8 +41,8 @@ public class TransactionEntity {
      * @param expense the expense of the transaction
      * @param date the date of the transaction
      */
-    public TransactionEntity(Long id, double money, UserEntity sender,
-                             UserEntity receiver, ExpenseEntity expense,
+    public TransactionEntity(Long id, double money, ParticipantEntity sender,
+                             ParticipantEntity receiver, ExpenseEntity expense,
                              Date date) {
         this.id = id;
         this.money = money;
@@ -72,14 +72,14 @@ public class TransactionEntity {
      * Getter for the user sending the money
      * @return sender as user entity
      */
-    public UserEntity getSender() {
+    public ParticipantEntity getSender() {
         return sender;
     }
     /**
      * Getter for the user receiving the money
      * @return receiver as user entity
      */
-    public UserEntity getReceiver() {
+    public ParticipantEntity getReceiver() {
         return receiver;
     }
 
@@ -116,7 +116,7 @@ public class TransactionEntity {
      * @param sender user sending the money
      * @return the TransactionEntity object with the updated sender
      */
-    public TransactionEntity setSender(UserEntity sender) {
+    public TransactionEntity setSender(ParticipantEntity sender) {
         this.sender = sender;
         return this;
     }
@@ -126,7 +126,7 @@ public class TransactionEntity {
      * @param receiver user receiving the money
      * @return the TransactionEntity object with the updated receiver
      */
-    public TransactionEntity setReceiver(UserEntity receiver) {
+    public TransactionEntity setReceiver(ParticipantEntity receiver) {
         this.receiver = receiver;
         return this;
     }

@@ -8,12 +8,12 @@ import java.util.HashSet;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UserEntityTest {
-    private UserEntity user;
+    private ParticipantEntity user;
 
     @BeforeEach
     public void initUser() {
 
-        this.user = new UserEntity(1L, "FirstName", "LastName", "email@gmail.com",
+        this.user = new ParticipantEntity(1L, "FirstName", "LastName", "email@gmail.com",
                 new HashSet<>(), new BankAccountEntity());
     }
 
@@ -54,27 +54,27 @@ public class UserEntityTest {
 
     @Test
     public void testEqualsWithEqualObject(){
-        UserEntity userEntity = new UserEntity(1L, "FirstName", "LastName",
+        ParticipantEntity userEntity = new ParticipantEntity(1L, "FirstName", "LastName",
                 "email@gmail.com", new HashSet<>(), new BankAccountEntity());
         assertEquals(this.user, userEntity);
     }
 
     @Test
     public void testEqualsWhenNotEqual(){
-        UserEntity userEntity = new UserEntity(2L, "", "", "", new HashSet<>(), new BankAccountEntity());
+        ParticipantEntity userEntity = new ParticipantEntity(2L, "", "", "", new HashSet<>(), new BankAccountEntity());
         assertNotEquals(this.user, userEntity);
     }
 
     @Test
     public void testSameHash(){
-        UserEntity userEntity = new UserEntity(1L, "FirstName", "LastName",
+        ParticipantEntity userEntity = new ParticipantEntity(1L, "FirstName", "LastName",
                 "email@gmail.com", new HashSet<>(), new BankAccountEntity());
         assertEquals(this.user.hashCode(), userEntity.hashCode());
     }
 
     @Test
     void testEmptyConstructor() {
-        UserEntity emptyUser = new UserEntity();
+        ParticipantEntity emptyUser = new ParticipantEntity();
         assertNotNull(emptyUser);
     }
 

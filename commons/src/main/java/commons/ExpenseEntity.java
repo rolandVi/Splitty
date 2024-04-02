@@ -20,10 +20,10 @@ public class ExpenseEntity {
     private Double money;
 
     @ManyToOne(optional = false)
-    private UserEntity author;
+    private ParticipantEntity author;
 
     @ManyToMany
-    private Set<UserEntity> debtors;
+    private Set<ParticipantEntity> debtors;
 
     @ManyToOne
     private EventEntity event;
@@ -49,8 +49,8 @@ public class ExpenseEntity {
      * @param date date of the expense
      * @param event the parent event entitty
      */
-    public ExpenseEntity(Long id, Double money, UserEntity author,
-                         Set<UserEntity> debtors, String title, Date date, EventEntity event) {
+    public ExpenseEntity(Long id, Double money, ParticipantEntity author,
+                         Set<ParticipantEntity> debtors, String title, Date date, EventEntity event) {
         this.id = id;
         this.money = money;
         this.author = author;
@@ -80,7 +80,7 @@ public class ExpenseEntity {
      * Getter for the author of the expense
      * @return author as UserEntity
      */
-    public UserEntity getAuthor() {
+    public ParticipantEntity getAuthor() {
         return author;
     }
 
@@ -88,7 +88,7 @@ public class ExpenseEntity {
      * Getter for the list of debtors
      * @return list of debtors as ArrayList of UserEntity
      */
-    public Set<UserEntity> getDebtors() {
+    public Set<ParticipantEntity> getDebtors() {
         return debtors;
     }
 
@@ -144,7 +144,7 @@ public class ExpenseEntity {
      * Setter for the author
      * @param author the author
      */
-    public void setAuthor(UserEntity author) {
+    public void setAuthor(ParticipantEntity author) {
         this.author = author;
     }
 
@@ -152,7 +152,7 @@ public class ExpenseEntity {
      * Setter for the debtors field
      * @param debtors the set of debtors
      */
-    public void setDebtors(Set<UserEntity> debtors){
+    public void setDebtors(Set<ParticipantEntity> debtors){
         this.debtors = debtors;
     }
 
@@ -168,7 +168,7 @@ public class ExpenseEntity {
      * Adds new debtor to the list of debtors
      * @param debtor as UserEntity
      */
-    public void addDebtor(UserEntity debtor){
+    public void addDebtor(ParticipantEntity debtor){
         debtors.add(debtor);
     }
 

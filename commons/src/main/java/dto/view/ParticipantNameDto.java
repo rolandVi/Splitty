@@ -2,7 +2,7 @@ package dto.view;
 
 import java.util.Objects;
 
-public class UserNameDto {
+public class ParticipantNameDto {
 
     private Long id;
 
@@ -12,7 +12,7 @@ public class UserNameDto {
     /**
      * Empty constructor
      */
-    public UserNameDto() {
+    public ParticipantNameDto() {
     }
 
     /**
@@ -22,7 +22,7 @@ public class UserNameDto {
      * @param firstName the firstName
      * @param lastName  the lastName
      */
-    public UserNameDto(Long id, String firstName, String lastName) {
+    public ParticipantNameDto(Long id, String firstName, String lastName) {
         this.id=id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -43,7 +43,7 @@ public class UserNameDto {
      * @param id the id of the user
      * @return this UserNameDto instance
      */
-    public UserNameDto setId(Long id) {
+    public ParticipantNameDto setId(Long id) {
         this.id = id;
         return this;
     }
@@ -63,7 +63,7 @@ public class UserNameDto {
      * @param firstName the first name of the user
      * @return this UserNameDto instance
      */
-    public UserNameDto setFirstName(String firstName) {
+    public ParticipantNameDto setFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
@@ -83,7 +83,7 @@ public class UserNameDto {
      * @param lastName the last name of the user
      * @return this UserNameDto instance
      */
-    public UserNameDto setLastName(String lastName) {
+    public ParticipantNameDto setLastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
@@ -98,7 +98,7 @@ public class UserNameDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserNameDto that = (UserNameDto) o;
+        ParticipantNameDto that = (ParticipantNameDto) o;
         return Objects.equals(id, that.id)
                 && Objects.equals(firstName, that.firstName)
                 && Objects.equals(lastName, that.lastName);

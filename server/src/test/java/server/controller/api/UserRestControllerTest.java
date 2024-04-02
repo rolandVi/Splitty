@@ -6,11 +6,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import dto.UserCreationDto;
+import dto.ParticipantCreationDto;
 import dto.view.EventOverviewDto;
-import dto.view.UserNameDto;
+import dto.view.ParticipantNameDto;
 import org.springframework.validation.BindingResult;
-import server.service.UserService;
+import server.service.ParticipantService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,28 +21,28 @@ import static org.mockito.Mockito.*;
 class UserRestControllerTest {
 
     @Mock
-    private UserService userService;
+    private ParticipantService userService;
 
     @Mock
     private BindingResult result;
 
-    private UserRestController userRestController;
+    private ParticipantRestController userRestController;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        userRestController = new UserRestController(userService);
+        userRestController = new ParticipantRestController(userService);
     }
 
     @Test
     void createUser() {
         // Arrange
-        UserCreationDto requestBody = new UserCreationDto(/* Create your test DTO */);
-        UserNameDto expectedDto = new UserNameDto(/* Create your expected DTO */);
+        ParticipantCreationDto requestBody = new ParticipantCreationDto(/* Create your test DTO */);
+        ParticipantNameDto expectedDto = new ParticipantNameDto(/* Create your expected DTO */);
         when(userService.createUser(requestBody)).thenReturn(expectedDto);
 
         // Act
-        ResponseEntity<UserNameDto> response = userRestController.createUser(requestBody, result);
+        ResponseEntity<ParticipantNameDto> response = userRestController.createUser(requestBody, result);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -70,10 +70,10 @@ class UserRestControllerTest {
 
     @Test
     void testCreateUser() {
-        UserCreationDto userCreationDto = new UserCreationDto(); // Initialize user DTO with necessary fields
-        when(userService.createUser(userCreationDto)).thenReturn(new UserNameDto()); // Mock userService
+        ParticipantCreationDto userCreationDto = new ParticipantCreationDto(); // Initialize user DTO with necessary fields
+        when(userService.createUser(userCreationDto)).thenReturn(new ParticipantNameDto()); // Mock userService
 
-        ResponseEntity<UserNameDto> responseEntity = userRestController.createUser(userCreationDto, result);
+        ResponseEntity<ParticipantNameDto> responseEntity = userRestController.createUser(userCreationDto, result);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         verify(userService, times(1)).createUser(userCreationDto); // Verify userService method called

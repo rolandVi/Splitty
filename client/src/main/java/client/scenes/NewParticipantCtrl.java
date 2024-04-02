@@ -3,7 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
-import dto.UserCreationDto;
+import dto.ParticipantCreationDto;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -80,21 +80,21 @@ public class NewParticipantCtrl {
     public Optional<HttpResponse<String>> createUser() throws IOException, InterruptedException {
         String url = mainCtrl.configManager.getProperty("serverURL");
         // Prepare user data from text fields
-        UserCreationDto user = getUserEntity();
+        ParticipantCreationDto user = getUserEntity();
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(user);
 
         return serverUtils.createUser(url, requestBody);
     }
 
-    private UserCreationDto getUserEntity() {
+    private ParticipantCreationDto getUserEntity() {
         String firstName = firstNameField.getText();
         String surName = surNameField.getText();
         String email = emailField.getText();
 
         // Create a UserEntity object
 
-        return new UserCreationDto()
+        return new ParticipantCreationDto()
                 .setFirstName(firstName)
                 .setLastName(surName)
                 .setEmail(email);

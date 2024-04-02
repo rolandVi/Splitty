@@ -2,18 +2,18 @@ package server.service;
 
 import commons.BankAccountEntity;
 import commons.EventEntity;
-import commons.UserEntity;
+import commons.ParticipantEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import server.exception.ObjectNotFoundException;
-import dto.UserCreationDto;
+import dto.ParticipantCreationDto;
 import dto.view.EventOverviewDto;
 import dto.view.EventTitleDto;
-import dto.view.UserNameDto;
-import server.repository.UserRepository;
+import dto.view.ParticipantNameDto;
+import server.repository.ParticipantRepository;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -28,12 +28,12 @@ import static org.mockito.Mockito.*;
 public class UserServiceTest {
 
     @Mock
-    private UserRepository userRepository;
+    private ParticipantRepository userRepository;
 
     @Mock
     private EventService eventService;
 
-    private UserService userService;
+    private ParticipantService userService;
 
     @Mock
     private BankAccountService bankAccountService;
@@ -43,7 +43,7 @@ public class UserServiceTest {
     void setUp(){
         MockitoAnnotations.openMocks(this);
         ModelMapper mapper=new ModelMapper();
-        this.userService=new UserService(mapper,userRepository, eventService, bankAccountService);
+        this.userService=new ParticipantService(mapper,userRepository, bankAccountService);
     }
 
     @Test
@@ -66,12 +66,12 @@ public class UserServiceTest {
     void findById_ReturnsUser(){
         // Arrange
         long id = 1L;
-        UserEntity user = new UserEntity(id, "vwv", "vwer", "vwer@fewr",
+        ParticipantEntity user = new ParticipantEntity(id, "vwv", "vwer", "vwer@fewr",
                 new HashSet<>(), new BankAccountEntity("12345", "vwve", "1324"));
         when(userRepository.findById(id)).thenReturn(Optional.of(user));
 
         // Act
-        UserEntity result = userService.findById(id);
+        ParticipantEntity result = userService.findById(id);
 
         // Assert
         assertNotNull(result);
@@ -91,10 +91,10 @@ public class UserServiceTest {
             events.add(new EventEntity(i, "invCode"+i, "title"+i,
                     new HashSet<>(), new HashSet<>(), new Date(), new Date()));
         }
-        UserEntity user = new UserEntity(id, "vwv", "vwer", "vwer@fewr",
+        ParticipantEntity user = new ParticipantEntity(id, "vwv", "vwer", "vwer@fewr",
                 events, new BankAccountEntity("12345", "vwve", "1324"));
 
-        when(this.userRepository.getEventsByUserId(id)).thenReturn(events);
+        when(this.userRepository.getEventByUserId(id)).thenReturn(events);
 
         List<EventOverviewDto> modifiedEvents= events.stream()
                 .map(e-> new EventOverviewDto()
@@ -111,14 +111,14 @@ public class UserServiceTest {
     @Test
     void createUser_ReturnsUserNameDto() {
         // Arrange
-        UserCreationDto userCreationDto = new UserCreationDto("John", "Doe", "john@example.com");
-        UserEntity savedUserEntity = new UserEntity(1L, "John", "Doe", "john@example.com",
+        ParticipantCreationDto userCreationDto = new ParticipantCreationDto("John", "Doe", "john@example.com");
+        ParticipantEntity savedUserEntity = new ParticipantEntity(1L, "John", "Doe", "john@example.com",
                 new HashSet<>(), new BankAccountEntity("12345", "vwve", "1324"));
 
-        when(userRepository.save(any(UserEntity.class))).thenReturn(savedUserEntity);
+        when(userRepository.save(any(ParticipantEntity.class))).thenReturn(savedUserEntity);
 
         // Act
-        UserNameDto createdUser = userService.createUser(userCreationDto);
+        ParticipantNameDto createdUser = userService.createUser(userCreationDto);
 
         // Assert
         assertNotNull(createdUser);
@@ -132,7 +132,7 @@ public class UserServiceTest {
         String eventTitle = "New Event";
         EventEntity eventEntity = new EventEntity(1L, "", eventTitle,
                 new HashSet<>(), new HashSet<>(), new Date(), new Date());
-        UserEntity user= new UserEntity(1L, "first","last", "email@gmai.com",
+        ParticipantEntity user= new ParticipantEntity(1L, "first","last", "email@gmai.com",
                 new HashSet<>(), new BankAccountEntity("12345", "vwve", "1324"));
         eventEntity.setTitle(eventTitle);
 
@@ -156,7 +156,7 @@ public class UserServiceTest {
         long userId = 2L;
         EventEntity eventEntity = new EventEntity(eventId, "inviteCode", "Test Event",
                 new HashSet<>(), new HashSet<>(), new Date(), new Date());
-        UserEntity userEntity = new UserEntity(userId, "John", "Doe", "john@example.com",
+        ParticipantEntity userEntity = new ParticipantEntity(userId, "John", "Doe", "john@example.com",
                 new HashSet<>(), new BankAccountEntity("12345", "vwve", "1324"));
 
         when(eventService.findEntityById(eventId)).thenReturn(eventEntity);
@@ -209,7 +209,7 @@ public class UserServiceTest {
         // Arrange
         long userId = 1L;
         String inviteCode = "abc123";
-        UserEntity userEntity = new UserEntity(userId, "John", "Doe", "john@example.com",
+        ParticipantEntity userEntity = new ParticipantEntity(userId, "John", "Doe", "john@example.com",
                 new HashSet<>(), new BankAccountEntity("12345", "vwve", "1324"));
         EventEntity eventEntity = new EventEntity(1L, inviteCode, "Test Event",
                 new HashSet<>(), new HashSet<>(), new Date(), new Date());
@@ -246,7 +246,7 @@ public class UserServiceTest {
         // Arrange
         long userId = 1L;
         String inviteCode = "abc123";
-        UserEntity userEntity = new UserEntity(userId, "John", "Doe", "john@example.com",
+        ParticipantEntity userEntity = new ParticipantEntity(userId, "John", "Doe", "john@example.com",
                 new HashSet<>(), new BankAccountEntity("12345", "vwve", "1324"));
         when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity));
         when(eventService.findEntityByInviteCode(inviteCode)).thenThrow(ObjectNotFoundException.class);

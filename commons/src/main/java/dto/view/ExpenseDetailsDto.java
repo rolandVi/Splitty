@@ -12,11 +12,11 @@ public class ExpenseDetailsDto {
 
     private Double money;
 
-    private UserNameDto author;
+    private ParticipantNameDto author;
 
     private String title;
 
-    private Set<UserNameDto> debtors;
+    private Set<ParticipantNameDto> debtors;
 
     private Date date;
 
@@ -36,9 +36,9 @@ public class ExpenseDetailsDto {
      * @param date the date
      */
     public ExpenseDetailsDto(Long id, Double money,
-                             UserNameDto author,
+                             ParticipantNameDto author,
                              String title,
-                             Set<UserNameDto> debtors, Date date) {
+                             Set<ParticipantNameDto> debtors, Date date) {
         this.id = id;
         this.money = money;
         this.author = author;
@@ -87,7 +87,7 @@ public class ExpenseDetailsDto {
      * Author getter
      * @return the author
      */
-    public UserNameDto getAuthor() {
+    public ParticipantNameDto getAuthor() {
         return author;
     }
 
@@ -96,7 +96,7 @@ public class ExpenseDetailsDto {
      * @param author the new author
      * @return the new expense
      */
-    public ExpenseDetailsDto setAuthor(UserNameDto author) {
+    public ExpenseDetailsDto setAuthor(ParticipantNameDto author) {
         this.author = author;
         return this;
     }
@@ -123,7 +123,7 @@ public class ExpenseDetailsDto {
      * Debtors getter
      * @return the debtors
      */
-    public Set<UserNameDto> getDebtors() {
+    public Set<ParticipantNameDto> getDebtors() {
         return debtors;
     }
 
@@ -132,7 +132,7 @@ public class ExpenseDetailsDto {
      * @param debtors the new debtor
      * @return the new expense
      */
-    public ExpenseDetailsDto setDebtors(Set<UserNameDto> debtors) {
+    public ExpenseDetailsDto setDebtors(Set<ParticipantNameDto> debtors) {
         this.debtors = debtors;
         return this;
     }

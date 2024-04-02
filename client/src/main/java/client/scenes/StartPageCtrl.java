@@ -5,7 +5,7 @@ import client.utils.ServerUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
-import dto.UserCreationDto;
+import dto.ParticipantCreationDto;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
@@ -117,7 +117,7 @@ public class StartPageCtrl implements MultiLanguages {
             return;
         }
 
-        UserCreationDto user = getUserEntity();
+        ParticipantCreationDto user = getUserEntity();
         if (user.getFirstName().isBlank()
                 || user.getLastName().isBlank()
                 || user.getEmail().isBlank()) {
@@ -188,7 +188,7 @@ public class StartPageCtrl implements MultiLanguages {
      * @param user th user to create
      * @return HTTP response from the server
      */
-    public Optional<HttpResponse<String>> createUser(UserCreationDto user)
+    public Optional<HttpResponse<String>> createUser(ParticipantCreationDto user)
             throws JsonProcessingException {
         String url = serverField.getText();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -197,13 +197,13 @@ public class StartPageCtrl implements MultiLanguages {
         return serverUtils.createUser(url, requestBody);
     }
 
-    private UserCreationDto getUserEntity() {
+    private ParticipantCreationDto getUserEntity() {
         String firstName = firstNameField.getText();
         String surName = surNameField.getText();
         String email = emailField.getText();
 
         // Create a UserEntity object
-        UserCreationDto user = new UserCreationDto();
+        ParticipantCreationDto user = new ParticipantCreationDto();
         user.setFirstName(firstName);
         user.setLastName(surName);
         user.setEmail(email);

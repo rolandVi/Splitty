@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import dto.view.EventDetailsDto;
 import dto.view.EventOverviewDto;
 import dto.view.EventTitleDto;
-import dto.view.UserNameDto;
+import dto.view.ParticipantNameDto;
 import server.service.EventService;
 
 import java.util.ArrayList;
@@ -110,10 +110,10 @@ class EventRestControllerTest {
     @Test
     void testGetEventParticipants() {
         long eventId = 1L; // Sample event ID
-        List<UserNameDto> userNameDtoList = new ArrayList<>(); // Initialize list of user name DTOs
+        List<ParticipantNameDto> userNameDtoList = new ArrayList<>(); // Initialize list of user name DTOs
         when(eventService.getEventParticipants(eventId)).thenReturn(userNameDtoList); // Mock eventService
 
-        ResponseEntity<List<UserNameDto>> responseEntity = eventRestController.getEventParticipants(eventId);
+        ResponseEntity<List<ParticipantNameDto>> responseEntity = eventRestController.getEventParticipants(eventId);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(userNameDtoList, responseEntity.getBody());

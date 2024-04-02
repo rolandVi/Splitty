@@ -1,12 +1,11 @@
 package client.scenes;
 
-import client.scenes.MainCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import dto.ExpenseCreationDto;
 import dto.view.EventDetailsDto;
 import dto.view.ExpenseDetailsDto;
-import dto.view.UserNameDto;
+import dto.view.ParticipantNameDto;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -33,9 +32,9 @@ public class NewExpenseCtrl {
     @FXML
     public TextField amountField;
     @FXML
-    public ComboBox<UserNameDto> authorBox;
+    public ComboBox<ParticipantNameDto> authorBox;
     @FXML
-    public ListView<UserNameDto> debtorsCheckList;
+    public ListView<ParticipantNameDto> debtorsCheckList;
     @FXML
     public Button returnButton;
     @FXML
@@ -49,7 +48,7 @@ public class NewExpenseCtrl {
 
     private List<CheckBox> debtorsCheckBoxes;
 
-    private Set<UserNameDto> debtors;
+    private Set<ParticipantNameDto> debtors;
 
     private ExpenseDetailsDto expense;
 
@@ -100,22 +99,22 @@ public class NewExpenseCtrl {
         amountField.clear();
         errorField.setOpacity(0);
 
-        ObservableList<UserNameDto> participants = FXCollections.
+        ObservableList<ParticipantNameDto> participants = FXCollections.
                 observableArrayList(parentEvent.getParticipants());
 
-        authorBox.setCellFactory(new Callback<ListView<UserNameDto>, ListCell<UserNameDto>>() {
+        authorBox.setCellFactory(new Callback<ListView<ParticipantNameDto>, ListCell<ParticipantNameDto>>() {
             @Override
-            public ListCell<UserNameDto> call(ListView<UserNameDto> param) {
+            public ListCell<ParticipantNameDto> call(ListView<ParticipantNameDto> param) {
                 return new ParticipantListCell();
             }
         });
         authorBox.setItems(participants);
 
         debtors = new HashSet<>();
-        debtorsCheckList.setCellFactory(new Callback<ListView<UserNameDto>,
-                ListCell<UserNameDto>>() {
+        debtorsCheckList.setCellFactory(new Callback<ListView<ParticipantNameDto>,
+                ListCell<ParticipantNameDto>>() {
             @Override
-            public ListCell<UserNameDto> call(ListView<UserNameDto> param) {
+            public ListCell<ParticipantNameDto> call(ListView<ParticipantNameDto> param) {
                 return new DebtorsListCell(debtors, debtorsCheckBoxes);
             }
         });
@@ -140,22 +139,22 @@ public class NewExpenseCtrl {
         amountField.setText(expense.getMoney().toString());
         errorField.setOpacity(0);
 
-        ObservableList<UserNameDto> participants = FXCollections.
+        ObservableList<ParticipantNameDto> participants = FXCollections.
                 observableArrayList(parentEvent.getParticipants());
 
-        authorBox.setCellFactory(new Callback<ListView<UserNameDto>, ListCell<UserNameDto>>() {
+        authorBox.setCellFactory(new Callback<ListView<ParticipantNameDto>, ListCell<ParticipantNameDto>>() {
             @Override
-            public ListCell<UserNameDto> call(ListView<UserNameDto> param) {
+            public ListCell<ParticipantNameDto> call(ListView<ParticipantNameDto> param) {
                 return new ParticipantListCell();
             }
         });
         authorBox.setItems(participants);
 
         debtors = new HashSet<>();
-        debtorsCheckList.setCellFactory(new Callback<ListView<UserNameDto>,
-                ListCell<UserNameDto>>() {
+        debtorsCheckList.setCellFactory(new Callback<ListView<ParticipantNameDto>,
+                ListCell<ParticipantNameDto>>() {
             @Override
-            public ListCell<UserNameDto> call(ListView<UserNameDto> param) {
+            public ListCell<ParticipantNameDto> call(ListView<ParticipantNameDto> param) {
                 return new DebtorsListCell(debtors, debtorsCheckBoxes);
             }
         });
@@ -186,7 +185,7 @@ public class NewExpenseCtrl {
         String title = titleField.getText();
         try {
             double amount = Double.parseDouble(amountField.getText());
-            UserNameDto author = authorBox.getValue();
+            ParticipantNameDto author = authorBox.getValue();
             for (int i=0; i<debtorsCheckList.getItems().size(); i++) {
                 if (debtorsCheckList.getSelectionModel().isSelected(i)) {
                     debtors.add(debtorsCheckList.getItems().get(i));
@@ -234,7 +233,7 @@ public class NewExpenseCtrl {
         mainCtrl.showEventDetails(parentEvent.getId());
     }
 
-    private static class ParticipantListCell extends ListCell<UserNameDto>{
+    private static class ParticipantListCell extends ListCell<ParticipantNameDto>{
         public ParticipantListCell(){
             HBox hBox = new HBox();
             hBox.getChildren().add(new Text());
@@ -242,7 +241,7 @@ public class NewExpenseCtrl {
         }
 
         @Override
-        protected void updateItem(UserNameDto item, boolean empty){
+        protected void updateItem(ParticipantNameDto item, boolean empty){
             super.updateItem(item, empty);
             if (empty || item==null) {
                 setText(null);
@@ -253,17 +252,17 @@ public class NewExpenseCtrl {
         }
     }
 
-    private static class DebtorsListCell extends ListCell<UserNameDto>{
-        Set<UserNameDto> debtors;
+    private static class DebtorsListCell extends ListCell<ParticipantNameDto>{
+        Set<ParticipantNameDto> debtors;
         List<CheckBox> debtorsCheckBoxes;
-        public DebtorsListCell(Set<UserNameDto> debtors, List<CheckBox> debtorsCheckBoxes){
+        public DebtorsListCell(Set<ParticipantNameDto> debtors, List<CheckBox> debtorsCheckBoxes){
             this.debtors = debtors;
             this.debtorsCheckBoxes = debtorsCheckBoxes;
             HBox hBox = new HBox();
             setGraphic(hBox);
         }
         @Override
-        protected void updateItem(UserNameDto item, boolean empty){
+        protected void updateItem(ParticipantNameDto item, boolean empty){
             super.updateItem(item, empty);
             if (empty || item==null) {
                 setText(null);

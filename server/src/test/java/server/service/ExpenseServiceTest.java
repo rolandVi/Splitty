@@ -1,7 +1,7 @@
 package server.service;
 
 import commons.ExpenseEntity;
-import commons.UserEntity;
+import commons.ParticipantEntity;
 import dto.view.ExpenseDetailsDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ class ExpenseServiceTest {
     @Mock
     private EventService eventService;
     @Mock
-    private UserService userService;
+    private ParticipantService userService;
 
     private ExpenseEntity expectedDto;
     private List<ExpenseEntity> expectedExpenses;
@@ -40,10 +40,10 @@ class ExpenseServiceTest {
 
         expenseService = new ExpenseService(expenseRepository, modelMapper, userService, eventService);
 
-        expectedDto = new ExpenseEntity(1L, 100.0, new UserEntity(),
+        expectedDto = new ExpenseEntity(1L, 100.0, new ParticipantEntity(),
                 new HashSet<>(), "Expense Title", new Date(), null);
 
-        ExpenseEntity requestDto = new ExpenseEntity(2L, 200.0, new UserEntity(),
+        ExpenseEntity requestDto = new ExpenseEntity(2L, 200.0, new ParticipantEntity(),
                 new HashSet<>(), "Another Expense Title", new Date(), null);
 
         expectedExpenses = new ArrayList<>(Arrays.asList(expectedDto, requestDto));

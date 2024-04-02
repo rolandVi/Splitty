@@ -30,8 +30,8 @@ public class EventEntity {
     @OneToMany(cascade = CascadeType.DETACH)
     private Set<ExpenseEntity> expenses;
 
-    @ManyToMany
-    private Set<UserEntity> participants;
+    @OneToMany(mappedBy = "event")
+    private Set<ParticipantEntity> participants;
 
     /**
      * Default constructor for JBA
@@ -55,7 +55,7 @@ public class EventEntity {
      * @param lastModifiedDate the last modified date
      */
     public EventEntity(Long id, String inviteCode, String title,
-                       Set<ExpenseEntity> expenses, Set<UserEntity> participants,
+                       Set<ExpenseEntity> expenses, Set<ParticipantEntity> participants,
                        Date creationDate, Date lastModifiedDate) {
         this.id = id;
         this.inviteCode = inviteCode;
@@ -155,7 +155,7 @@ public class EventEntity {
      *
      * @return The list of users associated with the event.
      */
-    public Set<UserEntity> getParticipants() {
+    public Set<ParticipantEntity> getParticipants() {
         return participants;
     }
 
@@ -205,7 +205,7 @@ public class EventEntity {
      * Adds a new participant
      * @param participant The new participant
      */
-    public void addParticipant(UserEntity participant) {
+    public void addParticipant(ParticipantEntity participant) {
         this.participants.add(participant);
     }
 
@@ -213,12 +213,12 @@ public class EventEntity {
      * Removes participant
      * @param participant The participant
      */
-    public void removeParticipant(UserEntity participant) {
+    public void removeParticipant(ParticipantEntity participant) {
         this.participants.remove(participant);
     }
 
     /**
-     * Adds new expens
+     * Adds new expense
      * @param expense The expense
      */
     public void addExpense(ExpenseEntity expense) {

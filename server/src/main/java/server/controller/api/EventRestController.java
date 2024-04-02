@@ -1,14 +1,20 @@
 package server.controller.api;
 
 import commons.ExpenseEntity;
+import dto.CreatorToTitleDto;
+import dto.ParticipantCreationDto;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import dto.view.EventDetailsDto;
 import dto.view.EventOverviewDto;
 import dto.view.EventTitleDto;
-import dto.view.UserNameDto;
+import dto.view.ParticipantNameDto;
+import server.exception.FieldValidationException;
 import server.service.EventService;
 
 import java.util.List;
@@ -36,6 +42,18 @@ public class EventRestController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<EventDetailsDto> getById(@PathVariable("id") long id){
         return ResponseEntity.ok(this.eventService.getById(id));
+    }
+
+    /**
+     * Creates an event with the given title
+     * @param creatorToTitleDto the title of the new event along with the id of the creator
+     * @return the newly created event title and id
+     */
+    @PostMapping("/")
+    public ResponseEntity<EventTitleDto> createEvent(
+            @Valid @RequestBody CreatorToTitleDto creatorToTitleDto){
+        return ResponseEntity.ok(this.eventService.createEvent(creatorToTitleDto.getTitle(),
+                creatorToTitleDto.getId()));
     }
 
     /**
@@ -96,7 +114,7 @@ public class EventRestController {
      * @return the participants
      */
     @GetMapping("/{id}/participants")
-    public ResponseEntity<List<UserNameDto>> getEventParticipants(
+    public ResponseEntity<List<ParticipantNameDto>> getEventParticipants(
             @PathVariable(name = "id") long eventId){
         return ResponseEntity.ok(this.eventService.getEventParticipants(eventId));
     }
@@ -111,6 +129,38 @@ public class EventRestController {
     (@Valid @RequestBody EventDetailsDto eventDetailsDto) {
         EventDetailsDto createdEvent = eventService.saveEvent(eventDetailsDto);
         return new ResponseEntity<>(createdEvent, HttpStatus.CREATED);
+    }
+
+    /**
+     * creates a user with the given parameters
+     * @param eventId the id of the event - path variable
+     * @param user user
+     * @param result the validation result
+     * @return the newly created user and id
+     */
+    @PostMapping("/{eventId}/participants")
+    public ResponseEntity<ParticipantNameDto> addParticipant(
+            @PathVariable(name = "eventId") Long eventId,
+            @Valid @RequestBody ParticipantCreationDto user,
+            BindingResult result) {
+        if (result.hasErrors()) {
+            throw new FieldValidationException("Invalid participant details");
+        }
+        return ResponseEntity.ok(this.eventService.addParticipant(eventId, user));
+    }
+
+    /**
+     * Delete a participant
+     * @param eventId the event id
+     * @param participantId the participantId
+     * @return whether the request was successful
+     */
+    @DeleteMapping("/{eventId}/participants")
+    public ResponseEntity<Void> deleteParticipant(
+            @PathVariable(name = "eventId") Long eventId,
+            @NotNull @RequestBody Long participantId) {
+        this.eventService.deleteParticipant(eventId, participantId);
+        return ResponseEntity.ok().build();
     }
 
 

@@ -2,6 +2,8 @@ package server.service;
 
 import commons.EventEntity;
 import commons.ExpenseEntity;
+import commons.ParticipantEntity;
+import dto.ParticipantCreationDto;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -11,7 +13,7 @@ import server.exception.ObjectNotFoundException;
 import dto.view.EventDetailsDto;
 import dto.view.EventOverviewDto;
 import dto.view.EventTitleDto;
-import dto.view.UserNameDto;
+import dto.view.ParticipantNameDto;
 import server.repository.EventRepository;
 
 import java.time.LocalTime;
@@ -23,7 +25,7 @@ import java.util.stream.Collectors;
 public class EventService {
     private final EventRepository eventRepository;
     private final ModelMapper modelMapper;
-    private final UserService userService;
+    private final ParticipantService participantService;
 
 
 
@@ -35,10 +37,10 @@ public class EventService {
      * @param userService     the user service
      */
     public EventService(EventRepository eventRepository,
-                        ModelMapper modelMapper, @Lazy UserService userService) {
+                        ModelMapper modelMapper, @Lazy ParticipantService userService) {
         this.eventRepository = eventRepository;
         this.modelMapper = modelMapper;
-        this.userService = userService;
+        this.participantService = userService;
     }
 
     /**
@@ -109,13 +111,15 @@ public class EventService {
     /**
      * Create a new event given a title
      * @param title the title
+     * @param creatorId the id of the creator
      * @return the title and id of the event
      */
-    public EventEntity createEvent(String title) {
+    public EventTitleDto createEvent(String title, Long creatorId) {
         EventEntity newEntity = new EventEntity();
         newEntity.setTitle(title);
         newEntity.setInviteCode(generateInviteCode(title));
-        return this.eventRepository.save(newEntity);
+        newEntity.getParticipants().add(this.participantService.findById(creatorId));
+        return this.modelMapper.map(this.eventRepository.save(newEntity), EventTitleDto.class);
     }
 
     /**
@@ -155,10 +159,10 @@ public class EventService {
      * @param eventId the event id
      * @return the participants
      */
-    public List<UserNameDto> getEventParticipants(long eventId) {
+    public List<ParticipantNameDto> getEventParticipants(long eventId) {
         return this.eventRepository.findEventParticipants(eventId)
                 .stream()
-                .map(p -> this.modelMapper.map(p, UserNameDto.class))
+                .map(p -> this.modelMapper.map(p, ParticipantNameDto.class))
                 .collect(Collectors.toList());
     }
 
@@ -197,12 +201,34 @@ public class EventService {
         // Map expenses DTOs to entities
         //todo implement this since I don't have access to expenses yet
 
-        for (UserNameDto user : eventDetailsDto.getParticipants()) {
-            this.userService.join(entity.getInviteCode(), user.getId());
+        for (ParticipantNameDto user : eventDetailsDto.getParticipants()) {
+            this.participantService.join(entity.getInviteCode(), user.getId());
         }
 
         // Map saved entity back to DTO
         EventDetailsDto savedDto = modelMapper.map(entity, EventDetailsDto.class);
         return savedDto;
+    }
+
+    /**
+     * Create new user given credentials
+     * @param eventId the id of the event
+     * @param user The user details
+     * @return the user credentials
+     */
+    public ParticipantNameDto addParticipant(Long eventId, ParticipantCreationDto user) {
+        EventEntity event=this.eventRepository.findById(eventId)
+                .orElseThrow(() -> new ObjectNotFoundException("No such event found"));
+        return this.participantService.createParticipant(user, event);
+    }
+
+    /**
+     * Deletes a participant of an event
+     * @param eventId the eventId
+     * @param participantId
+     */
+    @Transactional
+    public void deleteParticipant(Long eventId, Long participantId) {
+        this.participantService.deleteParticipant(participantId);
     }
 }

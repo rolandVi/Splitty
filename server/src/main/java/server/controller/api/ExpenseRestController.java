@@ -1,8 +1,8 @@
 package server.controller.api;
 
 import commons.ExpenseEntity;
-import commons.UserEntity;
-import dto.view.UserNameDto;
+import commons.ParticipantEntity;
+import dto.view.ParticipantNameDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,13 +60,13 @@ public class ExpenseRestController {
     (@Valid @RequestBody ExpenseCreationDto expense) {
         ExpenseEntity createdExpense = expenseService.createExpense(expense);
 
-        UserNameDto author = new UserNameDto(createdExpense.getAuthor().getId(),
+        ParticipantNameDto author = new ParticipantNameDto(createdExpense.getAuthor().getId(),
                 createdExpense.getAuthor().getFirstName(),
                 createdExpense.getAuthor().getLastName());
 
-        Set<UserNameDto> debtors = new HashSet<>();
-        for (UserEntity u : createdExpense.getDebtors()){
-            debtors.add(new UserNameDto(u.getId(), u.getFirstName(), u.getLastName()));
+        Set<ParticipantNameDto> debtors = new HashSet<>();
+        for (ParticipantEntity u : createdExpense.getDebtors()){
+            debtors.add(new ParticipantNameDto(u.getId(), u.getFirstName(), u.getLastName()));
         }
 
         ExpenseDetailsDto details = new ExpenseDetailsDto(createdExpense.getId(),

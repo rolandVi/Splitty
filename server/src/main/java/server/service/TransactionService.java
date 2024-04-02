@@ -3,7 +3,7 @@ package server.service;
 import com.sun.jdi.ObjectCollectedException;
 import commons.ExpenseEntity;
 import commons.TransactionEntity;
-import commons.UserEntity;
+import commons.ParticipantEntity;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class TransactionService {
 
     private final ModelMapper modelMapper;
 
-    final UserService userService;
+    final ParticipantService userService;
 
     final ExpenseService expenseService;
 
@@ -35,7 +35,7 @@ public class TransactionService {
      * @param expenseService        the expense service
      */
     public TransactionService(TransactionRepository transactionRepository,
-                              ModelMapper modelMapper, UserService userService,
+                              ModelMapper modelMapper, ParticipantService userService,
                               ExpenseService expenseService) {
         this.transactionRepository = transactionRepository;
         this.modelMapper = modelMapper;
@@ -52,8 +52,8 @@ public class TransactionService {
         TransactionEntity newTransaction = new TransactionEntity();
         ExpenseEntity expense = this.expenseService.
                 findExpenseEntityById(transaction.getExpenseId());
-        UserEntity receiver = this.userService.findById(transaction.getReceiverId());
-        UserEntity sender = this.userService.findById(transaction.getSenderId());
+        ParticipantEntity receiver = this.userService.findById(transaction.getReceiverId());
+        ParticipantEntity sender = this.userService.findById(transaction.getSenderId());
         double money = this.expenseService.payDebt(expense, receiver, sender);
         newTransaction.setMoney(money)
                 .setExpense(expense)

@@ -1,7 +1,5 @@
 package dto.view;
 
-import dto.view.ExpenseDetailsDto;
-import dto.view.UserNameDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +20,7 @@ class ExpenseDetailsDtoTest {
     void getId() {
         Long id = 123L;
         ExpenseDetailsDto expense = new ExpenseDetailsDto(id, 100.0,
-                new UserNameDto(1L, "John", "Doe"),
+                new ParticipantNameDto(1L, "John", "Doe"),
                 "Expense 1",
                 new HashSet<>(),
                 new Date());
@@ -34,7 +32,7 @@ class ExpenseDetailsDtoTest {
     void setId() {
         Long id = 123L;
         ExpenseDetailsDto expense = new ExpenseDetailsDto(null, 100.0,
-                new UserNameDto(1L, "John", "Doe"),
+                new ParticipantNameDto(1L, "John", "Doe"),
                 "Expense 1",
                 new HashSet<>(),
                 new Date());
@@ -48,7 +46,7 @@ class ExpenseDetailsDtoTest {
     void getMoney() {
         Double money = 100.0;
         ExpenseDetailsDto expense = new ExpenseDetailsDto(123L, money,
-                new UserNameDto(1L, "John", "Doe"),
+                new ParticipantNameDto(1L, "John", "Doe"),
                 "Expense 1",
                 new HashSet<>(),
                 new Date());
@@ -60,7 +58,7 @@ class ExpenseDetailsDtoTest {
     void setMoney() {
         Double money = 100.0;
         ExpenseDetailsDto expense = new ExpenseDetailsDto(123L, null,
-                new UserNameDto(1L, "John", "Doe"),
+                new ParticipantNameDto(1L, "John", "Doe"),
                 "Expense 1",
                 new HashSet<>(),
                 new Date());
@@ -72,7 +70,7 @@ class ExpenseDetailsDtoTest {
 
     @Test
     void getAuthor() {
-        UserNameDto author = new UserNameDto(1L, "John", "Doe");
+        ParticipantNameDto author = new ParticipantNameDto(1L, "John", "Doe");
         ExpenseDetailsDto expense = new ExpenseDetailsDto(123L, 100.0,
                 author,
                 "Expense 1",
@@ -84,7 +82,7 @@ class ExpenseDetailsDtoTest {
 
     @Test
     void setAuthor() {
-        UserNameDto author = new UserNameDto(1L, "John", "Doe");
+        ParticipantNameDto author = new ParticipantNameDto(1L, "John", "Doe");
         ExpenseDetailsDto expense = new ExpenseDetailsDto(123L, 100.0,
                 null,
                 "Expense 1",
@@ -100,7 +98,7 @@ class ExpenseDetailsDtoTest {
     void getTitle() {
         String title = "Expense 1";
         ExpenseDetailsDto expense = new ExpenseDetailsDto(123L, 100.0,
-                new UserNameDto(1L, "John", "Doe"),
+                new ParticipantNameDto(1L, "John", "Doe"),
                 title,
                 new HashSet<>(),
                 new Date());
@@ -112,7 +110,7 @@ class ExpenseDetailsDtoTest {
     void setTitle() {
         String title = "Expense 1";
         ExpenseDetailsDto expense = new ExpenseDetailsDto(123L, 100.0,
-                new UserNameDto(1L, "John", "Doe"),
+                new ParticipantNameDto(1L, "John", "Doe"),
                 null,
                 new HashSet<>(),
                 new Date());
@@ -124,12 +122,12 @@ class ExpenseDetailsDtoTest {
 
     @Test
     void getDebtors() {
-        Set<UserNameDto> debtors = new HashSet<>();
-        debtors.add(new UserNameDto(1L, "John", "Doe"));
-        debtors.add(new UserNameDto(2L, "Jane", "Smith"));
+        Set<ParticipantNameDto> debtors = new HashSet<>();
+        debtors.add(new ParticipantNameDto(1L, "John", "Doe"));
+        debtors.add(new ParticipantNameDto(2L, "Jane", "Smith"));
 
         ExpenseDetailsDto expense = new ExpenseDetailsDto(123L, 100.0,
-                new UserNameDto(1L, "John", "Doe"),
+                new ParticipantNameDto(1L, "John", "Doe"),
                 "Expense 1",
                 debtors,
                 new Date());
@@ -139,12 +137,12 @@ class ExpenseDetailsDtoTest {
 
     @Test
     void setDebtors() {
-        Set<UserNameDto> debtors = new HashSet<>();
-        debtors.add(new UserNameDto(1L, "John", "Doe"));
-        debtors.add(new UserNameDto(2L, "Jane", "Smith"));
+        Set<ParticipantNameDto> debtors = new HashSet<>();
+        debtors.add(new ParticipantNameDto(1L, "John", "Doe"));
+        debtors.add(new ParticipantNameDto(2L, "Jane", "Smith"));
 
         ExpenseDetailsDto expense = new ExpenseDetailsDto(123L, 100.0,
-                new UserNameDto(1L, "John", "Doe"),
+                new ParticipantNameDto(1L, "John", "Doe"),
                 "Expense 1",
                 null,
                 new Date());
@@ -158,7 +156,7 @@ class ExpenseDetailsDtoTest {
     void getDate() {
         Date date = new Date();
         ExpenseDetailsDto expense = new ExpenseDetailsDto(123L, 100.0,
-                new UserNameDto(1L, "John", "Doe"),
+                new ParticipantNameDto(1L, "John", "Doe"),
                 "Expense 1",
                 new HashSet<>(),
                 date);
@@ -170,7 +168,7 @@ class ExpenseDetailsDtoTest {
     void setDate() {
         Date date = new Date();
         ExpenseDetailsDto expense = new ExpenseDetailsDto(123L, 100.0,
-                new UserNameDto(1L, "John", "Doe"),
+                new ParticipantNameDto(1L, "John", "Doe"),
                 "Expense 1",
                 new HashSet<>(),
                 null);
@@ -183,13 +181,13 @@ class ExpenseDetailsDtoTest {
     @Test
     void testEquals() {
         ExpenseDetailsDto expense1 = new ExpenseDetailsDto(123L, 100.0,
-                new UserNameDto(1L, "John", "Doe"),
+                new ParticipantNameDto(1L, "John", "Doe"),
                 "Expense 1",
                 new HashSet<>(),
                 new Date());
 
         ExpenseDetailsDto expense2 = new ExpenseDetailsDto(123L, 100.0,
-                new UserNameDto(1L, "John", "Doe"),
+                new ParticipantNameDto(1L, "John", "Doe"),
                 "Expense 1",
                 new HashSet<>(),
                 new Date());
@@ -200,13 +198,13 @@ class ExpenseDetailsDtoTest {
     @Test
     void testHashCode() {
         ExpenseDetailsDto expense1 = new ExpenseDetailsDto(123L, 100.0,
-                new UserNameDto(1L, "John", "Doe"),
+                new ParticipantNameDto(1L, "John", "Doe"),
                 "Expense 1",
                 new HashSet<>(),
                 new Date());
 
         ExpenseDetailsDto expense2 = new ExpenseDetailsDto(123L, 100.0,
-                new UserNameDto(1L, "John", "Doe"),
+                new ParticipantNameDto(1L, "John", "Doe"),
                 "Expense 1",
                 new HashSet<>(),
                 new Date());

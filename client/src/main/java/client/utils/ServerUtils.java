@@ -224,7 +224,7 @@ public class ServerUtils {
      * @param user user to check for existence
      * @return whether the user exists
      */
-    public boolean userExists(UserNameDto user){
+    public boolean userExists(ParticipantNameDto user){
         return client
                 .target(SERVER).path("/api/users/exists")
                 .request(APPLICATION_JSON)
@@ -238,12 +238,12 @@ public class ServerUtils {
      * @param eventId id of the event
      * @return List of participants as List<UserNameDto>
      */
-    public List<UserNameDto> getParticipantsByEvent(long eventId) {
+    public List<ParticipantNameDto> getParticipantsByEvent(long eventId) {
         return client
                 .target(SERVER).path("/api/events/" + eventId + "/participants")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .get(new GenericType<List<UserNameDto>>() {});
+                .get(new GenericType<List<ParticipantNameDto>>() {});
     }
 
     /**
@@ -251,7 +251,7 @@ public class ServerUtils {
      * @param id id of the participant
      * @return the participant as UserNameDto
      */
-    public UserNameDto getParticipantDetails(long id) {
+    public ParticipantNameDto getParticipantDetails(long id) {
         return null;
         //TODO
     }

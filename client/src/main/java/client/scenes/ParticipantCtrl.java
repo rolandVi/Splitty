@@ -2,7 +2,7 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import dto.view.UserNameDto;
+import dto.view.ParticipantNameDto;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -51,7 +51,7 @@ public class ParticipantCtrl {
     public void init(long parID, long eventId) {
         this.participantId = parID;
         this.eventId = eventId;
-        UserNameDto participant = serverUtils.getParticipantDetails(parID);
+        ParticipantNameDto participant = serverUtils.getParticipantDetails(parID);
 
         firstNameLabel.setText(participant.getFirstName());
         lastNameLabel.setText(participant.getLastName());
