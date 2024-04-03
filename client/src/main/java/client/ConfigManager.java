@@ -54,12 +54,12 @@ public class ConfigManager {
         // Required properties
         properties.setProperty("country", "GB");
         properties.setProperty("language", "en");
-        properties.setProperty("userID", "NOT SET");
+        properties.setProperty("userID", "1");
         properties.setProperty("loggedIn", "FALSE");
         // Not really necessary at the moment, however could be useful later
         properties.setProperty("userFirstName", "NOT SET");
         properties.setProperty("userLastName", "NOT SET");
-        properties.setProperty("userMail", "NOT SET");
+        properties.setProperty("userMail", "NOT@SET");
         properties.setProperty("serverURL", "http://localhost:8080");
         // When storing properties, they will be stored in alphabetical order based on key
         try (FileWriter writer = new FileWriter(configFilePath)){
