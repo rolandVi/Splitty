@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import dto.UserCreationDto;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 
 import javafx.scene.control.ComboBox;
@@ -19,9 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
@@ -30,7 +27,7 @@ import java.util.Optional;
 
 import java.util.ResourceBundle;
 
-public class StartPageCtrl implements MultiLanguages, Initializable {
+public class StartPageCtrl implements MultiLanguages{
 
     private final MainCtrl mainCtrl;
 
@@ -57,6 +54,9 @@ public class StartPageCtrl implements MultiLanguages, Initializable {
     @FXML
     public ImageView logoImageView;
 
+    @FXML
+    Image logo = new Image(getClass().getResourceAsStream("/images/splittyLogo.png"));
+
 
     /**
      * The constructor
@@ -77,6 +77,8 @@ public class StartPageCtrl implements MultiLanguages, Initializable {
         String locale = configManager.getProperty("language")
                 + "_" + configManager.getProperty("country");
         updateLanguageBox(languageBox, locale);
+
+        displayLogo();
     }
 
     /**
@@ -222,19 +224,9 @@ public class StartPageCtrl implements MultiLanguages, Initializable {
     }
 
     /**
-     *
-     * @param location
-     * The location used to resolve relative paths for the root object, or
-     * {@code null} if the location is not known.
-     *
-     * @param resources
-     * The resources used to localize the root object, or {@code null} if
-     * the root object was not localized.
+     * Setter for the logo
      */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        File file = new File("@../images/splittyLogo.png");
-        Image image = new Image(file.toURI().toString());
-        logoImageView.setImage(image);
+    public void displayLogo(){
+        logoImageView.setImage(logo);
     }
 }
