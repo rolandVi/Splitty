@@ -9,11 +9,8 @@ import dto.view.ParticipantNameDto;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 
@@ -102,7 +99,8 @@ public class NewExpenseCtrl {
         ObservableList<ParticipantNameDto> participants = FXCollections.
                 observableArrayList(parentEvent.getParticipants());
 
-        authorBox.setCellFactory(new Callback<ListView<ParticipantNameDto>, ListCell<ParticipantNameDto>>() {
+        authorBox.setCellFactory(new Callback<ListView<ParticipantNameDto>,
+                ListCell<ParticipantNameDto>>() {
             @Override
             public ListCell<ParticipantNameDto> call(ListView<ParticipantNameDto> param) {
                 return new ParticipantListCell();
@@ -142,7 +140,8 @@ public class NewExpenseCtrl {
         ObservableList<ParticipantNameDto> participants = FXCollections.
                 observableArrayList(parentEvent.getParticipants());
 
-        authorBox.setCellFactory(new Callback<ListView<ParticipantNameDto>, ListCell<ParticipantNameDto>>() {
+        authorBox.setCellFactory(new Callback<ListView<ParticipantNameDto>,
+                ListCell<ParticipantNameDto>>() {
             @Override
             public ListCell<ParticipantNameDto> call(ListView<ParticipantNameDto> param) {
                 return new ParticipantListCell();

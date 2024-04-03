@@ -7,7 +7,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ConfigManagerEmptyTest {
     private static final String TEST_CONFIG_PATH = "src/test/resources/testConfigEmpty.properties";

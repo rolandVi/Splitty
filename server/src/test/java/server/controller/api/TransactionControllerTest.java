@@ -1,19 +1,20 @@
 package server.controller.api;
 
+import dto.TransactionCreationDto;
+import dto.view.TransactionDetailsDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import dto.TransactionCreationDto;
-import dto.view.TransactionDetailsDto;
 import server.service.TransactionService;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 class TransactionControllerTest {

@@ -92,10 +92,19 @@ public class ParticipantNameDto {
         return this;
     }
 
+    /**
+     * Email getter
+     * @return the email
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Email setter
+     * @param email the new email
+     * @return the new participant info
+     */
     public ParticipantNameDto setEmail(String email) {
         this.email = email;
         return this;

@@ -2,7 +2,6 @@ package server.service;
 
 import commons.EventEntity;
 import commons.ExpenseEntity;
-import commons.ParticipantEntity;
 import dto.CreatorToTitleDto;
 import dto.ExpenseCreationDto;
 import dto.ParticipantCreationDto;
@@ -17,7 +16,6 @@ import server.repository.EventRepository;
 
 import java.time.LocalTime;
 import java.util.List;
-
 import java.util.stream.Collectors;
 
 @Service
@@ -113,6 +111,7 @@ public class EventService {
 
     /**
      * Create a new event given a title
+     * @param creatorToTitleDto the creator and event details
      * @return the title and id of the event
      */
     public EventDetailsDto createEvent(CreatorToTitleDto creatorToTitleDto) {
@@ -249,6 +248,11 @@ public class EventService {
         this.participantService.deleteParticipant(participantId);
     }
 
+    /**
+     * Return the event by invite code
+     * @param code the invite code
+     * @return the event
+     */
     public EventDetailsDto getByInviteCode(String code) {
         return this.modelMapper.map(
                 this.eventRepository.findEventEntityByInviteCode(code)

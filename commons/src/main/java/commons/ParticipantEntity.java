@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.util.Set;
-
 
 @Entity
 @Table(name = "users")
@@ -87,6 +85,10 @@ public class ParticipantEntity {
         return email;
     }
 
+    /**
+     * getter for the event
+     * @return the event
+     */
     public EventEntity getEvent() {
         return event;
     }
@@ -150,6 +152,11 @@ public class ParticipantEntity {
         this.bankAccount = bankAccount;
     }
 
+    /**
+     * setter for the event
+     * @param event the new event
+     * @return the new participant info
+     */
     public ParticipantEntity setEvent(EventEntity event) {
         this.event = event;
         return this;

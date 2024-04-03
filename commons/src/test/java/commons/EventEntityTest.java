@@ -22,7 +22,7 @@ public class EventEntityTest {
         Set<ParticipantEntity> users = new HashSet<>();
 
         user = new ParticipantEntity(1L, "FirstName", "LastName", "email@gmail.com",
-                new HashSet<>(), new BankAccountEntity());
+                new EventEntity(), new BankAccountEntity());
 
         expense = new ExpenseEntity(11L, 420.69D, user, new HashSet<>(), "Title",
                 new Date(2024 -1900, Calendar.JANUARY, 24), event);

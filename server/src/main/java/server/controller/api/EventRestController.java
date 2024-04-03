@@ -3,17 +3,15 @@ package server.controller.api;
 import commons.ExpenseEntity;
 import dto.CreatorToTitleDto;
 import dto.ParticipantCreationDto;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import org.springframework.data.repository.query.Param;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
 import dto.view.EventDetailsDto;
 import dto.view.EventOverviewDto;
 import dto.view.EventTitleDto;
 import dto.view.ParticipantNameDto;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import server.exception.FieldValidationException;
 import server.service.EventService;
 
@@ -45,6 +43,11 @@ public class EventRestController {
         return ResponseEntity.ok(this.eventService.getById(id));
     }
 
+    /**
+     * Returns the event details of an event with the given invite code
+     * @param code the invite code
+     * @return the event
+     */
     @GetMapping("/invites/{inviteCode}")
     public ResponseEntity<EventDetailsDto> getByInviteCode(
             @PathVariable("inviteCode") String code){

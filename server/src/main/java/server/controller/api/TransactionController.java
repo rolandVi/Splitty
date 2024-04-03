@@ -1,11 +1,11 @@
 package server.controller.api;
 
+import dto.TransactionCreationDto;
+import dto.view.TransactionDetailsDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import dto.TransactionCreationDto;
-import dto.view.TransactionDetailsDto;
 import server.service.TransactionService;
 
 import java.util.List;

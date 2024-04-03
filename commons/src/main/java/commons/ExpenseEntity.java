@@ -1,11 +1,11 @@
 package commons;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "expenses")
@@ -25,7 +25,7 @@ public class ExpenseEntity {
     @ManyToMany
     private Set<ParticipantEntity> debtors;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     private EventEntity event;
 
     private String title;
@@ -50,7 +50,8 @@ public class ExpenseEntity {
      * @param event the parent event entitty
      */
     public ExpenseEntity(Long id, Double money, ParticipantEntity author,
-                         Set<ParticipantEntity> debtors, String title, Date date, EventEntity event) {
+                         Set<ParticipantEntity> debtors, String title,
+                         Date date, EventEntity event) {
         this.id = id;
         this.money = money;
         this.author = author;

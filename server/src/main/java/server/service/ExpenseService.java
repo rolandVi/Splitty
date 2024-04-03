@@ -2,14 +2,14 @@ package server.service;
 
 import commons.ExpenseEntity;
 import commons.ParticipantEntity;
+import dto.ExpenseCreationDto;
+import dto.view.ExpenseDetailsDto;
 import dto.view.ParticipantNameDto;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import server.exception.ObjectNotFoundException;
-import dto.view.ExpenseDetailsDto;
-import dto.ExpenseCreationDto;
 import server.repository.ExpenseRepository;
 
 import java.math.BigDecimal;

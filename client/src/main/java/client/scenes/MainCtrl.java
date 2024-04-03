@@ -17,17 +17,14 @@ package client.scenes;
 
 import client.ConfigManager;
 import client.utils.ServerUtils;
-import dto.view.EventDetailsDto;
-import dto.view.ParticipantNameDto;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 
 public class MainCtrl {

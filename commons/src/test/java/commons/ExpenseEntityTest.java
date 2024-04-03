@@ -17,7 +17,7 @@ class ExpenseEntityTest {
     @BeforeEach
     public void setup(){
         ParticipantEntity user = new ParticipantEntity(1L, "FirstName", "LastName", "email@gmail.com",
-                new HashSet<>(), new BankAccountEntity());
+                new EventEntity(), new BankAccountEntity());
         this.expense = new ExpenseEntity(11L, 420.69D, user, new HashSet<>(), "Title",
                 new Date(2024 -1900, Calendar.JANUARY, 24), null);
     }
@@ -40,7 +40,7 @@ class ExpenseEntityTest {
     @Test
     void getAuthor() {
         assertEquals(new ParticipantEntity(1L, "FirstName", "LastName", "email@gmail.com",
-                new HashSet<>(), new BankAccountEntity()), this.expense.getAuthor());
+                new EventEntity(), new BankAccountEntity()), this.expense.getAuthor());
     }
 
     @Test
@@ -79,15 +79,15 @@ class ExpenseEntityTest {
     @Test
     void addDebtor() {
         this.expense.addDebtor(new ParticipantEntity(1L, "FirstName", "LastName",
-                "email@gmail.com", new HashSet<>(), new BankAccountEntity()));
+                "email@gmail.com", new EventEntity(), new BankAccountEntity()));
         assertEquals(new HashSet<>(List.of(new ParticipantEntity(1L, "FirstName", "LastName",
-                "email@gmail.com", new HashSet<>(), new BankAccountEntity()))), this.expense.getDebtors());
+                "email@gmail.com", new EventEntity(), new BankAccountEntity()))), this.expense.getDebtors());
     }
 
     @Test
     void testEquals() {
         ParticipantEntity user = new ParticipantEntity(1L, "FirstName", "LastName", "email@gmail.com",
-                new HashSet<>(), new BankAccountEntity());
+                new EventEntity(), new BankAccountEntity());
         assertEquals(this.expense, new ExpenseEntity(11L, 420.69D, user, new HashSet<>(), "Title",
                 new Date(2024 -1900, Calendar.JANUARY, 24), null));
     }

@@ -85,8 +85,8 @@ class EventDetailsDtoTest {
     @Test
     void setParticipants() {
         Set<ParticipantNameDto> participants = new HashSet<>();
-        participants.add(new ParticipantNameDto(1L, "John", "Doe"));
-        participants.add(new ParticipantNameDto(2L, "Jane", "Smith"));
+        participants.add(new ParticipantNameDto(1L, "John", "Doe",""));
+        participants.add(new ParticipantNameDto(2L, "Jane", "Smith", ""));
 
         event.setParticipants(participants);
 

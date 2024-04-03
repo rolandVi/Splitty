@@ -24,9 +24,9 @@ class TransactionEntityTest {
     void setup() {
         this.date=new Date();
         this.sender = new ParticipantEntity(1L, "Sender", "LastName",
-                "email@gmail.com", new HashSet<>(), new BankAccountEntity());
+                "email@gmail.com", new EventEntity(), new BankAccountEntity());
         this.receiver = new ParticipantEntity(2L, "Receiver", "LastName",
-                "email@gmail.com", new HashSet<>(), new BankAccountEntity());
+                "email@gmail.com", new EventEntity(), new BankAccountEntity());
         this.event=new EventEntity();
         this.expense= new ExpenseEntity(1L, 20d, receiver,
                 new HashSet<>(List.of(this.sender)), "title", date, event);

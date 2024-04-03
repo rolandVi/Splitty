@@ -4,19 +4,14 @@ import commons.BankAccountEntity;
 import commons.EventEntity;
 import commons.ParticipantEntity;
 import dto.BankAccountCreationDto;
+import dto.ParticipantCreationDto;
 import dto.view.BankAccountDto;
+import dto.view.ParticipantNameDto;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import server.exception.ObjectNotFoundException;
-import dto.ParticipantCreationDto;
-import dto.view.EventOverviewDto;
-import dto.view.EventTitleDto;
-import dto.view.ParticipantNameDto;
 import server.repository.ParticipantRepository;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ParticipantService {
@@ -57,7 +52,7 @@ public class ParticipantService {
      */
     public ParticipantEntity findById(Long userId) {
         return this.participantRepository.findById(userId)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> new ObjectNotFoundException("No such participant found"));
     }
 
 
@@ -118,7 +113,9 @@ public class ParticipantService {
      * @param event the event
      * @return the saved participant info
      */
-    public ParticipantNameDto createParticipant(ParticipantCreationDto participantInfo, EventEntity event) {
+    public ParticipantNameDto createParticipant(
+            ParticipantCreationDto participantInfo,
+            EventEntity event) {
         ParticipantEntity participant=new ParticipantEntity();
         participant.setFirstName(participantInfo.getFirstName());
         participant.setLastName(participantInfo.getLastName());
@@ -128,6 +125,10 @@ public class ParticipantService {
         return this.modelMapper.map(participant, ParticipantNameDto.class);
     }
 
+    /**
+     * Deletes a participant
+     * @param participantId the participant id
+     */
     @Transactional
     public void deleteParticipant(Long participantId) {
         this.participantRepository.deleteById(participantId);

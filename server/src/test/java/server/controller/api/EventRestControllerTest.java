@@ -1,15 +1,15 @@
 package server.controller.api;
 
+import dto.view.EventDetailsDto;
+import dto.view.EventOverviewDto;
+import dto.view.EventTitleDto;
+import dto.view.ParticipantNameDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import dto.view.EventDetailsDto;
-import dto.view.EventOverviewDto;
-import dto.view.EventTitleDto;
-import dto.view.UserNameDto;
 import server.service.EventService;
 
 import java.util.ArrayList;
@@ -110,10 +110,10 @@ class EventRestControllerTest {
     @Test
     void testGetEventParticipants() {
         long eventId = 1L;
-        List<UserNameDto> userNameDtoList = new ArrayList<>();
+        List<ParticipantNameDto> userNameDtoList = new ArrayList<>();
         when(eventService.getEventParticipants(eventId)).thenReturn(userNameDtoList);
 
-        ResponseEntity<List<UserNameDto>> responseEntity = eventRestController.getEventParticipants(eventId);
+        ResponseEntity<List<ParticipantNameDto>> responseEntity = eventRestController.getEventParticipants(eventId);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(userNameDtoList, responseEntity.getBody());

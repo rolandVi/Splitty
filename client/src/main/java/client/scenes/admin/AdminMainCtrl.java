@@ -17,9 +17,7 @@ package client.scenes.admin;
 
 
 import client.ConfigManager;
-
 import javafx.scene.Parent;
-
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;

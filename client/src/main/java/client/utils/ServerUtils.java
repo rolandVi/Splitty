@@ -395,6 +395,11 @@ public class ServerUtils {
         return response;
     }
 
+    /**
+     * Returns the event details of an event with the invite code
+     * @param inviteCode the invite code of the event
+     * @return the details
+     */
     public EventDetailsDto getEventDetailsByInviteCode(String inviteCode) {
         return client
                 .target(SERVER).path("/api/events/invites/" + inviteCode)

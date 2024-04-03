@@ -2,16 +2,11 @@ package client.scenes;
 
 import client.Main;
 import client.utils.ServerUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
-import dto.ParticipantCreationDto;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,12 +14,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 import java.util.Locale;
-import java.util.Optional;
-
 import java.util.ResourceBundle;
 
 public class StartPageCtrl implements MultiLanguages {

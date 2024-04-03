@@ -1,13 +1,13 @@
 package server.service;
 
 import commons.BankAccountEntity;
+import dto.BankAccountCreationDto;
+import dto.view.BankAccountDto;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import server.exception.ObjectNotFoundException;
-import dto.BankAccountCreationDto;
-import dto.view.BankAccountDto;
 import server.exception.FieldValidationException;
+import server.exception.ObjectNotFoundException;
 import server.repository.BankAccountRepository;
 
 @Service
@@ -109,7 +109,6 @@ public class BankAccountService {
 
         bankAccount.setBic(bankAccountCreationDto.getBic());
         bankAccount.setIban(bankAccountCreationDto.getIban());
-        bankAccount.setHolder(bankAccountCreationDto.getHolder());
         return this.bankAccountRepository.save(bankAccount);
     }
 }

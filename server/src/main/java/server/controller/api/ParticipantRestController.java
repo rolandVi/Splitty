@@ -3,10 +3,10 @@ package server.controller.api;
 import commons.ParticipantEntity;
 import dto.BankAccountCreationDto;
 import dto.view.BankAccountDto;
+import dto.view.ParticipantNameDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import dto.view.ParticipantNameDto;
 import server.service.ParticipantService;
 
 @RestController

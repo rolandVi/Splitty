@@ -10,7 +10,7 @@ class UserNameDtoTest {
 
     @BeforeEach
     void setUp() {
-        this.user = new ParticipantNameDto(1L, "John", "Doe");
+        this.user = new ParticipantNameDto(1L, "John", "Doe", "");
     }
 
     @Test
@@ -25,8 +25,8 @@ class UserNameDtoTest {
     @Test
     void testEquals() {
         // Arrange
-        ParticipantNameDto user2 = new ParticipantNameDto(1L, "John", "Doe");
-        ParticipantNameDto user3 = new ParticipantNameDto(2L, "Jane", "Smith");
+        ParticipantNameDto user2 = new ParticipantNameDto(1L, "John", "Doe", "");
+        ParticipantNameDto user3 = new ParticipantNameDto(2L, "Jane", "Smith", "");
 
         // Testing equality with itself
         Assertions.assertEquals(user, user);
@@ -38,11 +38,11 @@ class UserNameDtoTest {
         Assertions.assertNotEquals(user, user3);
 
         // Testing inequality with different first names
-        ParticipantNameDto user4 = new ParticipantNameDto(1L, "John", "Smith");
+        ParticipantNameDto user4 = new ParticipantNameDto(1L, "John", "Smith", "");
         Assertions.assertNotEquals(user, user4);
 
         // Testing inequality with different last names
-        ParticipantNameDto user5 = new ParticipantNameDto(1L, "Jane", "Doe");
+        ParticipantNameDto user5 = new ParticipantNameDto(1L, "Jane", "Doe", "");
         Assertions.assertNotEquals(user, user5);
 
         // Testing inequality with null
@@ -55,7 +55,7 @@ class UserNameDtoTest {
     @Test
     void testHashCode() {
         // Arrange
-        ParticipantNameDto user2 = new ParticipantNameDto(1L, "John", "Doe");
+        ParticipantNameDto user2 = new ParticipantNameDto(1L, "John", "Doe", "");
 
         // Hash code should be the same for objects with the same content
         Assertions.assertEquals(user.hashCode(), user2.hashCode());
