@@ -194,6 +194,7 @@ public class EventService {
      * @param eventDetailsDto An eventDetailsDto from the imported JSON dump
      * @return the eventDetailsDto from the mapped entity from the initial Dto
      */
+    //todo: check if the event hasn't already been restored
     public EventDetailsDto saveEvent(EventDetailsDto eventDetailsDto) {
         EventEntity entity = new EventEntity();
         entity.setInviteCode(eventDetailsDto.getInviteCode());

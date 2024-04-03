@@ -18,8 +18,6 @@ public class PaymentPageCtrl implements MultiLanguages {
     public Button showAllButton;
     @FXML
     public Button goBackButton;
-    @FXML
-    public Button addBank;
 
     /**
      * Injector for PaymentPageCtrl
@@ -79,13 +77,6 @@ public class PaymentPageCtrl implements MultiLanguages {
             default:
                 break;
         }
-    }
-
-    /**
-     * Allows the user to access the page to add bank information to their accounts
-     */
-    public void addBankInfo(){
-        mainCtrl.showAddNewBank();
     }
 
 

@@ -14,6 +14,5 @@
             <Font size="21.0" />
          </font>
       </Button>
-      <Button fx:id="addBank" layoutX="49.0" layoutY="339.0" mnemonicParsing="false" onAction="#addBankInfo" text="Bank" />
    </children>
 </AnchorPane>

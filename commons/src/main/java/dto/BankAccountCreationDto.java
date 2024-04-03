@@ -10,10 +10,6 @@ public class BankAccountCreationDto {
     private String iban;
 
     @NotBlank
-    @Size(max = 40)
-    private String holder;
-
-    @NotBlank
     private String bic;
 
     /**
@@ -24,7 +20,6 @@ public class BankAccountCreationDto {
      */
     public BankAccountCreationDto(String iban, String holder, String bic) {
         this.iban = iban;
-        this.holder = holder;
         this.bic = bic;
     }
 
@@ -49,24 +44,6 @@ public class BankAccountCreationDto {
      */
     public BankAccountCreationDto setIban(String iban) {
         this.iban = iban;
-        return this;
-    }
-
-    /**
-     * Retrieves the name of the account holder.
-     * @return The name of the account holder.
-     */
-    public String getHolder() {
-        return holder;
-    }
-
-    /**
-     * Sets the name of the account holder.
-     * @param holder The name of the account holder to set.
-     * @return This BankAccountCreationDto instance.
-     */
-    public BankAccountCreationDto setHolder(String holder) {
-        this.holder = holder;
         return this;
     }
 
@@ -99,7 +76,6 @@ public class BankAccountCreationDto {
         if (o == null || getClass() != o.getClass()) return false;
         BankAccountCreationDto that = (BankAccountCreationDto) o;
         return Objects.equals(iban, that.iban)
-                && Objects.equals(holder, that.holder)
                 && Objects.equals(bic, that.bic);
     }
 
@@ -109,6 +85,6 @@ public class BankAccountCreationDto {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(iban, holder, bic);
+        return Objects.hash(iban, bic);
     }
 }

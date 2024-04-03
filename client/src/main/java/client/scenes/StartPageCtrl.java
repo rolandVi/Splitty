@@ -38,6 +38,14 @@ public class StartPageCtrl implements MultiLanguages {
     @FXML
     public Text errorMessage;
     @FXML
+    public TextField firstNameField;
+    @FXML
+    public TextField surNameField;
+    @FXML
+    public TextField emailField;
+    @FXML
+    public Label incorrectData;
+    @FXML
     public Button connectButton;
     @FXML
     public Button openAdminButton;

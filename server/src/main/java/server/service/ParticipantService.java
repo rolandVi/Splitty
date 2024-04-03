@@ -74,6 +74,7 @@ public class ParticipantService {
                 .createBankAccount(bankAccountCreationDto);
         ParticipantEntity currentUser=this.participantRepository.findById(userId)
                 .orElseThrow(()-> new ObjectNotFoundException("No such user found"));
+        bankAccount.setHolder(currentUser.getFirstName() + currentUser.getLastName());
         currentUser.setBankAccount(bankAccount);
         this.participantRepository.save(currentUser);
         return this.modelMapper.map(bankAccount, BankAccountDto.class);
