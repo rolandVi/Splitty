@@ -37,10 +37,54 @@
 - Closure (1 min)
 
 ## Announcements by the Team:
+Henno was sick and could therefor not finish an issue
+You Xing had a question for the TA 
 
 ## Announcements by the TA:
+TA Basic requirements need to be passed, look at assignments
+Formative self reflection on friday
+
+## Question to TA
+Repository freeze when? TA will ask.
+Question about user account system in our code. Will this make us instant fail in the project? Or is this alright?
+TA will ask lecturer after meeting.
 
 ## Talking points:
 
+[//]: # (User account system)
+[//]: # (Just remove input part for data)
 
+Changes need to be propagated
 
+YX did flags (languages)
+Tymon did expenses functionality
+Leonardo did refactoring
+Henno did importing events
+Roland did transaction testing
+Victor did transactions
+
+Presentation may be a bit shark tanky
+
+[//]: # (Participant long polling)
+Admin overview will have long polling
+Events will have websockets
+
+Sebastion suggested adding additional classes in client to increase test coverage
+
+Presentation is a PASS or FAIL
+
+Keep config file unstaged, because it is now staged and causes complains about conflicts.
+
+## Plans for next week
+Improve on accessibility
+Work on additional features
+Sending emails works
+Detailed exepenses works
+Tymon works on summed expensens
+
+YX - Front-end emails and participant functionality
+Tymon - Expenses refactoring
+Leonardo - Admin page fix
+Henno - Statistics
+Roland - Front end testing
+Victor - Refactor transactions and add participant entity
