@@ -78,16 +78,15 @@ public class ServerUtils {
 
     /**
      * Creates HTTP request to the server using the parameter as name of event
-     * @param eventName name of event
-     * @param userId the user id
+     * @param creatorToTitleDto the creator details and the event title
      * @return HTTP response from the server
      */
-    public EventTitleDto createEvent(String eventName, Long userId){
-        return client.target(SERVER).path("api/events")
+    public EventDetailsDto createEvent(CreatorToTitleDto creatorToTitleDto){
+        return client.target(SERVER).path("api/events/")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .post(Entity.entity(new CreatorToTitleDto(), APPLICATION_JSON),
-                        EventTitleDto.class);
+                .post(Entity.entity(creatorToTitleDto, APPLICATION_JSON),
+                        EventDetailsDto.class);
     }
     /**
      * Updates the event name to the server and update the current event name
@@ -163,19 +162,6 @@ public class ServerUtils {
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .get(EventDetailsDto.class);
-    }
-
-    /**
-     * Get the events of a specific user
-     * @param id the id of the user
-     * @return the events
-     */
-    public List<EventOverviewDto> getEventsByUser(long id){
-        return client
-                .target(SERVER).path("/api/users/"+id+"/events")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .get(new GenericType<List<EventOverviewDto>>() {});
     }
 
     /**

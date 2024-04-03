@@ -113,9 +113,7 @@ public class EventOverviewCtrl implements MultiLanguages {
      * Loads the events and displays them on the page
      */
     public void loadEvents() {
-        long userId = Long.parseLong(mainCtrl.configManager.getProperty("userID"));
-
-        List<EventOverviewDto> events = this.serverUtils.getEventsByUser(userId);
+        List<EventOverviewDto> events = this.serverUtils.getAllEvents();
         Node[] nodes=new Node[events.size()];
 
 
@@ -130,15 +128,9 @@ public class EventOverviewCtrl implements MultiLanguages {
             }
 
             Node currentNode=nodes[i];
-            final EventOverviewDto event=events.get(i);
 
             Button eventButton = (Button) currentNode.lookup("#eventTitle");
             eventButton.setText(events.get(i).getTitle());
-
-            Button inviteBtn=(Button) currentNode.lookup("#inviteCodeButton");
-            inviteBtn.setOnAction(e -> copyInvite(event.getInviteCode()));
-
-            eventButton.setOnAction(e -> showDetails(event.getId()));
         }
         this.eventContainer.getChildren().clear();
         this.eventContainer.getChildren().addAll(nodes);
@@ -146,17 +138,6 @@ public class EventOverviewCtrl implements MultiLanguages {
 
     private void showDetails(long id) {
         mainCtrl.showEventDetails(id);
-    }
-
-    /**
-     * Event listener that copies the invite code of the selected event to the clipboard
-     * @param inviteCode the invite code for the event
-     */
-    public void copyInvite(String inviteCode){
-        Clipboard clipboard = Clipboard.getSystemClipboard();
-        ClipboardContent content = new ClipboardContent();
-        content.putString(inviteCode);
-        clipboard.setContent(content);
     }
 
     /**
