@@ -9,6 +9,8 @@ public class ParticipantNameDto {
     private String firstName;
     private String lastName;
 
+    private String email;
+
     /**
      * Empty constructor
      */
@@ -21,11 +23,13 @@ public class ParticipantNameDto {
      * @param id        the id
      * @param firstName the firstName
      * @param lastName  the lastName
+     * @param email the email
      */
-    public ParticipantNameDto(Long id, String firstName, String lastName) {
+    public ParticipantNameDto(Long id, String firstName, String lastName, String email) {
         this.id=id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email=email;
     }
 
     /**
@@ -88,6 +92,15 @@ public class ParticipantNameDto {
         return this;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public ParticipantNameDto setEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
     /**
      * Equals to check for equality
      *
@@ -101,7 +114,8 @@ public class ParticipantNameDto {
         ParticipantNameDto that = (ParticipantNameDto) o;
         return Objects.equals(id, that.id)
                 && Objects.equals(firstName, that.firstName)
-                && Objects.equals(lastName, that.lastName);
+                && Objects.equals(lastName, that.lastName)
+                && Objects.equals(email, that.email);
     }
 
     /**
@@ -111,7 +125,7 @@ public class ParticipantNameDto {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName);
+        return Objects.hash(id, firstName, lastName, email);
     }
 
     /**

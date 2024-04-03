@@ -202,7 +202,11 @@ public class EventService {
         //todo implement this since I don't have access to expenses yet
 
         for (ParticipantNameDto user : eventDetailsDto.getParticipants()) {
-            this.participantService.join(entity.getInviteCode(), user.getId());
+            ParticipantCreationDto newParticipant=new ParticipantCreationDto()
+                    .setFirstName(user.getFirstName())
+                    .setLastName(user.getLastName())
+                    .setEmail(user.getEmail());
+            this.addParticipant(entity.getId(), newParticipant);
         }
 
         // Map saved entity back to DTO

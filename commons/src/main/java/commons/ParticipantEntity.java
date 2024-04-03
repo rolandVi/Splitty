@@ -23,7 +23,7 @@ public class ParticipantEntity {
     @Column
     private String email;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     private EventEntity event;
 
     @OneToOne

@@ -114,7 +114,8 @@ public class MainCtrl {
 
         ParticipantNameDto user = new ParticipantNameDto(Long.parseLong(configManager.getProperty("userID")),
                 configManager.getProperty("userFirstName"),
-                configManager.getProperty("userLastName"));
+                configManager.getProperty("userLastName"),
+                configManager.getProperty("userMail"));
 
         if (configManager.getProperty("loggedIn").equals("TRUE") && serverUtils.userExists(user)) {
             showOverview();

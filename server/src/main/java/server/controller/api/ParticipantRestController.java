@@ -5,20 +5,15 @@ import dto.BankAccountCreationDto;
 import dto.view.BankAccountDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import dto.CreatorToTitleDto;
-import dto.ParticipantCreationDto;
-import dto.view.EventTitleDto;
 import dto.view.ParticipantNameDto;
-import server.exception.FieldValidationException;
 import server.service.ParticipantService;
 
 @RestController
 @RequestMapping("/api/users")
 public class ParticipantRestController {
 
-    private final ParticipantService userService;
+    private final ParticipantService participantService;
 
 
     /**
@@ -26,7 +21,7 @@ public class ParticipantRestController {
      * @param userService the user service to inject
      */
     public ParticipantRestController(ParticipantService userService) {
-        this.userService = userService;
+        this.participantService = userService;
     }
 
     /**
@@ -36,10 +31,10 @@ public class ParticipantRestController {
      */
     @PostMapping("/exists")
     public ResponseEntity<Void> userExists(@RequestBody ParticipantNameDto user){
-        if (!userService.existsById(user.getId())){
+        if (!participantService.existsById(user.getId())){
             return ResponseEntity.notFound().build();
         }else {
-            ParticipantEntity userEntity = userService.findById(user.getId());
+            ParticipantEntity userEntity = participantService.findById(user.getId());
             if (user.getFirstName().equals(userEntity.getFirstName())
                     && user.getLastName().equals(userEntity.getLastName())){
                 return ResponseEntity.ok().build();
@@ -59,7 +54,7 @@ public class ParticipantRestController {
     public ResponseEntity<BankAccountDto> createBankAccount(
             @Valid @RequestBody BankAccountCreationDto bankAccountCreationDto,
             @PathVariable(name = "userId") Long userId) {
-        return ResponseEntity.ok(this.userService
+        return ResponseEntity.ok(this.participantService
                 .createBankAccount(bankAccountCreationDto, userId));
     }
 
@@ -71,7 +66,7 @@ public class ParticipantRestController {
     @GetMapping("/{userId}/account")
     public ResponseEntity<BankAccountDto> findBankDetails(
             @PathVariable(name = "userId") Long id){
-        return ResponseEntity.ok(this.userService
+        return ResponseEntity.ok(this.participantService
                 .getBankAccount(id));
     }
 
@@ -85,7 +80,7 @@ public class ParticipantRestController {
     public ResponseEntity<BankAccountDto> editBankAccount(
             @PathVariable(name = "userId") Long userId,
             @Valid @RequestBody BankAccountCreationDto bankAccountCreationDto){
-        return ResponseEntity.ok(this.userService
+        return ResponseEntity.ok(this.participantService
                 .editBankAccount(bankAccountCreationDto, userId));
     }
 }

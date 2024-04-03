@@ -62,11 +62,15 @@ public class ExpenseRestController {
 
         ParticipantNameDto author = new ParticipantNameDto(createdExpense.getAuthor().getId(),
                 createdExpense.getAuthor().getFirstName(),
-                createdExpense.getAuthor().getLastName());
+                createdExpense.getAuthor().getLastName(),
+                createdExpense.getAuthor().getEmail());
 
         Set<ParticipantNameDto> debtors = new HashSet<>();
         for (ParticipantEntity u : createdExpense.getDebtors()){
-            debtors.add(new ParticipantNameDto(u.getId(), u.getFirstName(), u.getLastName()));
+            debtors.add(new ParticipantNameDto(u.getId(),
+                    u.getFirstName(),
+                    u.getLastName(),
+                    u.getEmail()));
         }
 
         ExpenseDetailsDto details = new ExpenseDetailsDto(createdExpense.getId(),

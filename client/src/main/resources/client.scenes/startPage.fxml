@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StartPageCtrl">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StartPageCtrl">
    <children>
       <Label layoutX="278.0" layoutY="44.0" scaleX="6.0" scaleY="6.0" text="SPLITTY" textAlignment="CENTER" />
 
@@ -26,7 +22,7 @@
       <TextField fx:id="firstNameField" layoutX="226.0" layoutY="127.0" promptText="First name" />
       <TextField fx:id="surNameField" layoutX="226.0" layoutY="160.0" promptText="Surname" />
       <TextField fx:id="emailField" layoutX="225.0" layoutY="192.0" promptText="Email" />
-      <Label fx:id="incorrectData" layoutX="220.0" layoutY="331.0" prefHeight="17.0" prefWidth="161.0" text="Please enter valid information" textFill="RED" visible="false" />
+      <Label fx:id="incorrectData" layoutX="169.0" layoutY="331.0" prefHeight="32.0" prefWidth="263.0" text="Please enter valid information" textFill="RED" visible="false" />
       <ComboBox fx:id="languageBox" layoutX="14.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#uponSelectionLanguage" />
    </children>
 </AnchorPane>

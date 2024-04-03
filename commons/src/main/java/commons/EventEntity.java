@@ -30,7 +30,7 @@ public class EventEntity {
     @OneToMany(cascade = CascadeType.DETACH)
     private Set<ExpenseEntity> expenses;
 
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE)
     private Set<ParticipantEntity> participants;
 
     /**
