@@ -13,6 +13,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
@@ -41,7 +43,6 @@ public class StartPageCtrl implements MultiLanguages{
     public TextField surNameField;
     @FXML
     public TextField emailField;
-
     @FXML
     public Label incorrectData;
     @FXML
@@ -50,6 +51,11 @@ public class StartPageCtrl implements MultiLanguages{
     public Button openAdminButton;
     @FXML
     public ComboBox<String> languageBox;
+    @FXML
+    public ImageView logoImageView;
+
+    @FXML
+    Image logo = new Image(getClass().getResourceAsStream("/images/splittyLogo.png"));
 
 
     /**
@@ -71,6 +77,8 @@ public class StartPageCtrl implements MultiLanguages{
         String locale = configManager.getProperty("language")
                 + "_" + configManager.getProperty("country");
         updateLanguageBox(languageBox, locale);
+
+        displayLogo();
     }
 
     /**
@@ -215,4 +223,10 @@ public class StartPageCtrl implements MultiLanguages{
         return serverUtils.getUserId(url, email);
     }
 
+    /**
+     * Setter for the logo
+     */
+    public void displayLogo(){
+        logoImageView.setImage(logo);
+    }
 }

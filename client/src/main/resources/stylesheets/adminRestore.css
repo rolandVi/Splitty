@@ -1,0 +1,37 @@
+/*#313B72*/
+/*#62A87C*/
+/*#462255*/
+/*#C3F3C0*/
+/*#7EE081*/
+
+.pane{
+    -fx-background-color: #C3F3C0;
+}
+
+.restoreBtn{
+    -fx-background-color: #62A87C;
+    -fx-alignment: center-left;
+    -fx-background-image: url('https://cdn4.iconfinder.com/data/icons/programing-apps-websites-4/24/database-refresh--reload-RAID-storage-code-disk-database-programming-array-refresh-hard-disc-128.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: right center;
+    -fx-background-size: contain;
+}
+
+.restoreBtn:hover{
+    -fx-background-color: #313B72;
+    -fx-text-fill: white;
+}
+
+.backBtn{
+    -fx-background-color: #62A87C;
+
+}
+
+.backBtn:hover{
+    -fx-background-color: #313B72;
+    -fx-text-fill: white;
+}
+
+.label{
+    -fx-font-family: sans-serif;
+}
