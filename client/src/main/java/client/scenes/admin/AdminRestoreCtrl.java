@@ -46,7 +46,6 @@ public class AdminRestoreCtrl {
      */
     public void restoreData() {
         String jsonData = textField.getText();
-
         serverUtils.restoreData(jsonData);
         textField.clear();
     }

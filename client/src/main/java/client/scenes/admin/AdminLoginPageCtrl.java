@@ -98,6 +98,4 @@ public class AdminLoginPageCtrl implements MultiLanguages {
             throw new RuntimeException();
         }
     }
-
-
 }
