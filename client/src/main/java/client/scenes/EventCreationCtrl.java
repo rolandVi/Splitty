@@ -77,8 +77,7 @@ public class EventCreationCtrl implements MultiLanguages{
     public void createEvent() {
         if (eventNameTextField.getText().isEmpty() ||
             creatorLastNameTextField.getText().isEmpty() ||
-            creatorFirstNameTextField.getText().isEmpty() ||
-            creatorEmailTextField.getText().isEmpty()){
+            creatorFirstNameTextField.getText().isEmpty()){
             errorMessage.setVisible(true);
             return;
         }

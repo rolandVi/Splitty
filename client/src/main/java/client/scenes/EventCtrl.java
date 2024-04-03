@@ -64,8 +64,6 @@ public class EventCtrl implements MultiLanguages{
     private final EventCtrl self = this;
 
     @FXML
-    public Button leaveButton;
-    @FXML
     private VBox participantsContainer;
 
     /**
@@ -256,15 +254,6 @@ public class EventCtrl implements MultiLanguages{
      */
     private void showParticipantEdit(long parID, long eventId) {
         mainCtrl.showParticipantEdit(parID, eventId);
-    }
-
-    /**
-     * The current user leaves the event
-     */
-    public void leave(){
-        long userId = Long.parseLong(mainCtrl.configManager.getProperty("userID"));
-        serverUtils.deleteEventParticipant(this.eventDetailsDto.getId(), userId);
-        returnToOverview();
     }
 
     /**

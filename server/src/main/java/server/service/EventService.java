@@ -247,4 +247,12 @@ public class EventService {
     public void deleteParticipant(Long eventId, Long participantId) {
         this.participantService.deleteParticipant(participantId);
     }
+
+    public EventDetailsDto getByInviteCode(String code) {
+        return this.modelMapper.map(
+                this.eventRepository.findEventEntityByInviteCode(code)
+                        .orElse(new EventEntity()),
+                EventDetailsDto.class
+        );
+    }
 }

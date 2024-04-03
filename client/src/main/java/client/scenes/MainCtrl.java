@@ -17,6 +17,7 @@ package client.scenes;
 
 import client.ConfigManager;
 import client.utils.ServerUtils;
+import dto.view.EventDetailsDto;
 import dto.view.ParticipantNameDto;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -59,9 +60,6 @@ public class MainCtrl {
     private Scene participantItem;
     private Scene participantEdit;
     private ParticipantCtrl participantCtrl;
-
-    private EnrollEventCtrl enrollEventCtrl;
-    private Scene enrollPage;
 
     private AddBankInfoCtrl bankInfoCtrl;
     private Scene addBankInfo;
@@ -115,18 +113,8 @@ public class MainCtrl {
         this.participantItem = new Scene(sceneInputWrapper.participantItemPage().getValue());
         this.participantEdit = new Scene(sceneInputWrapper.participantPage().getValue());
         this.addBankInfo = new Scene(sceneInputWrapper.bankInfoPage().getValue());
-        this.enrollPage=new Scene(sceneInputWrapper.enrollEventPage().getValue());
 
-        ParticipantNameDto user = new ParticipantNameDto(Long.parseLong(configManager.getProperty("userID")),
-                configManager.getProperty("userFirstName"),
-                configManager.getProperty("userLastName"),
-                configManager.getProperty("userMail"));
-
-        if (configManager.getProperty("loggedIn").equals("TRUE") && serverUtils.userExists(user)) {
-            showOverview();
-        } else {
-            showStart();
-        }
+        showStart();
 
         sceneInputWrapper.primaryStage().show();
         updateLanguagesOfScenes();
@@ -230,14 +218,6 @@ public class MainCtrl {
     public void showNewParticipant() {
         primaryStage.setTitle("newParticipant page");
         primaryStage.setScene(newParticipant);
-    }
-
-    /**
-     * Shows the enroll page
-     */
-    public void showEnrollPage(){
-        primaryStage.setTitle("Enroll");
-        primaryStage.setScene(enrollPage);
     }
 
     /**

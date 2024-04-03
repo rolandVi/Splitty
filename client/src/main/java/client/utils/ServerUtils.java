@@ -206,20 +206,6 @@ public class ServerUtils {
     }
 
     /**
-     * Check for user existence
-     * @param user user to check for existence
-     * @return whether the user exists
-     */
-    public boolean userExists(ParticipantNameDto user){
-        return client
-                .target(SERVER).path("/api/users/exists")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .post(Entity.entity(user, APPLICATION_JSON))
-                .getStatus()!=404;
-    }
-
-    /**
      * Get the participants of a specific event
      * @param eventId id of the event
      * @return List of participants as List<UserNameDto>
@@ -249,8 +235,7 @@ public class ServerUtils {
      */
     public void deleteEventParticipant(long eventId, long participantId) {
         client
-                .target(SERVER).path("/api/users/" + participantId
-                        + "/events/" + eventId)
+                .target(SERVER).path("/api/events/" + eventId + "/participants/" + participantId)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .delete();
@@ -262,7 +247,7 @@ public class ServerUtils {
      */
     public void enrollInEvent(String inviteCode, long userId) {
         client
-                .target(SERVER).path("/api/users/events/"+inviteCode)
+                .target(SERVER).path("/api/events/"+inviteCode)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(userId, APPLICATION_JSON));
@@ -281,7 +266,7 @@ public class ServerUtils {
                                       String url) {
 
         return client
-                .target(url).path("/api/users/" + userId + "/account")
+                .target(url).path("/api/participants/" + userId + "/account")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(requestBody, APPLICATION_JSON));
@@ -296,7 +281,7 @@ public class ServerUtils {
     public Optional<HttpResponse<String>> createUser(String url, String requestBody) {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .uri(URI.create(url + "/api/users/"))
+                .uri(URI.create(url + "/api/participants/"))
                 .header("Content-Type", "application/json")
                 .build();
 
@@ -312,33 +297,6 @@ public class ServerUtils {
         }
 
         return response;
-    }
-
-    /**
-     * Gets the user id
-     * @param url The URL
-     * @param email the e-mail
-     * @return The user id
-     */
-    public Long getUserId(String url, String email) {
-        HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(url + "/api/users/" + email))
-                .header("Content-Type", "application/json")
-                .build();
-
-        // Send HTTP request to server
-        // Return HTTP response from server
-        Optional<HttpResponse<String>> response;
-        try {
-            response = Optional.of(HttpClient
-                    .newHttpClient()
-                    .send(request, HttpResponse.BodyHandlers.ofString()));
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        return Long.valueOf(response.get().body());
     }
 
     /**
@@ -394,17 +352,17 @@ public class ServerUtils {
      */
     public BankAccountDto findBankDetails(String userID, String serverURL) {
         return client.target(serverURL)
-                .path("/api/users/" + userID + "/account")
+                .path("/api/participants/" + userID + "/account")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<BankAccountDto>() {});
     }
 
     /**
-     * Edits the bank account detials of the current user
+     * Edits the bank account details of the current user
      * @param userId the user id
-     * @param bankAccount
-     * @param url
+     * @param bankAccount the bank account
+     * @param url the url of the server
      * @return  the response from the server
      */
     public Optional<HttpResponse<String>> editBankAccount(Long userId,
@@ -420,7 +378,7 @@ public class ServerUtils {
 
         // Create HTTP request
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/api/users/" + userId + "/account"))
+                .uri(URI.create(url + "/api/participants/" + userId + "/account"))
                 .header("Content-Type", "application/json")
                 .method("PATCH", HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
@@ -435,5 +393,13 @@ public class ServerUtils {
         }
 
         return response;
+    }
+
+    public EventDetailsDto getEventDetailsByInviteCode(String inviteCode) {
+        return client
+                .target(SERVER).path("/api/events/invites/" + inviteCode)
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .get(EventDetailsDto.class);
     }
 }

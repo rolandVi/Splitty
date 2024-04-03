@@ -1,6 +1,7 @@
 package dto.view;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -24,6 +25,8 @@ public class EventDetailsDto {
     public EventDetailsDto() {
         creationDate = new Date(System.currentTimeMillis());
         lastModifiedDate = new Date(System.currentTimeMillis());
+        expenses=new HashSet<>();
+        participants=new HashSet<>();
     }
 
     /**

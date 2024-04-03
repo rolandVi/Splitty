@@ -37,7 +37,6 @@
             <VBox fx:id="participantsContainer" prefHeight="175.0" prefWidth="270.0" />
          </content>
       </ScrollPane>
-      <Button fx:id="leaveButton" layoutX="30.0" layoutY="360.0" mnemonicParsing="false" onAction="#leave" text="Leave" />
       <Button fx:id="inviteBtn" layoutX="474.0" layoutY="59.0" mnemonicParsing="false" onAction="#copyInvite" text="Copy" />
    </children>
 </Pane>

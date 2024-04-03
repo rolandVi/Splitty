@@ -35,13 +35,20 @@ public class EventRestController {
 
     /**
      * Access the event with the given id
-     * @param id the id of the event that is present in the URL
+     * @param id the id of the event
      * @return ResponseEntity with badRequest status if invalid id was presented
      *         or ResponseEntity with the requested event as body
      */
     @GetMapping(value = "/{id}")
-    public ResponseEntity<EventDetailsDto> getById(@PathVariable("id") long id){
+    public ResponseEntity<EventDetailsDto> getById(
+            @PathVariable("id") Long id){
         return ResponseEntity.ok(this.eventService.getById(id));
+    }
+
+    @GetMapping("/invites/{inviteCode}")
+    public ResponseEntity<EventDetailsDto> getByInviteCode(
+            @PathVariable("inviteCode") String code){
+        return ResponseEntity.ok(this.eventService.getByInviteCode(code));
     }
 
     /**
@@ -154,10 +161,10 @@ public class EventRestController {
      * @param participantId the participantId
      * @return whether the request was successful
      */
-    @DeleteMapping("/{eventId}/participants")
+    @DeleteMapping("/{eventId}/participants/{participantId}")
     public ResponseEntity<Void> deleteParticipant(
             @PathVariable(name = "eventId") Long eventId,
-            @NotNull @RequestBody Long participantId) {
+            @PathVariable(name = "participantId") Long participantId) {
         this.eventService.deleteParticipant(eventId, participantId);
         return ResponseEntity.ok().build();
     }

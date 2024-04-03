@@ -10,7 +10,7 @@ import dto.view.ParticipantNameDto;
 import server.service.ParticipantService;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/participants")
 public class ParticipantRestController {
 
     private final ParticipantService participantService;

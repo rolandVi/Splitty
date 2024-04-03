@@ -3,6 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 
 import com.google.inject.Inject;
+import dto.view.EventDetailsDto;
 import dto.view.EventOverviewDto;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 
+import javafx.scene.control.TextField;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.VBox;
@@ -44,6 +46,15 @@ public class EventOverviewCtrl implements MultiLanguages {
 
     @FXML
     private Button enrollBtn;
+
+    @FXML
+    private TextField inviteCodeTextField;
+
+    @FXML
+    private Button enterButton;
+
+    @FXML
+    private Label inviteCodeErrorMessage;
 
 
     /**
@@ -140,10 +151,16 @@ public class EventOverviewCtrl implements MultiLanguages {
         mainCtrl.showEventDetails(id);
     }
 
-    /**
-     * Shows the enroll page
-     */
-    public void showEnrollPage(){
-        mainCtrl.showEnrollPage();
+    public void loadEventDetails(){
+        this.inviteCodeErrorMessage.setVisible(false);
+        String inviteCode=this.inviteCodeTextField.getText().trim();
+        EventDetailsDto event=this.serverUtils.getEventDetailsByInviteCode(inviteCode);
+        if (event.getId()==null){
+            this.inviteCodeErrorMessage.setVisible(true);
+            return;
+        }
+
+        this.mainCtrl.showEventDetails(event.getId());
+        this.inviteCodeTextField.setText("");
     }
 }
