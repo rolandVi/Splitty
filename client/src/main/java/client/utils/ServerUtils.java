@@ -83,10 +83,10 @@ public class ServerUtils {
      * @return HTTP response from the server
      */
     public EventTitleDto createEvent(String eventName, Long userId){
-        return client.target(SERVER).path("api/users/events")
+        return client.target(SERVER).path("api/events")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .post(Entity.entity(new CreatorToTitleDto(userId, eventName), APPLICATION_JSON),
+                .post(Entity.entity(new CreatorToTitleDto(), APPLICATION_JSON),
                         EventTitleDto.class);
     }
     /**

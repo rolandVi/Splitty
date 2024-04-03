@@ -145,6 +145,14 @@ public class ExpenseCreationDto {
     }
 
     /**
+     * Setter for the debtors of the expense
+     * @param debtors the debtors of the expense
+     */
+    public void setDebtors(Set<ParticipantNameDto> debtors) {
+        this.debtors = debtors;
+    }
+
+    /**
      * Equals method
      * @param o the object to compare
      * @return boolean whether the objects are equal

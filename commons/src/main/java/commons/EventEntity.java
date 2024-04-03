@@ -27,7 +27,7 @@ public class EventEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
 
-    @OneToMany(cascade = CascadeType.DETACH)
+    @OneToMany(cascade = CascadeType.REMOVE)
     private Set<ExpenseEntity> expenses;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE)

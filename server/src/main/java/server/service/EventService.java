@@ -3,17 +3,16 @@ package server.service;
 import commons.EventEntity;
 import commons.ExpenseEntity;
 import commons.ParticipantEntity;
+import dto.CreatorToTitleDto;
+import dto.ExpenseCreationDto;
 import dto.ParticipantCreationDto;
+import dto.view.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import server.exception.ObjectNotFoundException;
-import dto.view.EventDetailsDto;
-import dto.view.EventOverviewDto;
-import dto.view.EventTitleDto;
-import dto.view.ParticipantNameDto;
 import server.repository.EventRepository;
 
 import java.time.LocalTime;
@@ -27,6 +26,7 @@ public class EventService {
     private final ModelMapper modelMapper;
     private final ParticipantService participantService;
 
+    private final ExpenseService expenseService;
 
 
     /**
@@ -34,13 +34,16 @@ public class EventService {
      *
      * @param eventRepository the EventEntity repository
      * @param modelMapper     the ModelMapper injected by Spring
-     * @param userService     the user service
+     * @param participantService     the user service
+     * @param expenseService  the expense service
      */
     public EventService(EventRepository eventRepository,
-                        ModelMapper modelMapper, @Lazy ParticipantService userService) {
+                        ModelMapper modelMapper, @Lazy ParticipantService participantService,
+                        @Lazy ExpenseService expenseService) {
         this.eventRepository = eventRepository;
         this.modelMapper = modelMapper;
-        this.participantService = userService;
+        this.expenseService = expenseService;
+        this.participantService = participantService;
     }
 
     /**
@@ -110,16 +113,16 @@ public class EventService {
 
     /**
      * Create a new event given a title
-     * @param title the title
-     * @param creatorId the id of the creator
      * @return the title and id of the event
      */
-    public EventTitleDto createEvent(String title, Long creatorId) {
+    public EventDetailsDto createEvent(CreatorToTitleDto creatorToTitleDto) {
         EventEntity newEntity = new EventEntity();
-        newEntity.setTitle(title);
-        newEntity.setInviteCode(generateInviteCode(title));
-        newEntity.getParticipants().add(this.participantService.findById(creatorId));
-        return this.modelMapper.map(this.eventRepository.save(newEntity), EventTitleDto.class);
+        newEntity.setTitle(creatorToTitleDto.getTitle());
+        newEntity.setInviteCode(generateInviteCode(creatorToTitleDto.getTitle()));
+        EventEntity event=this.eventRepository.save(newEntity);
+        this.addParticipant(event.getId(),
+                this.modelMapper.map(creatorToTitleDto, ParticipantCreationDto.class));
+        return this.modelMapper.map(event, EventDetailsDto.class);
     }
 
     /**
@@ -198,8 +201,17 @@ public class EventService {
         entity.setCreationDate(eventDetailsDto.getCreationDate());
         entity=this.eventRepository.save(entity);
 
-        // Map expenses DTOs to entities
-        //todo implement this since I don't have access to expenses yet
+        for (ExpenseDetailsDto expense : eventDetailsDto.getExpenses()) {
+            ExpenseCreationDto expenseDto = new ExpenseCreationDto();
+            expenseDto.setMoney(expense.getMoney());
+            expenseDto.setTitle(expense.getTitle());
+            expenseDto.setDate(expense.getDate());
+            expenseDto.setAuthorId(expense.getAuthor().getId());
+            expenseDto.setDebtors(expense.getDebtors());
+            expenseDto.setEventId(entity.getId());
+            expenseService.createExpense(expenseDto);
+        }
+
 
         for (ParticipantNameDto user : eventDetailsDto.getParticipants()) {
             ParticipantCreationDto newParticipant=new ParticipantCreationDto()

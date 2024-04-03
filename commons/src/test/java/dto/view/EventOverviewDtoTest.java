@@ -90,4 +90,58 @@ class EventOverviewDtoTest {
         Assertions.assertEquals(event1.hashCode(), event2.hashCode());
         Assertions.assertEquals(event1.hashCode(), sameEvent.hashCode());
     }
+
+    @Test
+    void getCreationDate() {
+        // Arrange
+        Date creationDate = new Date();
+        EventOverviewDto event = new EventOverviewDto()
+                .setCreationDate(creationDate);
+
+        // Act
+        Date retrievedCreationDate = event.getCreationDate();
+
+        // Assert
+        assertEquals(creationDate, retrievedCreationDate);
+    }
+
+    @Test
+    void setCreationDate() {
+        // Arrange
+        Date creationDate = new Date();
+        EventOverviewDto event = new EventOverviewDto();
+
+        // Act
+        event.setCreationDate(creationDate);
+
+        // Assert
+        assertEquals(creationDate, event.getCreationDate());
+    }
+
+    @Test
+    void getLastModifiedDate() {
+        // Arrange
+        Date lastModifiedDate = new Date();
+        EventOverviewDto event = new EventOverviewDto()
+                .setLastModifiedDate(lastModifiedDate);
+
+        // Act
+        Date retrievedLastModifiedDate = event.getLastModifiedDate();
+
+        // Assert
+        assertEquals(lastModifiedDate, retrievedLastModifiedDate);
+    }
+
+    @Test
+    void setLastModifiedDate() {
+        // Arrange
+        Date lastModifiedDate = new Date();
+        EventOverviewDto event = new EventOverviewDto();
+
+        // Act
+        event.setLastModifiedDate(lastModifiedDate);
+
+        // Assert
+        assertEquals(lastModifiedDate, event.getLastModifiedDate());
+    }
 }

@@ -1,16 +1,17 @@
 package server.controller.api;
 
+import dto.UserCreationDto;
+import dto.CreatorToTitleDto;
+import dto.view.EventOverviewDto;
+import dto.view.EventTitleDto;
+import dto.view.UserNameDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import dto.ParticipantCreationDto;
-import dto.view.EventOverviewDto;
-import dto.view.ParticipantNameDto;
-import org.springframework.validation.BindingResult;
-import server.service.ParticipantService;
+import server.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,28 +22,25 @@ import static org.mockito.Mockito.*;
 class UserRestControllerTest {
 
     @Mock
-    private ParticipantService userService;
+    private UserService userService;
 
-    @Mock
-    private BindingResult result;
-
-    private ParticipantRestController userRestController;
+    private UserRestController userRestController;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        userRestController = new ParticipantRestController(userService);
+        userRestController = new UserRestController(userService);
     }
 
     @Test
     void createUser() {
         // Arrange
-        ParticipantCreationDto requestBody = new ParticipantCreationDto(/* Create your test DTO */);
-        ParticipantNameDto expectedDto = new ParticipantNameDto(/* Create your expected DTO */);
+        UserCreationDto requestBody = new UserCreationDto(/* Create your test DTO */);
+        UserNameDto expectedDto = new UserNameDto(/* Create your expected DTO */);
         when(userService.createUser(requestBody)).thenReturn(expectedDto);
 
         // Act
-        ResponseEntity<ParticipantNameDto> response = userRestController.createUser(requestBody, result);
+        ResponseEntity<UserNameDto> response = userRestController.createUser(requestBody);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -69,11 +67,41 @@ class UserRestControllerTest {
     }
 
     @Test
-    void testCreateUser() {
-        ParticipantCreationDto userCreationDto = new ParticipantCreationDto(); // Initialize user DTO with necessary fields
-        when(userService.createUser(userCreationDto)).thenReturn(new ParticipantNameDto()); // Mock userService
+    void testCreateEvent() {
+        // Arrange
+        CreatorToTitleDto requestDto = new CreatorToTitleDto();
+        EventTitleDto expectedDto = new EventTitleDto();
+        when(userService.createEvent(requestDto.getTitle(), requestDto.getId())).thenReturn(expectedDto);
 
-        ResponseEntity<ParticipantNameDto> responseEntity = userRestController.createUser(userCreationDto, result);
+        // Act
+        ResponseEntity<EventTitleDto> response = userRestController.createEvent(requestDto);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedDto, response.getBody());
+        verify(userService, times(1)).createEvent(requestDto.getTitle(), requestDto.getId());
+    }
+
+    @Test
+    void checkUserCredentialsValidity() {
+        // Arrange
+        UserCreationDto requestBody = new UserCreationDto();
+
+        // Act
+        ResponseEntity<Void> response = userRestController.checkUserCredentialsValidity(requestBody);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verifyNoInteractions(userService);
+    }
+
+
+    @Test
+    void testCreateUser() {
+        UserCreationDto userCreationDto = new UserCreationDto();
+        when(userService.createUser(userCreationDto)).thenReturn(new UserNameDto());
+
+        ResponseEntity<UserNameDto> responseEntity = userRestController.createUser(userCreationDto);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         verify(userService, times(1)).createUser(userCreationDto); // Verify userService method called
@@ -81,8 +109,8 @@ class UserRestControllerTest {
 
     @Test
     void testJoinEvent() {
-        String inviteCode = "sampleInviteCode"; // Sample invite code
-        long userId = 1L; // Sample user ID
+        String inviteCode = "sampleInviteCode";
+        long userId = 1L;
 
         ResponseEntity<Void> responseEntity = userRestController.joinEvent(inviteCode, userId);
 
@@ -92,8 +120,8 @@ class UserRestControllerTest {
 
     @Test
     void testLeaveEvent() {
-        long eventId = 1L; // Sample event ID
-        long userId = 1L; // Sample user ID
+        long eventId = 1L;
+        long userId = 1L;
 
         ResponseEntity<Void> responseEntity = userRestController.leaveEvent(eventId, userId);
 

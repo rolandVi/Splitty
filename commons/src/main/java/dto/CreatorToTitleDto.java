@@ -3,67 +3,77 @@ package dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.Objects;
+
 public class CreatorToTitleDto {
-    @NotNull
-    private Long id;
+    @NotBlank
+    private String firstName;
+
+    @NotBlank
+    private String lastName;
+
+
+    private String email;
 
     @NotBlank
     private String title;
 
-    /**
-     * Constructs a new CreatorToTitleDto object with the specified ID and title.
-     *
-     * @param id    The ID of the creator.
-     * @param title The title associated with the creator.
-     */
-    public CreatorToTitleDto(Long id, String title) {
-        this.id = id;
-        this.title = title;
-    }
-
-    /**
-     * Constructs a new CreatorToTitleDto object with default values.
-     */
     public CreatorToTitleDto() {
     }
 
-    /**
-     * Returns the ID of the creator.
-     *
-     * @return The ID of the creator.
-     */
-    public Long getId() {
-        return id;
+    public CreatorToTitleDto(String firstName, String lastName, String email, String title) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.title = title;
     }
 
-    /**
-     * Sets the ID of the creator.
-     *
-     * @param id The ID of the creator.
-     * @return This CreatorToTitleDto object.
-     */
-    public CreatorToTitleDto setId(Long id) {
-        this.id = id;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public CreatorToTitleDto setFirstName(String firstName) {
+        this.firstName = firstName;
         return this;
     }
 
-    /**
-     * Returns the title associated with the creator.
-     *
-     * @return The title associated with the creator.
-     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    public CreatorToTitleDto setLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public CreatorToTitleDto setEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
     public String getTitle() {
         return title;
     }
 
-    /**
-     * Sets the title associated with the creator.
-     *
-     * @param title The title associated with the creator.
-     * @return This CreatorToTitleDto object.
-     */
     public CreatorToTitleDto setTitle(String title) {
         this.title = title;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CreatorToTitleDto that = (CreatorToTitleDto) o;
+        return Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(email, that.email) && Objects.equals(title, that.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, email, title);
     }
 }

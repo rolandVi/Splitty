@@ -106,6 +106,11 @@ public class MainCtrl {
                         .getResource(Path.of("stylesheets", "eventOverview.css").toString()))
                         .toExternalForm());
 
+        this.startPage.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets", "startPage.css").toString()))
+                        .toExternalForm());
+
         this.newParticipant = new Scene(sceneInputWrapper.newParticipant().getValue());
         this.participantItem = new Scene(sceneInputWrapper.participantItemPage().getValue());
         this.participantEdit = new Scene(sceneInputWrapper.participantPage().getValue());
@@ -122,6 +127,7 @@ public class MainCtrl {
         } else {
             showStart();
         }
+
         sceneInputWrapper.primaryStage().show();
         updateLanguagesOfScenes();
     }

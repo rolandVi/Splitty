@@ -2,18 +2,18 @@ package server.service;
 
 import commons.BankAccountEntity;
 import commons.EventEntity;
-import commons.ParticipantEntity;
+import commons.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import server.exception.ObjectNotFoundException;
+import server.controller.exception.ObjectNotFoundException;
 import dto.view.EventDetailsDto;
 import dto.view.EventOverviewDto;
 import dto.view.EventTitleDto;
-import dto.view.ParticipantNameDto;
+import dto.view.UserNameDto;
 import server.repository.EventRepository;
 
 import java.util.*;
@@ -28,10 +28,12 @@ class EventServiceTest {
     private EventRepository eventRepository;
 
     @Mock
-    private ParticipantService userService;
+    private UserService userService;
 
+    @Mock
     private EventService eventService;
-
+    @Mock
+    private ExpenseService expenseService;
 
 
     @BeforeEach
@@ -39,7 +41,7 @@ class EventServiceTest {
         MockitoAnnotations.openMocks(this);
         ModelMapper modelMapper = new ModelMapper();
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        eventService = new EventService(eventRepository, modelMapper, userService);
+        eventService = new EventService(eventRepository, modelMapper, userService, expenseService);
     }
 
     @Test
@@ -223,23 +225,23 @@ class EventServiceTest {
     void getEventParticipants_ReturnsListOfUserNameDto() {
         // Arrange
         long eventId = 1L;
-        List<ParticipantEntity> userEntities = Arrays.asList(
-                new ParticipantEntity(1L, "John", "Doe", "john@example.com", new HashSet<>(), new BankAccountEntity()),
-                new ParticipantEntity(2L, "Alice", "Smith", "alice@example.com", new HashSet<>(), new BankAccountEntity())
+        List<UserEntity> userEntities = Arrays.asList(
+                new UserEntity(1L, "John", "Doe", "john@example.com", new HashSet<>(), new BankAccountEntity()),
+                new UserEntity(2L, "Alice", "Smith", "alice@example.com", new HashSet<>(), new BankAccountEntity())
         );
-        List<ParticipantNameDto> expectedDtos = Arrays.asList(
-                new ParticipantNameDto(1L, "John", "Doe"),
-                new ParticipantNameDto(2L, "Alice", "Smith")
+        List<UserNameDto> expectedDtos = Arrays.asList(
+                new UserNameDto(1L, "John", "Doe"),
+                new UserNameDto(2L, "Alice", "Smith")
         );
         when(eventRepository.findEventParticipants(eventId)).thenReturn(new HashSet<>(userEntities));
 
         // Act
-        List<ParticipantNameDto> resultDtos = eventService.getEventParticipants(eventId);
+        List<UserNameDto> resultDtos = eventService.getEventParticipants(eventId);
 
         // Assert
         assertNotNull(resultDtos);
         assertEquals(expectedDtos.size(), resultDtos.size());
-        for (ParticipantNameDto expectedDto : expectedDtos) {
+        for (UserNameDto expectedDto : expectedDtos) {
             assertTrue(resultDtos.contains(expectedDto));
         }
     }

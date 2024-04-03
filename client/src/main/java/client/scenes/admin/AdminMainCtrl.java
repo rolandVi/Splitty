@@ -24,7 +24,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.nio.file.Path;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 
@@ -67,6 +69,23 @@ public class AdminMainCtrl {
 
         this.restorePage = new Scene(restorePage.getValue());
 
+        this.loginPage.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets",
+                                        "adminLoginPage.css").toString()))
+                        .toExternalForm());
+
+        this.overviewPage.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets",
+                                        "adminOverview.css").toString()))
+                        .toExternalForm());
+
+        this.restorePage.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets",
+                                        "adminRestore.css").toString()))
+                        .toExternalForm());
 
         showLogin();
         adminOverviewStage.show();

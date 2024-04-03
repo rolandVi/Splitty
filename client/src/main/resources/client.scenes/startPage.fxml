@@ -1,28 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StartPageCtrl">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="anchorPane" stylesheets="@../stylesheets/startPage.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StartPageCtrl">
    <children>
-      <Label layoutX="278.0" layoutY="44.0" scaleX="6.0" scaleY="6.0" text="SPLITTY" textAlignment="CENTER" />
+      <ImageView fx:id="logoImageView" fitHeight="223.0" fitWidth="458.0" layoutX="100.0" layoutY="-28.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/splittyLogo.png" />
+         </image>
+      </ImageView>
 
-      <Button fx:id="connectButton" layoutX="269.0" layoutY="242.0" mnemonicParsing="false" onAction="#connect" prefHeight="18.0" prefWidth="57.0" scaleX="3.0" scaleY="3.0" text="CONNECT">
+      <Button fx:id="connectButton" layoutX="275.0" layoutY="195.0" mnemonicParsing="false" onAction="#connect" prefHeight="16.0" prefWidth="50.0" scaleX="3.0" scaleY="3.0" styleClass="connectBtn" text="CONNECT">
          <font>
             <Font size="8.0" />
          </font></Button>
-      <TextField fx:id="serverField" alignment="CENTER" layoutX="224.0" layoutY="287.0" promptText="http://localhost:8080" scaleX="1.5" scaleY="1.5" text="http://localhost:8080" />
-      <Text fx:id="errorMessage" fill="RED" layoutX="252.0" layoutY="361.0" opacity="0.0" scaleX="1.5" scaleY="1.5" strokeType="OUTSIDE" strokeWidth="0.0" text="INCORRECT SERVER URL!" wrappingWidth="93.33332061767578">
+      <TextField fx:id="serverField" alignment="CENTER" layoutX="236.0" layoutY="264.0" prefHeight="23.0" prefWidth="129.0" promptText="http://localhost:8080" scaleX="1.5" scaleY="1.5" styleClass="serverField" text="http://localhost:8080" />
+      <Text fx:id="errorMessage" fill="RED" layoutX="252.0" layoutY="390.0" opacity="0.0" scaleX="1.5" scaleY="1.5" strokeType="OUTSIDE" strokeWidth="0.0" text="INCORRECT SERVER URL!" wrappingWidth="93.33332061767578">
          <font>
             <Font size="8.0" />
          </font></Text>
 
-      <Button fx:id="openAdminButton" layoutX="443.0" layoutY="355.0" mnemonicParsing="false" onAction="#enterAdmin" text="Open admin overview" />
-      <TextField fx:id="firstNameField" layoutX="226.0" layoutY="127.0" promptText="First name" />
-      <TextField fx:id="surNameField" layoutX="226.0" layoutY="160.0" promptText="Surname" />
-      <TextField fx:id="emailField" layoutX="225.0" layoutY="192.0" promptText="Email" />
-      <Label fx:id="incorrectData" layoutX="169.0" layoutY="331.0" prefHeight="32.0" prefWidth="263.0" text="Please enter valid information" textFill="RED" visible="false" />
-      <ComboBox fx:id="languageBox" layoutX="14.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#uponSelectionLanguage" />
+      <Button fx:id="openAdminButton" layoutX="512.0" layoutY="356.0" mnemonicParsing="false" onAction="#enterAdmin" prefHeight="25.0" prefWidth="72.0" styleClass="adminBtn" text="admin" />
+      <Label fx:id="incorrectData" layoutX="220.0" layoutY="360.0" prefHeight="17.0" prefWidth="161.0" text="Please enter valid information" textFill="RED" visible="false" />
+      <ComboBox fx:id="languageBox" layoutX="518.0" layoutY="24.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#uponSelectionLanguage" />
+      <Circle fill="DODGERBLUE" layoutX="94.0" layoutY="275.0" opacity="0.8" radius="85.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="ball2" />
+      <Label layoutX="74.0" layoutY="205.0" prefHeight="85.0" prefWidth="40.0" styleClass="euro" text="€">
+         <font>
+            <Font size="96.0" />
+         </font>
+      </Label>
+      <Circle fill="DODGERBLUE" layoutY="298.0" opacity="0.77" radius="100.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="ball3" />
+      <Label layoutX="-6.0" layoutY="236.0" prefHeight="85.0" prefWidth="40.0" styleClass="euro" text="€">
+         <font>
+            <Font size="96.0" />
+         </font>
+      </Label>
+      <Circle fill="DODGERBLUE" layoutX="30.0" layoutY="225.0" opacity="0.9" radius="60.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="ball1" />
+      <Label layoutX="14.0" layoutY="183.0" prefHeight="85.0" prefWidth="40.0" styleClass="euro" text="€">
+         <font>
+            <Font size="58.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

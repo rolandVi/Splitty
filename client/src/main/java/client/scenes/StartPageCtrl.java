@@ -13,6 +13,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
@@ -36,20 +38,16 @@ public class StartPageCtrl implements MultiLanguages {
     @FXML
     public Text errorMessage;
     @FXML
-    public TextField firstNameField;
-    @FXML
-    public TextField surNameField;
-    @FXML
-    public TextField emailField;
-
-    @FXML
-    public Label incorrectData;
-    @FXML
     public Button connectButton;
     @FXML
     public Button openAdminButton;
     @FXML
     public ComboBox<String> languageBox;
+    @FXML
+    public ImageView logoImageView;
+
+    @FXML
+    Image logo = new Image(getClass().getResourceAsStream("/images/splittyLogo.png"));
 
 
     /**
@@ -71,6 +69,8 @@ public class StartPageCtrl implements MultiLanguages {
         String locale = configManager.getProperty("language")
                 + "_" + configManager.getProperty("country");
         updateLanguageBox(languageBox, locale);
+
+        displayLogo();
     }
 
     /**
@@ -106,8 +106,7 @@ public class StartPageCtrl implements MultiLanguages {
     /**
      * The button press activates this
      */
-    public void connect() throws IOException {
-        this.incorrectData.setVisible(false);
+    public void connect(){
         this.errorMessage.setOpacity(0d);
 
         String serverInserted = serverField.getText();
@@ -117,39 +116,7 @@ public class StartPageCtrl implements MultiLanguages {
             return;
         }
 
-        ParticipantCreationDto user = getUserEntity();
-        if (user.getFirstName().isBlank()
-                || user.getLastName().isBlank()
-                || user.getEmail().isBlank()) {
-            this.incorrectData.setText("Please fill in all the fields");
-            this.incorrectData.setVisible(true);
-            return;
-        }
-
-        mainCtrl.configManager.setProperty("serverURL", serverInserted);
-        Optional<HttpResponse<String>> userResponse = createUser(user);
-        if (userResponse.isEmpty()) {
-            this.incorrectData.setText("Please enter valid information");
-            this.incorrectData.setVisible(true);
-            return;
-        } else if (userResponse.get().statusCode() == 400) {
-            this.incorrectData.setText(userResponse.get().body());
-            this.incorrectData.setVisible(true);
-            return;
-        }
-
-        saveUserToConfig();
         mainCtrl.showOverview();
-    }
-
-    private void saveUserToConfig() {
-        mainCtrl.configManager.setProperty("loggedIn", "TRUE");
-        mainCtrl.configManager.setProperty("userFirstName", firstNameField.getText());
-        mainCtrl.configManager.setProperty("userLastName", surNameField.getText());
-        mainCtrl.configManager.setProperty("userMail", emailField.getText());
-        mainCtrl.configManager
-                .setProperty("userID", String.valueOf(getUserID(emailField.getText())));
-        mainCtrl.configManager.saveConfig();
     }
 
     /**
@@ -183,46 +150,9 @@ public class StartPageCtrl implements MultiLanguages {
     }
 
     /**
-     * Creates HTTP request to the server using the contents of text fields as user info
-     *
-     * @param user th user to create
-     * @return HTTP response from the server
+     * Setter for the logo
      */
-    public Optional<HttpResponse<String>> createUser(ParticipantCreationDto user)
-            throws JsonProcessingException {
-        String url = serverField.getText();
-        ObjectMapper objectMapper = new ObjectMapper();
-        String requestBody = objectMapper.writeValueAsString(user);
-
-        return serverUtils.createUser(url, requestBody);
+    public void displayLogo(){
+        logoImageView.setImage(logo);
     }
-
-    private ParticipantCreationDto getUserEntity() {
-        String firstName = firstNameField.getText();
-        String surName = surNameField.getText();
-        String email = emailField.getText();
-
-        // Create a UserEntity object
-        ParticipantCreationDto user = new ParticipantCreationDto();
-        user.setFirstName(firstName);
-        user.setLastName(surName);
-        user.setEmail(email);
-
-        return user;
-    }
-
-    /**
-     * Creates HTTP request to the server using the email as a parameter
-     *
-     * @param email the email of the user
-     * @return ID of user with the email
-     */
-    private Long getUserID(String email) {
-        String url = mainCtrl.configManager.getProperty("serverURL");
-        // Prepare user data from text fields
-        email = URLEncoder.encode(email, StandardCharsets.UTF_8);
-
-        return serverUtils.getUserId(url, email);
-    }
-
 }

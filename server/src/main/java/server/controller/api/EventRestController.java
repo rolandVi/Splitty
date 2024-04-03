@@ -50,10 +50,9 @@ public class EventRestController {
      * @return the newly created event title and id
      */
     @PostMapping("/")
-    public ResponseEntity<EventTitleDto> createEvent(
+    public ResponseEntity<EventDetailsDto> createEvent(
             @Valid @RequestBody CreatorToTitleDto creatorToTitleDto){
-        return ResponseEntity.ok(this.eventService.createEvent(creatorToTitleDto.getTitle(),
-                creatorToTitleDto.getId()));
+        return ResponseEntity.ok(this.eventService.createEvent(creatorToTitleDto));
     }
 
     /**
