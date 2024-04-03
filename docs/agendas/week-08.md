@@ -19,6 +19,7 @@
 
 - Questions for the TA (? min)
 - What is meant by editing participants in the backlog and how would we eventually implement it with our project structure?
+- Non-functional requirement: User system. Should we change our structure the way we have it now?
 
 
 - Talking Points: (Brainstorm/ decision-making/ discuss)
