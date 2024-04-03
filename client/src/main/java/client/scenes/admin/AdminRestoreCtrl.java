@@ -41,7 +41,7 @@ public class AdminRestoreCtrl {
 
 
     /**
-     * Method to create a POST to the server with the,
+     * Method to create a POST to the server with the JSON,
      * which if correct will restore the event related to the JSON dump
      */
     public void restoreData() {

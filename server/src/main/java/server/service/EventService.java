@@ -2,16 +2,14 @@ package server.service;
 
 import commons.EventEntity;
 import commons.ExpenseEntity;
+import dto.ExpenseCreationDto;
+import dto.view.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import server.controller.exception.ObjectNotFoundException;
-import dto.view.EventDetailsDto;
-import dto.view.EventOverviewDto;
-import dto.view.EventTitleDto;
-import dto.view.UserNameDto;
 import server.repository.EventRepository;
 
 import java.time.LocalTime;
@@ -25,6 +23,7 @@ public class EventService {
     private final ModelMapper modelMapper;
     private final UserService userService;
 
+    private final ExpenseService expenseService;
 
 
     /**
@@ -33,12 +32,15 @@ public class EventService {
      * @param eventRepository the EventEntity repository
      * @param modelMapper     the ModelMapper injected by Spring
      * @param userService     the user service
+     * @param expenseService  the expense service
      */
     public EventService(EventRepository eventRepository,
-                        ModelMapper modelMapper, @Lazy UserService userService) {
+                        ModelMapper modelMapper, @Lazy UserService userService,
+                        @Lazy ExpenseService expenseService) {
         this.eventRepository = eventRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
+        this.expenseService = expenseService;
     }
 
     /**
@@ -194,8 +196,17 @@ public class EventService {
         entity.setCreationDate(eventDetailsDto.getCreationDate());
         entity=this.eventRepository.save(entity);
 
-        // Map expenses DTOs to entities
-        //todo implement this since I don't have access to expenses yet
+        for (ExpenseDetailsDto expense : eventDetailsDto.getExpenses()) {
+            ExpenseCreationDto expenseDto = new ExpenseCreationDto();
+            expenseDto.setMoney(expense.getMoney());
+            expenseDto.setTitle(expense.getTitle());
+            expenseDto.setDate(expense.getDate());
+            expenseDto.setAuthorId(expense.getAuthor().getId());
+            expenseDto.setDebtors(expense.getDebtors());
+            expenseDto.setEventId(entity.getId());
+            expenseService.createExpense(expenseDto);
+        }
+
 
         for (UserNameDto user : eventDetailsDto.getParticipants()) {
             this.userService.join(entity.getInviteCode(), user.getId());

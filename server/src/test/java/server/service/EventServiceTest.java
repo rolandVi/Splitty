@@ -2,7 +2,6 @@ package server.service;
 
 import commons.BankAccountEntity;
 import commons.EventEntity;
-import commons.ExpenseEntity;
 import commons.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,8 +30,10 @@ class EventServiceTest {
     @Mock
     private UserService userService;
 
+    @Mock
     private EventService eventService;
-
+    @Mock
+    private ExpenseService expenseService;
 
 
     @BeforeEach
@@ -40,7 +41,7 @@ class EventServiceTest {
         MockitoAnnotations.openMocks(this);
         ModelMapper modelMapper = new ModelMapper();
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        eventService = new EventService(eventRepository, modelMapper, userService);
+        eventService = new EventService(eventRepository, modelMapper, userService, expenseService);
     }
 
     @Test
