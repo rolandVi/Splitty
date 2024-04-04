@@ -17,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,6 +26,7 @@ import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -91,7 +93,7 @@ public class AdminOverviewPageCtrl {
         creationMenuItem.setOnAction(this::handleOrderMenuItem);
         lastModifiedMenuItem.setOnAction(this::handleOrderMenuItem);
 
-        orderButton.getItems().removeAll();
+        orderButton.getItems().clear();
         orderButton.getItems().addAll(titleMenuItem, creationMenuItem, lastModifiedMenuItem);
 
     }
@@ -152,6 +154,12 @@ public class AdminOverviewPageCtrl {
             eventButton.setText(events.get(i).getTitle());
             eventButton.setOnAction(e -> showDetails(event.getId()));
 
+            Text dateText = (Text) currentNode.lookup("#dateText");
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            String creationTime = sdf.format(events.get(i).getCreationDate());
+            String lastModifiedTime = sdf.format(events.get(i).getLastModifiedDate());
+            dateText.setText("Creation: " + creationTime + " Last Modified: " + lastModifiedTime);
+
             Button inviteBtn=(Button) currentNode.lookup("#jsonBtn");
             inviteBtn.setOnAction(e -> getJSON(event.getId()));
 
@@ -174,7 +182,7 @@ public class AdminOverviewPageCtrl {
 
 
         if (currentOrder.equals("title")){
-            events.sort(Comparator.comparing(EventOverviewDto::getTitle));
+            events.sort(Comparator.comparing(EventOverviewDto::getTitle).reversed());
         } else if (currentOrder.equals("creation")){
             events.sort(Comparator.comparing(EventOverviewDto::getCreationDate));
         } else if (currentOrder.equals("last modified")){
