@@ -19,6 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
@@ -60,6 +61,8 @@ public class EventCtrl implements MultiLanguages{
 
     @FXML
     private VBox participantsContainer;
+    @FXML
+    public Button sendInviteButton;
 
     /**
      * Injector for Event Controller
@@ -86,6 +89,7 @@ public class EventCtrl implements MultiLanguages{
             participantsLabel.setText(lang.getString("participants"));
             expensesLabel.setText(lang.getString("expenses"));
             addExpenseButton.setText(lang.getString("add_expense"));
+            sendInviteButton.setText(lang.getString("send_invite"));
         } catch (Exception e) {
             throw new RuntimeException();
         }
@@ -96,6 +100,10 @@ public class EventCtrl implements MultiLanguages{
      */
     public void returnToOverview(){
         mainCtrl.showOverview();
+    }
+
+    public void sendInvite(){
+        mainCtrl.showEventEmail();
     }
 
 
