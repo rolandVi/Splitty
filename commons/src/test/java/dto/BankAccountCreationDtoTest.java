@@ -1,12 +1,8 @@
 package dto;
 
-import dto.BankAccountCreationDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class BankAccountCreationDtoTest {
 
@@ -26,17 +22,6 @@ class BankAccountCreationDtoTest {
     void setIban() {
         bankAccountCreationDto.setIban("NewIBAN");
         Assertions.assertEquals("NewIBAN", bankAccountCreationDto.getIban());
-    }
-
-    @Test
-    void getHolder() {
-        Assertions.assertEquals("John Doe", bankAccountCreationDto.getHolder());
-    }
-
-    @Test
-    void setHolder() {
-        bankAccountCreationDto.setHolder("Jane Smith");
-        Assertions.assertEquals("Jane Smith", bankAccountCreationDto.getHolder());
     }
 
     @Test

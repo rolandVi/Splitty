@@ -1,6 +1,5 @@
 package client.utils;
 
-import dto.UserCreationDto;
 import dto.exceptions.PasswordExpiredException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.Entity;
@@ -78,14 +77,6 @@ class ServerUtilsTest {
         verify(webTarget, times(1)).request(APPLICATION_JSON);
         verify(builder, times(1)).accept(APPLICATION_JSON);
         verify(builder, times(1)).post(null);
-    }
-
-    @Test
-    void checkUserValidity() {
-        UserCreationDto userCreationDto = new UserCreationDto();
-        when(response.getStatus()).thenReturn(200);
-
-        assertTrue(serverUtils.checkUserValidity(userCreationDto));
     }
 
 

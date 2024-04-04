@@ -2,17 +2,19 @@ package dto.view;
 
 import java.util.Objects;
 
-public class UserNameDto {
+public class ParticipantNameDto {
 
     private Long id;
 
     private String firstName;
     private String lastName;
 
+    private String email;
+
     /**
      * Empty constructor
      */
-    public UserNameDto() {
+    public ParticipantNameDto() {
     }
 
     /**
@@ -21,11 +23,13 @@ public class UserNameDto {
      * @param id        the id
      * @param firstName the firstName
      * @param lastName  the lastName
+     * @param email the email
      */
-    public UserNameDto(Long id, String firstName, String lastName) {
+    public ParticipantNameDto(Long id, String firstName, String lastName, String email) {
         this.id=id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email=email;
     }
 
     /**
@@ -43,7 +47,7 @@ public class UserNameDto {
      * @param id the id of the user
      * @return this UserNameDto instance
      */
-    public UserNameDto setId(Long id) {
+    public ParticipantNameDto setId(Long id) {
         this.id = id;
         return this;
     }
@@ -63,7 +67,7 @@ public class UserNameDto {
      * @param firstName the first name of the user
      * @return this UserNameDto instance
      */
-    public UserNameDto setFirstName(String firstName) {
+    public ParticipantNameDto setFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
@@ -83,8 +87,26 @@ public class UserNameDto {
      * @param lastName the last name of the user
      * @return this UserNameDto instance
      */
-    public UserNameDto setLastName(String lastName) {
+    public ParticipantNameDto setLastName(String lastName) {
         this.lastName = lastName;
+        return this;
+    }
+
+    /**
+     * Email getter
+     * @return the email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * Email setter
+     * @param email the new email
+     * @return the new participant info
+     */
+    public ParticipantNameDto setEmail(String email) {
+        this.email = email;
         return this;
     }
 
@@ -98,10 +120,11 @@ public class UserNameDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserNameDto that = (UserNameDto) o;
+        ParticipantNameDto that = (ParticipantNameDto) o;
         return Objects.equals(id, that.id)
                 && Objects.equals(firstName, that.firstName)
-                && Objects.equals(lastName, that.lastName);
+                && Objects.equals(lastName, that.lastName)
+                && Objects.equals(email, that.email);
     }
 
     /**
@@ -111,7 +134,7 @@ public class UserNameDto {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName);
+        return Objects.hash(id, firstName, lastName, email);
     }
 
     /**

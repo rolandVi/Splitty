@@ -1,15 +1,15 @@
 package server.service;
 
 import commons.ExpenseEntity;
-import commons.UserEntity;
-import dto.view.UserNameDto;
+import commons.ParticipantEntity;
+import dto.ExpenseCreationDto;
+import dto.view.ExpenseDetailsDto;
+import dto.view.ParticipantNameDto;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import server.controller.exception.ObjectNotFoundException;
-import dto.view.ExpenseDetailsDto;
-import dto.ExpenseCreationDto;
+import server.exception.ObjectNotFoundException;
 import server.repository.ExpenseRepository;
 
 import java.math.BigDecimal;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class ExpenseService {
     private final ExpenseRepository expenseRepository;
     private final ModelMapper modelMapper;
-    private final UserService userService;
+    private final ParticipantService participantService;
     private final EventService eventService;
 
     /**
@@ -37,11 +37,11 @@ public class ExpenseService {
      */
     public ExpenseService(ExpenseRepository expenseRepository,
                           ModelMapper modelMapper,
-                          UserService userService,
+                          ParticipantService userService,
                           EventService eventService) {
         this.expenseRepository = expenseRepository;
         this.modelMapper = modelMapper;
-        this.userService = userService;
+        this.participantService = userService;
         this.eventService = eventService;
 
     }
@@ -62,7 +62,8 @@ public class ExpenseService {
      */
     public ExpenseDetailsDto getById(long id) {
         return this.modelMapper.map(this.expenseRepository.findById(id)
-                .orElseThrow(ObjectNotFoundException::new), ExpenseDetailsDto.class);
+                .orElseThrow(()-> new ObjectNotFoundException("No such expense found")),
+                ExpenseDetailsDto.class);
     }
 
     /**
@@ -72,7 +73,7 @@ public class ExpenseService {
      */
     public ExpenseEntity getEntityById(long id) {
         return this.expenseRepository.findById(id)
-                .orElseThrow(ObjectNotFoundException::new);
+                .orElseThrow(()-> new ObjectNotFoundException("No such expense found"));
     }
 
     /**
@@ -91,29 +92,31 @@ public class ExpenseService {
      */
     public ExpenseDetailsDto updateExpense(@Valid ExpenseDetailsDto expense) {
         if (!this.existsById(expense.getId())) {
-            throw new ObjectNotFoundException();
+            throw new ObjectNotFoundException("No such expense found");
         }
 
         ExpenseEntity expenseEntity = getEntityById(expense.getId());
 
         expenseEntity.setMoney(expense.getMoney());
-        expenseEntity.setAuthor(userService.findById(expense.getAuthor().getId()));
+        expenseEntity.setAuthor(participantService.findById(expense.getAuthor().getId()));
         expenseEntity.setTitle(expense.getTitle());
         expenseEntity.setDebtors(new HashSet<>());
-        for (UserNameDto u  : expense.getDebtors()){
-            expenseEntity.addDebtor(userService.findById(u.getId()));
+        for (ParticipantNameDto u  : expense.getDebtors()){
+            expenseEntity.addDebtor(participantService.findById(u.getId()));
         }
         expenseEntity.setDate(expense.getDate());
 
         expenseEntity =  expenseRepository.save(expenseEntity);
 
-        UserNameDto author = new UserNameDto(expenseEntity.getAuthor().getId(),
+        ParticipantNameDto author = new ParticipantNameDto(expenseEntity.getAuthor().getId(),
                 expenseEntity.getAuthor().getFirstName(),
-                expenseEntity.getAuthor().getLastName());
+                expenseEntity.getAuthor().getLastName(),
+                expenseEntity.getAuthor().getEmail());
 
-        Set<UserNameDto> debtors = new HashSet<>();
-        for (UserEntity u : expenseEntity.getDebtors()){
-            debtors.add(new UserNameDto(u.getId(), u.getFirstName(), u.getLastName()));
+        Set<ParticipantNameDto> debtors = new HashSet<>();
+        for (ParticipantEntity u : expenseEntity.getDebtors()){
+            debtors.add(new ParticipantNameDto(u.getId(), u.getFirstName(),
+                    u.getLastName(), u.getEmail()));
         }
 
 
@@ -138,13 +141,13 @@ public class ExpenseService {
         ExpenseEntity expenseEntity = new ExpenseEntity();
         //Set the debtors
         expenseEntity.setDebtors(new HashSet<>());
-        for (UserNameDto u  : expenseDto.getDebtors()){
-            expenseEntity.addDebtor(userService.findById(u.getId()));
+        for (ParticipantNameDto u  : expenseDto.getDebtors()){
+            expenseEntity.addDebtor(participantService.findById(u.getId()));
         }
         //Set the money
         expenseEntity.setMoney(expenseDto.getMoney());
         //Set author
-        expenseEntity.setAuthor(userService.findById(expenseDto.getAuthorId()));
+        expenseEntity.setAuthor(participantService.findById(expenseDto.getAuthorId()));
         //Set title
         expenseEntity.setTitle(expenseDto.getTitle());
         //Set date
@@ -164,7 +167,7 @@ public class ExpenseService {
     @Transactional
     public void deleteExpense(long id){
         if (!existsById(id)) {
-            throw new ObjectNotFoundException();
+            throw new ObjectNotFoundException("No such expense found");
         }
         this.expenseRepository.deleteById(id);
     }
@@ -204,7 +207,7 @@ public class ExpenseService {
      */
     public ExpenseEntity findExpenseEntityById(Long id){
         return this.expenseRepository.findById(id)
-                .orElseThrow(ObjectNotFoundException::new);
+                .orElseThrow(()-> new ObjectNotFoundException("No such expense found"));
     }
 
 
@@ -216,7 +219,9 @@ public class ExpenseService {
      * @return the money paid
      */
     @Transactional
-    public double payDebt(ExpenseEntity expense, UserEntity receiver, UserEntity sender) {
+    public double payDebt(ExpenseEntity expense,
+                          ParticipantEntity receiver,
+                          ParticipantEntity sender) {
         double owedMoney=roundToNDecimals(expense.getMoney()/expense.getDebtors().size(), 2);
         expense.setMoney(expense.getMoney()-owedMoney);
         expense.getDebtors().remove(sender);
@@ -232,7 +237,9 @@ public class ExpenseService {
      * @param sender the sender
      */
     @Transactional
-    public void resetDebt(ExpenseEntity expense, UserEntity receiver, UserEntity sender) {
+    public void resetDebt(ExpenseEntity expense,
+                          ParticipantEntity receiver,
+                          ParticipantEntity sender) {
         double owedMoney=roundToNDecimals(expense.getMoney()/expense.getDebtors().size(), 2);
         expense.setMoney(expense.getMoney()+owedMoney);
         expense.getDebtors().add(sender);

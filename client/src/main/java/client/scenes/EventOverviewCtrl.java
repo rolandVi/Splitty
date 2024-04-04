@@ -1,25 +1,21 @@
 package client.scenes;
 
 import client.utils.ServerUtils;
-
 import com.google.inject.Inject;
+import dto.view.EventDetailsDto;
 import dto.view.EventOverviewDto;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
-
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -44,6 +40,15 @@ public class EventOverviewCtrl implements MultiLanguages {
 
     @FXML
     private Button enrollBtn;
+
+    @FXML
+    private TextField inviteCodeTextField;
+
+    @FXML
+    private Button enterButton;
+
+    @FXML
+    private Label inviteCodeErrorMessage;
 
 
     /**
@@ -113,9 +118,7 @@ public class EventOverviewCtrl implements MultiLanguages {
      * Loads the events and displays them on the page
      */
     public void loadEvents() {
-        long userId = Long.parseLong(mainCtrl.configManager.getProperty("userID"));
-
-        List<EventOverviewDto> events = this.serverUtils.getEventsByUser(userId);
+        List<EventOverviewDto> events = this.serverUtils.getAllEvents();
         Node[] nodes=new Node[events.size()];
 
 
@@ -130,15 +133,9 @@ public class EventOverviewCtrl implements MultiLanguages {
             }
 
             Node currentNode=nodes[i];
-            final EventOverviewDto event=events.get(i);
 
             Button eventButton = (Button) currentNode.lookup("#eventTitle");
             eventButton.setText(events.get(i).getTitle());
-
-            Button inviteBtn=(Button) currentNode.lookup("#inviteCodeButton");
-            inviteBtn.setOnAction(e -> copyInvite(event.getInviteCode()));
-
-            eventButton.setOnAction(e -> showDetails(event.getId()));
         }
         this.eventContainer.getChildren().clear();
         this.eventContainer.getChildren().addAll(nodes);
@@ -149,20 +146,18 @@ public class EventOverviewCtrl implements MultiLanguages {
     }
 
     /**
-     * Event listener that copies the invite code of the selected event to the clipboard
-     * @param inviteCode the invite code for the event
+     * Loads the event details of the event with the given invite code (from the text field)
      */
-    public void copyInvite(String inviteCode){
-        Clipboard clipboard = Clipboard.getSystemClipboard();
-        ClipboardContent content = new ClipboardContent();
-        content.putString(inviteCode);
-        clipboard.setContent(content);
-    }
+    public void loadEventDetails(){
+        this.inviteCodeErrorMessage.setVisible(false);
+        String inviteCode=this.inviteCodeTextField.getText().trim();
+        EventDetailsDto event=this.serverUtils.getEventDetailsByInviteCode(inviteCode);
+        if (event.getId()==null){
+            this.inviteCodeErrorMessage.setVisible(true);
+            return;
+        }
 
-    /**
-     * Shows the enroll page
-     */
-    public void showEnrollPage(){
-        mainCtrl.showEnrollPage();
+        this.mainCtrl.showEventDetails(event.getId());
+        this.inviteCodeTextField.setText("");
     }
 }

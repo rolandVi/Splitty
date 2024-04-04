@@ -1,6 +1,7 @@
 package dto.view;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -16,7 +17,7 @@ public class EventDetailsDto {
 
     private Set<ExpenseDetailsDto> expenses;
 
-    private Set<UserNameDto> participants;
+    private Set<ParticipantNameDto> participants;
 
     /**
      * Empty constructor
@@ -24,6 +25,8 @@ public class EventDetailsDto {
     public EventDetailsDto() {
         creationDate = new Date(System.currentTimeMillis());
         lastModifiedDate = new Date(System.currentTimeMillis());
+        expenses=new HashSet<>();
+        participants=new HashSet<>();
     }
 
     /**
@@ -39,7 +42,7 @@ public class EventDetailsDto {
     public EventDetailsDto(Long id, String inviteCode,
                            String title,
                            Set<ExpenseDetailsDto> expenses,
-                           Set<UserNameDto> participants,
+                           Set<ParticipantNameDto> participants,
                            Date creationDate,
                            Date lastModifiedDate) {
         this.id = id;
@@ -150,7 +153,7 @@ public class EventDetailsDto {
      * Participants getter
      * @return the participants
      */
-    public Set<UserNameDto> getParticipants() {
+    public Set<ParticipantNameDto> getParticipants() {
         return participants;
     }
 
@@ -159,7 +162,7 @@ public class EventDetailsDto {
      * @param participants the new participants
      * @return the new event
      */
-    public EventDetailsDto setParticipants(Set<UserNameDto> participants) {
+    public EventDetailsDto setParticipants(Set<ParticipantNameDto> participants) {
         this.participants = participants;
         return this;
     }

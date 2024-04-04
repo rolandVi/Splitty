@@ -1,14 +1,14 @@
 package client.scenes;
 
 
-import dto.view.UserNameDto;
+import dto.view.ParticipantNameDto;
 import javafx.fxml.FXML;
 
 import java.awt.*;
 
 public class ParticipantItemCtrl {
 
-    private UserNameDto userNameDto;
+    private ParticipantNameDto userNameDto;
     @FXML
     private Button participantName;
 }

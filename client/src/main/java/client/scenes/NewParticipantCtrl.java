@@ -3,8 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
-import dto.BankAccountCreationDto;
-import dto.UserCreationDto;
+import dto.ParticipantCreationDto;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -80,48 +79,25 @@ public class NewParticipantCtrl {
      */
     public Optional<HttpResponse<String>> createUser() throws IOException, InterruptedException {
         String url = mainCtrl.configManager.getProperty("serverURL");
-        createBankAccount();
         // Prepare user data from text fields
-        UserCreationDto user = getUserEntity();
+        ParticipantCreationDto user = getUserEntity();
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = objectMapper.writeValueAsString(user);
 
         return serverUtils.createUser(url, requestBody);
     }
 
-    private UserCreationDto getUserEntity() {
+    private ParticipantCreationDto getUserEntity() {
         String firstName = firstNameField.getText();
         String surName = surNameField.getText();
         String email = emailField.getText();
 
         // Create a UserEntity object
 
-        return new UserCreationDto()
+        return new ParticipantCreationDto()
                 .setFirstName(firstName)
                 .setLastName(surName)
                 .setEmail(email);
-    }
-
-    /**
-     * Creates HTTP request to the server using the contents of text fields as user info
-     * @return HTTP response from the server
-     */
-    public Optional<HttpResponse<String>> createBankAccount()
-            throws IOException, InterruptedException {
-        String url = mainCtrl.configManager.getProperty("serverURL");
-        // Prepare user data from text fields
-        String email = emailField.getText();
-        String iban = ibanField.getText();
-        String bic = bicField.getText();
-        BankAccountCreationDto bankAccount = new BankAccountCreationDto()
-            .setIban(iban)
-            .setHolder(email)// Assuming holder's email is the same as the user's email
-            .setBic(bic);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String requestBody = objectMapper.writeValueAsString(bankAccount);
-
-        return serverUtils.createBankAccount(requestBody, url);
     }
 
 }

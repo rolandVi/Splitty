@@ -4,27 +4,24 @@ import client.utils.ServerUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import dto.view.EventDetailsDto;
 import dto.view.ExpenseDetailsDto;
-import dto.view.UserNameDto;
+import dto.view.ParticipantNameDto;
 import jakarta.inject.Inject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
-import javafx.util.Callback;
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
-
 import java.util.ResourceBundle;
 
 public class EventCtrl implements MultiLanguages{
@@ -52,14 +49,15 @@ public class EventCtrl implements MultiLanguages{
     @FXML
     public Button addParticipant;
 
+    @FXML
+    public Button inviteBtn;
+
     private EventDetailsDto eventDetailsDto;
 
     private NewExpenseCtrl newExpenseCtrl;
 
     private final EventCtrl self = this;
 
-    @FXML
-    public Button leaveButton;
     @FXML
     private VBox participantsContainer;
 
@@ -108,7 +106,7 @@ public class EventCtrl implements MultiLanguages{
     public void init(long id) {
         this.eventDetailsDto=serverUtils.getEventDetails(id);
         eventNameLabel.setText(eventDetailsDto.getTitle());
-        eventNameLabel.setText(eventDetailsDto.getTitle());
+        inviteCode.setText(eventDetailsDto.getInviteCode());
         loadExpenseList();
         loadParticipants();
     }
@@ -217,7 +215,7 @@ public class EventCtrl implements MultiLanguages{
     public void loadParticipants() {
         long eventId= this.eventDetailsDto.getId();
 
-        List<UserNameDto> participants = this.serverUtils.getParticipantsByEvent(eventId);
+        List<ParticipantNameDto> participants = this.serverUtils.getParticipantsByEvent(eventId);
         Node[] nodes=new Node[participants.size()];
 
 
@@ -232,7 +230,7 @@ public class EventCtrl implements MultiLanguages{
             }
 
             Node currentNode=nodes[i];
-            final UserNameDto participant=participants.get(i);
+            final ParticipantNameDto participant=participants.get(i);
 
             Button eventButton = (Button) currentNode.lookup("#participantName");
             eventButton.setText(participants.get(i).getFirstName() + " "
@@ -254,12 +252,13 @@ public class EventCtrl implements MultiLanguages{
     }
 
     /**
-     * The current user leaves the event
+     * Copies the invite code to the clipboard
      */
-    public void leave(){
-        long userId = Long.parseLong(mainCtrl.configManager.getProperty("userID"));
-        serverUtils.deleteEventParticipant(this.eventDetailsDto.getId(), userId);
-        returnToOverview();
+    public void copyInvite(){
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent content = new ClipboardContent();
+        content.putString(this.inviteCode.getText());
+        clipboard.setContent(content);
     }
 
 }

@@ -1,60 +1,69 @@
 package dto;
 
-import dto.CreatorToTitleDto;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CreatorToTitleDtoTest {
     @Test
-    void constructor_withArguments_setsFieldsCorrectly() {
-        // Arrange
-        Long id = 1L;
-        String title = "Test Title";
-
-        // Act
-        CreatorToTitleDto dto = new CreatorToTitleDto(id, title);
-
-        // Assert
-        Assertions.assertEquals(id, dto.getId());
-        Assertions.assertEquals(title, dto.getTitle());
+    public void testDefaultConstructor() {
+        CreatorToTitleDto dto = new CreatorToTitleDto();
+        assertNotNull(dto);
+        assertNull(dto.getFirstName());
+        assertNull(dto.getLastName());
+        assertNull(dto.getEmail());
+        assertNull(dto.getTitle());
     }
 
     @Test
-    void defaultConstructor_setsFieldsToDefaultValues() {
-        // Act
-        CreatorToTitleDto dto = new CreatorToTitleDto();
-
-        // Assert
-        Assertions.assertNull(dto.getId());
-        Assertions.assertNull(dto.getTitle());
+    public void testParameterizedConstructorAndGetters() {
+        CreatorToTitleDto dto = new CreatorToTitleDto("John", "Doe", "john@example.com", "Mr.");
+        assertEquals("John", dto.getFirstName());
+        assertEquals("Doe", dto.getLastName());
+        assertEquals("john@example.com", dto.getEmail());
+        assertEquals("Mr.", dto.getTitle());
     }
 
     @Test
-    void setId_setsIdCorrectly() {
-        // Arrange
+    public void testSetFirstName() {
         CreatorToTitleDto dto = new CreatorToTitleDto();
-        Long id = 1L;
-
-        // Act
-        dto.setId(id);
-
-        // Assert
-        Assertions.assertEquals(id, dto.getId());
+        dto.setFirstName("Jane");
+        assertEquals("Jane", dto.getFirstName());
     }
 
     @Test
-    void setTitle_setsTitleCorrectly() {
-        // Arrange
+    public void testSetLastName() {
         CreatorToTitleDto dto = new CreatorToTitleDto();
-        String title = "New Title";
+        dto.setLastName("Smith");
+        assertEquals("Smith", dto.getLastName());
+    }
 
-        // Act
-        dto.setTitle(title);
+    @Test
+    public void testSetEmail() {
+        CreatorToTitleDto dto = new CreatorToTitleDto();
+        dto.setEmail("jane@example.com");
+        assertEquals("jane@example.com", dto.getEmail());
+    }
 
-        // Assert
-        Assertions.assertEquals(title, dto.getTitle());
+    @Test
+    public void testSetTitle() {
+        CreatorToTitleDto dto = new CreatorToTitleDto();
+        dto.setTitle("Ms.");
+        assertEquals("Ms.", dto.getTitle());
+    }
+
+    @Test
+    public void testEqualsAndHashCode() {
+        CreatorToTitleDto dto1 = new CreatorToTitleDto("John", "Doe", "john@example.com", "Mr.");
+        CreatorToTitleDto dto2 = new CreatorToTitleDto("John", "Doe", "john@example.com", "Mr.");
+        CreatorToTitleDto dto3 = new CreatorToTitleDto("Jane", "Smith", "jane@example.com", "Ms.");
+
+        assertEquals(dto1, dto2);
+        assertNotEquals(dto1, dto3);
+        assertNotEquals(dto2, dto3);
+
+        assertEquals(dto1.hashCode(), dto2.hashCode());
+        assertNotEquals(dto1.hashCode(), dto3.hashCode());
+        assertNotEquals(dto2.hashCode(), dto3.hashCode());
     }
 }

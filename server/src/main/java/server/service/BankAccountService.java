@@ -1,12 +1,13 @@
 package server.service;
 
 import commons.BankAccountEntity;
+import dto.BankAccountCreationDto;
+import dto.view.BankAccountDto;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import server.controller.exception.ObjectNotFoundException;
-import dto.BankAccountCreationDto;
-import dto.view.BankAccountDto;
+import server.exception.FieldValidationException;
+import server.exception.ObjectNotFoundException;
 import server.repository.BankAccountRepository;
 
 @Service
@@ -17,8 +18,7 @@ public class BankAccountService {
     private final BankAccountRepository bankAccountRepository;
 
     /**
-     *
-     * @param modelMapper the ModelMapper injected by Spring
+     * @param modelMapper           the ModelMapper injected by Spring
      * @param bankAccountRepository the bankAccountRepository
      */
     public BankAccountService(ModelMapper modelMapper,
@@ -43,7 +43,8 @@ public class BankAccountService {
      */
     public BankAccountDto getById(long id){
         return this.modelMapper.map(this.bankAccountRepository.findById(id)
-                .orElseThrow(ObjectNotFoundException::new), BankAccountDto.class);
+                .orElseThrow(()-> new ObjectNotFoundException("No such bank account found")),
+                BankAccountDto.class);
     }
 
     /**
@@ -73,11 +74,14 @@ public class BankAccountService {
      * @param bankAccountEntity the bank account information
      * @return BankAccountDto + id
      */
-    public BankAccountDto createBankAccount(BankAccountCreationDto bankAccountEntity){
+    public BankAccountEntity createBankAccount(BankAccountCreationDto bankAccountEntity) {
+        if (this.ibanExists(bankAccountEntity.getIban())){
+            throw new FieldValidationException("Iban should be unique");
+        }
         BankAccountEntity newEntity = this.modelMapper
                 .map(bankAccountEntity, BankAccountEntity.class);
         BankAccountEntity result = this.bankAccountRepository.save(newEntity);
-        return modelMapper.map(result, BankAccountDto.class);
+        return result;
     }
 
     /**
@@ -87,5 +91,24 @@ public class BankAccountService {
      */
     public boolean ibanExists(String iban) {
         return bankAccountRepository.existsByIban(iban);
+    }
+
+    /**
+     * Edits the bank account detiails
+     * @param bankAccount the old bank account entity
+     * @param bankAccountCreationDto the new bank account details
+     * @return the new bank account
+     */
+    public BankAccountEntity editBankAccount(
+            BankAccountEntity bankAccount,
+            BankAccountCreationDto bankAccountCreationDto) {
+        if (!bankAccount.getIban().equals(bankAccountCreationDto.getIban())
+                && this.bankAccountRepository.existsByIban(bankAccountCreationDto.getIban())){
+            throw new FieldValidationException("Iban should be unique");
+        }
+
+        bankAccount.setBic(bankAccountCreationDto.getBic());
+        bankAccount.setIban(bankAccountCreationDto.getIban());
+        return this.bankAccountRepository.save(bankAccount);
     }
 }

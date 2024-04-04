@@ -1,14 +1,15 @@
 package server.service;
 
 import commons.BankAccountEntity;
+import dto.BankAccountCreationDto;
+import dto.view.BankAccountDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
-import server.controller.exception.ObjectNotFoundException;
-import dto.BankAccountCreationDto;
-import dto.view.BankAccountDto;
+import server.exception.FieldValidationException;
+import server.exception.ObjectNotFoundException;
 import server.repository.BankAccountRepository;
 
 import java.util.Optional;
@@ -96,23 +97,6 @@ class BankAccountServiceTest {
     }
 
     @Test
-    void createBankAccount() {
-        BankAccountCreationDto bankAccountCreationDto = new BankAccountCreationDto();
-        BankAccountEntity bankAccountEntity = new BankAccountEntity();
-        BankAccountDto bankAccountDto = new BankAccountDto();
-        when(modelMapper.map(bankAccountCreationDto, BankAccountEntity.class)).thenReturn(bankAccountEntity);
-        when(bankAccountRepository.save(bankAccountEntity)).thenReturn(bankAccountEntity);
-        when(modelMapper.map(bankAccountEntity, BankAccountDto.class)).thenReturn(bankAccountDto);
-
-        BankAccountDto createdDto = bankAccountService.createBankAccount(bankAccountCreationDto);
-
-        assertNotNull(createdDto);
-        verify(modelMapper, times(1)).map(bankAccountCreationDto, BankAccountEntity.class);
-        verify(bankAccountRepository, times(1)).save(bankAccountEntity);
-        verify(modelMapper, times(1)).map(bankAccountEntity, BankAccountDto.class);
-    }
-
-    @Test
     void ibanExists_withExistingIban_shouldReturnTrue() {
         String iban = "existingIban";
         when(bankAccountRepository.existsByIban(iban)).thenReturn(true);
@@ -132,5 +116,69 @@ class BankAccountServiceTest {
 
         assertFalse(result);
     }
+    @Test
+    public void testRemoveById_ValidId_RemovesSuccessfully() {
+        // Arrange
+        long accountId = 1L;
+
+        // Act
+        bankAccountService.removeById(accountId);
+
+        // Assert
+        verify(bankAccountRepository).deleteById(accountId);
+    }
+
+    // Test for saveBankAccount method
+    @Test
+    public void testSaveBankAccount_ValidDto_SavesSuccessfully() {
+        // Arrange
+        BankAccountDto bankAccountDto = new BankAccountDto();
+        BankAccountEntity savedEntity = new BankAccountEntity();
+        when(modelMapper.map(any(), eq(BankAccountEntity.class))).thenReturn(savedEntity);
+        when(bankAccountRepository.save(any())).thenReturn(savedEntity);
+
+        // Act
+        BankAccountEntity result = bankAccountService.saveBankAccount(bankAccountDto);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(savedEntity, result);
+    }
+
+    // Test for createBankAccount method when IBAN exists
+    @Test
+    public void testCreateBankAccount_DuplicateIBAN_ThrowsFieldValidationException() {
+        // Arrange
+        BankAccountCreationDto bankAccountDto = new BankAccountCreationDto();
+        bankAccountDto.setIban("existingIBAN");
+        when(bankAccountRepository.existsByIban(any())).thenReturn(true);
+
+        // Act & Assert
+        assertThrows(FieldValidationException.class, () -> bankAccountService.createBankAccount(bankAccountDto));
+    }
+
+    // Test for editBankAccount method
+    @Test
+    public void testEditBankAccount_ValidInput_ReturnsEditedBankAccount() {
+        // Arrange
+        BankAccountEntity bankAccount = new BankAccountEntity();
+        bankAccount.setIban("existingIBAN");
+
+        BankAccountCreationDto bankAccountCreationDto = new BankAccountCreationDto();
+        bankAccountCreationDto.setIban("newIBAN");
+        bankAccountCreationDto.setBic("newBIC");
+
+        when(bankAccountRepository.existsByIban(any())).thenReturn(false);
+        when(bankAccountRepository.save(any())).thenReturn(bankAccount);
+
+        // Act
+        BankAccountEntity result = bankAccountService.editBankAccount(bankAccount, bankAccountCreationDto);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(bankAccountCreationDto.getIban(), result.getIban());
+        assertEquals(bankAccountCreationDto.getBic(), result.getBic());
+    }
+
 
 }

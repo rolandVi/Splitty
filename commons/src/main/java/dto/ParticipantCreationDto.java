@@ -1,16 +1,15 @@
 package dto;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.Objects;
 
-public class UserCreationDto {
+public class ParticipantCreationDto {
     @NotBlank
     private String firstName;
     @NotBlank
     private String lastName;
-    @Email
+
     private String email;
 
     /**
@@ -19,7 +18,7 @@ public class UserCreationDto {
      * @param lastName The last name of the user.
      * @param email The email address of the user.
      */
-    public UserCreationDto(String firstName, String lastName, String email) {
+    public ParticipantCreationDto(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -28,7 +27,7 @@ public class UserCreationDto {
     /**
      * Default constructor for the UserCreationDto class.
      */
-    public UserCreationDto() {
+    public ParticipantCreationDto() {
     }
 
     /**
@@ -44,7 +43,7 @@ public class UserCreationDto {
      * @param firstName The first name to set.
      * @return This UserCreationDto instance.
      */
-    public UserCreationDto setFirstName(String firstName) {
+    public ParticipantCreationDto setFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
@@ -62,7 +61,7 @@ public class UserCreationDto {
      * @param lastName The last name to set.
      * @return This UserCreationDto instance.
      */
-    public UserCreationDto setLastName(String lastName) {
+    public ParticipantCreationDto setLastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
@@ -80,7 +79,7 @@ public class UserCreationDto {
      * @param email The email address to set.
      * @return This UserCreationDto instance.
      */
-    public UserCreationDto setEmail(String email) {
+    public ParticipantCreationDto setEmail(String email) {
         this.email = email;
         return this;
     }
@@ -94,7 +93,7 @@ public class UserCreationDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserCreationDto that = (UserCreationDto) o;
+        ParticipantCreationDto that = (ParticipantCreationDto) o;
         return Objects.equals(firstName, that.firstName)
                 && Objects.equals(lastName, that.lastName)
                 && Objects.equals(email, that.email);

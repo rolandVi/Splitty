@@ -17,16 +17,14 @@ package client.scenes;
 
 import client.ConfigManager;
 import client.utils.ServerUtils;
-import dto.view.UserNameDto;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 
 public class MainCtrl {
@@ -60,12 +58,6 @@ public class MainCtrl {
     private Scene participantEdit;
     private ParticipantCtrl participantCtrl;
 
-    private EnrollEventCtrl enrollEventCtrl;
-    private Scene enrollPage;
-
-    private AddBankInfoCtrl bankInfoCtrl;
-    private Scene addBankInfo;
-
     private Scene newExpensePage;
     private NewExpenseCtrl newExpenseCtrl;
 
@@ -89,7 +81,6 @@ public class MainCtrl {
         this.eventItemCtrl= sceneInputWrapper.eventItemPage().getKey();
         this.newParticipantCtrl = sceneInputWrapper.newParticipant().getKey();
         this.participantCtrl = sceneInputWrapper.participantPage().getKey();
-        this.bankInfoCtrl = sceneInputWrapper.bankInfoPage().getKey();
         this.newExpenseCtrl = sceneInputWrapper.newExpensePage().getKey();
 
         this.startPage = new Scene(sceneInputWrapper.startPage().getValue());
@@ -114,18 +105,9 @@ public class MainCtrl {
         this.newParticipant = new Scene(sceneInputWrapper.newParticipant().getValue());
         this.participantItem = new Scene(sceneInputWrapper.participantItemPage().getValue());
         this.participantEdit = new Scene(sceneInputWrapper.participantPage().getValue());
-        this.addBankInfo = new Scene(sceneInputWrapper.bankInfoPage().getValue());
-        this.enrollPage=new Scene(sceneInputWrapper.enrollEventPage().getValue());
 
-        UserNameDto user = new UserNameDto(Long.parseLong(configManager.getProperty("userID")),
-                configManager.getProperty("userFirstName"),
-                configManager.getProperty("userLastName"));
+        showStart();
 
-        if (configManager.getProperty("loggedIn").equals("TRUE") && serverUtils.userExists(user)) {
-            showOverview();
-        } else {
-            showStart();
-        }
         sceneInputWrapper.primaryStage().show();
         updateLanguagesOfScenes();
     }
@@ -231,14 +213,6 @@ public class MainCtrl {
     }
 
     /**
-     * Shows the enroll page
-     */
-    public void showEnrollPage(){
-        primaryStage.setTitle("Enroll");
-        primaryStage.setScene(enrollPage);
-    }
-
-    /**
      * Creates the participant edit page and sets it as the scene
      * @param parID id of the participant
      * @param eventId id of the scene
@@ -247,13 +221,5 @@ public class MainCtrl {
         participantCtrl.init(parID, eventId);
         primaryStage.setTitle("editParticipant page");
         primaryStage.setScene(participantEdit);
-    }
-
-    /**
-     * Shows the addBankInfo page such that a user may add bank credentials to their accounts
-     */
-    public void showAddNewBank() {
-        primaryStage.setTitle("addNewBank page");
-        primaryStage.setScene(addBankInfo);
     }
 }

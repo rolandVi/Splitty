@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public class EventParticipantsDto {
-    private Set<UserNameDto> participants;
+    private Set<ParticipantNameDto> participants;
 
     /**
      * Empty constructor
@@ -16,7 +16,7 @@ public class EventParticipantsDto {
      * Constructor
      * @param participants the participants
      */
-    public EventParticipantsDto(Set<UserNameDto> participants) {
+    public EventParticipantsDto(Set<ParticipantNameDto> participants) {
         this.participants = participants;
     }
 
@@ -24,7 +24,7 @@ public class EventParticipantsDto {
      * Participants getter
      * @return the participants
      */
-    public Set<UserNameDto> getParticipants() {
+    public Set<ParticipantNameDto> getParticipants() {
         return participants;
     }
 
@@ -33,7 +33,7 @@ public class EventParticipantsDto {
      * @param participants the new participants
      * @return the new event
      */
-    public EventParticipantsDto setParticipants(Set<UserNameDto> participants) {
+    public EventParticipantsDto setParticipants(Set<ParticipantNameDto> participants) {
         this.participants = participants;
         return this;
     }

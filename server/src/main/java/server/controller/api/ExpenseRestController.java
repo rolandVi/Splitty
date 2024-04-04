@@ -1,17 +1,16 @@
 package server.controller.api;
 
 import commons.ExpenseEntity;
-import commons.UserEntity;
-import dto.view.UserNameDto;
+import commons.ParticipantEntity;
+import dto.ExpenseCreationDto;
+import dto.view.ExpenseDetailsDto;
+import dto.view.ParticipantNameDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import dto.view.ExpenseDetailsDto;
-import server.controller.exception.ObjectNotFoundException;
-import dto.ExpenseCreationDto;
+import server.exception.ObjectNotFoundException;
 import server.service.EventService;
 import server.service.ExpenseService;
-
 
 import java.util.HashSet;
 import java.util.List;
@@ -60,13 +59,17 @@ public class ExpenseRestController {
     (@Valid @RequestBody ExpenseCreationDto expense) {
         ExpenseEntity createdExpense = expenseService.createExpense(expense);
 
-        UserNameDto author = new UserNameDto(createdExpense.getAuthor().getId(),
+        ParticipantNameDto author = new ParticipantNameDto(createdExpense.getAuthor().getId(),
                 createdExpense.getAuthor().getFirstName(),
-                createdExpense.getAuthor().getLastName());
+                createdExpense.getAuthor().getLastName(),
+                createdExpense.getAuthor().getEmail());
 
-        Set<UserNameDto> debtors = new HashSet<>();
-        for (UserEntity u : createdExpense.getDebtors()){
-            debtors.add(new UserNameDto(u.getId(), u.getFirstName(), u.getLastName()));
+        Set<ParticipantNameDto> debtors = new HashSet<>();
+        for (ParticipantEntity u : createdExpense.getDebtors()){
+            debtors.add(new ParticipantNameDto(u.getId(),
+                    u.getFirstName(),
+                    u.getLastName(),
+                    u.getEmail()));
         }
 
         ExpenseDetailsDto details = new ExpenseDetailsDto(createdExpense.getId(),

@@ -11,8 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class TransactionEntityTest {
-    private UserEntity sender;
-    private UserEntity receiver;
+    private ParticipantEntity sender;
+    private ParticipantEntity receiver;
 
     private ExpenseEntity expense;
 
@@ -23,10 +23,10 @@ class TransactionEntityTest {
     @BeforeEach
     void setup() {
         this.date=new Date();
-        this.sender = new UserEntity(1L, "Sender", "LastName",
-                "email@gmail.com", new HashSet<>(), new BankAccountEntity());
-        this.receiver = new UserEntity(2L, "Receiver", "LastName",
-                "email@gmail.com", new HashSet<>(), new BankAccountEntity());
+        this.sender = new ParticipantEntity(1L, "Sender", "LastName",
+                "email@gmail.com", new EventEntity(), new BankAccountEntity());
+        this.receiver = new ParticipantEntity(2L, "Receiver", "LastName",
+                "email@gmail.com", new EventEntity(), new BankAccountEntity());
         this.event=new EventEntity();
         this.expense= new ExpenseEntity(1L, 20d, receiver,
                 new HashSet<>(List.of(this.sender)), "title", date, event);

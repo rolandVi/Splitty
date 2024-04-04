@@ -2,15 +2,11 @@ package client.scenes.admin;
 
 
 import client.scenes.MultiLanguages;
+import client.utils.ServerUtils;
+import com.google.inject.Inject;
 import dto.exceptions.PasswordExpiredException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-
-import client.utils.ServerUtils;
-import com.google.inject.Inject;
-import javafx.fxml.FXML;
-
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;

@@ -1,8 +1,5 @@
 package dto.view;
 
-import dto.view.EventDetailsDto;
-import dto.view.ExpenseDetailsDto;
-import dto.view.UserNameDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,8 +7,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class EventDetailsDtoTest {
 
@@ -89,9 +84,9 @@ class EventDetailsDtoTest {
 
     @Test
     void setParticipants() {
-        Set<UserNameDto> participants = new HashSet<>();
-        participants.add(new UserNameDto(1L, "John", "Doe"));
-        participants.add(new UserNameDto(2L, "Jane", "Smith"));
+        Set<ParticipantNameDto> participants = new HashSet<>();
+        participants.add(new ParticipantNameDto(1L, "John", "Doe",""));
+        participants.add(new ParticipantNameDto(2L, "Jane", "Smith", ""));
 
         event.setParticipants(participants);
 

@@ -4,9 +4,9 @@ package client.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import dto.BankAccountCreationDto;
 import dto.CreatorToTitleDto;
 import dto.ExpenseCreationDto;
-import dto.UserCreationDto;
 import dto.exceptions.PasswordExpiredException;
 import dto.view.*;
 import jakarta.ws.rs.client.Client;
@@ -78,16 +78,15 @@ public class ServerUtils {
 
     /**
      * Creates HTTP request to the server using the parameter as name of event
-     * @param eventName name of event
-     * @param userId the user id
+     * @param creatorToTitleDto the creator details and the event title
      * @return HTTP response from the server
      */
-    public EventTitleDto createEvent(String eventName, Long userId){
-        return client.target(SERVER).path("api/users/events")
+    public EventDetailsDto createEvent(CreatorToTitleDto creatorToTitleDto){
+        return client.target(SERVER).path("api/events/")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .post(Entity.entity(new CreatorToTitleDto(userId, eventName), APPLICATION_JSON),
-                        EventTitleDto.class);
+                .post(Entity.entity(creatorToTitleDto, APPLICATION_JSON),
+                        EventDetailsDto.class);
     }
     /**
      * Updates the event name to the server and update the current event name
@@ -166,19 +165,6 @@ public class ServerUtils {
     }
 
     /**
-     * Get the events of a specific user
-     * @param id the id of the user
-     * @return the events
-     */
-    public List<EventOverviewDto> getEventsByUser(long id){
-        return client
-                .target(SERVER).path("/api/users/"+id+"/events")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .get(new GenericType<List<EventOverviewDto>>() {});
-    }
-
-    /**
      * Get all events
      * @return all events
      */
@@ -220,45 +206,16 @@ public class ServerUtils {
     }
 
     /**
-     * Check for user existence
-     * @param user user to check for existence
-     * @return whether the user exists
-     */
-    public boolean userExists(UserNameDto user){
-        return client
-                .target(SERVER).path("/api/users/exists")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .post(Entity.entity(user, APPLICATION_JSON))
-                .getStatus()!=404;
-    }
-
-
-    /**
-     * Check the validity of the given user credentials
-     * @param user the user credentials
-     * @return true if they are valid and false otherwise
-     */
-    public boolean checkUserValidity(UserCreationDto user){
-        return client
-                .target(SERVER).path("/api/users/check")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .post(Entity.entity(user, APPLICATION_JSON))
-                .getStatus()!=400;
-    }
-
-    /**
      * Get the participants of a specific event
      * @param eventId id of the event
      * @return List of participants as List<UserNameDto>
      */
-    public List<UserNameDto> getParticipantsByEvent(long eventId) {
+    public List<ParticipantNameDto> getParticipantsByEvent(long eventId) {
         return client
                 .target(SERVER).path("/api/events/" + eventId + "/participants")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .get(new GenericType<List<UserNameDto>>() {});
+                .get(new GenericType<List<ParticipantNameDto>>() {});
     }
 
     /**
@@ -266,7 +223,7 @@ public class ServerUtils {
      * @param id id of the participant
      * @return the participant as UserNameDto
      */
-    public UserNameDto getParticipantDetails(long id) {
+    public ParticipantNameDto getParticipantDetails(long id) {
         return null;
         //TODO
     }
@@ -278,8 +235,7 @@ public class ServerUtils {
      */
     public void deleteEventParticipant(long eventId, long participantId) {
         client
-                .target(SERVER).path("/api/users/" + participantId
-                        + "/events/" + eventId)
+                .target(SERVER).path("/api/events/" + eventId + "/participants/" + participantId)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .delete();
@@ -291,7 +247,7 @@ public class ServerUtils {
      */
     public void enrollInEvent(String inviteCode, long userId) {
         client
-                .target(SERVER).path("/api/users/events/"+inviteCode)
+                .target(SERVER).path("/api/events/"+inviteCode)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(userId, APPLICATION_JSON));
@@ -299,28 +255,21 @@ public class ServerUtils {
 
     /**
      * Creates bank account
-     * @param requestBody The request bodu
-     * @param url The url
-     * @return The response
+     *
+     * @param userId      the user id
+     * @param requestBody The request body
+     * @param url         The url
+     * @return the response of the request
      */
-    public Optional<HttpResponse<String>> createBankAccount(String requestBody, String url) {
-        HttpRequest request = HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .uri(URI.create(url + "/api/bankaccounts/"))
-                .header("Content-Type", "application/json")
-                .build();
+    public Response createBankAccount(Long userId,
+                                      BankAccountCreationDto requestBody,
+                                      String url) {
 
-        // Send HTTP request to server
-        // Return HTTP response from server
-        Optional<HttpResponse<String>> response;
-        try {
-            response = Optional.of(HttpClient
-                    .newHttpClient()
-                    .send(request, HttpResponse.BodyHandlers.ofString()));
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return response;
+        return client
+                .target(url).path("/api/participants/" + userId + "/account")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(requestBody, APPLICATION_JSON));
     }
 
     /**
@@ -332,7 +281,7 @@ public class ServerUtils {
     public Optional<HttpResponse<String>> createUser(String url, String requestBody) {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .uri(URI.create(url + "/api/users/"))
+                .uri(URI.create(url + "/api/participants/"))
                 .header("Content-Type", "application/json")
                 .build();
 
@@ -348,33 +297,6 @@ public class ServerUtils {
         }
 
         return response;
-    }
-
-    /**
-     * Gets the user id
-     * @param url The URL
-     * @param email the e-mail
-     * @return The user id
-     */
-    public Long getUserId(String url, String email) {
-        HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(url + "/api/users/" + email))
-                .header("Content-Type", "application/json")
-                .build();
-
-        // Send HTTP request to server
-        // Return HTTP response from server
-        Optional<HttpResponse<String>> response;
-        try {
-            response = Optional.of(HttpClient
-                    .newHttpClient()
-                    .send(request, HttpResponse.BodyHandlers.ofString()));
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        return Long.valueOf(response.get().body());
     }
 
     /**
@@ -420,5 +342,69 @@ public class ServerUtils {
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .delete();
+    }
+
+    /**
+     * Retreives the bank details of the current user
+     * @param userID teh current user id
+     * @param serverURL the server url
+     * @return the bank details
+     */
+    public BankAccountDto findBankDetails(String userID, String serverURL) {
+        return client.target(serverURL)
+                .path("/api/participants/" + userID + "/account")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<BankAccountDto>() {});
+    }
+
+    /**
+     * Edits the bank account details of the current user
+     * @param userId the user id
+     * @param bankAccount the bank account
+     * @param url the url of the server
+     * @return  the response from the server
+     */
+    public Optional<HttpResponse<String>> editBankAccount(Long userId,
+                                                          BankAccountCreationDto bankAccount,
+                                                          String url) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody;
+        try {
+            requestBody = objectMapper.writeValueAsString(bankAccount);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Create HTTP request
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url + "/api/participants/" + userId + "/account"))
+                .header("Content-Type", "application/json")
+                .method("PATCH", HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        Optional<HttpResponse<String>> response;
+        try {
+            response = Optional.of(HttpClient
+                    .newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString()));
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        return response;
+    }
+
+    /**
+     * Returns the event details of an event with the invite code
+     * @param inviteCode the invite code of the event
+     * @return the details
+     */
+    public EventDetailsDto getEventDetailsByInviteCode(String inviteCode) {
+        return client
+                .target(SERVER).path("/api/events/invites/" + inviteCode)
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .get(EventDetailsDto.class);
     }
 }

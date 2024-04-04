@@ -1,18 +1,18 @@
 package server.service;
 
 import commons.TransactionEntity;
+import dto.TransactionCreationDto;
+import dto.view.TransactionDetailsDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
-import dto.TransactionCreationDto;
-import dto.view.TransactionDetailsDto;
 import server.repository.TransactionRepository;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class TransactionServiceTest {
@@ -25,7 +25,7 @@ class TransactionServiceTest {
     void setUp() {
         transactionRepository = mock(TransactionRepository.class);
         ModelMapper modelMapper = new ModelMapper();
-        UserService userService = mock(UserService.class);
+        ParticipantService userService = mock(ParticipantService.class);
         expenseService = mock(ExpenseService.class);
 
         transactionService = new TransactionService(transactionRepository, modelMapper, userService, expenseService);

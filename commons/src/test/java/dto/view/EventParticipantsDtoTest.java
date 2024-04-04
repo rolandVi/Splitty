@@ -1,14 +1,10 @@
 package dto.view;
 
-import dto.view.EventParticipantsDto;
-import dto.view.UserNameDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EventParticipantsDtoTest {
 
@@ -19,9 +15,9 @@ class EventParticipantsDtoTest {
 
     @Test
     void getParticipants() {
-        Set<UserNameDto> participants = new HashSet<>();
-        participants.add(new UserNameDto(1L, "John", "Doe"));
-        participants.add(new UserNameDto(2L, "Jane", "Smith"));
+        Set<ParticipantNameDto> participants = new HashSet<>();
+        participants.add(new ParticipantNameDto(1L, "John", "Doe", ""));
+        participants.add(new ParticipantNameDto(2L, "Jane", "Smith", ""));
 
         EventParticipantsDto eventParticipants = new EventParticipantsDto(participants);
 
@@ -30,9 +26,9 @@ class EventParticipantsDtoTest {
 
     @Test
     void setParticipants() {
-        Set<UserNameDto> participants = new HashSet<>();
-        participants.add(new UserNameDto(1L, "John", "Doe"));
-        participants.add(new UserNameDto(2L, "Jane", "Smith"));
+        Set<ParticipantNameDto> participants = new HashSet<>();
+        participants.add(new ParticipantNameDto(1L, "John", "Doe", ""));
+        participants.add(new ParticipantNameDto(2L, "Jane", "Smith", ""));
 
         EventParticipantsDto eventParticipants = new EventParticipantsDto(new HashSet<>());
         eventParticipants.setParticipants(participants);
@@ -42,13 +38,13 @@ class EventParticipantsDtoTest {
 
     @Test
     void testEquals() {
-        Set<UserNameDto> participants1 = new HashSet<>();
-        participants1.add(new UserNameDto(1L, "John", "Doe"));
-        participants1.add(new UserNameDto(2L, "Jane", "Smith"));
+        Set<ParticipantNameDto> participants1 = new HashSet<>();
+        participants1.add(new ParticipantNameDto(1L, "John", "Doe", ""));
+        participants1.add(new ParticipantNameDto(2L, "Jane", "Smith", ""));
 
-        Set<UserNameDto> participants2 = new HashSet<>();
-        participants2.add(new UserNameDto(1L, "John", "Doe"));
-        participants2.add(new UserNameDto(2L, "Jane", "Smith"));
+        Set<ParticipantNameDto> participants2 = new HashSet<>();
+        participants2.add(new ParticipantNameDto(1L, "John", "Doe", ""));
+        participants2.add(new ParticipantNameDto(2L, "Jane", "Smith", ""));
 
         EventParticipantsDto eventParticipants1 = new EventParticipantsDto(participants1);
         EventParticipantsDto eventParticipants2 = new EventParticipantsDto(participants2);
@@ -58,13 +54,13 @@ class EventParticipantsDtoTest {
 
     @Test
     void testHashCode() {
-        Set<UserNameDto> participants1 = new HashSet<>();
-        participants1.add(new UserNameDto(1L, "John", "Doe"));
-        participants1.add(new UserNameDto(2L, "Jane", "Smith"));
+        Set<ParticipantNameDto> participants1 = new HashSet<>();
+        participants1.add(new ParticipantNameDto(1L, "John", "Doe", ""));
+        participants1.add(new ParticipantNameDto(2L, "Jane", "Smith", ""));
 
-        Set<UserNameDto> participants2 = new HashSet<>();
-        participants2.add(new UserNameDto(1L, "John", "Doe"));
-        participants2.add(new UserNameDto(2L, "Jane", "Smith"));
+        Set<ParticipantNameDto> participants2 = new HashSet<>();
+        participants2.add(new ParticipantNameDto(1L, "John", "Doe", ""));
+        participants2.add(new ParticipantNameDto(2L, "Jane", "Smith", ""));
 
         EventParticipantsDto eventParticipants1 = new EventParticipantsDto(participants1);
         EventParticipantsDto eventParticipants2 = new EventParticipantsDto(participants2);

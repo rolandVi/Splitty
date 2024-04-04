@@ -4,12 +4,10 @@ import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.util.Set;
-
 
 @Entity
 @Table(name = "users")
-public class UserEntity {
+public class ParticipantEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,11 +18,11 @@ public class UserEntity {
 
     @Column(nullable = false)
     private String lastName;
-    @Column(nullable = false, unique = true)
+    @Column
     private String email;
 
-    @ManyToMany(mappedBy = "participants")
-    private Set<EventEntity> events;
+    @ManyToOne(cascade = CascadeType.DETACH)
+    private EventEntity event;
 
     @OneToOne
     private BankAccountEntity bankAccount;
@@ -32,7 +30,7 @@ public class UserEntity {
     /**
      * Empty constructor tha will be used by JPA
      */
-    public UserEntity() {
+    public ParticipantEntity() {
     }
 
     /**
@@ -41,16 +39,17 @@ public class UserEntity {
      * @param firstName the first name of the user
      * @param lastName the last name of the user
      * @param email the email of the user
-     * @param events the events
+     * @param event the event
      * @param bankAccount the events
      */
-    public UserEntity(Long id, String firstName, String lastName,
-                      String email, Set<EventEntity> events, BankAccountEntity bankAccount) {
+    public ParticipantEntity(Long id, String firstName,
+                             String lastName, String email,
+                             EventEntity event, BankAccountEntity bankAccount) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.events = events;
+        this.event = event;
         this.bankAccount = bankAccount;
     }
 
@@ -87,11 +86,11 @@ public class UserEntity {
     }
 
     /**
-     * Events getter
-     * @return the events of the user
+     * getter for the event
+     * @return the event
      */
-    public Set<EventEntity> getEvents() {
-        return events;
+    public EventEntity getEvent() {
+        return event;
     }
 
     /**
@@ -154,20 +153,12 @@ public class UserEntity {
     }
 
     /**
-     * leaves a particular event
-     * @param event the event to leave
+     * setter for the event
+     * @param event the new event
+     * @return the new participant info
      */
-    public void leave(EventEntity event) {
-        this.events.remove(event);
-        event.getParticipants().remove(this);
-    }
-
-    /**
-     * join an event
-     * @param event the event
-     */
-    public void join(EventEntity event) {
-        this.events.add(event);
-        event.getParticipants().add(this);
+    public ParticipantEntity setEvent(EventEntity event) {
+        this.event = event;
+        return this;
     }
 }
