@@ -41,6 +41,9 @@ public class AdminOverviewPageCtrl {
     public Button restore;
 
     @FXML
+    public Text copyConfirmation;
+
+    @FXML
     private VBox eventContainer;
 
     private Image titleImg;
@@ -132,6 +135,7 @@ public class AdminOverviewPageCtrl {
      * Loads the events and displays them on the page
      */
     public void loadEvents() {
+        copyConfirmation.setOpacity(0);
         List<EventOverviewDto> events = getEventOverviewDtos();
 
         Node[] nodes=new Node[events.size()];
@@ -182,7 +186,7 @@ public class AdminOverviewPageCtrl {
 
 
         if (currentOrder.equals("title")){
-            events.sort(Comparator.comparing(EventOverviewDto::getTitle).reversed());
+            events.sort(Comparator.comparing(EventOverviewDto::getTitle));
         } else if (currentOrder.equals("creation")){
             events.sort(Comparator.comparing(EventOverviewDto::getCreationDate));
         } else if (currentOrder.equals("last modified")){
@@ -236,7 +240,9 @@ public class AdminOverviewPageCtrl {
                 // Set the retrieved JSON content to clipboard
                 content.putString(response.toString());
                 clipboard.setContent(content);
-                System.out.println("JSON copied to clipboard.");
+
+                copyConfirmation.setText("JSON OF EVENT #" + id + " COPIED TO CLIPBOARD!");
+                copyConfirmation.setOpacity(1);
             } else {
                 System.out.println("Error dumping database: " + con.getResponseMessage());
             }
