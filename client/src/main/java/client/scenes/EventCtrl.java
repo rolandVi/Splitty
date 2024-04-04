@@ -19,7 +19,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
@@ -102,8 +101,11 @@ public class EventCtrl implements MultiLanguages{
         mainCtrl.showOverview();
     }
 
+    /**
+     * Passes along the invite code and shows the event emailing scene
+     */
     public void sendInvite(){
-        mainCtrl.showEventEmail();
+        mainCtrl.showEventEmail(inviteCode.getText());
     }
 
 

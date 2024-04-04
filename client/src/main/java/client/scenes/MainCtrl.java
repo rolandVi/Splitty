@@ -229,8 +229,13 @@ public class MainCtrl {
         primaryStage.setScene(participantEdit);
     }
 
-    public void showEventEmail() {
+    /**
+     * Shows the scene to send emails with the invite code
+     * @param inviteCode the invite code of the event to send
+     */
+    public void showEventEmail(String inviteCode) {
         primaryStage.setTitle("Send Email");
         primaryStage.setScene(eventEmail);
+        eventEmailCtrl.refresh(inviteCode);
     }
 }

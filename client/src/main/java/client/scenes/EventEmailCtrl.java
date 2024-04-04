@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,6 +15,7 @@ public class EventEmailCtrl implements MultiLanguages{
 
     private final MainCtrl mainCtrl;
     private final ServerUtils serverUtils;
+    private String inviteCode;
     @FXML
     public Label titleLabel;
     @FXML
@@ -38,6 +38,9 @@ public class EventEmailCtrl implements MultiLanguages{
         this.serverUtils=serverUtils;
     }
 
+    /**
+     * Updates the language of the scene using the resource bundle
+     */
     @Override
     public void updateLanguage() {
         try {
@@ -69,12 +72,21 @@ public class EventEmailCtrl implements MultiLanguages{
 
         String regex = "^(.+)@(.+)$";
         Pattern pattern = Pattern.compile(regex);
-        for(String email : arr){
+        for (String email : arr){
             Matcher matcher = pattern.matcher(email);
             System.out.println(email +" : "+ matcher.matches()+"\n");
             if (matcher.matches()) {
                 // Send email
             }
         }
+    }
+
+    /**
+     * Refreshes the scene
+     * Used to update the invite code
+     * @param inviteCode the invite code of the event to send
+     */
+    public void refresh(String inviteCode) {
+        this.inviteCode = inviteCode;
     }
 }
