@@ -2,10 +2,10 @@ package server.service;
 
 import commons.EventEntity;
 import commons.ExpenseEntity;
-import dto.CreatorToTitleDto;
 import dto.ExpenseCreationDto;
-import dto.ParticipantCreationDto;
 import dto.view.*;
+import dto.CreatorToTitleDto;
+import dto.ParticipantCreationDto;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -16,6 +16,7 @@ import server.repository.EventRepository;
 
 import java.time.LocalTime;
 import java.util.List;
+
 import java.util.stream.Collectors;
 
 @Service
@@ -211,6 +212,7 @@ public class EventService {
             expenseDto.setEventId(entity.getId());
             expenseService.createExpense(expenseDto);
         }
+
 
 
         for (ParticipantNameDto user : eventDetailsDto.getParticipants()) {
