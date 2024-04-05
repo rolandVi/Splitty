@@ -41,13 +41,14 @@ public class AdminRestoreCtrl {
      * Will return to the admin overview
      */
     public void returnOverview() {
+        restoreMessage.setOpacity(0);
         adminMainCtrl.showAdminOverview();
     }
 
 
     /**
      * Method to create a POST to the server with the JSON,
-     * which if correct will restore the event related to the JSON dump
+     * which, if correct, will restore the event related to the JSON dump
      */
     public void restoreData() {
         String jsonData = textField.getText();
