@@ -15,8 +15,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.net.ConnectException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 

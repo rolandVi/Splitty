@@ -16,8 +16,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.net.ConnectException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
@@ -410,6 +408,10 @@ public class ServerUtils {
                 .get(EventDetailsDto.class);
     }
 
+    /**
+     * Tests the connection to the server with the given url
+     * @param url the url of the server
+     */
     public void connect(String url)  {
         client
                 .target(url).path("/api/events/connect")
