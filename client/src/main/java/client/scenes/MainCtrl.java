@@ -161,6 +161,7 @@ public class MainCtrl {
      * Shows the new event scene
      */
     public void showNewEvent(){
+        eventCreationCtrl.init();
         primaryStage.setTitle("New Event");
         primaryStage.setScene(eventCreationPage);
     }

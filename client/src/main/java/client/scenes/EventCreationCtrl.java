@@ -49,6 +49,13 @@ public class EventCreationCtrl implements MultiLanguages{
     }
 
     /**
+     * Sets the initial state of the page
+     */
+    public void init(){
+        invalidateFields();
+    }
+
+    /**
      * Updates the language of the scene using the resource bundle
      */
     @Override
@@ -111,5 +118,15 @@ public class EventCreationCtrl implements MultiLanguages{
             default:
                 break;
         }
+    }
+
+    /**
+     * Resets the text fields
+     */
+    private void invalidateFields(){
+        this.eventNameTextField.setText("");
+        this.creatorEmailTextField.setText("");
+        this.creatorFirstNameTextField.setText("");
+        this.creatorLastNameTextField.setText("");
     }
 }

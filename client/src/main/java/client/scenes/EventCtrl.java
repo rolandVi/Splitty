@@ -107,6 +107,7 @@ public class EventCtrl implements MultiLanguages{
         this.eventDetailsDto=serverUtils.getEventDetails(id);
         eventNameLabel.setText(eventDetailsDto.getTitle());
         inviteCode.setText(eventDetailsDto.getInviteCode());
+        this.changeTextField.setText("");
         loadExpenseList();
         loadParticipants();
     }
