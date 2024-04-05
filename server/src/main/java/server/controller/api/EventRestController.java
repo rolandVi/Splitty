@@ -117,6 +117,17 @@ public class EventRestController {
         return ResponseEntity.ok(this.eventService.getAllEvents());
     }
 
+
+    /**
+     * Endpoint used for testing connection
+     * @return response
+     */
+
+    @GetMapping("/connect")
+    public ResponseEntity<Void> connectTest(){
+        return ResponseEntity.ok().build();
+    }
+
     /**
      * Endpoint to get the participants of an event
      * @param eventId the event id

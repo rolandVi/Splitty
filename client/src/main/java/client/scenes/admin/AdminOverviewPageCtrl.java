@@ -9,9 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
@@ -204,8 +202,19 @@ public class AdminOverviewPageCtrl {
      * @param id the id of the event
      */
     private void deleteEvent(long id) throws IOException, URISyntaxException, InterruptedException {
-        serverUtils.deleteEvent(id);
-        refresh();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText("Delete event");
+        alert.setContentText("Are you sure you want to delete this event");
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try {
+                    serverUtils.deleteEvent(id);
+                    refresh();
+                } catch (IOException | URISyntaxException | InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
     /**

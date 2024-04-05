@@ -16,6 +16,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.ConnectException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
@@ -168,7 +170,7 @@ public class ServerUtils {
      * Get all events
      * @return all events
      */
-    public List<EventOverviewDto> getAllEvents(){
+    public List<EventOverviewDto> getAllEvents() {
         return client
                 .target(SERVER).path("/api/events")
                 .request(APPLICATION_JSON)
@@ -406,5 +408,13 @@ public class ServerUtils {
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .get(EventDetailsDto.class);
+    }
+
+    public void connect(String url)  {
+        client
+                .target(url).path("/api/events/connect")
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .get();
     }
 }

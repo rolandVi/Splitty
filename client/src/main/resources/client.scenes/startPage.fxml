@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="anchorPane" stylesheets="@../stylesheets/startPage.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StartPageCtrl">
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="anchorPane" stylesheets="@../stylesheets/startPage.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StartPageCtrl">
    <children>
       <ImageView fx:id="logoImageView" fitHeight="223.0" fitWidth="458.0" layoutX="100.0" layoutY="-28.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -19,13 +19,12 @@
             <Font size="8.0" />
          </font></Button>
       <TextField fx:id="serverField" alignment="CENTER" layoutX="236.0" layoutY="264.0" prefHeight="23.0" prefWidth="129.0" promptText="http://localhost:8080" scaleX="1.5" scaleY="1.5" styleClass="serverField" text="http://localhost:8080" />
-      <Text fx:id="errorMessage" fill="RED" layoutX="252.0" layoutY="390.0" opacity="0.0" scaleX="1.5" scaleY="1.5" strokeType="OUTSIDE" strokeWidth="0.0" text="INCORRECT SERVER URL!" wrappingWidth="93.33332061767578">
+      <Text fx:id="errorMessage" fill="RED" layoutX="241.0" layoutY="328.0" opacity="0.0" scaleX="1.5" scaleY="1.5" strokeType="OUTSIDE" strokeWidth="0.0" text="INCORRECT SERVER URL!" textAlignment="CENTER" wrappingWidth="119.99999999999994">
          <font>
             <Font size="8.0" />
          </font></Text>
 
       <Button fx:id="openAdminButton" layoutX="512.0" layoutY="356.0" mnemonicParsing="false" onAction="#enterAdmin" prefHeight="25.0" prefWidth="72.0" styleClass="adminBtn" text="admin" />
-      <Label fx:id="incorrectData" layoutX="220.0" layoutY="360.0" prefHeight="17.0" prefWidth="161.0" text="Please enter valid information" textFill="RED" visible="false" />
       <ComboBox fx:id="languageBox" layoutX="518.0" layoutY="24.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#uponSelectionLanguage" />
       <Circle fill="DODGERBLUE" layoutX="94.0" layoutY="275.0" opacity="0.8" radius="85.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="ball2" />
       <Label layoutX="74.0" layoutY="205.0" prefHeight="85.0" prefWidth="40.0" styleClass="euro" text="€">
