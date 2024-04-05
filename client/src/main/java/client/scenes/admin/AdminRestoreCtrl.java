@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 
 public class AdminRestoreCtrl {
     private final AdminMainCtrl adminMainCtrl;
@@ -15,6 +16,10 @@ public class AdminRestoreCtrl {
     public TextArea textField;
     @FXML
     public Button returnBtn;
+
+    @FXML
+    public Text restoreMessage;
+
     @FXML
     private AnchorPane rootPane;
 
@@ -36,18 +41,20 @@ public class AdminRestoreCtrl {
      * Will return to the admin overview
      */
     public void returnOverview() {
+        restoreMessage.setOpacity(0);
         adminMainCtrl.showAdminOverview();
     }
 
 
     /**
      * Method to create a POST to the server with the JSON,
-     * which if correct will restore the event related to the JSON dump
+     * which, if correct, will restore the event related to the JSON dump
      */
     public void restoreData() {
         String jsonData = textField.getText();
         serverUtils.restoreData(jsonData);
         textField.clear();
+        restoreMessage.setOpacity(1);
     }
 
     /**
@@ -56,6 +63,7 @@ public class AdminRestoreCtrl {
     @FXML
     public void initialize() {
         // Add listener to scene property to handle scene showing event
+        restoreMessage.setOpacity(0);
         rootPane.sceneProperty().addListener((observable, oldScene, newScene) -> {
             if (oldScene == null && newScene != null) {
                 // Scene is being shown for the first time

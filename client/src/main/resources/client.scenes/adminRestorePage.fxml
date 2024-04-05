@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" styleClass="pane" stylesheets="@../stylesheets/adminRestore.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.admin.AdminRestoreCtrl">
+<AnchorPane fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" styleClass="pane" stylesheets="@../stylesheets/adminRestore.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.admin.AdminRestoreCtrl">
    <children>
       <Label layoutX="69.0" layoutY="52.0" text="Restore event">
          <font>
@@ -20,5 +23,10 @@
          <font>
             <Font size="21.0" />
          </font></Button>
+      <Text fx:id="restoreMessage" fill="#4c7b5d" layoutX="69.0" layoutY="366.0" strokeType="OUTSIDE" strokeWidth="0.0" text="THE EVENT HAS BEEN RESTORED!" wrappingWidth="323.73663330078125">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
