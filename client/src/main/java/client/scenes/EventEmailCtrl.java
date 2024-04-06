@@ -60,7 +60,7 @@ public class EventEmailCtrl implements MultiLanguages{
      * Will show event overview when the return button is pressed
      */
     public void returnToOverview(){
-        mainCtrl.showOverview();
+        mainCtrl.showEvent();
     }
 
     /**

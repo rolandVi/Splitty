@@ -238,4 +238,9 @@ public class MainCtrl {
         primaryStage.setScene(eventEmail);
         eventEmailCtrl.refresh(inviteCode);
     }
+
+    public void showEvent() {
+        primaryStage.setTitle("Event");
+        primaryStage.setScene(eventPage);
+    }
 }
