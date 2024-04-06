@@ -23,6 +23,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -406,5 +409,40 @@ public class ServerUtils {
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .get(EventDetailsDto.class);
+    }
+
+
+    private static final ExecutorService EXEC = Executors.newSingleThreadExecutor();
+
+
+    /**
+     * Register for updates for long polling
+     * @param consumer The consumer
+     */
+    public void registerForUpdates(Consumer<EventOverviewDto> consumer) {
+        EXEC.submit(() -> {
+            while (!Thread.interrupted()){
+                var res = client
+                        .target(SERVER).path("/api/events/updates")
+                        .request(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON)
+                        .get(Response.class);
+
+                if (res.getStatus() == 204){
+                    continue;
+                }
+                var q = res.readEntity(new GenericType<EventOverviewDto>() {});
+                consumer.accept(q);
+            }
+
+        });
+
+    }
+
+    /**
+     * Stops the thread
+     */
+    public void stop(){
+        EXEC.shutdownNow();
     }
 }
