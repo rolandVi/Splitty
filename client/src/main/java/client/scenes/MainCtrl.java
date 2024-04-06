@@ -239,6 +239,9 @@ public class MainCtrl {
         eventEmailCtrl.refresh(inviteCode);
     }
 
+    /**
+     * Show the most recent selected event
+     */
     public void showEvent() {
         primaryStage.setTitle("Event");
         primaryStage.setScene(eventPage);
