@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.text.Text;
+
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,6 +28,10 @@ public class EventEmailCtrl implements MultiLanguages{
     public Button sendButton;
     @FXML
     public Button returnButton;
+    @FXML
+    public Text sentMessage;
+    @FXML
+    public Text errorMessage;
 
     /**
      * Injector for EventOverviewCtrl
@@ -60,6 +66,9 @@ public class EventEmailCtrl implements MultiLanguages{
      * Will show event overview when the return button is pressed
      */
     public void returnToOverview(){
+        sentMessage.setOpacity(0);
+        errorMessage.setOpacity(0);
+        inputTextArea.clear();
         mainCtrl.showEvent();
     }
 
@@ -67,17 +76,27 @@ public class EventEmailCtrl implements MultiLanguages{
      * Send emails to all inserted email addresses
      */
     public void sendInvite(){
-        // todo finish implementation with necessary API
+        sentMessage.setOpacity(0);
+        errorMessage.setOpacity(0);
         String[] arr = inputTextArea.getText().split("\n");
 
         String regex = "^(.+)@(.+)$";
         Pattern pattern = Pattern.compile(regex);
+        boolean format = true;
         for (String email : arr){
             Matcher matcher = pattern.matcher(email);
             System.out.println(email +" : "+ matcher.matches()+"\n");
             if (matcher.matches()) {
-                // Send email
+                serverUtils.sendEmail(email, inviteCode);
+            } else {
+                format = false;
             }
+        }
+        if (format) {
+            sentMessage.setOpacity(1);
+            inputTextArea.clear();
+        } else {
+            errorMessage.setOpacity(1);
         }
     }
 
@@ -88,5 +107,8 @@ public class EventEmailCtrl implements MultiLanguages{
      */
     public void refresh(String inviteCode) {
         this.inviteCode = inviteCode;
+        sentMessage.setOpacity(0);
+        errorMessage.setOpacity(0);
+        inputTextArea.clear();
     }
 }
