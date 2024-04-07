@@ -14,8 +14,16 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.simp.stomp.StompFrameHandler;
+import org.springframework.messaging.simp.stomp.StompHeaders;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
@@ -23,6 +31,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -32,6 +41,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 public class ServerUtils {
 
     private static final String SERVER = "http://localhost:8080/";
+    private StompSession session;
 
     private final Client client;
 
@@ -42,6 +52,17 @@ public class ServerUtils {
     @Inject
     public ServerUtils(Client client){
         this.client=client;
+        session = connect("ws://localhost:8080/websocket");
+    }
+
+    /**
+     * Constructor for testing
+     * @param client Instance of Client
+     * @param stompSession The stompSession that can be mocked for testing
+     */
+    public ServerUtils(Client client, StompSession stompSession){
+        this.client=client;
+        session = stompSession;
     }
 
     /**
@@ -91,6 +112,56 @@ public class ServerUtils {
                 .post(Entity.entity(creatorToTitleDto, APPLICATION_JSON),
                         EventDetailsDto.class);
     }
+
+    /**
+     * Creates connection with the server
+     * @param url The URL of the endpoint
+     * @return A StompSession object
+     */
+    private StompSession connect(String url) {
+        StandardWebSocketClient client = new StandardWebSocketClient();
+        WebSocketStompClient stomp = new WebSocketStompClient(client);
+        stomp.setMessageConverter(new MappingJackson2MessageConverter());
+        try {
+            return stomp.connect(url, new StompSessionHandlerAdapter() {}).get();
+        }catch (InterruptedException e){
+
+        }catch (ExecutionException e){
+            throw new RuntimeException();
+        }
+        throw new IllegalStateException();
+    }
+
+    /**
+     *
+     * @param dest The URL of the endpoint
+     * @param type The type of the object to be sent
+     * @param consumer The consumer
+     * @param <T> The generic type
+     */
+    public <T> void registerForMessages(String dest, Class<T> type, Consumer<T> consumer) {
+        session.subscribe(dest, new StompFrameHandler() {
+            @Override
+            public Type getPayloadType(StompHeaders headers) {
+                return type;
+            }
+            @SuppressWarnings("unchecked")
+            @Override
+            public void handleFrame(StompHeaders headers, Object payload) {
+                consumer.accept((T) payload);
+            }
+        });
+    }
+
+    /**
+     * Sends an object to a particular endpoint
+     * @param dest The endpoint
+     * @param o The object to be sent
+     */
+    public void send(String dest, Object o){
+        session.send(dest, o);
+    }
+
     /**
      * Updates the event name to the server and update the current event name
      * @param id event ID
