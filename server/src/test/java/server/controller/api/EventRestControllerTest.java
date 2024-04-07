@@ -133,4 +133,35 @@ class EventRestControllerTest {
         assertEquals(expectedDto, response.getBody());
         verify(eventService, times(1)).saveEvent(requestDto);
     }
+
+
+    @Test
+    void testGetByInviteCode() {
+        // Arrange
+        String inviteCode = "ABCD1234";
+        EventDetailsDto expectedDto = new EventDetailsDto();
+        when(eventService.getByInviteCode(inviteCode)).thenReturn(expectedDto);
+
+        // Act
+        ResponseEntity<EventDetailsDto> response = eventRestController.getByInviteCode(inviteCode);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedDto, response.getBody());
+        verify(eventService, times(1)).getByInviteCode(inviteCode);
+    }
+
+    @Test
+    void testDeleteParticipant() {
+        // Arrange
+        long eventId = 1L;
+        long participantId = 1L;
+
+        // Act
+        ResponseEntity<Void> response = eventRestController.deleteParticipant(eventId, participantId);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(eventService, times(1)).deleteParticipant(eventId, participantId);
+    }
 }
