@@ -23,9 +23,7 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -51,6 +49,12 @@ public class AdminOverviewPageCtrl implements Initializable {
     private Image titleImg;
     private Image lastModifiedImg;
     private Image creationTimeImg;
+
+    private Image downloadImg;
+
+    private Image copyImg;
+
+    private Image deleteImg;
 
     private String currentOrder = "title";
 
@@ -91,6 +95,19 @@ public class AdminOverviewPageCtrl implements Initializable {
                 loadEvents();
             });
         });
+
+        deleteImg = new Image(Objects.requireNonNull(getClass()
+                .getResourceAsStream("/images/delete.png")),
+                20, 20, true, true);
+
+        copyImg = new Image(Objects.requireNonNull(getClass()
+                .getResourceAsStream("/images/copy.png")),
+                20, 20, true, true);
+
+        downloadImg = new Image(Objects.requireNonNull(getClass()
+                .getResourceAsStream("/images/download.png")),
+                20, 20, true, true);
+
         loadOrder();
         loadEvents();
     }
@@ -206,10 +223,16 @@ public class AdminOverviewPageCtrl implements Initializable {
             String lastModifiedTime = sdf.format(events.get(i).getLastModifiedDate());
             dateText.setText("Creation: " + creationTime + " Last Modified: " + lastModifiedTime);
 
-            Button inviteBtn=(Button) currentNode.lookup("#jsonBtn");
-            inviteBtn.setOnAction(e -> getJSON(event.getId()));
+            Button downloadBtn = (Button) currentNode.lookup("#downloadButton");
+            downloadBtn.setGraphic(new ImageView(downloadImg));
+            downloadBtn.setOnAction(e -> downloadJSON(event.getId()));
+
+            Button copyBtn=(Button) currentNode.lookup("#jsonBtn");
+            copyBtn.setGraphic(new ImageView(copyImg));
+            copyBtn.setOnAction(e -> getJSON(event.getId()));
 
             Button deleteBtn= (Button) currentNode.lookup("#deleteBtn");
+            deleteBtn.setGraphic(new ImageView(deleteImg));
             deleteBtn.setOnAction(e -> {
                 try {
                     deleteEvent(event.getId());
@@ -220,6 +243,48 @@ public class AdminOverviewPageCtrl implements Initializable {
         }
         this.eventContainer.getChildren().clear();
         this.eventContainer.getChildren().addAll(nodes);
+    }
+
+    /**
+     * Download the JSON
+     * @param id The id of the json
+     */
+    private void downloadJSON(long id) {
+
+        try {
+            URL url = new URL(config.getProperty("serverURL") + "/api/events/" + id);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+
+            if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String inputLine = "";
+                while ((inputLine = br.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                br.close();
+
+                String messageJSON = response.toString();
+
+                String fileName = "JSON_dump_id_#" + id + ".json";
+
+                String filePath = "client/src/main/resources/json/" + fileName;
+
+                try (FileWriter writer = new FileWriter(filePath)) {
+                    writer.write(messageJSON);
+                    copyConfirmation.setText("JSON OF EVENT #" + id + " DOWNLOADED!");
+                    copyConfirmation.setOpacity(1);
+                } catch (IOException e) {
+                    System.out.println("Error writing JSON file: " + e.getMessage());
+                }
+
+            } else {
+                System.out.println("Error dumping database: " + con.getResponseMessage());
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
     /**
@@ -261,7 +326,9 @@ public class AdminOverviewPageCtrl implements Initializable {
                 in.close();
 
                 // Set the retrieved JSON content to clipboard
-                content.putString(response.toString());
+                String messageJSON = response.toString();
+
+                content.putString(messageJSON);
                 clipboard.setContent(content);
 
                 copyConfirmation.setText("JSON OF EVENT #" + id + " COPIED TO CLIPBOARD!");
