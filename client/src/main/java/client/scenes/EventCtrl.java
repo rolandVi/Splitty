@@ -57,7 +57,7 @@ public class EventCtrl implements MultiLanguages{
     public RadioButton filterExpensesByDebtor;
     @FXML
     public ComboBox<ParticipantNameDto> participantSelectionBox;
-//    @FXML
+
     public ToggleGroup filterGroup;
 
     @FXML
@@ -165,12 +165,16 @@ public class EventCtrl implements MultiLanguages{
         expenseList.setItems(items);
     }
 
+    /**
+     * Filters the displayed expenses by the chosen author
+     */
     public void filterExpensesByAuthor(){
         if (participantSelectionBox.getValue() != null){
             ParticipantNameDto selectedParticipant = participantSelectionBox.getValue();
             ObservableList<ExpenseDetailsDto> items = FXCollections
                     .observableArrayList(eventDetailsDto.getExpenses());
-            items = items.stream().filter(x -> x.getAuthor().equals(selectedParticipant)).collect(Collectors.toCollection(FXCollections::observableArrayList));
+            items = items.stream().filter(x -> x.getAuthor().equals(selectedParticipant))
+                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
 
             expenseList.setCellFactory(new Callback<ListView<ExpenseDetailsDto>,
                     ListCell<ExpenseDetailsDto>>() {
@@ -182,12 +186,17 @@ public class EventCtrl implements MultiLanguages{
             expenseList.setItems(items);
         }
     }
+
+    /**
+     * Filters the displayed expenses by the chosen debtor
+     */
     public void filterExpensesByDebtor(){
         if (participantSelectionBox.getValue() != null){
             ParticipantNameDto selectedParticipant = participantSelectionBox.getValue();
             ObservableList<ExpenseDetailsDto> items = FXCollections
                     .observableArrayList(eventDetailsDto.getExpenses());
-            items = items.stream().filter(x -> x.getDebtors().contains(selectedParticipant)).collect(Collectors.toCollection(FXCollections::observableArrayList));
+            items = items.stream().filter(x -> x.getDebtors().contains(selectedParticipant))
+                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
 
             expenseList.setCellFactory(new Callback<ListView<ExpenseDetailsDto>,
                     ListCell<ExpenseDetailsDto>>() {

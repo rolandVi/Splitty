@@ -41,7 +41,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 public class ServerUtils {
 
     private static final String SERVER = "http://localhost:8080/";
-    private StompSession session = connect("ws://localhost:8080/websocket");
+    private StompSession session;
 
     private final Client client;
 
@@ -52,6 +52,18 @@ public class ServerUtils {
     @Inject
     public ServerUtils(Client client){
         this.client=client;
+        session = connect("ws://localhost:8080/websocket");
+    }
+
+    /**
+     * Constructor for testing
+     * @param client Instance of Client
+     * @param stompSession The stompSession that can be mocked for testing
+     */
+    @Inject
+    public ServerUtils(Client client, StompSession stompSession){
+        this.client=client;
+        session = stompSession;
     }
 
     /**
@@ -102,6 +114,11 @@ public class ServerUtils {
                         EventDetailsDto.class);
     }
 
+    /**
+     * Creates connection with the server
+     * @param url The URL of the endpoint
+     * @return A StompSession object
+     */
     private StompSession connect(String url) {
         StandardWebSocketClient client = new StandardWebSocketClient();
         WebSocketStompClient stomp = new WebSocketStompClient(client);
@@ -116,6 +133,13 @@ public class ServerUtils {
         throw new IllegalStateException();
     }
 
+    /**
+     *
+     * @param dest The URL of the endpoint
+     * @param type The type of the object to be sent
+     * @param consumer The consumer
+     * @param <T> The generic type
+     */
     public <T> void registerForMessages(String dest, Class<T> type, Consumer<T> consumer) {
         session.subscribe(dest, new StompFrameHandler() {
             @Override
@@ -130,6 +154,11 @@ public class ServerUtils {
         });
     }
 
+    /**
+     * Sends an object to a particular endpoint
+     * @param dest The endpoint
+     * @param o The object to be sent
+     */
     public void send(String dest, Object o){
         session.send(dest, o);
     }

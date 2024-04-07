@@ -194,8 +194,8 @@ public class NewExpenseCtrl {
 //            serverUtils.addExpense(parentEvent.getId(),
 //                    new ExpenseCreationDto(title, amount, author.getId(),
 //                            debtors, parentEvent.getId(), new Date()));
-            serverUtils.send("/app/expenses/create", new ExpenseCreationDto(title, amount, author.getId(),
-                    debtors, parentEvent.getId(), new Date()));
+            serverUtils.send("/app/expenses/create", new ExpenseCreationDto(title, amount,
+                    author.getId(), debtors, parentEvent.getId(), new Date()));
             mainCtrl.showEventDetails(parentEvent.getId());
         }catch (NumberFormatException e){
             errorField.setText("Enter a valid amount");

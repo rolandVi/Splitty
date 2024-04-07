@@ -2,14 +2,10 @@ package server.controller.api;
 
 import commons.ExpenseEntity;
 import commons.ParticipantEntity;
-import dto.CreatorToTitleDto;
 import dto.ExpenseCreationDto;
-import dto.view.EventDetailsDto;
-import dto.view.EventOverviewDto;
 import dto.view.ExpenseDetailsDto;
 import dto.view.ParticipantNameDto;
 import jakarta.validation.Valid;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -56,39 +52,6 @@ public class ExpenseRestController {
             return ResponseEntity.notFound().build();
         }
     }
-
-//    /**
-//     * Create a new expense
-//     * @param expense the expense details to create
-//     * @return ResponseEntity containing the created expense details
-//     */
-//    @PostMapping("/")
-//    public ResponseEntity<ExpenseDetailsDto> createExpense
-//    (@Valid @RequestBody ExpenseCreationDto expense) {
-//        ExpenseEntity createdExpense = expenseService.createExpense(expense);
-//
-//        ParticipantNameDto author = new ParticipantNameDto(createdExpense.getAuthor().getId(),
-//                createdExpense.getAuthor().getFirstName(),
-//                createdExpense.getAuthor().getLastName(),
-//                createdExpense.getAuthor().getEmail());
-//
-//        Set<ParticipantNameDto> debtors = new HashSet<>();
-//        for (ParticipantEntity u : createdExpense.getDebtors()){
-//            debtors.add(new ParticipantNameDto(u.getId(),
-//                    u.getFirstName(),
-//                    u.getLastName(),
-//                    u.getEmail()));
-//        }
-//
-//        ExpenseDetailsDto details = new ExpenseDetailsDto(createdExpense.getId(),
-//                createdExpense.getMoney(),
-//                author,
-//                createdExpense.getTitle(),
-//                debtors,
-//                createdExpense.getDate());
-//
-//        return ResponseEntity.ok(details);
-//    }
 
     /**
      * Creates a new expense
