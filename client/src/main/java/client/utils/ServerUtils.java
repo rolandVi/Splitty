@@ -60,7 +60,6 @@ public class ServerUtils {
      * @param client Instance of Client
      * @param stompSession The stompSession that can be mocked for testing
      */
-    @Inject
     public ServerUtils(Client client, StompSession stompSession){
         this.client=client;
         session = stompSession;
