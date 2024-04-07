@@ -191,9 +191,11 @@ public class NewExpenseCtrl {
                 }
             }
 
-            serverUtils.addExpense(parentEvent.getId(),
-                    new ExpenseCreationDto(title, amount, author.getId(),
-                            debtors, parentEvent.getId(), new Date()));
+//            serverUtils.addExpense(parentEvent.getId(),
+//                    new ExpenseCreationDto(title, amount, author.getId(),
+//                            debtors, parentEvent.getId(), new Date()));
+            serverUtils.send("/app/expenses/create", new ExpenseCreationDto(title, amount, author.getId(),
+                    debtors, parentEvent.getId(), new Date()));
             mainCtrl.showEventDetails(parentEvent.getId());
         }catch (NumberFormatException e){
             errorField.setText("Enter a valid amount");
@@ -230,6 +232,15 @@ public class NewExpenseCtrl {
     public void remove(){
         serverUtils.removeExpense(parentEvent.getId(), expense.getId());
         mainCtrl.showEventDetails(parentEvent.getId());
+    }
+
+    /**
+     * Clears all the fields
+     */
+    private void clearFields(){
+        titleField.clear();
+        amountField.clear();
+
     }
 
     private static class ParticipantListCell extends ListCell<ParticipantNameDto>{

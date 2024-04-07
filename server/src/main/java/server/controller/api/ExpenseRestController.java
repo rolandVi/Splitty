@@ -2,11 +2,18 @@ package server.controller.api;
 
 import commons.ExpenseEntity;
 import commons.ParticipantEntity;
+import dto.CreatorToTitleDto;
 import dto.ExpenseCreationDto;
+import dto.view.EventDetailsDto;
+import dto.view.EventOverviewDto;
 import dto.view.ExpenseDetailsDto;
 import dto.view.ParticipantNameDto;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import server.exception.ObjectNotFoundException;
 import server.service.EventService;
@@ -17,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
+@Controller
 @RequestMapping("/api/expenses")
 public class ExpenseRestController {
 
@@ -49,14 +57,47 @@ public class ExpenseRestController {
         }
     }
 
+//    /**
+//     * Create a new expense
+//     * @param expense the expense details to create
+//     * @return ResponseEntity containing the created expense details
+//     */
+//    @PostMapping("/")
+//    public ResponseEntity<ExpenseDetailsDto> createExpense
+//    (@Valid @RequestBody ExpenseCreationDto expense) {
+//        ExpenseEntity createdExpense = expenseService.createExpense(expense);
+//
+//        ParticipantNameDto author = new ParticipantNameDto(createdExpense.getAuthor().getId(),
+//                createdExpense.getAuthor().getFirstName(),
+//                createdExpense.getAuthor().getLastName(),
+//                createdExpense.getAuthor().getEmail());
+//
+//        Set<ParticipantNameDto> debtors = new HashSet<>();
+//        for (ParticipantEntity u : createdExpense.getDebtors()){
+//            debtors.add(new ParticipantNameDto(u.getId(),
+//                    u.getFirstName(),
+//                    u.getLastName(),
+//                    u.getEmail()));
+//        }
+//
+//        ExpenseDetailsDto details = new ExpenseDetailsDto(createdExpense.getId(),
+//                createdExpense.getMoney(),
+//                author,
+//                createdExpense.getTitle(),
+//                debtors,
+//                createdExpense.getDate());
+//
+//        return ResponseEntity.ok(details);
+//    }
+
     /**
-     * Create a new expense
-     * @param expense the expense details to create
-     * @return ResponseEntity containing the created expense details
+     * Creates a new expense
+     * @param expense Details for the creation of the new expense
+     * @return The details of the created expense
      */
-    @PostMapping("/")
-    public ResponseEntity<ExpenseDetailsDto> createExpense
-    (@Valid @RequestBody ExpenseCreationDto expense) {
+    @MessageMapping("/expenses/create")
+    @SendTo("/topic/expenses")
+    public ExpenseDetailsDto createExpense(ExpenseCreationDto expense){
         ExpenseEntity createdExpense = expenseService.createExpense(expense);
 
         ParticipantNameDto author = new ParticipantNameDto(createdExpense.getAuthor().getId(),
@@ -79,7 +120,7 @@ public class ExpenseRestController {
                 debtors,
                 createdExpense.getDate());
 
-        return ResponseEntity.ok(details);
+        return details;
     }
 
     /**

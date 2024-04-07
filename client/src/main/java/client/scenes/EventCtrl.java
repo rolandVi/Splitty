@@ -126,17 +126,21 @@ public class EventCtrl implements MultiLanguages{
      * @param id the id of the event
      */
     public void init(long id) {
-        this.eventDetailsDto=serverUtils.getEventDetails(id);
-        eventNameLabel.setText(eventDetailsDto.getTitle());
-        inviteCode.setText(eventDetailsDto.getInviteCode());
-        loadExpenseList();
-        loadParticipants();
         filterAllExpenses.setToggleGroup(filterGroup);
         filterExpensesByAuthor.setToggleGroup(filterGroup);
         filterExpensesByDebtor.setToggleGroup(filterGroup);
+        this.eventDetailsDto=serverUtils.getEventDetails(id);
+        eventNameLabel.setText(eventDetailsDto.getTitle());
+        inviteCode.setText(eventDetailsDto.getInviteCode());
+        loadParticipants();
 
-        ObservableList<ParticipantNameDto> participants = eventDetailsDto.getParticipants().stream().collect(Collectors.toCollection(FXCollections::observableArrayList));
+        ObservableList<ParticipantNameDto> participants = eventDetailsDto.getParticipants().stream()
+                .collect(Collectors.toCollection(FXCollections::observableArrayList));
         participantSelectionBox.setItems(participants);
+        //I update eventDetailsDto for the second time,
+        // because websockets introduce a small delay and sometimes it doesn't update in time
+        this.eventDetailsDto=serverUtils.getEventDetails(id);
+        loadExpenseList();
     }
 
     /**
@@ -145,6 +149,11 @@ public class EventCtrl implements MultiLanguages{
     public void loadExpenseList(){
         ObservableList<ExpenseDetailsDto> items = FXCollections
                 .observableArrayList(eventDetailsDto.getExpenses());
+
+        serverUtils.registerForMessages("/topic/expenses", ExpenseDetailsDto.class, q -> {
+            items.add(q);
+        });
+
         expenseList.setCellFactory(new Callback<ListView<ExpenseDetailsDto>,
                 ListCell<ExpenseDetailsDto>>() {
             @Override
@@ -152,6 +161,7 @@ public class EventCtrl implements MultiLanguages{
                 return new ExpenseListCell(self);
             }
         });
+
         expenseList.setItems(items);
     }
 
