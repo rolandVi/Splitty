@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
@@ -230,6 +231,26 @@ public class NewExpenseCtrl {
     public void remove(){
         serverUtils.removeExpense(parentEvent.getId(), expense.getId());
         mainCtrl.showEventDetails(parentEvent.getId());
+    }
+
+    public void keyPressedCreate(KeyEvent e) {
+        switch (e.getCode()) {
+            case ENTER:
+                createExpense();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void keyPressedEdit(KeyEvent e) {
+        switch (e.getCode()) {
+            case ENTER:
+                createExpense();
+                break;
+            default:
+                break;
+        }
     }
 
     private static class ParticipantListCell extends ListCell<ParticipantNameDto>{

@@ -179,6 +179,9 @@ public class MainCtrl {
      */
     public void showNewExpense(){
         primaryStage.setTitle("New Expense");
+        newExpensePage.setOnKeyPressed(e -> {
+            newExpenseCtrl.keyPressedCreate(e);
+        });
         newExpenseCtrl.init(eventCtrl.getEventDetailsDto());
         primaryStage.setScene(newExpensePage);
     }
@@ -188,6 +191,9 @@ public class MainCtrl {
      */
     public void showEditExpense(){
         primaryStage.setTitle("Edit Expense");
+        newExpensePage.setOnKeyPressed(e -> {
+            newExpenseCtrl.keyPressedEdit(e);
+        });
         newExpenseCtrl.initEdit(eventCtrl.getEventDetailsDto(), newExpenseCtrl.getExpenseDetails());
         primaryStage.setScene(newExpensePage);
     }
