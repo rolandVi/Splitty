@@ -15,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
 
 import java.util.*;
 
@@ -94,7 +95,6 @@ public class NewExpenseCtrl {
         editButton.setVisible(false);
         addExpenseButton.setVisible(true);
 
-
         titleField.clear();
         amountField.clear();
         errorField.setOpacity(0);
@@ -120,6 +120,19 @@ public class NewExpenseCtrl {
             }
         });
         debtorsCheckList.setItems(participants);
+
+
+
+        tags.getItems().clear();
+        // Fetch all tags from the server
+        List<TagEntity> allTags = serverUtils.getAllTags();
+
+        // Add fetched tags to the ComboBox
+        tags.getItems().addAll(allTags);
+
+        // Set the cell factory and converter for proper display of tags
+        tags.setCellFactory(param -> new TagCell());
+        tags.setConverter(new TagStringConverter());
     }
 
     /**
@@ -238,19 +251,6 @@ public class NewExpenseCtrl {
         mainCtrl.showEventDetails(parentEvent.getId());
     }
 
-    @FXML
-    public void initialize() {
-        // Request tags from the server and populate the ComboBox
-        List<TagEntity> tags = serverUtils.getAllTags();
-        initTagsComboBox(tags);
-    }
-
-    private void initTagsComboBox(List<TagEntity> tagsList) {
-        ObservableList<TagEntity> observableTags = FXCollections.observableArrayList(tagsList);
-        tags.setItems(observableTags);
-    }
-
-
     /**
      * Brings the user to the customtag scene
      */
@@ -309,5 +309,32 @@ public class NewExpenseCtrl {
             }
         }
 
+    }
+
+    // Define custom cell factory to display tag names in the ComboBox
+    private static class TagCell extends ListCell<TagEntity> {
+        @Override
+        protected void updateItem(TagEntity item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+                setText(null);
+            } else {
+                setText(item.getTagType());
+            }
+        }
+    }
+
+    // Define custom string converter to convert between TagEntity and String
+    private static class TagStringConverter extends StringConverter<TagEntity> {
+        @Override
+        public String toString(TagEntity tag) {
+            return tag == null ? null : tag.getTagType();
+        }
+
+        @Override
+        public TagEntity fromString(String tagName) {
+            // This method does not need to be implemented for ComboBox
+            return null;
+        }
     }
 }

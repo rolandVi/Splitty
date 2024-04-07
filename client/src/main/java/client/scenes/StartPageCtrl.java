@@ -62,11 +62,16 @@ public class StartPageCtrl implements MultiLanguages {
 
     /**
      * Updates the languages of all scenes (except admin)
+     * and sets the image such that the logo shows
      */
     public void initialize() {
         String locale = configManager.getProperty("language")
                 + "_" + configManager.getProperty("country");
         updateLanguageBox(languageBox, locale);
+
+        serverUtils.createTag("food");
+        serverUtils.createTag("entrance fees");
+        serverUtils.createTag("travel");
 
         displayLogo();
     }
