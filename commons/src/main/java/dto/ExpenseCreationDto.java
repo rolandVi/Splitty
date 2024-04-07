@@ -4,6 +4,7 @@ package dto;
 
 
 import dto.view.ParticipantNameDto;
+import dto.view.TagDto;
 
 import java.util.Date;
 import java.util.Objects;
@@ -23,6 +24,7 @@ public class ExpenseCreationDto {
     private Long eventId;
     //@NotNull
     private Date date;
+    private TagDto tag;
 
     /**
      * Default constructor
@@ -31,21 +33,24 @@ public class ExpenseCreationDto {
 
     /**
      * Constructor injections
-     * @param title title of the expense
-     * @param money the amount in the expense
-     * @param authorId the id of the author of the expense
-     * @param debtors the set of debtors' ids
+     *
+     * @param title         title of the expense
+     * @param money         the amount in the expense
+     * @param authorId      the id of the author of the expense
+     * @param debtors       the set of debtors' ids
      * @param parentEventId the id of the parent event of the expense
-     * @param date the date of the expense
+     * @param date          the date of the expense
+     * @param tag           the tag of the event
      */
     public ExpenseCreationDto(String title, Double money, Long authorId,
-                              Set<ParticipantNameDto> debtors, Long parentEventId, Date date){
+                              Set<ParticipantNameDto> debtors, Long parentEventId, Date date, TagDto tag){
         this.title = title;
         this.money = money;
         this.authorId = authorId;
         this.debtors = debtors;
         this.eventId = parentEventId;
         this.date = date;
+        this.tag = tag;
     }
 
     /**
@@ -62,6 +67,14 @@ public class ExpenseCreationDto {
      */
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public TagDto getTag() {
+        return tag;
+    }
+
+    public void setTag(TagDto tag) {
+        this.tag = tag;
     }
 
     /**

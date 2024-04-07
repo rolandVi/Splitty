@@ -61,6 +61,9 @@ public class MainCtrl {
     private Scene newExpensePage;
     private NewExpenseCtrl newExpenseCtrl;
 
+    private CustomTagCtrl customTagCtrl;
+    private Scene customTag;
+
     private ServerUtils serverUtils;
 
     /**
@@ -82,6 +85,7 @@ public class MainCtrl {
         this.newParticipantCtrl = sceneInputWrapper.newParticipant().getKey();
         this.participantCtrl = sceneInputWrapper.participantPage().getKey();
         this.newExpenseCtrl = sceneInputWrapper.newExpensePage().getKey();
+        this.customTagCtrl = sceneInputWrapper.customTag().getKey();
 
         this.startPage = new Scene(sceneInputWrapper.startPage().getValue());
         this.eventOverview = new Scene(sceneInputWrapper.eventOverview().getValue());
@@ -91,6 +95,8 @@ public class MainCtrl {
         this.eventItemPage=new Scene(sceneInputWrapper.eventItemPage().getValue());
 
         this.newExpensePage = new Scene(sceneInputWrapper.newExpensePage().getValue());
+
+        this.customTag = new Scene(sceneInputWrapper.customTag().getValue());
 
         this.eventOverview.getStylesheets().add(
                 Objects.requireNonNull(this.getClass().getClassLoader()
@@ -221,5 +227,13 @@ public class MainCtrl {
         participantCtrl.init(parID, eventId);
         primaryStage.setTitle("editParticipant page");
         primaryStage.setScene(participantEdit);
+    }
+
+    /**
+     * Shows the custom tag scene
+     */
+    public void showCustomTag(){
+        primaryStage.setTitle("Custom tag");
+        primaryStage.setScene(customTag);
     }
 }

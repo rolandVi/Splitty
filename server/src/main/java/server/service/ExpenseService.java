@@ -125,7 +125,7 @@ public class ExpenseService {
                 author,
                 expenseEntity.getTitle(),
                 debtors,
-                expenseEntity.getDate());
+                expenseEntity.getDate(), tag);
 
         return details;
     }

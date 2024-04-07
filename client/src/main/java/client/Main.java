@@ -77,11 +77,14 @@ public class Main extends Application {
         var newExpense = FXML.load(NewExpenseCtrl.class,
                 "client.scenes", "newExpense.fxml");
 
+        var customTag = FXML.load(CustomTagCtrl.class,
+                "client.scenes", "customTag.fxml");
+
         mainCtrl.initialize(
                 new SceneInputWrapper(primaryStage, startPage,
                         eventOverview, paymentPage, eventPage,
                         eventCreationPage, eventItemPage, newParticipant,
-                        participantItem, participant, newExpense), serverUtils);
+                        participantItem, participant, newExpense, customTag), serverUtils);
     }
 
     /**

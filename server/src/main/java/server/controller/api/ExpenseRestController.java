@@ -5,6 +5,7 @@ import commons.ParticipantEntity;
 import dto.ExpenseCreationDto;
 import dto.view.ExpenseDetailsDto;
 import dto.view.ParticipantNameDto;
+import dto.view.TagDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -77,7 +78,7 @@ public class ExpenseRestController {
                 author,
                 createdExpense.getTitle(),
                 debtors,
-                createdExpense.getDate());
+                createdExpense.getDate(), tag);
 
         return ResponseEntity.ok(details);
     }

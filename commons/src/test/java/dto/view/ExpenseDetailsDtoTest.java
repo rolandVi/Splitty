@@ -21,7 +21,7 @@ class ExpenseDetailsDtoTest {
                 new ParticipantNameDto(1L, "John", "Doe", ""),
                 "Expense 1",
                 new HashSet<>(),
-                new Date());
+                new Date(), tag);
 
         Assertions.assertEquals(id, expense.getId());
     }
@@ -33,7 +33,7 @@ class ExpenseDetailsDtoTest {
                 new ParticipantNameDto(1L, "John", "Doe", ""),
                 "Expense 1",
                 new HashSet<>(),
-                new Date());
+                new Date(), tag);
 
         expense.setId(id);
 
@@ -47,7 +47,7 @@ class ExpenseDetailsDtoTest {
                 new ParticipantNameDto(1L, "John", "Doe", ""),
                 "Expense 1",
                 new HashSet<>(),
-                new Date());
+                new Date(), tag);
 
         Assertions.assertEquals(money, expense.getMoney());
     }
@@ -59,7 +59,7 @@ class ExpenseDetailsDtoTest {
                 new ParticipantNameDto(1L, "John", "Doe", ""),
                 "Expense 1",
                 new HashSet<>(),
-                new Date());
+                new Date(), tag);
 
         expense.setMoney(money);
 
@@ -73,7 +73,7 @@ class ExpenseDetailsDtoTest {
                 author,
                 "Expense 1",
                 new HashSet<>(),
-                new Date());
+                new Date(), tag);
 
         Assertions.assertEquals(author, expense.getAuthor());
     }
@@ -85,7 +85,7 @@ class ExpenseDetailsDtoTest {
                 null,
                 "Expense 1",
                 new HashSet<>(),
-                new Date());
+                new Date(), tag);
 
         expense.setAuthor(author);
 
@@ -99,7 +99,7 @@ class ExpenseDetailsDtoTest {
                 new ParticipantNameDto(1L, "John", "Doe", ""),
                 title,
                 new HashSet<>(),
-                new Date());
+                new Date(), tag);
 
         Assertions.assertEquals(title, expense.getTitle());
     }
@@ -111,7 +111,7 @@ class ExpenseDetailsDtoTest {
                 new ParticipantNameDto(1L, "John", "Doe", ""),
                 null,
                 new HashSet<>(),
-                new Date());
+                new Date(), tag);
 
         expense.setTitle(title);
 
@@ -128,7 +128,7 @@ class ExpenseDetailsDtoTest {
                 new ParticipantNameDto(1L, "John", "Doe", ""),
                 "Expense 1",
                 debtors,
-                new Date());
+                new Date(), tag);
 
         Assertions.assertEquals(debtors, expense.getDebtors());
     }
@@ -143,7 +143,7 @@ class ExpenseDetailsDtoTest {
                 new ParticipantNameDto(1L, "John", "Doe", ""),
                 "Expense 1",
                 null,
-                new Date());
+                new Date(), tag);
 
         expense.setDebtors(debtors);
 
@@ -157,7 +157,7 @@ class ExpenseDetailsDtoTest {
                 new ParticipantNameDto(1L, "John", "Doe", ""),
                 "Expense 1",
                 new HashSet<>(),
-                date);
+                date, tag);
 
         Assertions.assertEquals(date, expense.getDate());
     }
@@ -169,7 +169,7 @@ class ExpenseDetailsDtoTest {
                 new ParticipantNameDto(1L, "John", "Doe", ""),
                 "Expense 1",
                 new HashSet<>(),
-                null);
+                null, tag);
 
         expense.setDate(date);
 
@@ -182,13 +182,13 @@ class ExpenseDetailsDtoTest {
                 new ParticipantNameDto(1L, "John", "Doe", ""),
                 "Expense 1",
                 new HashSet<>(),
-                new Date());
+                new Date(), tag);
 
         ExpenseDetailsDto expense2 = new ExpenseDetailsDto(123L, 100.0,
                 new ParticipantNameDto(1L, "John", "Doe", ""),
                 "Expense 1",
                 new HashSet<>(),
-                new Date());
+                new Date(), tag);
 
         Assertions.assertEquals(expense1, expense2);
     }
@@ -199,13 +199,13 @@ class ExpenseDetailsDtoTest {
                 new ParticipantNameDto(1L, "John", "Doe", ""),
                 "Expense 1",
                 new HashSet<>(),
-                new Date());
+                new Date(), tag);
 
         ExpenseDetailsDto expense2 = new ExpenseDetailsDto(123L, 100.0,
                 new ParticipantNameDto(1L, "John", "Doe", ""),
                 "Expense 1",
                 new HashSet<>(),
-                new Date());
+                new Date(), tag);
 
         Assertions.assertEquals(expense1.hashCode(), expense2.hashCode());
     }

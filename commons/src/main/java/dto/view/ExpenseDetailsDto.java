@@ -20,6 +20,8 @@ public class ExpenseDetailsDto {
 
     private Date date;
 
+    private TagDto tag;
+
     /**
      * Empty constructor
      */
@@ -28,23 +30,26 @@ public class ExpenseDetailsDto {
 
     /**
      * Constructor
-     * @param id the id
-     * @param money the money
-     * @param author the author
-     * @param title the title
+     *
+     * @param id      the id
+     * @param money   the money
+     * @param author  the author
+     * @param title   the title
      * @param debtors the debtors
-     * @param date the date
+     * @param date    the date
+     * @param tag     the tag
      */
     public ExpenseDetailsDto(Long id, Double money,
                              ParticipantNameDto author,
                              String title,
-                             Set<ParticipantNameDto> debtors, Date date) {
+                             Set<ParticipantNameDto> debtors, Date date, TagDto tag) {
         this.id = id;
         this.money = money;
         this.author = author;
         this.title = title;
         this.debtors = debtors;
         this.date = date;
+        this.tag = tag;
     }
 
     /**
@@ -117,6 +122,14 @@ public class ExpenseDetailsDto {
     public ExpenseDetailsDto setTitle(String title) {
         this.title = title;
         return this;
+    }
+
+    public TagDto getTag() {
+        return tag;
+    }
+
+    public void setTag(TagDto tag) {
+        this.tag = tag;
     }
 
     /**

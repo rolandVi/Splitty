@@ -13,5 +13,6 @@ public record SceneInputWrapper(Stage primaryStage, Pair<StartPageCtrl, Parent> 
                                 Pair<NewParticipantCtrl, Parent> newParticipant,
                                 Pair<ParticipantItemCtrl, Parent> participantItemPage,
                                 Pair<ParticipantCtrl, Parent> participantPage,
-                                Pair<NewExpenseCtrl, Parent> newExpensePage) {
+                                Pair<NewExpenseCtrl, Parent> newExpensePage,
+                                Pair<CustomTagCtrl, Parent> customTag) {
 }

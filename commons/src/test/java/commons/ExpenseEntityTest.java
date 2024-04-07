@@ -19,7 +19,7 @@ class ExpenseEntityTest {
         ParticipantEntity user = new ParticipantEntity(1L, "FirstName", "LastName", "email@gmail.com",
                 new EventEntity(), new BankAccountEntity());
         this.expense = new ExpenseEntity(11L, 420.69D, user, new HashSet<>(), "Title",
-                new Date(2024 -1900, Calendar.JANUARY, 24), null);
+                new Date(2024 -1900, Calendar.JANUARY, 24), null, tag);
     }
 
     @Test
@@ -89,7 +89,7 @@ class ExpenseEntityTest {
         ParticipantEntity user = new ParticipantEntity(1L, "FirstName", "LastName", "email@gmail.com",
                 new EventEntity(), new BankAccountEntity());
         assertEquals(this.expense, new ExpenseEntity(11L, 420.69D, user, new HashSet<>(), "Title",
-                new Date(2024 -1900, Calendar.JANUARY, 24), null));
+                new Date(2024 -1900, Calendar.JANUARY, 24), null, tag));
     }
 
     @Test

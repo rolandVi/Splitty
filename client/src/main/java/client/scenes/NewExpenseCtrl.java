@@ -2,10 +2,12 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.TagEntity;
 import dto.ExpenseCreationDto;
 import dto.view.EventDetailsDto;
 import dto.view.ExpenseDetailsDto;
 import dto.view.ParticipantNameDto;
+import dto.view.TagDto;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -23,7 +25,8 @@ public class NewExpenseCtrl {
     private final ServerUtils serverUtils;
 
     private EventDetailsDto parentEvent;
-
+    @FXML
+    public ComboBox<TagEntity> tags;
     @FXML
     public TextField titleField;
     @FXML
@@ -191,9 +194,12 @@ public class NewExpenseCtrl {
                 }
             }
 
+            String selectedTag = String.valueOf(tags.getValue());
+            TagDto newTag = new TagDto(selectedTag);
+
             serverUtils.addExpense(parentEvent.getId(),
                     new ExpenseCreationDto(title, amount, author.getId(),
-                            debtors, parentEvent.getId(), new Date()));
+                            debtors, parentEvent.getId(), new Date(), newTag));
             mainCtrl.showEventDetails(parentEvent.getId());
         }catch (NumberFormatException e){
             errorField.setText("Enter a valid amount");
@@ -230,6 +236,13 @@ public class NewExpenseCtrl {
     public void remove(){
         serverUtils.removeExpense(parentEvent.getId(), expense.getId());
         mainCtrl.showEventDetails(parentEvent.getId());
+    }
+
+    /**
+     * Brings the user to the customtag scene
+     */
+    public void showCustomTag(){
+        mainCtrl.showCustomTag();
     }
 
     private static class ParticipantListCell extends ListCell<ParticipantNameDto>{
