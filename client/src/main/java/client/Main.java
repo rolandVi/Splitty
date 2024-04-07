@@ -77,11 +77,15 @@ public class Main extends Application {
         var newExpense = FXML.load(NewExpenseCtrl.class,
                 "client.scenes", "newExpense.fxml");
 
+        var eventEmail = FXML.load(EventEmailCtrl.class,
+                "client.scenes", "eventEmailPage.fxml");
+
         mainCtrl.initialize(
                 new SceneInputWrapper(primaryStage, startPage,
                         eventOverview, paymentPage, eventPage,
                         eventCreationPage, eventItemPage, newParticipant,
-                        participantItem, participant, newExpense), serverUtils);
+                        participantItem, participant, newExpense, eventEmail), serverUtils);
+
     }
 
     /**
@@ -101,6 +105,11 @@ public class Main extends Application {
 
         adminMainCtrl.initialize(adminOverviewStage, adminLoginPage,
                 adminOverviewPage, adminRestorePage);
+
+        adminOverviewStage.setOnCloseRequest(e -> {
+            adminOverviewPage.getKey().stop();
+        });
+
     }
 
 }

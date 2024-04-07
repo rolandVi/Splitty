@@ -60,6 +60,8 @@ public class EventCtrl implements MultiLanguages{
 
     @FXML
     private VBox participantsContainer;
+    @FXML
+    public Button sendInviteButton;
 
     /**
      * Injector for Event Controller
@@ -86,6 +88,7 @@ public class EventCtrl implements MultiLanguages{
             participantsLabel.setText(lang.getString("participants"));
             expensesLabel.setText(lang.getString("expenses"));
             addExpenseButton.setText(lang.getString("add_expense"));
+            sendInviteButton.setText(lang.getString("send_invite"));
         } catch (Exception e) {
             throw new RuntimeException();
         }
@@ -96,6 +99,13 @@ public class EventCtrl implements MultiLanguages{
      */
     public void returnToOverview(){
         mainCtrl.showOverview();
+    }
+
+    /**
+     * Passes along the invite code and shows the event emailing scene
+     */
+    public void sendInvite(){
+        mainCtrl.showEventEmail(inviteCode.getText());
     }
 
 
