@@ -233,6 +233,10 @@ public class NewExpenseCtrl {
         mainCtrl.showEventDetails(parentEvent.getId());
     }
 
+    /**
+     * Adds an enter shortcut if you click enter
+     * @param e the key pressed
+     */
     public void keyPressedCreate(KeyEvent e) {
         switch (e.getCode()) {
             case ENTER:
@@ -243,6 +247,10 @@ public class NewExpenseCtrl {
         }
     }
 
+    /**
+     * Adds an enter shortcut if you click enter
+     * @param e the key pressed
+     */
     public void keyPressedEdit(KeyEvent e) {
         switch (e.getCode()) {
             case ENTER:
