@@ -407,4 +407,16 @@ public class ServerUtils {
                 .accept(MediaType.APPLICATION_JSON)
                 .get(EventDetailsDto.class);
     }
+
+    /**
+     *
+     * @param to the email to which the invite is sent
+     * @param inviteCode the invite code of the event
+     */
+    public void sendEmail(String to, String inviteCode){
+        client.target(SERVER)
+                .path("/send-email/" + to + "/" + inviteCode)
+                .request()
+                .get(String.class);
+    }
 }

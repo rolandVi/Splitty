@@ -4,11 +4,11 @@ import org.simplejavamail.api.email.Email;
 import org.simplejavamail.email.EmailBuilder;
 import org.simplejavamail.mailer.MailerBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class EmailRestController {
-
 
 
     /**
@@ -17,16 +17,15 @@ public class EmailRestController {
      * @param invite invite code of the event
      * @return String info that it was sent
      */
-    @GetMapping("/send-email")
-    public String sendEmail(String to, String invite) {
-        String toTest = "rolikjr@gmail.com";
-        String inviteTest = "#inviteCode#";
+    @GetMapping("/send-email/{to}/{inviteCode}")
+    public String sendEmail(@PathVariable("to")String to,
+                            @PathVariable("inviteCode")String invite) {
 
         Email email = EmailBuilder.startingBlank()
-                .from("From", "ssplittyteam37@gmail.com")
-                .to("To", toTest)
+                .from("Splitty", "ssplittyteam37@gmail.com")
+                .to("To", to)
                 .withSubject("Invitation to an Event")
-                .withPlainText("You have been invited to an event with invite code: " + inviteTest)
+                .withPlainText("You have been invited to an event with invite code: " + invite)
                 .buildEmail();
 
         MailerBuilder

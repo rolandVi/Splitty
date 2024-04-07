@@ -67,7 +67,6 @@ public class EventEmailCtrl implements MultiLanguages{
      * Send emails to all inserted email addresses
      */
     public void sendInvite(){
-        // todo finish implementation with necessary API
         String[] arr = inputTextArea.getText().split("\n");
 
         String regex = "^(.+)@(.+)$";
@@ -76,7 +75,7 @@ public class EventEmailCtrl implements MultiLanguages{
             Matcher matcher = pattern.matcher(email);
             System.out.println(email +" : "+ matcher.matches()+"\n");
             if (matcher.matches()) {
-                // Send email
+                serverUtils.sendEmail(email, inviteCode);
             }
         }
     }
