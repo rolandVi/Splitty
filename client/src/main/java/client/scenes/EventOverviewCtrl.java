@@ -1,27 +1,22 @@
 package client.scenes;
 
-import client.utils.LanguageComboBoxUtil;
-
 import client.utils.ServerUtils;
-
 import com.google.inject.Inject;
+import dto.view.EventDetailsDto;
+import dto.view.EventOverviewDto;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import server.dto.view.EventOverviewDto;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
-
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class EventOverviewCtrl implements MultiLanguages {
@@ -38,13 +33,22 @@ public class EventOverviewCtrl implements MultiLanguages {
     @FXML
     public Button paymentButton;
     @FXML
-    public ComboBox<String> languageComboBox;
+    public ComboBox<String> languageBox;
 
     @FXML
     private VBox eventContainer;
 
     @FXML
     private Button enrollBtn;
+
+    @FXML
+    private TextField inviteCodeTextField;
+
+    @FXML
+    private Button enterButton;
+
+    @FXML
+    private Label inviteCodeErrorMessage;
 
 
     /**
@@ -62,7 +66,9 @@ public class EventOverviewCtrl implements MultiLanguages {
      * Updates the languages of all scenes (except admin)
      */
     public void initialize() {
-        LanguageComboBoxUtil.updateLanguageComboBox(languageComboBox);
+        String locale = configManager.getProperty("language")
+                + "_" + configManager.getProperty("country");
+        updateLanguageBox(languageBox, locale);
     }
 
     /**
@@ -71,15 +77,20 @@ public class EventOverviewCtrl implements MultiLanguages {
      * Update all scenes with the new languages
      */
     public void uponSelectionLanguage() {
-        String[] selection = languageComboBox.getValue().split("-");
-        LanguageComboBoxUtil.setLocaleFromConfig(selection[0], selection[1]);
+        String[] selection = languageBox.getValue().split("_");
+        MultiLanguages.setLocaleFromConfig(selection[0], selection[1]);
         mainCtrl.updateLanguagesOfScenes();
     }
+
     /**
      * Updates the language of the scene using the resource bundle
      */
     @Override
     public void updateLanguage() {
+        Locale l = Locale.getDefault();
+        String locale = l.getLanguage() + "_" + l.getCountry();
+
+        languageBox.setValue(locale);
         try {
             ResourceBundle lang = mainCtrl.lang;
             titleLabel.setText(lang.getString("event_overview"));
@@ -107,9 +118,6 @@ public class EventOverviewCtrl implements MultiLanguages {
      * Loads the events and displays them on the page
      */
     public void loadEvents() {
-        long userId=1L; //TODO: get the id of the current user
-
-//        List<EventOverviewDto> events = this.serverUtils.getEventsByUser(userId);
         List<EventOverviewDto> events = this.serverUtils.getAllEvents();
         Node[] nodes=new Node[events.size()];
 
@@ -125,15 +133,9 @@ public class EventOverviewCtrl implements MultiLanguages {
             }
 
             Node currentNode=nodes[i];
-            final EventOverviewDto event=events.get(i);
 
             Button eventButton = (Button) currentNode.lookup("#eventTitle");
             eventButton.setText(events.get(i).getTitle());
-
-            Button inviteBtn=(Button) currentNode.lookup("#inviteCodeButton");
-            inviteBtn.setOnAction(e -> copyInvite(event.getInviteCode()));
-
-            eventButton.setOnAction(e -> showDetails(event.getId()));
         }
         this.eventContainer.getChildren().clear();
         this.eventContainer.getChildren().addAll(nodes);
@@ -144,20 +146,18 @@ public class EventOverviewCtrl implements MultiLanguages {
     }
 
     /**
-     * Event listener that copies the invite code of the selected event to the clipboard
-     * @param inviteCode the invite code for the event
+     * Loads the event details of the event with the given invite code (from the text field)
      */
-    public void copyInvite(String inviteCode){
-        Clipboard clipboard = Clipboard.getSystemClipboard();
-        ClipboardContent content = new ClipboardContent();
-        content.putString(inviteCode);
-        clipboard.setContent(content);
-    }
+    public void loadEventDetails(){
+        this.inviteCodeErrorMessage.setVisible(false);
+        String inviteCode=this.inviteCodeTextField.getText().trim();
+        EventDetailsDto event=this.serverUtils.getEventDetailsByInviteCode(inviteCode);
+        if (event.getId()==null){
+            this.inviteCodeErrorMessage.setVisible(true);
+            return;
+        }
 
-    /**
-     * Shows the enroll page
-     */
-    public void showEnrollPage(){
-        mainCtrl.showEnrollPage();
+        this.mainCtrl.showEventDetails(event.getId());
+        this.inviteCodeTextField.setText("");
     }
 }

@@ -2,20 +2,16 @@ package client.scenes.admin;
 
 
 import client.scenes.MultiLanguages;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import dto.exceptions.PasswordExpiredException;
 import javafx.fxml.FXML;
-
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
-import server.exceptions.PasswordExpiredException;
 
 import java.util.ResourceBundle;
 
@@ -98,6 +94,4 @@ public class AdminLoginPageCtrl implements MultiLanguages {
             throw new RuntimeException();
         }
     }
-
-
 }

@@ -1,5 +1,6 @@
 package client.utils;
 
+import dto.exceptions.PasswordExpiredException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.Invocation;
@@ -9,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import server.exceptions.PasswordExpiredException;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.junit.jupiter.api.Assertions.*;
@@ -77,5 +77,21 @@ class ServerUtilsTest {
         verify(webTarget, times(1)).request(APPLICATION_JSON);
         verify(builder, times(1)).accept(APPLICATION_JSON);
         verify(builder, times(1)).post(null);
+    }
+
+
+    @Test
+    void getParticipantDetails() {
+        assertDoesNotThrow(() -> serverUtils.getParticipantDetails(123L));
+    }
+
+    @Test
+    void deleteEventParticipant() {
+        assertDoesNotThrow(() -> serverUtils.deleteEventParticipant(123L, 456L));
+    }
+
+    @Test
+    void enrollInEvent() {
+        assertDoesNotThrow(() -> serverUtils.enrollInEvent("inviteCode", 123L));
     }
 }

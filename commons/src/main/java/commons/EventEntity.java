@@ -27,11 +27,11 @@ public class EventEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     private Set<ExpenseEntity> expenses;
 
-    @ManyToMany
-    private Set<UserEntity> participants;
+    @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE)
+    private Set<ParticipantEntity> participants;
 
     /**
      * Default constructor for JBA
@@ -55,7 +55,7 @@ public class EventEntity {
      * @param lastModifiedDate the last modified date
      */
     public EventEntity(Long id, String inviteCode, String title,
-                       Set<ExpenseEntity> expenses, Set<UserEntity> participants,
+                       Set<ExpenseEntity> expenses, Set<ParticipantEntity> participants,
                        Date creationDate, Date lastModifiedDate) {
         this.id = id;
         this.inviteCode = inviteCode;
@@ -90,6 +90,15 @@ public class EventEntity {
     public Date getCreationDate(){
         return creationDate;
     }
+
+    /**
+     * Setter for the creation date
+     * @param creationDate the creation date
+     */
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
 
     /**
      * Get the last modified Date
@@ -146,10 +155,19 @@ public class EventEntity {
      *
      * @return The list of users associated with the event.
      */
-    public Set<UserEntity> getParticipants() {
+    public Set<ParticipantEntity> getParticipants() {
         return participants;
     }
 
+    /**
+     * Setter for the last modified date
+     * @param lastModifiedDate the new date
+     * @return the new event
+     */
+    public EventEntity setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+        return this;
+    }
 
     /**
      * Generate a hash code value for the event entity.
@@ -187,7 +205,7 @@ public class EventEntity {
      * Adds a new participant
      * @param participant The new participant
      */
-    public void addParticipant(UserEntity participant) {
+    public void addParticipant(ParticipantEntity participant) {
         this.participants.add(participant);
     }
 
@@ -195,12 +213,12 @@ public class EventEntity {
      * Removes participant
      * @param participant The participant
      */
-    public void removeParticipant(UserEntity participant) {
+    public void removeParticipant(ParticipantEntity participant) {
         this.participants.remove(participant);
     }
 
     /**
-     * Adds new expens
+     * Adds new expense
      * @param expense The expense
      */
     public void addExpense(ExpenseEntity expense) {

@@ -16,16 +16,15 @@
 package client.scenes;
 
 import client.ConfigManager;
+import client.utils.ServerUtils;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-import client.utils.LanguageComboBoxUtil;
-
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 
 public class MainCtrl {
@@ -59,20 +58,20 @@ public class MainCtrl {
     private Scene participantEdit;
     private ParticipantCtrl participantCtrl;
 
-    private EnrollEventCtrl enrollEventCtrl;
-    private Scene enrollPage;
-
-    private AddBankInfoCtrl bankInfoCtrl;
-    private Scene addBankInfo;
-
     private Scene newExpensePage;
     private NewExpenseCtrl newExpenseCtrl;
+
+    private EventEmailCtrl eventEmailCtrl;
+    private Scene eventEmail;
+
+    private ServerUtils serverUtils;
 
     /**
      * The initialize method
      * @param sceneInputWrapper Wrapper for the inputs because of high number of parameters
+     * @param serverUtils The server utilities
      */
-    public void initialize(SceneInputWrapper sceneInputWrapper){
+    public void initialize(SceneInputWrapper sceneInputWrapper, ServerUtils serverUtils){
         this.configManager = new ConfigManager(CONFIG_FILE_PATH);
 
         this.primaryStage = sceneInputWrapper.primaryStage();
@@ -85,7 +84,8 @@ public class MainCtrl {
         this.eventItemCtrl= sceneInputWrapper.eventItemPage().getKey();
         this.newParticipantCtrl = sceneInputWrapper.newParticipant().getKey();
         this.participantCtrl = sceneInputWrapper.participantPage().getKey();
-        this.bankInfoCtrl = sceneInputWrapper.bankInfoPage().getKey();
+        this.newExpenseCtrl = sceneInputWrapper.newExpensePage().getKey();
+        this.eventEmailCtrl = sceneInputWrapper.eventEmailPage().getKey();
 
         this.startPage = new Scene(sceneInputWrapper.startPage().getValue());
         this.eventOverview = new Scene(sceneInputWrapper.eventOverview().getValue());
@@ -101,17 +101,18 @@ public class MainCtrl {
                         .getResource(Path.of("stylesheets", "eventOverview.css").toString()))
                         .toExternalForm());
 
+        this.startPage.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets", "startPage.css").toString()))
+                        .toExternalForm());
+
         this.newParticipant = new Scene(sceneInputWrapper.newParticipant().getValue());
         this.participantItem = new Scene(sceneInputWrapper.participantItemPage().getValue());
         this.participantEdit = new Scene(sceneInputWrapper.participantPage().getValue());
-        this.addBankInfo = new Scene(sceneInputWrapper.bankInfoPage().getValue());
-        this.enrollPage=new Scene(sceneInputWrapper.enrollEventPage().getValue());
 
-        if (configManager.getProperty("loggedIn").equals("TRUE")) {
-            showOverview();
-        } else {
-            showStart();
-        }
+        this.eventEmail = new Scene(sceneInputWrapper.eventEmailPage().getValue());
+        showStart();
+
         sceneInputWrapper.primaryStage().show();
         updateLanguagesOfScenes();
     }
@@ -122,7 +123,7 @@ public class MainCtrl {
      */
     protected void updateLanguagesOfScenes() {
         // Gets the locale from recent session from config.properties
-        Locale.setDefault(LanguageComboBoxUtil.getLocaleFromConfig());
+        Locale.setDefault(MultiLanguages.getLocaleFromConfig());
         lang = ResourceBundle.getBundle("languages.lang");
 
         // Update the language of each scene
@@ -131,6 +132,7 @@ public class MainCtrl {
         eventCreationCtrl.updateLanguage();
         paymentPageCtrl.updateLanguage();
         startPageCtrl.updateLanguage();
+        eventEmailCtrl.updateLanguage();
     }
 
     /**
@@ -182,6 +184,16 @@ public class MainCtrl {
      */
     public void showNewExpense(){
         primaryStage.setTitle("New Expense");
+        newExpenseCtrl.init(eventCtrl.getEventDetailsDto());
+        primaryStage.setScene(newExpensePage);
+    }
+
+    /**
+     * Calls init method that initializes the edition page and displays it
+     */
+    public void showEditExpense(){
+        primaryStage.setTitle("Edit Expense");
+        newExpenseCtrl.initEdit(eventCtrl.getEventDetailsDto(), newExpenseCtrl.getExpenseDetails());
         primaryStage.setScene(newExpensePage);
     }
 
@@ -193,6 +205,8 @@ public class MainCtrl {
     public void showEventDetails(long id) {
         eventCtrl.init(id);
         primaryStage.setTitle("Page");
+        eventCtrl.loadExpenseList();
+        eventCtrl.loadParticipants();
         primaryStage.setScene(eventPage);
     }
 
@@ -202,14 +216,6 @@ public class MainCtrl {
     public void showNewParticipant() {
         primaryStage.setTitle("newParticipant page");
         primaryStage.setScene(newParticipant);
-    }
-
-    /**
-     * Shows the enroll page
-     */
-    public void showEnrollPage(){
-        primaryStage.setTitle("Enroll");
-        primaryStage.setScene(enrollPage);
     }
 
     /**
@@ -224,10 +230,20 @@ public class MainCtrl {
     }
 
     /**
-     * Shows the addBankInfo page such that a user may add bank credentials to their accounts
+     * Shows the scene to send emails with the invite code
+     * @param inviteCode the invite code of the event to send
      */
-    public void showAddNewBank() {
-        primaryStage.setTitle("addNewBank page");
-        primaryStage.setScene(addBankInfo);
+    public void showEventEmail(String inviteCode) {
+        primaryStage.setTitle("Send Email");
+        primaryStage.setScene(eventEmail);
+        eventEmailCtrl.refresh(inviteCode);
+    }
+
+    /**
+     * Show the most recent selected event
+     */
+    public void showEvent() {
+        primaryStage.setTitle("Event");
+        primaryStage.setScene(eventPage);
     }
 }

@@ -2,30 +2,26 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import dto.view.EventDetailsDto;
+import dto.view.ExpenseDetailsDto;
+import dto.view.ParticipantNameDto;
 import jakarta.inject.Inject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
-import javafx.util.Callback;
-import server.dto.view.EventDetailsDto;
-import server.dto.view.ExpenseDetailsDto;
-
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import server.dto.view.UserNameDto;
+import javafx.scene.text.Text;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
-
 import java.util.ResourceBundle;
 
 public class EventCtrl implements MultiLanguages{
@@ -45,24 +41,27 @@ public class EventCtrl implements MultiLanguages{
     @FXML
     public Label inviteCode;
     @FXML
+    public Label expensesLabel;
+    @FXML
     public ListView<ExpenseDetailsDto> expenseList;
     @FXML
     public Button addExpenseButton;
     @FXML
     public Button addParticipant;
+
     @FXML
-    public Text tempText;
-    @FXML
-    public Label expensesLabel;
+    public Button inviteBtn;
+
+    private EventDetailsDto eventDetailsDto;
 
     private NewExpenseCtrl newExpenseCtrl;
 
     private final EventCtrl self = this;
-    public Button leaveButton;
+
     @FXML
     private VBox participantsContainer;
-    private EventDetailsDto eventDetailsDto;
-    private long eventId;
+    @FXML
+    public Button sendInviteButton;
 
     /**
      * Injector for Event Controller
@@ -89,6 +88,7 @@ public class EventCtrl implements MultiLanguages{
             participantsLabel.setText(lang.getString("participants"));
             expensesLabel.setText(lang.getString("expenses"));
             addExpenseButton.setText(lang.getString("add_expense"));
+            sendInviteButton.setText(lang.getString("send_invite"));
         } catch (Exception e) {
             throw new RuntimeException();
         }
@@ -101,19 +101,24 @@ public class EventCtrl implements MultiLanguages{
         mainCtrl.showOverview();
     }
 
+    /**
+     * Passes along the invite code and shows the event emailing scene
+     */
+    public void sendInvite(){
+        mainCtrl.showEventEmail(inviteCode.getText());
+    }
+
 
     /**
-     * Updates teh view information with the details of the event with the given id
+     * Updates the view information with the details of the event with the given id
      * @param id the id of the event
      */
     public void init(long id) {
-        eventDetailsDto = serverUtils.getEventDetails(id);
-        eventNameLabel.setText(eventDetailsDto.getTitle());
-        loadExpenseList();
-        this.eventId = id;
         this.eventDetailsDto=serverUtils.getEventDetails(id);
         eventNameLabel.setText(eventDetailsDto.getTitle());
-        this.loadParticipants();
+        inviteCode.setText(eventDetailsDto.getInviteCode());
+        loadExpenseList();
+        loadParticipants();
     }
 
     /**
@@ -130,7 +135,6 @@ public class EventCtrl implements MultiLanguages{
             }
         });
         expenseList.setItems(items);
-        //set amount of rows visible
     }
 
 
@@ -140,8 +144,7 @@ public class EventCtrl implements MultiLanguages{
      * turn the EventTitleDto into Json format string
      */
     public void changeEventName() throws JsonProcessingException {
-        //todo: id has to be variable
-        serverUtils.changeEventName(1L, changeTextField.getText());
+        serverUtils.changeEventName(eventDetailsDto.getId(), changeTextField.getText());
         this.eventNameLabel.setText(this.changeTextField.getText());
         this.changeTextField.setText("");
     }
@@ -187,7 +190,8 @@ public class EventCtrl implements MultiLanguages{
             button.setOnAction(event -> {
                 ExpenseDetailsDto item = getItem();
                 if (item!=null){
-                    ctrl.tempText.setText("You pressed: " + item);
+                    ctrl.newExpenseCtrl.initEdit(ctrl.eventDetailsDto, item);
+                    ctrl.mainCtrl.showEditExpense();
                 }
             });
 
@@ -205,7 +209,8 @@ public class EventCtrl implements MultiLanguages{
             if (empty || item==null){
                 setText(null);
             }else {
-                ((Text) ((HBox) getGraphic()).getChildren().get(0)).setText(item.getTitle());
+                ((Text) ((HBox) getGraphic()).getChildren().get(0)).setText(item.getTitle() + "\n"
+                    + item.getAuthor().toString() + " paid: " + item.getMoney() + " euro");
                 // I'm using the if statement, due to a weird error
                 if (((HBox) getGraphic()).getChildren().size()<2){
                     ((HBox) getGraphic()).getChildren().add(button);
@@ -220,7 +225,7 @@ public class EventCtrl implements MultiLanguages{
     public void loadParticipants() {
         long eventId= this.eventDetailsDto.getId();
 
-        List<UserNameDto> participants = this.serverUtils.getParticipantsByEvent(eventId);
+        List<ParticipantNameDto> participants = this.serverUtils.getParticipantsByEvent(eventId);
         Node[] nodes=new Node[participants.size()];
 
 
@@ -235,7 +240,7 @@ public class EventCtrl implements MultiLanguages{
             }
 
             Node currentNode=nodes[i];
-            final UserNameDto participant=participants.get(i);
+            final ParticipantNameDto participant=participants.get(i);
 
             Button eventButton = (Button) currentNode.lookup("#participantName");
             eventButton.setText(participants.get(i).getFirstName() + " "
@@ -257,11 +262,13 @@ public class EventCtrl implements MultiLanguages{
     }
 
     /**
-     * The current user leaves the event
+     * Copies the invite code to the clipboard
      */
-    public void leave(){
-        long userId = 1L; // TODO replace with the actual user id
-        serverUtils.deleteEventParticipant(this.eventId, userId);
-        returnToOverview();
+    public void copyInvite(){
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent content = new ClipboardContent();
+        content.putString(this.inviteCode.getText());
+        clipboard.setContent(content);
     }
+
 }

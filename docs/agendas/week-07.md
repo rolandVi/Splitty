@@ -35,27 +35,27 @@
 - Planned meeting duration != actual duration? Where/why did you mis -estimate? (2 min)
 - Closure (1 min)
 
-announcements(team):
--tym is online next week
--henno couldn't finish his issues last week - add an endpoint for restoring
--tym couldn't finish expense functionality
--check for existing information in server
--participants instead of users? - no
+## Announcements by the Team:
+- tym is online next week
+- henno couldn't finish his issues last week - add an endpoint for restoring
+- tym couldn't finish expense functionality
+- check for existing information in server
+- participants instead of users? - no
 
-announcements(ta):
--hci feedback - add color
--testing assignment - by the end of the day
--check your emails
+## Announcements by the TA:
+- hci feedback - add color
+- testing assignment - by the end of the day
+- check your emails
 
-talking points:
+## Talking points:
 - sub-branch problem - will see it after the meeting
-- we haven't finished everything form last week
-- move dtos to commons - think about when o implement the changes?
-- create admin redirect(icon) in the event overview
+- expenses functionality, json dumping and transactions functionality haven't been finished last week
+- move dtos to commons - think about when to implement the changes?
+- create admin redirect (icon) in the event overview
 - create web sockets for events, expenses, participants, transactions
 - long-polling remains an issue
 - event-deleted exception?
-- assign someone for accessibility(admin page is almost done)
+- assign someone for accessibility (admin page is almost done)
 - create most of the front-end this week
 - finish basic requirements
 - remove hardcoded ids

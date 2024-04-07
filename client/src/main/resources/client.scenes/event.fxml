@@ -1,45 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EventCtrl">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EventCtrl">
    <children>
       <Label fx:id="eventNameLabel" alignment="TOP_CENTER" layoutX="14.0" layoutY="14.0" text="[EVENT_NAME]" textAlignment="CENTER">
          <font>
             <Font size="30.0" />
          </font>
       </Label>
-      <Label alignment="TOP_CENTER" layoutX="15.0" layoutY="116.0" text="Participants"/>
 
-      <Label fx:id="participantsLabel" alignment="TOP_CENTER" layoutX="17.0" layoutY="103.0" text="Participants">
+      <Label fx:id="participantsLabel" alignment="TOP_CENTER" layoutX="29.0" layoutY="127.0" text="Participants">
 
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label alignment="TOP_CENTER" layoutX="359.0" layoutY="127.0" text="Expenses"/>
 
-      <Label fx:id="expensesLabel" alignment="TOP_CENTER" layoutX="14.0" layoutY="179.0" text="Expenses">
+      <Label fx:id="expensesLabel" alignment="TOP_CENTER" layoutX="351.0" layoutY="127.0" text="Expenses">
 
          <font>
             <Font size="15.0" />
          </font>
       </Label>
       <Button fx:id="addExpenseButton" layoutX="467.0" layoutY="125.0" mnemonicParsing="false" onAction="#addExpense" text="Add Expense" />
-      <Label fx:id="inviteCode" layoutX="389.0" layoutY="63.0" text="[INVITE_CODE]" />
+      <Label fx:id="inviteCode" layoutX="351.0" layoutY="63.0" prefHeight="17.0" prefWidth="115.0" />
       <TextField fx:id="changeTextField" layoutX="15.0" layoutY="59.0" promptText="Event name" />
       <Button fx:id="changeButton" layoutX="173.0" layoutY="59.0" mnemonicParsing="false" onAction="#changeEventName" text="Change" />
       <Button fx:id="returnButton" layoutX="534.0" layoutY="14.0" mnemonicParsing="false" onAction="#returnToOverview" text="Return" />
-      <Button fx:id="addParticipant" layoutX="124.0" layoutY="125.0" mnemonicParsing="false" onAction="#newParticipant" text="Add participant" />
+      <Button fx:id="addParticipant" layoutX="216.0" layoutY="125.0" mnemonicParsing="false" onAction="#newParticipant" text="Add participant" />
       <ListView fx:id="expenseList" layoutX="351.0" layoutY="161.0" prefHeight="200.0" prefWidth="200.0" />
-      <Text fx:id="tempText" layoutX="359.0" layoutY="382.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
       <ScrollPane layoutX="29.0" layoutY="168.0" prefHeight="176.0" prefWidth="287.0">
          <content>
             <VBox fx:id="participantsContainer" prefHeight="175.0" prefWidth="270.0" />
          </content>
       </ScrollPane>
-      <Button fx:id="leaveButton" layoutX="30.0" layoutY="360.0" mnemonicParsing="false" onAction="#leave" text="Leave" />
+      <Button fx:id="inviteBtn" layoutX="474.0" layoutY="59.0" mnemonicParsing="false" onAction="#copyInvite" text="Copy" />
+      <Button fx:id="sendInviteButton" layoutX="474.0" layoutY="93.0" mnemonicParsing="false" onAction="#sendInvite" text="Send Invite" />
    </children>
 </Pane>

@@ -1,15 +1,15 @@
 package server.controller.api;
 
+import dto.view.EventDetailsDto;
+import dto.view.EventOverviewDto;
+import dto.view.EventTitleDto;
+import dto.view.ParticipantNameDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import server.dto.view.EventDetailsDto;
-import server.dto.view.EventOverviewDto;
-import server.dto.view.EventTitleDto;
-import server.dto.view.UserNameDto;
 import server.service.EventService;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ class EventRestControllerTest {
     void testGetById() {
         // Arrange
         long eventId = 1L;
-        EventDetailsDto expectedDto = new EventDetailsDto(/* Create your expected DTO */);
+        EventDetailsDto expectedDto = new EventDetailsDto();
         when(eventService.getById(eventId)).thenReturn(expectedDto);
 
         // Act
@@ -77,7 +77,7 @@ class EventRestControllerTest {
         // Arrange
         long eventId = 1L;
         EventTitleDto requestBody = new EventTitleDto("New Title");
-        EventTitleDto expectedDto = new EventTitleDto(/* Create your expected DTO */);
+        EventTitleDto expectedDto = new EventTitleDto();
         when(eventService.updateById(eventId, requestBody)).thenReturn(expectedDto);
 
         // Act
@@ -93,8 +93,8 @@ class EventRestControllerTest {
     void getAllEvents() {
         // Arrange
         List<EventOverviewDto> expectedEvents = new ArrayList<>();
-        expectedEvents.add(new EventOverviewDto(/* Create your expected EventOverviewDto */));
-        expectedEvents.add(new EventOverviewDto(/* Create another expected EventOverviewDto */));
+        expectedEvents.add(new EventOverviewDto());
+        expectedEvents.add(new EventOverviewDto());
         when(eventService.getAllEvents()).thenReturn(expectedEvents);
 
         // Act
@@ -109,14 +109,28 @@ class EventRestControllerTest {
 
     @Test
     void testGetEventParticipants() {
-        long eventId = 1L; // Sample event ID
-        List<UserNameDto> userNameDtoList = new ArrayList<>(); // Initialize list of user name DTOs
-        when(eventService.getEventParticipants(eventId)).thenReturn(userNameDtoList); // Mock eventService
+        long eventId = 1L;
+        List<ParticipantNameDto> userNameDtoList = new ArrayList<>();
+        when(eventService.getEventParticipants(eventId)).thenReturn(userNameDtoList);
 
-        ResponseEntity<List<UserNameDto>> responseEntity = eventRestController.getEventParticipants(eventId);
+        ResponseEntity<List<ParticipantNameDto>> responseEntity = eventRestController.getEventParticipants(eventId);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(userNameDtoList, responseEntity.getBody());
-        verify(eventService, times(1)).getEventParticipants(eventId); // Verify eventService method called
+        verify(eventService, times(1)).getEventParticipants(eventId);
+    }
+
+    @Test
+    void testCreateEvent() {
+        EventDetailsDto requestDto = new EventDetailsDto();
+        EventDetailsDto expectedDto = new EventDetailsDto();
+        when(eventService.saveEvent(requestDto)).thenReturn(expectedDto);
+
+
+        ResponseEntity<EventDetailsDto> response = eventRestController.createEvent(requestDto);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(expectedDto, response.getBody());
+        verify(eventService, times(1)).saveEvent(requestDto);
     }
 }

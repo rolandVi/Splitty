@@ -3,18 +3,16 @@ package commons;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashSet;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UserEntityTest {
-    private UserEntity user;
+    private ParticipantEntity user;
 
     @BeforeEach
     public void initUser() {
 
-        this.user = new UserEntity(1L, "FirstName", "LastName", "email@gmail.com",
-                new HashSet<>(), new BankAccountEntity());
+        this.user = new ParticipantEntity(1L, "FirstName", "LastName", "email@gmail.com",
+                new EventEntity(), new BankAccountEntity());
     }
 
     @Test
@@ -39,7 +37,7 @@ public class UserEntityTest {
 
     @Test
     public void testEventsGetter() {
-        assertEquals(new HashSet<>(), this.user.getEvents());
+        assertEquals(new EventEntity(), this.user.getEvent());
     }
 
     @Test
@@ -54,27 +52,27 @@ public class UserEntityTest {
 
     @Test
     public void testEqualsWithEqualObject(){
-        UserEntity userEntity = new UserEntity(1L, "FirstName", "LastName",
-                "email@gmail.com", new HashSet<>(), new BankAccountEntity());
+        ParticipantEntity userEntity = new ParticipantEntity(1L, "FirstName", "LastName",
+                "email@gmail.com", new EventEntity(), new BankAccountEntity());
         assertEquals(this.user, userEntity);
     }
 
     @Test
     public void testEqualsWhenNotEqual(){
-        UserEntity userEntity = new UserEntity(2L, "", "", "", new HashSet<>(), new BankAccountEntity());
+        ParticipantEntity userEntity = new ParticipantEntity(2L, "", "", "", new EventEntity(), new BankAccountEntity());
         assertNotEquals(this.user, userEntity);
     }
 
     @Test
     public void testSameHash(){
-        UserEntity userEntity = new UserEntity(1L, "FirstName", "LastName",
-                "email@gmail.com", new HashSet<>(), new BankAccountEntity());
+        ParticipantEntity userEntity = new ParticipantEntity(1L, "FirstName", "LastName",
+                "email@gmail.com", new EventEntity(), new BankAccountEntity());
         assertEquals(this.user.hashCode(), userEntity.hashCode());
     }
 
     @Test
     void testEmptyConstructor() {
-        UserEntity emptyUser = new UserEntity();
+        ParticipantEntity emptyUser = new ParticipantEntity();
         assertNotNull(emptyUser);
     }
 

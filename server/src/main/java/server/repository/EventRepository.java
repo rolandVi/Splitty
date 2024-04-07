@@ -1,7 +1,7 @@
 package server.repository;
 
 import commons.EventEntity;
-import commons.UserEntity;
+import commons.ParticipantEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -24,6 +24,14 @@ public interface EventRepository extends JpaRepository<EventEntity, Long> {
     void updateEventTitleById(@Param(value = "id") long id,
                                                @Param(value="title") String title);
 
+    /**
+     * Retrieves all participant of the selected event
+     * @param eventId the id of the event
+     * @return the set of all participants of the event
+     */
+    @Query("SELECT e.participants FROM EventEntity e WHERE e.id=:eventId")
+    Set<ParticipantEntity> getParticipantsById(@Param(value = "eventId") long eventId);
+
 //    /**
 //     * Gets the event title using the id from the database
 //     * @param id the ID of the event
@@ -38,7 +46,7 @@ public interface EventRepository extends JpaRepository<EventEntity, Long> {
      * @return the participants
      */
     @Query("select e.participants from EventEntity e where e.id=:id")
-    Set<UserEntity> findEventParticipants(@Param(value = "id") long id);
+    Set<ParticipantEntity> findEventParticipants(@Param(value = "id") long id);
 
     /**
      * find the event entity with eh given invite code

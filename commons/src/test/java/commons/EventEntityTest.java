@@ -12,20 +12,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class EventEntityTest {
     private EventEntity event;
-    private UserEntity user;
+    private ParticipantEntity user;
     private ExpenseEntity expense;
 
     @BeforeEach
     public void initEvent() {
 
         Set<ExpenseEntity> expenses = new HashSet<>();
-        Set<UserEntity> users = new HashSet<>();
+        Set<ParticipantEntity> users = new HashSet<>();
 
-        user = new UserEntity(1L, "FirstName", "LastName", "email@gmail.com",
-                new HashSet<>(), new BankAccountEntity());
+        user = new ParticipantEntity(1L, "FirstName", "LastName", "email@gmail.com",
+                new EventEntity(), new BankAccountEntity());
 
         expense = new ExpenseEntity(11L, 420.69D, user, new HashSet<>(), "Title",
-                new Date(2024 -1900, Calendar.JANUARY, 24));
+                new Date(2024 -1900, Calendar.JANUARY, 24), event);
 
         event = new EventEntity(1L, "test_invite_code",
                 "title", expenses, users, new Date(), new Date());
@@ -56,7 +56,7 @@ public class EventEntityTest {
 
     @Test
     public void testUsersGetter() {
-        Set<UserEntity> expectedUsers = new HashSet<>();
+        Set<ParticipantEntity> expectedUsers = new HashSet<>();
 
         assertEquals(expectedUsers, this.event.getParticipants());
     }
@@ -69,7 +69,7 @@ public class EventEntityTest {
     @Test
     public void testEqualsWithEqualObject(){
         Set<ExpenseEntity> expenses = new HashSet<>();
-        Set<UserEntity> users = new HashSet<>();
+        Set<ParticipantEntity> users = new HashSet<>();
 
         EventEntity eventEntity = new EventEntity(1L, "test_invite_code",
                 "title", expenses, users, new Date(), new Date());
@@ -80,7 +80,7 @@ public class EventEntityTest {
     @Test
     public void testEqualsWhenNotEqual(){
         Set<ExpenseEntity> expenses = new HashSet<>();
-        Set<UserEntity> users = new HashSet<>();
+        Set<ParticipantEntity> users = new HashSet<>();
 
         EventEntity eventEntity = new EventEntity(2L, "test_invite_code",
                 "title", expenses, users, new Date(), new Date());
@@ -91,7 +91,7 @@ public class EventEntityTest {
     @Test
     public void testSameHash(){
         Set<ExpenseEntity> expenses = new HashSet<>();
-        Set<UserEntity> users = new HashSet<>();
+        Set<ParticipantEntity> users = new HashSet<>();
 
         EventEntity eventEntity = new EventEntity(1L, "test_invite_code",
                 "title", expenses, users, new Date(), new Date());
@@ -139,6 +139,20 @@ public class EventEntityTest {
     void testEmptyConstructor() {
         EventEntity emptyEvent = new EventEntity();
         assertNotNull(emptyEvent);
+    }
+
+    @Test
+    public void testSetCreationDate() {
+        Date newCreationDate = new Date();
+        event.setCreationDate(newCreationDate);
+        assertEquals(newCreationDate, event.getCreationDate());
+    }
+
+    @Test
+    public void testSetLastModifiedDate() {
+        Date newLastModifiedDate = new Date();
+        event.setLastModifiedDate(newLastModifiedDate);
+        assertEquals(newLastModifiedDate, event.getLastModifiedDate());
     }
 
     @Test

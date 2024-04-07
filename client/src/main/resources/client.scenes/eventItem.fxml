@@ -8,12 +8,11 @@
    <children>
       <HBox layoutY="8.0" prefHeight="21.0" prefWidth="400.0">
          <children>
-            <Button fx:id="eventTitle" styleClass="eventBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="25.0" prefWidth="345.0" text="Button">
+            <Button fx:id="eventTitle" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="25.0" prefWidth="383.0" styleClass="eventBtn" text="Button">
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="inviteCodeButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="42.0" text="⇲" />
          </children>
       </HBox>
    </children>

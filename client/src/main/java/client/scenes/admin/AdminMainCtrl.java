@@ -17,14 +17,14 @@ package client.scenes.admin;
 
 
 import client.ConfigManager;
-
 import javafx.scene.Parent;
-
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.nio.file.Path;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 
@@ -37,29 +37,53 @@ public class AdminMainCtrl {
 
     private AdminLoginPageCtrl loginPageCtrl;
     private AdminOverviewPageCtrl overviewPageCtrl;
+    private AdminRestoreCtrl adminRestoreCtrl;
 
     private Scene loginPage;
     private Scene overviewPage;
+
+    private Scene restorePage;
 
     /**
      * The initialize method
      * @param adminOverviewStage The admin overview stage
      * @param loginPage The login page
      * @param overviewPage the admin overview page
-     *
+     * @param restorePage the restore page
      */
     public void initialize(Stage adminOverviewStage,
                            Pair<AdminLoginPageCtrl, Parent> loginPage,
-                           Pair<AdminOverviewPageCtrl, Parent> overviewPage) {
+                           Pair<AdminOverviewPageCtrl, Parent> overviewPage,
+                           Pair<AdminRestoreCtrl, Parent> restorePage) {
         this.config = new ConfigManager("client/src/main/resources/config.properties");
         this.adminOverviewStage = adminOverviewStage;
 
         this.loginPageCtrl = loginPage.getKey();
         this.overviewPageCtrl = overviewPage.getKey();
+        this.adminRestoreCtrl = restorePage.getKey();
 
         this.loginPage = new Scene(loginPage.getValue());
         this.overviewPage = new Scene(overviewPage.getValue());
 
+        this.restorePage = new Scene(restorePage.getValue());
+
+        this.loginPage.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets",
+                                        "adminLoginPage.css").toString()))
+                        .toExternalForm());
+
+        this.overviewPage.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets",
+                                        "adminOverview.css").toString()))
+                        .toExternalForm());
+
+        this.restorePage.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets",
+                                        "adminRestore.css").toString()))
+                        .toExternalForm());
 
         showLogin();
         adminOverviewStage.show();
@@ -103,6 +127,14 @@ public class AdminMainCtrl {
         adminOverviewStage.setScene(overviewPage);
         overviewPageCtrl.loadEvents();
         overviewPageCtrl.loadOrder();
+    }
+
+    /**
+     * Shows the restore page, to restore the JSON dump of an event
+     */
+    public void showRestore(){
+        adminOverviewStage.setTitle("Admin Restore");
+        adminOverviewStage.setScene(restorePage);
     }
 
 }

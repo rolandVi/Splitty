@@ -1,6 +1,8 @@
 package client.scenes;
 
 import client.utils.ServerUtils;
+import dto.CreatorToTitleDto;
+import dto.view.EventDetailsDto;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -19,6 +21,17 @@ public class EventCreationCtrl implements MultiLanguages{
     public Label titleLabel;
     @FXML
     public TextField eventNameTextField;
+
+    @FXML
+    public TextField creatorEmailTextField;
+    @FXML
+    public TextField creatorLastNameTextField;
+    @FXML
+    public TextField creatorFirstNameTextField;
+
+    @FXML
+    public Label errorMessage;
+
     @FXML
     public Button createButton;
     @FXML
@@ -34,6 +47,7 @@ public class EventCreationCtrl implements MultiLanguages{
         this.mainCtrl = mainCtrl;
         this.serverUtils = serverUtils;
     }
+
     /**
      * Updates the language of the scene using the resource bundle
      */
@@ -61,11 +75,26 @@ public class EventCreationCtrl implements MultiLanguages{
      * Creates HTTP request to the server using the contents of text field as name of event
      */
     public void createEvent() {
-        //TODO: change to current user
-        long userId=1L;
-        serverUtils.createEvent(eventNameTextField.getText(), userId);
-        mainCtrl.showOverview();
+        if (eventNameTextField.getText().isEmpty() ||
+            creatorLastNameTextField.getText().isEmpty() ||
+            creatorFirstNameTextField.getText().isEmpty()){
+            errorMessage.setVisible(true);
+            return;
+        }
+
+        EventDetailsDto newEvent=serverUtils.createEvent(new CreatorToTitleDto(
+                creatorFirstNameTextField.getText(),
+                creatorLastNameTextField.getText(),
+                creatorEmailTextField.getText(),
+                eventNameTextField.getText()));
+
+        this.mainCtrl.showEventDetails(newEvent.getId());
+
+        this.errorMessage.setVisible(false);
         this.eventNameTextField.setText("");
+        this.creatorEmailTextField.setText("");
+        this.creatorFirstNameTextField.setText("");
+        this.creatorLastNameTextField.setText("");
     }
 
 

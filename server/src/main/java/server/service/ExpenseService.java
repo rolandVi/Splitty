@@ -1,15 +1,22 @@
 package server.service;
 
 import commons.ExpenseEntity;
+import commons.ParticipantEntity;
+import dto.ExpenseCreationDto;
+import dto.view.ExpenseDetailsDto;
+import dto.view.ParticipantNameDto;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import server.controller.exception.ObjectNotFoundException;
-import server.dto.view.ExpenseDetailsDto;
+import server.exception.ObjectNotFoundException;
 import server.repository.ExpenseRepository;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -17,17 +24,26 @@ import java.util.stream.Collectors;
 public class ExpenseService {
     private final ExpenseRepository expenseRepository;
     private final ModelMapper modelMapper;
+    private final ParticipantService participantService;
+    private final EventService eventService;
 
     /**
      * Constructor Injection
      *
      * @param expenseRepository the ExpenseEntity repository
      * @param modelMapper      the ModelMapper injected by Spring
+     * @param userService the user service
+     * @param eventService the event service
      */
     public ExpenseService(ExpenseRepository expenseRepository,
-                          ModelMapper modelMapper) {
+                          ModelMapper modelMapper,
+                          ParticipantService userService,
+                          EventService eventService) {
         this.expenseRepository = expenseRepository;
         this.modelMapper = modelMapper;
+        this.participantService = userService;
+        this.eventService = eventService;
+
     }
 
     /**
@@ -46,7 +62,18 @@ public class ExpenseService {
      */
     public ExpenseDetailsDto getById(long id) {
         return this.modelMapper.map(this.expenseRepository.findById(id)
-                .orElseThrow(ObjectNotFoundException::new), ExpenseDetailsDto.class);
+                .orElseThrow(()-> new ObjectNotFoundException("No such expense found")),
+                ExpenseDetailsDto.class);
+    }
+
+    /**
+     * returns ExpenseEntity by id
+     * @param id the id of the expense
+     * @return the corresponding expense
+     */
+    public ExpenseEntity getEntityById(long id) {
+        return this.expenseRepository.findById(id)
+                .orElseThrow(()-> new ObjectNotFoundException("No such expense found"));
     }
 
     /**
@@ -65,9 +92,42 @@ public class ExpenseService {
      */
     public ExpenseDetailsDto updateExpense(@Valid ExpenseDetailsDto expense) {
         if (!this.existsById(expense.getId())) {
-            throw new ObjectNotFoundException();
+            throw new ObjectNotFoundException("No such expense found");
         }
-        return modelMapper.map(expense, ExpenseDetailsDto.class);
+
+        ExpenseEntity expenseEntity = getEntityById(expense.getId());
+
+        expenseEntity.setMoney(expense.getMoney());
+        expenseEntity.setAuthor(participantService.findById(expense.getAuthor().getId()));
+        expenseEntity.setTitle(expense.getTitle());
+        expenseEntity.setDebtors(new HashSet<>());
+        for (ParticipantNameDto u  : expense.getDebtors()){
+            expenseEntity.addDebtor(participantService.findById(u.getId()));
+        }
+        expenseEntity.setDate(expense.getDate());
+
+        expenseEntity =  expenseRepository.save(expenseEntity);
+
+        ParticipantNameDto author = new ParticipantNameDto(expenseEntity.getAuthor().getId(),
+                expenseEntity.getAuthor().getFirstName(),
+                expenseEntity.getAuthor().getLastName(),
+                expenseEntity.getAuthor().getEmail());
+
+        Set<ParticipantNameDto> debtors = new HashSet<>();
+        for (ParticipantEntity u : expenseEntity.getDebtors()){
+            debtors.add(new ParticipantNameDto(u.getId(), u.getFirstName(),
+                    u.getLastName(), u.getEmail()));
+        }
+
+
+        ExpenseDetailsDto details = new ExpenseDetailsDto(expenseEntity.getId(),
+                expenseEntity.getMoney(),
+                author,
+                expenseEntity.getTitle(),
+                debtors,
+                expenseEntity.getDate());
+
+        return details;
     }
 
     /**
@@ -76,10 +136,28 @@ public class ExpenseService {
      * @return The created expense DTO
      */
     @Transactional
-    public ExpenseDetailsDto createExpense(@Valid ExpenseDetailsDto expenseDto) {
-        ExpenseEntity expenseEntity = modelMapper.map(expenseDto, ExpenseEntity.class);
-        ExpenseEntity savedExpense = expenseRepository.save(expenseEntity);
-        return modelMapper.map(savedExpense, ExpenseDetailsDto.class);
+    public ExpenseEntity createExpense(ExpenseCreationDto expenseDto) {
+        //Create new expenseEntity
+        ExpenseEntity expenseEntity = new ExpenseEntity();
+        //Set the debtors
+        expenseEntity.setDebtors(new HashSet<>());
+        for (ParticipantNameDto u  : expenseDto.getDebtors()){
+            expenseEntity.addDebtor(participantService.findById(u.getId()));
+        }
+        //Set the money
+        expenseEntity.setMoney(expenseDto.getMoney());
+        //Set author
+        expenseEntity.setAuthor(participantService.findById(expenseDto.getAuthorId()));
+        //Set title
+        expenseEntity.setTitle(expenseDto.getTitle());
+        //Set date
+        expenseEntity.setDate(expenseDto.getDate());
+        //Set parent event
+        expenseEntity.setEvent(eventService.findEntityById(expenseDto.getEventId()));
+
+        expenseEntity = expenseRepository.save(expenseEntity);
+        eventService.addExpense(expenseEntity);
+        return expenseEntity;
     }
 
     /**
@@ -89,7 +167,7 @@ public class ExpenseService {
     @Transactional
     public void deleteExpense(long id){
         if (!existsById(id)) {
-            throw new ObjectNotFoundException();
+            throw new ObjectNotFoundException("No such expense found");
         }
         this.expenseRepository.deleteById(id);
     }
@@ -122,7 +200,51 @@ public class ExpenseService {
         return mapToExpenseDetailsDtoList(userExpenses);
     }
 
+    /**
+     * Finds the expense entity by id
+     * @param id the id of the entity
+     * @return the expense entity
+     */
+    public ExpenseEntity findExpenseEntityById(Long id){
+        return this.expenseRepository.findById(id)
+                .orElseThrow(()-> new ObjectNotFoundException("No such expense found"));
+    }
 
+
+    /**
+     * Pays the debt of a specific debtor
+     * @param expense the expense entity
+     * @param receiver the receiver of the money
+     * @param sender the sender of the money
+     * @return the money paid
+     */
+    @Transactional
+    public double payDebt(ExpenseEntity expense,
+                          ParticipantEntity receiver,
+                          ParticipantEntity sender) {
+        double owedMoney=roundToNDecimals(expense.getMoney()/expense.getDebtors().size(), 2);
+        expense.setMoney(expense.getMoney()-owedMoney);
+        expense.getDebtors().remove(sender);
+        this.expenseRepository.save(expense);
+        return owedMoney;
+    }
+
+
+    /**
+     * Resets a transaction and includes the sender again
+     * @param expense the expense
+     * @param receiver the receiver
+     * @param sender the sender
+     */
+    @Transactional
+    public void resetDebt(ExpenseEntity expense,
+                          ParticipantEntity receiver,
+                          ParticipantEntity sender) {
+        double owedMoney=roundToNDecimals(expense.getMoney()/expense.getDebtors().size(), 2);
+        expense.setMoney(expense.getMoney()+owedMoney);
+        expense.getDebtors().add(sender);
+        this.expenseRepository.save(expense);
+    }
 
 
     /**
@@ -150,5 +272,19 @@ public class ExpenseService {
         dto.setTitle(expense.getTitle());
         dto.setDate(expense.getDate());
         return dto;
+    }
+
+    /**
+     * Rounds the value to n decimals
+     * @param value the value to round
+     * @param n the numbers after the decimal point
+     * @return the rounded number
+     */
+    private double roundToNDecimals(double value, int n){
+        if (n < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(n, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }

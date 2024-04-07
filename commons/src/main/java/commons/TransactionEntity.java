@@ -2,6 +2,7 @@ package commons;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
 import java.util.Objects;
 @Entity
 @Table(name = "transactions")
@@ -11,12 +12,18 @@ public class TransactionEntity {
     private Long id;
     @Column(nullable = false)
     private double money;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(nullable = false)
-    private UserEntity sender;
-    @ManyToOne
+    private ParticipantEntity sender;
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(nullable = false)
-    private UserEntity receiver;
+    private ParticipantEntity receiver;
+
+    @ManyToOne(cascade = CascadeType.DETACH)
+    private ExpenseEntity expense;
+
+    @Temporal(TemporalType.DATE)
+    private Date date;
 
     /**
      * Default constructor for JBA
@@ -31,12 +38,18 @@ public class TransactionEntity {
      * @param money amount of money that has been transferred
      * @param sender user sending the money
      * @param receiver user receiver money from sender
+     * @param expense the expense of the transaction
+     * @param date the date of the transaction
      */
-    public TransactionEntity(Long id, double money, UserEntity sender, UserEntity receiver) {
+    public TransactionEntity(Long id, double money, ParticipantEntity sender,
+                             ParticipantEntity receiver, ExpenseEntity expense,
+                             Date date) {
         this.id = id;
         this.money = money;
         this.sender = sender;
         this.receiver = receiver;
+        this.expense = expense;
+        this.date = date;
     }
 
     /**
@@ -59,15 +72,91 @@ public class TransactionEntity {
      * Getter for the user sending the money
      * @return sender as user entity
      */
-    public UserEntity getSender() {
+    public ParticipantEntity getSender() {
         return sender;
     }
     /**
      * Getter for the user receiving the money
      * @return receiver as user entity
      */
-    public UserEntity getReceiver() {
+    public ParticipantEntity getReceiver() {
         return receiver;
+    }
+
+    /**
+     * Getter for the expanse
+     * @return teh expanse entity
+     */
+    public ExpenseEntity getExpense() {
+        return expense;
+    }
+
+    /**
+     * Setter for the ID of the transaction.
+     * @param id unique ID to identify a transaction
+     * @return the TransactionEntity object with the updated ID
+     */
+    public TransactionEntity setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Setter for the amount of money that has been transferred.
+     * @param money amount of money
+     * @return the TransactionEntity object with the updated money amount
+     */
+    public TransactionEntity setMoney(double money) {
+        this.money = money;
+        return this;
+    }
+
+    /**
+     * Setter for the user sending the money.
+     * @param sender user sending the money
+     * @return the TransactionEntity object with the updated sender
+     */
+    public TransactionEntity setSender(ParticipantEntity sender) {
+        this.sender = sender;
+        return this;
+    }
+
+    /**
+     * Setter for the user receiving the money.
+     * @param receiver user receiving the money
+     * @return the TransactionEntity object with the updated receiver
+     */
+    public TransactionEntity setReceiver(ParticipantEntity receiver) {
+        this.receiver = receiver;
+        return this;
+    }
+
+    /**
+     * Setter for the expense associated with the transaction.
+     * @param expense the expense entity
+     * @return the TransactionEntity object with the updated expense
+     */
+    public TransactionEntity setExpense(ExpenseEntity expense) {
+        this.expense = expense;
+        return this;
+    }
+
+    /**
+     * Getter for the date
+     * @return the date
+     */
+    public Date getDate() {
+        return date;
+    }
+
+    /**
+     * Setter for the date
+     * @param date the new date
+     * @return the new transaction
+     */
+    public TransactionEntity setDate(Date date) {
+        this.date = date;
+        return this;
     }
 
     /**
@@ -83,7 +172,9 @@ public class TransactionEntity {
         return Double.compare(money, that.money) == 0
                 && Objects.equals(id, that.id)
                 && Objects.equals(sender, that.sender)
-                && Objects.equals(receiver, that.receiver);
+                && Objects.equals(receiver, that.receiver)
+                && Objects.equals(expense, that.expense)
+                && Objects.equals(date, that.date);
     }
 
     /**
@@ -92,6 +183,6 @@ public class TransactionEntity {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, money, sender, receiver);
+        return Objects.hash(id, money, sender, receiver, expense, date);
     }
 }

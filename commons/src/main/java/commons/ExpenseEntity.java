@@ -1,5 +1,6 @@
 package commons;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -8,20 +9,24 @@ import java.util.Set;
 
 @Entity
 @Table(name = "expenses")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ExpenseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(nullable = false)
     private Double money;
 
     @ManyToOne(optional = false)
-    private UserEntity author;
+    private ParticipantEntity author;
 
     @ManyToMany
-    private Set<UserEntity> debtors;
+    private Set<ParticipantEntity> debtors;
+
+    @ManyToOne(cascade = CascadeType.DETACH)
+    private EventEntity event;
 
     private String title;
 
@@ -42,15 +47,18 @@ public class ExpenseEntity {
      * @param debtors list of debtors
      * @param title title summarizing the expense
      * @param date date of the expense
+     * @param event the parent event entitty
      */
-    public ExpenseEntity(Long id, Double money, UserEntity author,
-                         Set<UserEntity> debtors, String title, Date date) {
+    public ExpenseEntity(Long id, Double money, ParticipantEntity author,
+                         Set<ParticipantEntity> debtors, String title,
+                         Date date, EventEntity event) {
         this.id = id;
         this.money = money;
         this.author = author;
         this.debtors = debtors;
         this.title = title;
         this.date = date;
+        this.event = event;
     }
 
     /**
@@ -73,7 +81,7 @@ public class ExpenseEntity {
      * Getter for the author of the expense
      * @return author as UserEntity
      */
-    public UserEntity getAuthor() {
+    public ParticipantEntity getAuthor() {
         return author;
     }
 
@@ -81,7 +89,7 @@ public class ExpenseEntity {
      * Getter for the list of debtors
      * @return list of debtors as ArrayList of UserEntity
      */
-    public Set<UserEntity> getDebtors() {
+    public Set<ParticipantEntity> getDebtors() {
         return debtors;
     }
 
@@ -99,6 +107,14 @@ public class ExpenseEntity {
      */
     public Date getDate() {
         return date;
+    }
+
+    /**
+     * Getter for the parent event of the expense
+     * @return - the event entity
+     */
+    public EventEntity getEvent(){
+        return event;
     }
 
     /**
@@ -126,10 +142,34 @@ public class ExpenseEntity {
     }
 
     /**
+     * Setter for the author
+     * @param author the author
+     */
+    public void setAuthor(ParticipantEntity author) {
+        this.author = author;
+    }
+
+    /**
+     * Setter for the debtors field
+     * @param debtors the set of debtors
+     */
+    public void setDebtors(Set<ParticipantEntity> debtors){
+        this.debtors = debtors;
+    }
+
+    /**
+     * Setter for the parent event
+     * @param event the parent event
+     */
+    public void setEvent(EventEntity event) {
+        this.event = event;
+    }
+
+    /**
      * Adds new debtor to the list of debtors
      * @param debtor as UserEntity
      */
-    public void addDebtor(UserEntity debtor){
+    public void addDebtor(ParticipantEntity debtor){
         debtors.add(debtor);
     }
 
@@ -147,7 +187,8 @@ public class ExpenseEntity {
                 && Objects.equals(author, expenseEntity.author)
                 && Objects.equals(debtors, expenseEntity.debtors)
                 && Objects.equals(title, expenseEntity.title)
-                && Objects.equals(date, expenseEntity.date);
+                && Objects.equals(date, expenseEntity.date)
+                &&Objects.equals(event, expenseEntity.event);
     }
 
     /**

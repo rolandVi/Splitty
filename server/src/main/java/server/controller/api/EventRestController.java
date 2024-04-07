@@ -1,13 +1,18 @@
 package server.controller.api;
 
+import commons.ExpenseEntity;
+import dto.CreatorToTitleDto;
+import dto.ParticipantCreationDto;
+import dto.view.EventDetailsDto;
+import dto.view.EventOverviewDto;
+import dto.view.EventTitleDto;
+import dto.view.ParticipantNameDto;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import server.dto.view.EventDetailsDto;
-import server.dto.view.EventOverviewDto;
-import server.dto.view.EventTitleDto;
-import server.dto.view.UserNameDto;
+import server.exception.FieldValidationException;
 import server.service.EventService;
 
 import java.util.List;
@@ -28,13 +33,36 @@ public class EventRestController {
 
     /**
      * Access the event with the given id
-     * @param id the id of the event that is present in the URL
+     * @param id the id of the event
      * @return ResponseEntity with badRequest status if invalid id was presented
      *         or ResponseEntity with the requested event as body
      */
     @GetMapping(value = "/{id}")
-    public ResponseEntity<EventDetailsDto> getById(@PathVariable("id") long id){
+    public ResponseEntity<EventDetailsDto> getById(
+            @PathVariable("id") Long id){
         return ResponseEntity.ok(this.eventService.getById(id));
+    }
+
+    /**
+     * Returns the event details of an event with the given invite code
+     * @param code the invite code
+     * @return the event
+     */
+    @GetMapping("/invites/{inviteCode}")
+    public ResponseEntity<EventDetailsDto> getByInviteCode(
+            @PathVariable("inviteCode") String code){
+        return ResponseEntity.ok(this.eventService.getByInviteCode(code));
+    }
+
+    /**
+     * Creates an event with the given title
+     * @param creatorToTitleDto the title of the new event along with the id of the creator
+     * @return the newly created event title and id
+     */
+    @PostMapping("/")
+    public ResponseEntity<EventDetailsDto> createEvent(
+            @Valid @RequestBody CreatorToTitleDto creatorToTitleDto){
+        return ResponseEntity.ok(this.eventService.createEvent(creatorToTitleDto));
     }
 
     /**
@@ -65,6 +93,21 @@ public class EventRestController {
         return ResponseEntity.ok(this.eventService.updateById(id, eventTitle));
     }
 
+
+
+    /**
+     * Adding an expense to an event
+     * @param eventId the event id
+     * @param expense the expense creation details
+     * @return the response entity, defining whether the operation was successful
+     */
+    @PatchMapping("/{id}/add_expense")
+    public ResponseEntity<Void> addExpense(@PathVariable(name = "id") long eventId,
+                                           @RequestBody ExpenseEntity expense){
+        this.eventService.addExpense(expense);
+        return ResponseEntity.ok().build();
+    }
+
     /**
      * Get all events endpoint
      * @return all events
@@ -80,25 +123,53 @@ public class EventRestController {
      * @return the participants
      */
     @GetMapping("/{id}/participants")
-    public ResponseEntity<List<UserNameDto>> getEventParticipants(
+    public ResponseEntity<List<ParticipantNameDto>> getEventParticipants(
             @PathVariable(name = "id") long eventId){
         return ResponseEntity.ok(this.eventService.getEventParticipants(eventId));
     }
 
     /**
-     *
-     * @return Http response. Successful if the dump was executed correctly
-     * Otherwise a 5xx will be thrown
+     * Create a new event and persist it in the database
+     * @param eventDetailsDto JSON object representing the event details
+     * @return ResponseEntity with the created event details
      */
-    @PostMapping("/dump-tables")
-    public ResponseEntity<String> dumpTables() {
-        try {
-            eventService.dumpTables(); // Call your service method
-            return ResponseEntity.ok("Database dump successful");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error dumping database: " + e.getMessage());
+    @PostMapping("/restore")
+    public ResponseEntity<EventDetailsDto> createEvent
+    (@Valid @RequestBody EventDetailsDto eventDetailsDto) {
+        EventDetailsDto createdEvent = eventService.saveEvent(eventDetailsDto);
+        return new ResponseEntity<>(createdEvent, HttpStatus.CREATED);
+    }
+
+    /**
+     * creates a user with the given parameters
+     * @param eventId the id of the event - path variable
+     * @param user user
+     * @param result the validation result
+     * @return the newly created user and id
+     */
+    @PostMapping("/{eventId}/participants")
+    public ResponseEntity<ParticipantNameDto> addParticipant(
+            @PathVariable(name = "eventId") Long eventId,
+            @Valid @RequestBody ParticipantCreationDto user,
+            BindingResult result) {
+        if (result.hasErrors()) {
+            throw new FieldValidationException("Invalid participant details");
         }
+        return ResponseEntity.ok(this.eventService.addParticipant(eventId, user));
+    }
+
+    /**
+     * Delete a participant
+     * @param eventId the event id
+     * @param participantId the participantId
+     * @return whether the request was successful
+     */
+    @DeleteMapping("/{eventId}/participants/{participantId}")
+    public ResponseEntity<Void> deleteParticipant(
+            @PathVariable(name = "eventId") Long eventId,
+            @PathVariable(name = "participantId") Long participantId) {
+        this.eventService.deleteParticipant(eventId, participantId);
+        return ResponseEntity.ok().build();
     }
 
 
@@ -111,4 +182,6 @@ public class EventRestController {
     private boolean checkIdValidity(long id){
         return id>0 && this.eventService.existsById(id);
     }
+
+
 }

@@ -1,8 +1,10 @@
 package client.scenes.admin;
 
 
+import client.ConfigManager;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import dto.view.EventOverviewDto;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.VBox;
-import server.dto.view.EventOverviewDto;
+import javafx.scene.text.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,9 +26,10 @@ import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Comparator;
 
 
 public class AdminOverviewPageCtrl {
@@ -35,9 +38,10 @@ public class AdminOverviewPageCtrl {
     @FXML
     public MenuButton orderButton;
     @FXML
-    public Button backup;
-    @FXML
     public Button restore;
+
+    @FXML
+    public Text copyConfirmation;
 
     @FXML
     private VBox eventContainer;
@@ -47,6 +51,8 @@ public class AdminOverviewPageCtrl {
     private Image creationTimeImg;
 
     private String currentOrder = "title";
+
+    public ConfigManager config;
 
 
     /**
@@ -58,6 +64,7 @@ public class AdminOverviewPageCtrl {
     public AdminOverviewPageCtrl( AdminMainCtrl adminMainCtrl, ServerUtils serverUtils){
         this.adminMainCtrl = adminMainCtrl;
         this.serverUtils=serverUtils;
+        this.config = new ConfigManager("client/src/main/resources/config.properties");
 
     }
 
@@ -89,7 +96,7 @@ public class AdminOverviewPageCtrl {
         creationMenuItem.setOnAction(this::handleOrderMenuItem);
         lastModifiedMenuItem.setOnAction(this::handleOrderMenuItem);
 
-        orderButton.getItems().removeAll();
+        orderButton.getItems().clear();
         orderButton.getItems().addAll(titleMenuItem, creationMenuItem, lastModifiedMenuItem);
 
     }
@@ -128,6 +135,7 @@ public class AdminOverviewPageCtrl {
      * Loads the events and displays them on the page
      */
     public void loadEvents() {
+        copyConfirmation.setOpacity(0);
         List<EventOverviewDto> events = getEventOverviewDtos();
 
         Node[] nodes=new Node[events.size()];
@@ -149,6 +157,12 @@ public class AdminOverviewPageCtrl {
             Button eventButton = (Button) currentNode.lookup("#eventTitle");
             eventButton.setText(events.get(i).getTitle());
             eventButton.setOnAction(e -> showDetails(event.getId()));
+
+            Text dateText = (Text) currentNode.lookup("#dateText");
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            String creationTime = sdf.format(events.get(i).getCreationDate());
+            String lastModifiedTime = sdf.format(events.get(i).getLastModifiedDate());
+            dateText.setText("Creation: " + creationTime + " Last Modified: " + lastModifiedTime);
 
             Button inviteBtn=(Button) currentNode.lookup("#jsonBtn");
             inviteBtn.setOnAction(e -> getJSON(event.getId()));
@@ -210,7 +224,7 @@ public class AdminOverviewPageCtrl {
         Clipboard clipboard = Clipboard.getSystemClipboard();
         ClipboardContent content = new ClipboardContent();
         try {
-            URL url = new URL("http://localhost:8080/api/events/" + id); // Assuming each event has its own endpoint
+            URL url = new URL(config.getProperty("serverURL") + "/api/events/" + id);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
 
@@ -226,7 +240,9 @@ public class AdminOverviewPageCtrl {
                 // Set the retrieved JSON content to clipboard
                 content.putString(response.toString());
                 clipboard.setContent(content);
-                System.out.println("JSON copied to clipboard.");
+
+                copyConfirmation.setText("JSON OF EVENT #" + id + " COPIED TO CLIPBOARD!");
+                copyConfirmation.setOpacity(1);
             } else {
                 System.out.println("Error dumping database: " + con.getResponseMessage());
             }
@@ -243,25 +259,11 @@ public class AdminOverviewPageCtrl {
         loadEvents();
     }
 
-
     /**
-     * creates a backup of the entire database, might be handy in some cases
+     * Shows the restoring page for an admin to restore the JSON dump of an event
      */
-    public void dumpTables() {
-        try {
-            URL url = new URL("http://localhost:8080/api/events/dump-tables");
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("POST");
-
-            if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                System.out.println("Database dump successful");
-            } else {
-                System.out.println("Error dumping database: " + con.getResponseMessage());
-            }
-            con.disconnect();
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+    public void showRestore(){
+        adminMainCtrl.showRestore();
     }
 
 }
