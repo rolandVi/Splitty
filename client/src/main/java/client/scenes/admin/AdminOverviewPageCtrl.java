@@ -5,9 +5,13 @@ import client.ConfigManager;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import dto.view.EventOverviewDto;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
@@ -27,12 +31,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
-public class AdminOverviewPageCtrl {
+public class AdminOverviewPageCtrl implements Initializable {
     private final AdminMainCtrl adminMainCtrl;
     private final ServerUtils serverUtils;
     @FXML
@@ -54,6 +56,8 @@ public class AdminOverviewPageCtrl {
 
     public ConfigManager config;
 
+    private ObservableList<EventOverviewDto> events;
+
 
     /**
      * Injector for EventOverviewCtrl
@@ -65,7 +69,30 @@ public class AdminOverviewPageCtrl {
         this.adminMainCtrl = adminMainCtrl;
         this.serverUtils=serverUtils;
         this.config = new ConfigManager("client/src/main/resources/config.properties");
+    }
 
+    /**
+     * Initialize method
+     * @param location
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resources
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources){
+        List<EventOverviewDto> evs = serverUtils.getAllEvents();
+        events = FXCollections.observableList(evs);
+        serverUtils.registerForUpdates(q -> {
+            Platform.runLater(() -> {
+                events.add(q);
+                loadEvents();
+            });
+        });
+        loadOrder();
+        loadEvents();
     }
 
     /**
@@ -132,14 +159,29 @@ public class AdminOverviewPageCtrl {
     }
 
     /**
+     * Stops the thread
+     */
+    public void stop(){
+        serverUtils.stop();
+    }
+
+    /**
      * Loads the events and displays them on the page
      */
     public void loadEvents() {
         copyConfirmation.setOpacity(0);
-        List<EventOverviewDto> events = getEventOverviewDtos();
+
+        if (currentOrder.equals("title")) {
+            events.sort(Comparator.comparing(EventOverviewDto::getTitle));
+        } else if (currentOrder.equals("creation")) {
+            events.sort(Comparator.comparing(EventOverviewDto::getCreationDate));
+        } else if (currentOrder.equals("last modified")) {
+            events.sort(Comparator.comparing(EventOverviewDto::getLastModifiedDate).reversed());
+        } else {
+            throw new RuntimeException("Impossible ordering");
+        }
 
         Node[] nodes=new Node[events.size()];
-
 
         for (int i = 0; i < nodes.length; i++) {
             var loader=new FXMLLoader();
@@ -178,25 +220,6 @@ public class AdminOverviewPageCtrl {
         }
         this.eventContainer.getChildren().clear();
         this.eventContainer.getChildren().addAll(nodes);
-    }
-
-    private List<EventOverviewDto> getEventOverviewDtos() {
-        List<EventOverviewDto> events = serverUtils.getAllEvents();
-
-
-
-        if (currentOrder.equals("title")){
-            events.sort(Comparator.comparing(EventOverviewDto::getTitle));
-        } else if (currentOrder.equals("creation")){
-            events.sort(Comparator.comparing(EventOverviewDto::getCreationDate));
-        } else if (currentOrder.equals("last modified")){
-            events.sort(Comparator.comparing(EventOverviewDto::getLastModifiedDate).reversed());
-        } else {
-            throw new RuntimeException("Impossible ordering");
-        }
-
-
-        return events;
     }
 
     /**
@@ -256,6 +279,14 @@ public class AdminOverviewPageCtrl {
      * //todo: remove this when web sockets are implemented
      */
     public void refresh(){
+        copyConfirmation.setOpacity(0);
+
+        events.clear();
+
+        List<EventOverviewDto> updatedEvents = serverUtils.getAllEvents();
+
+        events.addAll(updatedEvents);
+
         loadEvents();
     }
 
