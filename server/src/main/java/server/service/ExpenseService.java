@@ -2,9 +2,11 @@ package server.service;
 
 import commons.ExpenseEntity;
 import commons.ParticipantEntity;
+import commons.TagEntity;
 import dto.ExpenseCreationDto;
 import dto.view.ExpenseDetailsDto;
 import dto.view.ParticipantNameDto;
+import dto.view.TagDto;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -100,6 +102,7 @@ public class ExpenseService {
         expenseEntity.setMoney(expense.getMoney());
         expenseEntity.setAuthor(participantService.findById(expense.getAuthor().getId()));
         expenseEntity.setTitle(expense.getTitle());
+        expenseEntity.setTag(new TagEntity(expense.getTag().toString()));
         expenseEntity.setDebtors(new HashSet<>());
         for (ParticipantNameDto u  : expense.getDebtors()){
             expenseEntity.addDebtor(participantService.findById(u.getId()));
@@ -125,7 +128,7 @@ public class ExpenseService {
                 author,
                 expenseEntity.getTitle(),
                 debtors,
-                expenseEntity.getDate(), tag);
+                expenseEntity.getDate(), new TagDto(expenseEntity.getTag().toString()));
 
         return details;
     }

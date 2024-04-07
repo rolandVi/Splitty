@@ -4,6 +4,7 @@ package client.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import commons.TagEntity;
 import dto.BankAccountCreationDto;
 import dto.CreatorToTitleDto;
 import dto.ExpenseCreationDto;
@@ -21,6 +22,7 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -406,5 +408,33 @@ public class ServerUtils {
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .get(EventDetailsDto.class);
+    }
+
+    /**
+     * Retrieves all tags from the server.
+     * @return List of TagEntity objects representing all tags.
+     */
+    public List<TagEntity> getAllTags() {
+        Response response = client
+                .target(SERVER)
+                .path("/api/tags/all")
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .get();
+
+        if (response.getStatus() == Response.Status.OK.getStatusCode()) {
+            return response.readEntity(new GenericType<>() {
+            });
+        } else {
+
+            return Collections.emptyList();
+        }
+    }
+
+    public void createTag(String tagName) {
+        client.target(SERVER)
+                .path("/api/tags/newtag")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(tagName, MediaType.APPLICATION_JSON), String.class);
     }
 }

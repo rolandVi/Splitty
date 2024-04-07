@@ -40,10 +40,10 @@ class ExpenseServiceTest {
         expenseService = new ExpenseService(expenseRepository, modelMapper, userService, eventService);
 
         expectedDto = new ExpenseEntity(1L, 100.0, new ParticipantEntity(),
-                new HashSet<>(), "Expense Title", new Date(), null, tag);
+                new HashSet<>(), "Expense Title", new Date(), null, null);
 
         ExpenseEntity requestDto = new ExpenseEntity(2L, 200.0, new ParticipantEntity(),
-                new HashSet<>(), "Another Expense Title", new Date(), null, tag);
+                new HashSet<>(), "Another Expense Title", new Date(), null, null);
 
         expectedExpenses = new ArrayList<>(Arrays.asList(expectedDto, requestDto));
     }
@@ -215,7 +215,7 @@ class ExpenseServiceTest {
     @Test
     void createExpense_ReturnsCreatedExpenseDto() {
         // Arrange
-        ExpenseCreationDto expenseDto = new ExpenseCreationDto("Test", 10.0, 1L, new HashSet<>(), 1L, new Date(), tag);
+        ExpenseCreationDto expenseDto = new ExpenseCreationDto("Test", 10.0, 1L, new HashSet<>(), 1L, new Date(), null);
         ExpenseEntity expenseEntity = new ExpenseEntity();
         when(expenseRepository.save(any())).thenReturn(expenseEntity);
 

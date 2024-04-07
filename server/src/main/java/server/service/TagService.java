@@ -1,9 +1,13 @@
 package server.service;
 
 import commons.TagEntity;
+import jakarta.annotation.PostConstruct;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import server.repository.TagRepository;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class TagService {
@@ -25,11 +29,20 @@ public class TagService {
         return tagRepository.findByTagType(tagType) != null;
     }
 
-    public void addTag(String tagType) {
+    public boolean addTag(String tagType) {
         if (!tagExists(tagType)) {
-            TagEntity tagEntity = new TagEntity();
-            tagEntity.setTagType(tagType);
+            TagEntity tagEntity = new TagEntity(tagType);
             tagRepository.save(tagEntity);
+            return true;
         }
+        return false;
+    }
+
+    /**
+     * Retrieves all tags from the database
+     * @return List of all tags
+     */
+    public List<TagEntity> getAllTags() {
+        return tagRepository.findAll();
     }
 }

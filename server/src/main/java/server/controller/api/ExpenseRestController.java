@@ -78,7 +78,7 @@ public class ExpenseRestController {
                 author,
                 createdExpense.getTitle(),
                 debtors,
-                createdExpense.getDate(), tag);
+                createdExpense.getDate(), new TagDto(createdExpense.getTag().toString()));
 
         return ResponseEntity.ok(details);
     }

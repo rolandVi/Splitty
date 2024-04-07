@@ -183,7 +183,7 @@ public class NewExpenseCtrl {
     /**
      * creates new expense based on the input
      */
-    public void  createExpense(){
+    public void createExpense(){
         String title = titleField.getText();
         try {
             double amount = Double.parseDouble(amountField.getText());
@@ -237,6 +237,19 @@ public class NewExpenseCtrl {
         serverUtils.removeExpense(parentEvent.getId(), expense.getId());
         mainCtrl.showEventDetails(parentEvent.getId());
     }
+
+    @FXML
+    public void initialize() {
+        // Request tags from the server and populate the ComboBox
+        List<TagEntity> tags = serverUtils.getAllTags();
+        initTagsComboBox(tags);
+    }
+
+    private void initTagsComboBox(List<TagEntity> tagsList) {
+        ObservableList<TagEntity> observableTags = FXCollections.observableArrayList(tagsList);
+        tags.setItems(observableTags);
+    }
+
 
     /**
      * Brings the user to the customtag scene
