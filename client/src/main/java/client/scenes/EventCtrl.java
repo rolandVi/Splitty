@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class EventCtrl implements MultiLanguages{
     private final MainCtrl mainCtrl;
@@ -48,6 +49,16 @@ public class EventCtrl implements MultiLanguages{
     public Button addExpenseButton;
     @FXML
     public Button addParticipant;
+    @FXML
+    public RadioButton filterAllExpenses;
+    @FXML
+    public RadioButton filterExpensesByAuthor;
+    @FXML
+    public RadioButton filterExpensesByDebtor;
+    @FXML
+    public ComboBox<ParticipantNameDto> participantSelectionBox;
+//    @FXML
+    public ToggleGroup filterGroup;
 
     @FXML
     public Button inviteBtn;
@@ -74,6 +85,7 @@ public class EventCtrl implements MultiLanguages{
         this.mainCtrl = mainCtrl;
         this.serverUtils = serverUtils;
         this.newExpenseCtrl = newExpenseCtrl;
+        filterGroup = new ToggleGroup();
     }
     /**
      * Updates the language of the scene using the resource bundle
@@ -119,6 +131,12 @@ public class EventCtrl implements MultiLanguages{
         inviteCode.setText(eventDetailsDto.getInviteCode());
         loadExpenseList();
         loadParticipants();
+        filterAllExpenses.setToggleGroup(filterGroup);
+        filterExpensesByAuthor.setToggleGroup(filterGroup);
+        filterExpensesByDebtor.setToggleGroup(filterGroup);
+
+        ObservableList<ParticipantNameDto> participants = eventDetailsDto.getParticipants().stream().collect(Collectors.toCollection(FXCollections::observableArrayList));
+        participantSelectionBox.setItems(participants);
     }
 
     /**
@@ -135,6 +153,41 @@ public class EventCtrl implements MultiLanguages{
             }
         });
         expenseList.setItems(items);
+    }
+
+    public void filterExpensesByAuthor(){
+        if (participantSelectionBox.getValue() != null){
+            ParticipantNameDto selectedParticipant = participantSelectionBox.getValue();
+            ObservableList<ExpenseDetailsDto> items = FXCollections
+                    .observableArrayList(eventDetailsDto.getExpenses());
+            items = items.stream().filter(x -> x.getAuthor().equals(selectedParticipant)).collect(Collectors.toCollection(FXCollections::observableArrayList));
+
+            expenseList.setCellFactory(new Callback<ListView<ExpenseDetailsDto>,
+                    ListCell<ExpenseDetailsDto>>() {
+                @Override
+                public ListCell<ExpenseDetailsDto> call(ListView<ExpenseDetailsDto> param) {
+                    return new ExpenseListCell(self);
+                }
+            });
+            expenseList.setItems(items);
+        }
+    }
+    public void filterExpensesByDebtor(){
+        if (participantSelectionBox.getValue() != null){
+            ParticipantNameDto selectedParticipant = participantSelectionBox.getValue();
+            ObservableList<ExpenseDetailsDto> items = FXCollections
+                    .observableArrayList(eventDetailsDto.getExpenses());
+            items = items.stream().filter(x -> x.getDebtors().contains(selectedParticipant)).collect(Collectors.toCollection(FXCollections::observableArrayList));
+
+            expenseList.setCellFactory(new Callback<ListView<ExpenseDetailsDto>,
+                    ListCell<ExpenseDetailsDto>>() {
+                @Override
+                public ListCell<ExpenseDetailsDto> call(ListView<ExpenseDetailsDto> param) {
+                    return new ExpenseListCell(self);
+                }
+            });
+            expenseList.setItems(items);
+        }
     }
 
 
@@ -180,6 +233,24 @@ public class EventCtrl implements MultiLanguages{
         mainCtrl.showNewParticipant();
     }
 
+    /**
+     * Show the page for editing a participant
+     * @param parID id of the participant
+     * @param eventId id of the event (for deletion of participant)
+     */
+    private void showParticipantEdit(long parID, long eventId) {
+        mainCtrl.showParticipantEdit(parID, eventId);
+    }
+
+    /**
+     * Copies the invite code to the clipboard
+     */
+    public void copyInvite(){
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent content = new ClipboardContent();
+        content.putString(this.inviteCode.getText());
+        clipboard.setContent(content);
+    }
 
     private static class ExpenseListCell extends ListCell<ExpenseDetailsDto>{
         private final Button button;
@@ -251,24 +322,4 @@ public class EventCtrl implements MultiLanguages{
         this.participantsContainer.getChildren().clear();
         this.participantsContainer.getChildren().addAll(nodes);
     }
-
-    /**
-     * Show the page for editing a participant
-     * @param parID id of the participant
-     * @param eventId id of the event (for deletion of participant)
-     */
-    private void showParticipantEdit(long parID, long eventId) {
-        mainCtrl.showParticipantEdit(parID, eventId);
-    }
-
-    /**
-     * Copies the invite code to the clipboard
-     */
-    public void copyInvite(){
-        Clipboard clipboard = Clipboard.getSystemClipboard();
-        ClipboardContent content = new ClipboardContent();
-        content.putString(this.inviteCode.getText());
-        clipboard.setContent(content);
-    }
-
 }
