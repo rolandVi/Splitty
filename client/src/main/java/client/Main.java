@@ -80,6 +80,11 @@ public class Main extends Application {
         var customTag = FXML.load(CustomTagCtrl.class,
                 "client.scenes", "customTag.fxml");
 
+
+        serverUtils.createTag("food");
+        serverUtils.createTag("entrance fees");
+        serverUtils.createTag("travel");
+
         mainCtrl.initialize(
                 new SceneInputWrapper(primaryStage, startPage,
                         eventOverview, paymentPage, eventPage,

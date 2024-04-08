@@ -28,24 +28,27 @@ public class ExpenseService {
     private final ModelMapper modelMapper;
     private final ParticipantService participantService;
     private final EventService eventService;
+    private final TagService tagService;
 
     /**
      * Constructor Injection
      *
      * @param expenseRepository the ExpenseEntity repository
-     * @param modelMapper      the ModelMapper injected by Spring
-     * @param userService the user service
-     * @param eventService the event service
+     * @param modelMapper       the ModelMapper injected by Spring
+     * @param userService       the user service
+     * @param eventService      the event service
+     * @param tagService
      */
     public ExpenseService(ExpenseRepository expenseRepository,
                           ModelMapper modelMapper,
                           ParticipantService userService,
-                          EventService eventService) {
+                          EventService eventService, TagService tagService) {
         this.expenseRepository = expenseRepository;
         this.modelMapper = modelMapper;
         this.participantService = userService;
         this.eventService = eventService;
 
+        this.tagService = tagService;
     }
 
     /**
@@ -102,7 +105,7 @@ public class ExpenseService {
         expenseEntity.setMoney(expense.getMoney());
         expenseEntity.setAuthor(participantService.findById(expense.getAuthor().getId()));
         expenseEntity.setTitle(expense.getTitle());
-        expenseEntity.setTag(new TagEntity(expense.getTag().toString()));
+        expenseEntity.setTag(tagService.findById(expense.getTag().getId());
         expenseEntity.setDebtors(new HashSet<>());
         for (ParticipantNameDto u  : expense.getDebtors()){
             expenseEntity.addDebtor(participantService.findById(u.getId()));
@@ -128,7 +131,8 @@ public class ExpenseService {
                 author,
                 expenseEntity.getTitle(),
                 debtors,
-                expenseEntity.getDate(), new TagDto(expenseEntity.getTag().toString()));
+                expenseEntity.getDate(),
+                new TagDto(expenseEntity.getTag().getId(), expenseEntity.getTag().toString()));
 
         return details;
     }
@@ -157,6 +161,8 @@ public class ExpenseService {
         expenseEntity.setDate(expenseDto.getDate());
         //Set parent event
         expenseEntity.setEvent(eventService.findEntityById(expenseDto.getEventId()));
+
+        expenseEntity.setTag(tagService.findById(expenseDto.getTag().getId()));
 
         expenseEntity = expenseRepository.save(expenseEntity);
         eventService.addExpense(expenseEntity);

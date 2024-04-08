@@ -2,9 +2,15 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.TagEntity;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+
+import java.util.List;
 
 public class CustomTagCtrl {
     private final MainCtrl mainCtrl;
@@ -15,6 +21,8 @@ public class CustomTagCtrl {
     public Button back;
     @FXML
     public TextField tagName;
+    @FXML
+    public FlowPane flowPane;
 
     @Inject
     public CustomTagCtrl(MainCtrl mainCtrl, ServerUtils serverUtils) {
@@ -30,4 +38,5 @@ public class CustomTagCtrl {
         String tagType = tagName.getText();
         serverUtils.createTag(tagType);
     }
+
 }

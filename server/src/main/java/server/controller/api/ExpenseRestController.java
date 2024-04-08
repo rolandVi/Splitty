@@ -2,6 +2,7 @@ package server.controller.api;
 
 import commons.ExpenseEntity;
 import commons.ParticipantEntity;
+import commons.TagEntity;
 import dto.ExpenseCreationDto;
 import dto.view.ExpenseDetailsDto;
 import dto.view.ParticipantNameDto;
@@ -73,12 +74,16 @@ public class ExpenseRestController {
                     u.getEmail()));
         }
 
+        TagEntity tagEntity = createdExpense.getTag();
+        TagDto tagDto = new TagDto(tagEntity.getId(), tagEntity.getTagType());
+
+
         ExpenseDetailsDto details = new ExpenseDetailsDto(createdExpense.getId(),
                 createdExpense.getMoney(),
                 author,
                 createdExpense.getTitle(),
                 debtors,
-                createdExpense.getDate(), new TagDto(createdExpense.getTag().toString()));
+                createdExpense.getDate(), tagDto);
 
         return ResponseEntity.ok(details);
     }

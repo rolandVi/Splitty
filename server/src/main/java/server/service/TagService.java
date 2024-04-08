@@ -4,6 +4,7 @@ import commons.TagEntity;
 import jakarta.annotation.PostConstruct;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import server.exception.ObjectNotFoundException;
 import server.repository.TagRepository;
 
 import java.util.Arrays;
@@ -44,5 +45,10 @@ public class TagService {
      */
     public List<TagEntity> getAllTags() {
         return tagRepository.findAll();
+    }
+
+    public TagEntity findById(Long id){
+        return this.tagRepository.findById(id)
+                .orElseThrow(()-> new ObjectNotFoundException("No such tag found"));
     }
 }

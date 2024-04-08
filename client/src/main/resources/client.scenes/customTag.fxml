@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="384.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CustomTagCtrl">
+<AnchorPane prefHeight="384.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CustomTagCtrl">
    <children>
       <Button fx:id="back" layoutX="359.0" layoutY="27.0" mnemonicParsing="false" onAction="#showCreateExpense" text="Button" />
-      <FlowPane layoutX="31.0" layoutY="40.0" prefHeight="293.0" prefWidth="200.0" />
-      <TextField fx:id="tagName" layoutX="236.0" layoutY="106.0" promptText="Your custom tag" />
-      <Button fx:id="addCustomTagBtn" layoutX="294.0" layoutY="143.0" mnemonicParsing="false" onAction="#createCustomTag" text="OK" />
+      <FlowPane fx:id="flowPane" hgap="10.0" layoutX="20.0" layoutY="112.0" prefHeight="160.0" prefWidth="200.0" vgap="10.0" />
+      <VBox alignment="TOP_CENTER" layoutX="269.0" layoutY="144.0" prefHeight="64.0" prefWidth="142.0" spacing="15.0">
+         <children>
+            <TextField fx:id="tagName" promptText="Your custom tag" />
+            <Button fx:id="addCustomTagBtn" mnemonicParsing="false" onAction="#createCustomTag" text="OK" />
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

@@ -1,6 +1,7 @@
 package server.controller.api;
 
 import commons.TagEntity;
+import jakarta.annotation.PostConstruct;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,4 +43,5 @@ public class TagRestController {
             return new ResponseEntity<>("Tag already exists", HttpStatus.BAD_REQUEST);
         }
     }
+
 }

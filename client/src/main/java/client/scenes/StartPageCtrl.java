@@ -69,10 +69,6 @@ public class StartPageCtrl implements MultiLanguages {
                 + "_" + configManager.getProperty("country");
         updateLanguageBox(languageBox, locale);
 
-        serverUtils.createTag("food");
-        serverUtils.createTag("entrance fees");
-        serverUtils.createTag("travel");
-
         displayLogo();
     }
 

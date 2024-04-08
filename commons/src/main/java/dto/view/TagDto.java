@@ -3,12 +3,14 @@ package dto.view;
 public class TagDto {
     private String tagType;
 
+    private Long id;
     // Constructors
     public TagDto() {
     }
 
-    public TagDto(String tagType) {
+    public TagDto(Long id, String tagType) {
         this.tagType = tagType;
+        this.id = id;
     }
 
     // Getters and Setters
@@ -18,5 +20,13 @@ public class TagDto {
 
     public void setTagType(String tagType) {
         this.tagType = tagType;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
