@@ -22,6 +22,7 @@ import client.scenes.admin.AdminOverviewPageCtrl;
 import client.scenes.admin.AdminRestoreCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Injector;
+import dto.view.TagDto;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -79,17 +80,15 @@ public class Main extends Application {
 
         var customTag = FXML.load(CustomTagCtrl.class,
                 "client.scenes", "customTag.fxml");
+        var stats = FXML.load(StatsCtrl.class,
+                "client.scenes", "statistics.fxml");
 
-
-        serverUtils.createTag("food");
-        serverUtils.createTag("entrance fees");
-        serverUtils.createTag("travel");
 
         mainCtrl.initialize(
                 new SceneInputWrapper(primaryStage, startPage,
                         eventOverview, paymentPage, eventPage,
                         eventCreationPage, eventItemPage, newParticipant,
-                        participantItem, participant, newExpense, customTag), serverUtils);
+                        participantItem, participant, newExpense, customTag, stats), serverUtils);
     }
 
     /**
@@ -110,5 +109,6 @@ public class Main extends Application {
         adminMainCtrl.initialize(adminOverviewStage, adminLoginPage,
                 adminOverviewPage, adminRestorePage);
     }
+
 
 }

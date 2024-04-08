@@ -51,6 +51,8 @@ public class EventCtrl implements MultiLanguages{
 
     @FXML
     public Button inviteBtn;
+    @FXML
+    public Button statsBtn;
 
     private EventDetailsDto eventDetailsDto;
 
@@ -259,6 +261,13 @@ public class EventCtrl implements MultiLanguages{
         ClipboardContent content = new ClipboardContent();
         content.putString(this.inviteCode.getText());
         clipboard.setContent(content);
+    }
+
+    /**
+     * Brings user to the statistics page
+     */
+    public void showStats(){
+        mainCtrl.showStats();
     }
 
 }

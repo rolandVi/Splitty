@@ -209,7 +209,11 @@ public class NewExpenseCtrl {
 
 
             TagEntity tag = tags.getValue();
-            TagDto newTag = new TagDto(tag.getId(), tag.getTagType());
+            TagDto newTag = null;
+
+            if (tag != null) {
+                newTag = new TagDto(tag.getId(), tag.getTagType(), tag.getHexValue());
+            }
 
 
             serverUtils.addExpense(parentEvent.getId(),
@@ -237,7 +241,8 @@ public class NewExpenseCtrl {
             expense.setMoney(Double.parseDouble(amountField.getText()));
             expense.setTitle(titleField.getText());
 
-            TagDto tagDto = new TagDto(tags.getValue().getId(), tags.getValue().getTagType());
+            TagDto tagDto = new TagDto(tags.getValue().getId(), tags.getValue().getTagType(),
+                    tags.getValue().getHexValue());
             expense.setTag(tagDto);
 
             serverUtils.editExpense(expense);

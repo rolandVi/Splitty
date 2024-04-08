@@ -6,28 +6,30 @@ import jakarta.persistence.*;
 @Table(name = "tags")
 public class TagEntity {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String tagType;
 
+    private String hexValue; // New attribute for hex value
+
     /**
-     *
+     * Constructor with tag type and hex value
      * @param tagType the type that will be given to an event or expense
      *                f.e. food, holiday
+     * @param hexValue the hex value associated with the tag
      */
-    public TagEntity(String tagType) {
+    public TagEntity(String tagType, String hexValue) {
         this.tagType = tagType;
+        this.hexValue = hexValue;
     }
 
     /**
-     * empty constructor
+     * Empty constructor
      */
     public TagEntity() {
     }
-
 
     /**
      * Getter for the id
@@ -38,7 +40,7 @@ public class TagEntity {
     }
 
     /**
-     * Getter for the tag
+     * Getter for the tag type
      * @return the tagType
      */
     public String getTagType() {
@@ -46,10 +48,26 @@ public class TagEntity {
     }
 
     /**
-     * setter for the tag
-     * @param tagType the tagType
+     * Setter for the tag type
+     * @param tagType the tagType to set
      */
     public void setTagType(String tagType) {
         this.tagType = tagType;
+    }
+
+    /**
+     * Getter for the hex value
+     * @return the hexValue
+     */
+    public String getHexValue() {
+        return hexValue;
+    }
+
+    /**
+     * Setter for the hex value
+     * @param hexValue the hexValue to set
+     */
+    public void setHexValue(String hexValue) {
+        this.hexValue = hexValue;
     }
 }

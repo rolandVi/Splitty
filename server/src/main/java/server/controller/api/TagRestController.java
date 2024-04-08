@@ -1,6 +1,7 @@
 package server.controller.api;
 
 import commons.TagEntity;
+import dto.view.TagDto;
 import jakarta.annotation.PostConstruct;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,8 +36,11 @@ public class TagRestController {
     }
 
     @PostMapping("/newtag")
-    public ResponseEntity<String> createNewTag(@RequestBody String tagName) {
-        boolean success = tagService.addTag(tagName);
+    public ResponseEntity<String> createNewTag(@RequestBody TagDto request) {
+        String tagName = request.getTagType(); // Assuming tagType holds the tag name
+        String hexValue = request.getHexValue();
+
+        boolean success = tagService.addTag(tagName, hexValue);
         if (success) {
             return new ResponseEntity<>("Tag created successfully", HttpStatus.CREATED);
         } else {

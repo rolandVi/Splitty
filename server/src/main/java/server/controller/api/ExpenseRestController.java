@@ -74,9 +74,11 @@ public class ExpenseRestController {
                     u.getEmail()));
         }
 
+        TagDto tagDto = null;
         TagEntity tagEntity = createdExpense.getTag();
-        TagDto tagDto = new TagDto(tagEntity.getId(), tagEntity.getTagType());
-
+        if (tagEntity != null) {
+            tagDto = new TagDto(tagEntity.getId(), tagEntity.getTagType(), tagEntity.getHexValue());
+        }
 
         ExpenseDetailsDto details = new ExpenseDetailsDto(createdExpense.getId(),
                 createdExpense.getMoney(),

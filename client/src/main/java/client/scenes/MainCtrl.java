@@ -64,6 +64,9 @@ public class MainCtrl {
     private CustomTagCtrl customTagCtrl;
     private Scene customTag;
 
+    private StatsCtrl statsCtrl;
+    private Scene statistics;
+
     private ServerUtils serverUtils;
 
     /**
@@ -86,6 +89,7 @@ public class MainCtrl {
         this.participantCtrl = sceneInputWrapper.participantPage().getKey();
         this.newExpenseCtrl = sceneInputWrapper.newExpensePage().getKey();
         this.customTagCtrl = sceneInputWrapper.customTag().getKey();
+        this.statsCtrl = sceneInputWrapper.stats().getKey();
 
         this.startPage = new Scene(sceneInputWrapper.startPage().getValue());
         this.eventOverview = new Scene(sceneInputWrapper.eventOverview().getValue());
@@ -93,6 +97,7 @@ public class MainCtrl {
         this.eventPage = new Scene(sceneInputWrapper.eventPage().getValue());
         this.eventCreationPage = new Scene(sceneInputWrapper.eventCreationPage().getValue());
         this.eventItemPage=new Scene(sceneInputWrapper.eventItemPage().getValue());
+        this.statistics = new Scene(sceneInputWrapper.stats().getValue());
 
         this.newExpensePage = new Scene(sceneInputWrapper.newExpensePage().getValue());
 
@@ -235,6 +240,14 @@ public class MainCtrl {
     public void showCustomTag(){
         primaryStage.setTitle("Custom tag");
         primaryStage.setScene(customTag);
+    }
+
+    /**
+     * Shows the statistics page
+     */
+    public void showStats(){
+        primaryStage.setTitle("stats page");
+        primaryStage.setScene(statistics);
     }
 
 

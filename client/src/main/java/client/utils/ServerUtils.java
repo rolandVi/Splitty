@@ -4,6 +4,7 @@ package client.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import commons.ExpenseEntity;
 import commons.TagEntity;
 import dto.BankAccountCreationDto;
 import dto.CreatorToTitleDto;
@@ -431,10 +432,31 @@ public class ServerUtils {
         }
     }
 
-    public void createTag(String tagName) {
+    public void createTag(TagDto tagDto) {
         client.target(SERVER)
                 .path("/api/tags/newtag")
                 .request(MediaType.APPLICATION_JSON)
-                .post(Entity.entity(tagName, MediaType.APPLICATION_JSON), String.class);
+                .post(Entity.entity(tagDto, MediaType.APPLICATION_JSON), String.class);
+    }
+
+    /**
+     * Retrieves all expenses of an event from the server.
+     * @param eventId The ID of the event to retrieve expenses from.
+     * @return List of ExpenseEntity objects representing all expenses of the event.
+     */
+    public List<ExpenseEntity> getAllExpensesOfEvent(long eventId) {
+        Response response = client
+                .target(SERVER)
+                .path("/api/events/" + eventId + "/expenses")
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .get();
+
+        if (response.getStatus() == Response.Status.OK.getStatusCode()) {
+            return response.readEntity(new GenericType<>() {});
+        } else {
+            // Handle other response statuses, such as error responses
+            return Collections.emptyList();
+        }
     }
 }

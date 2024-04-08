@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EventCtrl">
    <children>
       <Label fx:id="eventNameLabel" alignment="TOP_CENTER" layoutX="14.0" layoutY="14.0" text="[EVENT_NAME]" textAlignment="CENTER">
@@ -19,7 +19,7 @@
          </font>
       </Label>
 
-      <Label fx:id="expensesLabel" alignment="TOP_CENTER" layoutX="351.0" layoutY="127.0" text="Expenses">
+      <Label fx:id="expensesLabel" alignment="TOP_CENTER" layoutX="300.0" layoutY="127.0" text="Expenses">
 
          <font>
             <Font size="15.0" />
@@ -30,13 +30,14 @@
       <TextField fx:id="changeTextField" layoutX="15.0" layoutY="59.0" promptText="Event name" />
       <Button fx:id="changeButton" layoutX="173.0" layoutY="59.0" mnemonicParsing="false" onAction="#changeEventName" text="Change" />
       <Button fx:id="returnButton" layoutX="534.0" layoutY="14.0" mnemonicParsing="false" onAction="#returnToOverview" text="Return" />
-      <Button fx:id="addParticipant" layoutX="216.0" layoutY="125.0" mnemonicParsing="false" onAction="#newParticipant" text="Add participant" />
-      <ListView fx:id="expenseList" layoutX="351.0" layoutY="161.0" prefHeight="200.0" prefWidth="200.0" />
-      <ScrollPane layoutX="29.0" layoutY="168.0" prefHeight="176.0" prefWidth="287.0">
+      <Button fx:id="addParticipant" layoutX="146.0" layoutY="125.0" mnemonicParsing="false" onAction="#newParticipant" text="Add participant" />
+      <ListView fx:id="expenseList" layoutX="300.0" layoutY="168.0" prefHeight="176.0" prefWidth="256.0" />
+      <ScrollPane layoutX="29.0" layoutY="168.0" prefHeight="176.0" prefWidth="215.0">
          <content>
-            <VBox fx:id="participantsContainer" prefHeight="175.0" prefWidth="270.0" />
+            <VBox fx:id="participantsContainer" prefHeight="175.0" prefWidth="198.0" />
          </content>
       </ScrollPane>
       <Button fx:id="inviteBtn" layoutX="474.0" layoutY="59.0" mnemonicParsing="false" onAction="#copyInvite" text="Copy" />
+      <Button fx:id="statsBtn" layoutX="496.0" layoutY="355.0" mnemonicParsing="false" onAction="#showStats" text="Statistics" />
    </children>
 </Pane>

@@ -105,7 +105,7 @@ public class ExpenseService {
         expenseEntity.setMoney(expense.getMoney());
         expenseEntity.setAuthor(participantService.findById(expense.getAuthor().getId()));
         expenseEntity.setTitle(expense.getTitle());
-        expenseEntity.setTag(tagService.findById(expense.getTag().getId());
+        expenseEntity.setTag(tagService.findById(expense.getTag().getId()));
         expenseEntity.setDebtors(new HashSet<>());
         for (ParticipantNameDto u  : expense.getDebtors()){
             expenseEntity.addDebtor(participantService.findById(u.getId()));
@@ -132,7 +132,8 @@ public class ExpenseService {
                 expenseEntity.getTitle(),
                 debtors,
                 expenseEntity.getDate(),
-                new TagDto(expenseEntity.getTag().getId(), expenseEntity.getTag().toString()));
+                new TagDto(expenseEntity.getTag().getId(), expenseEntity.getTag().getTagType(),
+                        expenseEntity.getTag().getHexValue()));
 
         return details;
     }
@@ -162,7 +163,9 @@ public class ExpenseService {
         //Set parent event
         expenseEntity.setEvent(eventService.findEntityById(expenseDto.getEventId()));
 
-        expenseEntity.setTag(tagService.findById(expenseDto.getTag().getId()));
+        if (expenseDto.getTag() != null) {
+            expenseEntity.setTag(tagService.findById(expenseDto.getTag().getId()));
+        }
 
         expenseEntity = expenseRepository.save(expenseEntity);
         eventService.addExpense(expenseEntity);
