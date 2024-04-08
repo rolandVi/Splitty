@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -50,6 +51,9 @@ public class EventOverviewCtrl implements MultiLanguages {
     @FXML
     private Label inviteCodeErrorMessage;
 
+    @FXML
+    private Label inviteCodeLabel;
+
 
     /**
      * Injector for EventOverviewCtrl
@@ -66,6 +70,7 @@ public class EventOverviewCtrl implements MultiLanguages {
      * Updates the languages of all scenes (except admin)
      */
     public void initialize() {
+        inviteCodeTextField.setText("");
         String locale = configManager.getProperty("language")
                 + "_" + configManager.getProperty("country");
         updateLanguageBox(languageBox, locale);
@@ -96,6 +101,9 @@ public class EventOverviewCtrl implements MultiLanguages {
             titleLabel.setText(lang.getString("event_overview"));
             newEventLabel.setText(lang.getString("new_event"));
             paymentLabel.setText(lang.getString("payments"));
+            inviteCodeLabel.setText(lang.getString("event_invite_code"));
+            enterButton.setText(lang.getString("enter_event"));
+            inviteCodeErrorMessage.setText(lang.getString("invalid_message"));
         } catch (Exception e) {
             throw new RuntimeException();
         }
@@ -151,6 +159,10 @@ public class EventOverviewCtrl implements MultiLanguages {
     public void loadEventDetails(){
         this.inviteCodeErrorMessage.setVisible(false);
         String inviteCode=this.inviteCodeTextField.getText().trim();
+        if (inviteCode.isBlank()){
+           inviteCodeErrorMessage.setVisible(true);
+           return;
+        }
         EventDetailsDto event=this.serverUtils.getEventDetailsByInviteCode(inviteCode);
         if (event.getId()==null){
             this.inviteCodeErrorMessage.setVisible(true);
@@ -160,4 +172,20 @@ public class EventOverviewCtrl implements MultiLanguages {
         this.mainCtrl.showEventDetails(event.getId());
         this.inviteCodeTextField.setText("");
     }
+
+
+    /**
+     * Adds an enter shortcut if you click enter when you enter an invite code
+     * @param e the key pressed
+     */
+    public void enterWithInvite(KeyEvent e) {
+        switch (e.getCode()) {
+            case ENTER:
+                loadEventDetails();
+                break;
+            default:
+                break;
+        }
+    }
+
 }

@@ -242,6 +242,9 @@ public class NewExpenseCtrl {
             case ENTER:
                 createExpense();
                 break;
+            case ESCAPE:
+                returnToEvent();
+                break;
             default:
                 break;
         }

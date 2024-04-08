@@ -14,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -120,6 +121,36 @@ public class EventCtrl implements MultiLanguages{
         this.changeTextField.setText("");
         loadExpenseList();
         loadParticipants();
+    }
+
+    /**
+     * Checks for key press
+     *
+     * @param e The key
+     */
+    public void keyPressed(KeyEvent e) throws IOException, InterruptedException {
+        switch (e.getCode()) {
+            case ESCAPE:
+                returnToOverview();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Checks for key press in the event name change
+     *
+     * @param e The key
+     */
+    public void triggerNameChange(KeyEvent e) throws IOException{
+        switch (e.getCode()) {
+            case ENTER:
+                changeEventName();
+                break;
+            default:
+                break;
+        }
     }
 
     /**
