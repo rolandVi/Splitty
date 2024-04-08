@@ -5,9 +5,7 @@ import dto.CreatorToTitleDto;
 import dto.view.EventDetailsDto;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 
 import java.io.IOException;
@@ -106,7 +104,12 @@ public class EventCreationCtrl implements MultiLanguages{
                 creatorEmailTextField.getText(),
                 eventNameTextField.getText()));
 
-        this.mainCtrl.showEventDetails(newEvent.getId());
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(mainCtrl.lang.getString("add_event_alert_header"));
+        alert.setContentText(mainCtrl.lang.getString("add_event_alert_content")
+                + " " + eventNameTextField.getText());
+        alert.showAndWait().ifPresent(response -> this.mainCtrl.showEventDetails(newEvent.getId()));
+
 
         this.errorMessage.setVisible(false);
         this.eventNameTextField.setText("");

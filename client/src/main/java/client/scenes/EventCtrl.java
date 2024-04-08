@@ -177,8 +177,14 @@ public class EventCtrl implements MultiLanguages{
      */
     public void changeEventName() throws JsonProcessingException {
         serverUtils.changeEventName(eventDetailsDto.getId(), changeTextField.getText());
-        this.eventNameLabel.setText(this.changeTextField.getText());
-        this.changeTextField.setText("");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(mainCtrl.lang.getString("change_name_alert_header"));
+        alert.setContentText(mainCtrl.lang.getString("change_name_alert_content")
+                + " " + changeTextField.getText());
+        alert.showAndWait().ifPresent( r -> {
+            this.eventNameLabel.setText(this.changeTextField.getText());
+            this.changeTextField.setText("");
+        });
     }
 
     /**

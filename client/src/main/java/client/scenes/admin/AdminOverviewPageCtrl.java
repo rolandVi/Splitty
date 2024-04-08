@@ -226,8 +226,8 @@ public class AdminOverviewPageCtrl implements Initializable {
      */
     private void deleteEvent(long id) throws IOException, URISyntaxException, InterruptedException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setHeaderText("Delete event");
-        alert.setContentText("Are you sure you want to delete this event");
+        alert.setHeaderText(adminMainCtrl.lang.getString("admin_delete_alert_header"));
+        alert.setContentText(adminMainCtrl.lang.getString("admin_delete_alert_content"));
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
