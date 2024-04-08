@@ -212,8 +212,6 @@ public class MainCtrl {
     public void showEventDetails(long id) {
         eventCtrl.init(id);
         primaryStage.setTitle("Page");
-        eventCtrl.loadExpenseList();
-        eventCtrl.loadParticipants();
         primaryStage.setScene(eventPage);
     }
 

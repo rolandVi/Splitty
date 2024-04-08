@@ -11,16 +11,14 @@ import dto.view.ParticipantNameDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import server.exception.ObjectNotFoundException;
 import server.repository.EventRepository;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -295,6 +293,58 @@ class EventServiceTest {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         eventService = new EventService(eventRepository, modelMapper, participantService, expenseService);
     }
+
+    @Test
+    void testAddExpense() {
+        // Mocking an ExpenseEntity and an EventEntity
+        ExpenseEntity mockExpense = new ExpenseEntity(1L, 1.1, new ParticipantEntity(), new HashSet<>(),
+                "", new Date(), new EventEntity());
+
+        EventEntity mockEvent = new EventEntity(1L, "", "",
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
+        mockEvent.setTitle("Test Event");
+
+        // Mocking repository behavior
+        Mockito.when(eventRepository.findById(1L)).thenReturn(Optional.of(mockEvent));
+        Mockito.when(eventRepository.save(Mockito.any())).thenReturn(mockEvent);
+
+        // Testing addExpense() method
+        EventEntity result = eventService.addExpense(mockExpense);
+        assertEquals(1L, result.getId());
+        assertEquals("Test Event", result.getTitle());
+    }
+
+    @Test
+    void testGetById() {
+        // Mocking a sample EventEntity
+        EventEntity mockEvent = new EventEntity(1L, "", "",
+                new HashSet<>(), new HashSet<>(), new Date(), new Date());
+        mockEvent.setTitle("Test Event");
+
+        // Mocking repository behavior
+        Mockito.when(eventRepository.findById(1L)).thenReturn(Optional.of(mockEvent));
+        Mockito.when(eventRepository.findById(2L)).thenReturn(Optional.empty());
+
+        // Testing getById() method
+        EventDetailsDto result = eventService.getById(1L);
+        assertEquals(1L, result.getId());
+        assertEquals("Test Event", result.getTitle());
+
+        // Testing exception when event is not found
+        assertThrows(ObjectNotFoundException.class, () -> eventService.getById(2L));
+    }
+
+    @Test
+    void testExistsById() {
+        // Mocking behavior for the repository
+        Mockito.when(eventRepository.existsById(1L)).thenReturn(true);
+        Mockito.when(eventRepository.existsById(2L)).thenReturn(false);
+
+        // Testing the service method
+        assertTrue(eventService.existsById(1L));
+        assertFalse(eventService.existsById(2L));
+    }
+
 //
 //    @Test
 //    void existsById_WhenEventExists_ReturnsTrue() {

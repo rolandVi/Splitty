@@ -113,7 +113,7 @@ public class StartPageCtrl implements MultiLanguages {
         }
 
         try {
-            serverUtils.connect(serverInserted);
+            serverUtils.testConnection(serverInserted);
         }catch (ProcessingException ex){
             unavailableServerMessage.setOpacity(1.0d);
             return;

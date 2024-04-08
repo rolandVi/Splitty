@@ -74,7 +74,6 @@ public class NewExpenseCtrl {
 
     /**
      * Getter for the expense details
-     *
      * @return the expense details
      */
     public ExpenseDetailsDto getExpenseDetails() {
@@ -84,10 +83,9 @@ public class NewExpenseCtrl {
     /**
      * initializes the parent event of the expense
      * and initializes the author choice box
-     *
      * @param event - the parent event
      */
-    public void init(EventDetailsDto event) {
+    public void init(EventDetailsDto event){
         this.parentEvent = event;
         debtorsCheckBoxes = new ArrayList<>();
         this.expense = null;
@@ -126,11 +124,10 @@ public class NewExpenseCtrl {
 
     /**
      * Initializes the edition page
-     *
-     * @param event   parent event
+     * @param event parent event
      * @param expense the details of expense to edit
      */
-    public void initEdit(EventDetailsDto event, ExpenseDetailsDto expense) {
+    public void initEdit(EventDetailsDto event, ExpenseDetailsDto expense){
         this.parentEvent = event;
         debtorsCheckBoxes = new ArrayList<>();
         this.expense = expense;
@@ -176,7 +173,7 @@ public class NewExpenseCtrl {
     /**
      * Checks all participants as debtors
      */
-    public void splitEqually() {
+    public void splitEqually(){
         for (CheckBox c : debtorsCheckBoxes) {
             c.setSelected(true);
         }
@@ -186,20 +183,19 @@ public class NewExpenseCtrl {
     /**
      * creates new expense based on the input
      */
-    public void createExpense() {
+    public void  createExpense(){
         String title = titleField.getText();
         try {
             double amount = Double.parseDouble(amountField.getText());
             ParticipantNameDto author = authorBox.getValue();
-            for (int i = 0; i < debtorsCheckList.getItems().size(); i++) {
+            for (int i=0; i<debtorsCheckList.getItems().size(); i++) {
                 if (debtorsCheckList.getSelectionModel().isSelected(i)) {
                     debtors.add(debtorsCheckList.getItems().get(i));
                 }
             }
 
-            serverUtils.addExpense(parentEvent.getId(),
-                    new ExpenseCreationDto(title, amount, author.getId(),
-                            debtors, parentEvent.getId(), new Date()));
+            serverUtils.send("/app/expenses/create", new ExpenseCreationDto(title, amount,
+                    author.getId(), debtors, parentEvent.getId(), new Date()));
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(mainCtrl.lang.getString("add_expense_alert_header"));
             alert.setContentText(mainCtrl.lang.getString("add_expense_alert_content") +
@@ -207,8 +203,7 @@ public class NewExpenseCtrl {
             alert.showAndWait().ifPresent(response -> {
                 mainCtrl.showEventDetails(parentEvent.getId());
             });
-
-        } catch (NumberFormatException e) {
+        }catch (NumberFormatException e) {
             errorField.setText("Enter a valid amount");
             errorField.setOpacity(1);
         }
@@ -217,10 +212,10 @@ public class NewExpenseCtrl {
     /**
      * Control for the edit button
      */
-    public void editExpense() {
+    public void editExpense(){
         try {
             expense.setAuthor(authorBox.getValue());
-            for (int i = 0; i < debtorsCheckList.getItems().size(); i++) {
+            for (int i=0; i<debtorsCheckList.getItems().size(); i++){
                 if (debtorsCheckList.getSelectionModel().isSelected(i)) {
                     debtors.add(debtorsCheckList.getItems().get(i));
                 }
@@ -243,11 +238,10 @@ public class NewExpenseCtrl {
         }
 
     }
-
     /**
      * Control for the remove expense button
      */
-    public void remove() {
+    public void remove(){
         serverUtils.removeExpense(parentEvent.getId(), expense.getId());
         mainCtrl.showEventDetails(parentEvent.getId());
     }
@@ -293,45 +287,43 @@ public class NewExpenseCtrl {
         }
 
         @Override
-        protected void updateItem(ParticipantNameDto item, boolean empty) {
+        protected void updateItem(ParticipantNameDto item, boolean empty){
             super.updateItem(item, empty);
-            if (empty || item == null) {
+            if (empty || item==null) {
                 setText(null);
-            } else {
+            }else {
                 ((Text) ((HBox) getGraphic()).getChildren().get(0))
                         .setText(item.getFirstName() + " " + item.getLastName());
             }
         }
     }
 
-    private static class DebtorsListCell extends ListCell<ParticipantNameDto> {
+    private static class DebtorsListCell extends ListCell<ParticipantNameDto>{
         Set<ParticipantNameDto> debtors;
         List<CheckBox> debtorsCheckBoxes;
-
-        public DebtorsListCell(Set<ParticipantNameDto> debtors, List<CheckBox> debtorsCheckBoxes) {
+        public DebtorsListCell(Set<ParticipantNameDto> debtors, List<CheckBox> debtorsCheckBoxes){
             this.debtors = debtors;
             this.debtorsCheckBoxes = debtorsCheckBoxes;
             HBox hBox = new HBox();
             setGraphic(hBox);
         }
-
         @Override
-        protected void updateItem(ParticipantNameDto item, boolean empty) {
+        protected void updateItem(ParticipantNameDto item, boolean empty){
             super.updateItem(item, empty);
-            if (empty || item == null) {
+            if (empty || item==null) {
                 setText(null);
-            } else {
+            }else {
                 CheckBox checkBox = new CheckBox(item.getFirstName() + " " + item.getLastName());
                 debtorsCheckBoxes.add(checkBox);
 
                 checkBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-                    if (newValue) {
+                    if (newValue){
                         debtors.add(item);
-                    } else {
+                    }else {
                         debtors.remove(item);
                     }
                 });
-                if (((HBox) getGraphic()).getChildren().isEmpty()) {
+                if (((HBox) getGraphic()).getChildren().isEmpty()){
                     ((HBox) getGraphic()).getChildren()
                             .add(checkBox);
                 }
