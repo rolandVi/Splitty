@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.messaging.simp.stomp.StompSession;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,6 +30,9 @@ class ServerUtilsTest {
     Invocation.Builder builder;
 
     @Mock
+    StompSession stompSession;
+
+    @Mock
     Response response;
 
     // to be changed to pull from the config
@@ -39,7 +43,7 @@ class ServerUtilsTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        serverUtils = new ServerUtils(client);
+        serverUtils = new ServerUtils(client, stompSession);
 
         when(client.target(anyString())).thenReturn(webTarget);
         when(webTarget.path(anyString())).thenReturn(webTarget);

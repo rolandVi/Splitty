@@ -52,9 +52,10 @@ public class AdminRestoreCtrl {
      */
     public void restoreData() {
         String jsonData = textField.getText();
-        serverUtils.restoreData(jsonData);
         textField.clear();
         restoreMessage.setOpacity(1);
+        serverUtils.restoreData(jsonData);
+
     }
 
     /**

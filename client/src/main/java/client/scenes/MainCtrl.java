@@ -67,6 +67,10 @@ public class MainCtrl {
     private StatsCtrl statsCtrl;
     private Scene statistics;
 
+    private EventEmailCtrl eventEmailCtrl;
+    private Scene eventEmail;
+
+
     private ServerUtils serverUtils;
 
     /**
@@ -88,8 +92,12 @@ public class MainCtrl {
         this.newParticipantCtrl = sceneInputWrapper.newParticipant().getKey();
         this.participantCtrl = sceneInputWrapper.participantPage().getKey();
         this.newExpenseCtrl = sceneInputWrapper.newExpensePage().getKey();
+
         this.customTagCtrl = sceneInputWrapper.customTag().getKey();
         this.statsCtrl = sceneInputWrapper.stats().getKey();
+
+        this.eventEmailCtrl = sceneInputWrapper.eventEmailPage().getKey();
+
 
         this.startPage = new Scene(sceneInputWrapper.startPage().getValue());
         this.eventOverview = new Scene(sceneInputWrapper.eventOverview().getValue());
@@ -117,6 +125,7 @@ public class MainCtrl {
         this.participantItem = new Scene(sceneInputWrapper.participantItemPage().getValue());
         this.participantEdit = new Scene(sceneInputWrapper.participantPage().getValue());
 
+        this.eventEmail = new Scene(sceneInputWrapper.eventEmailPage().getValue());
         showStart();
 
         sceneInputWrapper.primaryStage().show();
@@ -138,6 +147,7 @@ public class MainCtrl {
         eventCreationCtrl.updateLanguage();
         paymentPageCtrl.updateLanguage();
         startPageCtrl.updateLanguage();
+        eventEmailCtrl.updateLanguage();
     }
 
     /**
@@ -210,8 +220,6 @@ public class MainCtrl {
     public void showEventDetails(long id) {
         eventCtrl.init(id);
         primaryStage.setTitle("Page");
-        eventCtrl.loadExpenseList();
-        eventCtrl.loadParticipants();
         primaryStage.setScene(eventPage);
     }
 
@@ -250,5 +258,23 @@ public class MainCtrl {
         primaryStage.setScene(statistics);
     }
 
+
+
+     /** Shows the scene to send emails with the invite code
+     * @param inviteCode the invite code of the event to send
+     */
+    public void showEventEmail(String inviteCode) {
+        primaryStage.setTitle("Send Email");
+        primaryStage.setScene(eventEmail);
+        eventEmailCtrl.refresh(inviteCode);
+    }
+
+    /**
+     * Show the most recent selected event
+     */
+    public void showEvent() {
+        primaryStage.setTitle("Event");
+        primaryStage.setScene(eventPage);
+    }
 
 }

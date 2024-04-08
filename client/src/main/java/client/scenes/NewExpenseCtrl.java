@@ -207,7 +207,6 @@ public class NewExpenseCtrl {
                 }
             }
 
-
             TagEntity tag = tags.getValue();
             TagDto newTag = null;
 
@@ -216,9 +215,8 @@ public class NewExpenseCtrl {
             }
 
 
-            serverUtils.addExpense(parentEvent.getId(),
-                    new ExpenseCreationDto(title, amount, author.getId(),
-                            debtors, parentEvent.getId(), new Date(), newTag));
+            serverUtils.send("/app/expenses/create", new ExpenseCreationDto(title, amount,
+                    author.getId(), debtors, parentEvent.getId(), new Date(), newTag));
             mainCtrl.showEventDetails(parentEvent.getId());
         }catch (NumberFormatException e){
             errorField.setText("Enter a valid amount");
@@ -334,16 +332,14 @@ public class NewExpenseCtrl {
         }
     }
 
-    // Define custom string converter to convert between TagEntity and String
+
     private static class TagStringConverter extends StringConverter<TagEntity> {
         @Override
         public String toString(TagEntity tag) {
             return tag == null ? null : tag.getTagType();
         }
-
         @Override
         public TagEntity fromString(String tagName) {
-            // This method does not need to be implemented for ComboBox
             return null;
         }
     }

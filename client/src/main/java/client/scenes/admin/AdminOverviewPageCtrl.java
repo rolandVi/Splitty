@@ -5,9 +5,13 @@ import client.ConfigManager;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import dto.view.EventOverviewDto;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
@@ -19,20 +23,16 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
-public class AdminOverviewPageCtrl {
+public class AdminOverviewPageCtrl implements Initializable {
     private final AdminMainCtrl adminMainCtrl;
     private final ServerUtils serverUtils;
     @FXML
@@ -50,9 +50,17 @@ public class AdminOverviewPageCtrl {
     private Image lastModifiedImg;
     private Image creationTimeImg;
 
+    private Image downloadImg;
+
+    private Image copyImg;
+
+    private Image deleteImg;
+
     private String currentOrder = "title";
 
     public ConfigManager config;
+
+    private ObservableList<EventOverviewDto> events;
 
 
     /**
@@ -65,7 +73,43 @@ public class AdminOverviewPageCtrl {
         this.adminMainCtrl = adminMainCtrl;
         this.serverUtils=serverUtils;
         this.config = new ConfigManager("client/src/main/resources/config.properties");
+    }
 
+    /**
+     * Initialize method
+     * @param location
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resources
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources){
+        List<EventOverviewDto> evs = serverUtils.getAllEvents();
+        events = FXCollections.observableList(evs);
+        serverUtils.registerForUpdates(q -> {
+            Platform.runLater(() -> {
+                events.add(q);
+                loadEvents();
+            });
+        });
+
+        deleteImg = new Image(Objects.requireNonNull(getClass()
+                .getResourceAsStream("/images/delete.png")),
+                20, 20, true, true);
+
+        copyImg = new Image(Objects.requireNonNull(getClass()
+                .getResourceAsStream("/images/copy.png")),
+                20, 20, true, true);
+
+        downloadImg = new Image(Objects.requireNonNull(getClass()
+                .getResourceAsStream("/images/download.png")),
+                20, 20, true, true);
+
+        loadOrder();
+        loadEvents();
     }
 
     /**
@@ -132,14 +176,29 @@ public class AdminOverviewPageCtrl {
     }
 
     /**
+     * Stops the thread
+     */
+    public void stop(){
+        serverUtils.stop();
+    }
+
+    /**
      * Loads the events and displays them on the page
      */
     public void loadEvents() {
         copyConfirmation.setOpacity(0);
-        List<EventOverviewDto> events = getEventOverviewDtos();
+
+        if (currentOrder.equals("title")) {
+            events.sort(Comparator.comparing(EventOverviewDto::getTitle));
+        } else if (currentOrder.equals("creation")) {
+            events.sort(Comparator.comparing(EventOverviewDto::getCreationDate));
+        } else if (currentOrder.equals("last modified")) {
+            events.sort(Comparator.comparing(EventOverviewDto::getLastModifiedDate).reversed());
+        } else {
+            throw new RuntimeException("Impossible ordering");
+        }
 
         Node[] nodes=new Node[events.size()];
-
 
         for (int i = 0; i < nodes.length; i++) {
             var loader=new FXMLLoader();
@@ -164,10 +223,16 @@ public class AdminOverviewPageCtrl {
             String lastModifiedTime = sdf.format(events.get(i).getLastModifiedDate());
             dateText.setText("Creation: " + creationTime + " Last Modified: " + lastModifiedTime);
 
-            Button inviteBtn=(Button) currentNode.lookup("#jsonBtn");
-            inviteBtn.setOnAction(e -> getJSON(event.getId()));
+            Button downloadBtn = (Button) currentNode.lookup("#downloadButton");
+            downloadBtn.setGraphic(new ImageView(downloadImg));
+            downloadBtn.setOnAction(e -> downloadJSON(event.getId()));
+
+            Button copyBtn=(Button) currentNode.lookup("#jsonBtn");
+            copyBtn.setGraphic(new ImageView(copyImg));
+            copyBtn.setOnAction(e -> getJSON(event.getId()));
 
             Button deleteBtn= (Button) currentNode.lookup("#deleteBtn");
+            deleteBtn.setGraphic(new ImageView(deleteImg));
             deleteBtn.setOnAction(e -> {
                 try {
                     deleteEvent(event.getId());
@@ -180,23 +245,46 @@ public class AdminOverviewPageCtrl {
         this.eventContainer.getChildren().addAll(nodes);
     }
 
-    private List<EventOverviewDto> getEventOverviewDtos() {
-        List<EventOverviewDto> events = serverUtils.getAllEvents();
+    /**
+     * Download the JSON
+     * @param id The id of the json
+     */
+    private void downloadJSON(long id) {
 
+        try {
+            URL url = new URL(config.getProperty("serverURL") + "/api/events/" + id);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
 
+            if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String inputLine = "";
+                while ((inputLine = br.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                br.close();
 
-        if (currentOrder.equals("title")){
-            events.sort(Comparator.comparing(EventOverviewDto::getTitle));
-        } else if (currentOrder.equals("creation")){
-            events.sort(Comparator.comparing(EventOverviewDto::getCreationDate));
-        } else if (currentOrder.equals("last modified")){
-            events.sort(Comparator.comparing(EventOverviewDto::getLastModifiedDate).reversed());
-        } else {
-            throw new RuntimeException("Impossible ordering");
+                String messageJSON = response.toString();
+
+                String fileName = "JSON_dump_id_#" + id + ".json";
+
+                String filePath = "client/src/main/resources/json/" + fileName;
+
+                try (FileWriter writer = new FileWriter(filePath)) {
+                    writer.write(messageJSON);
+                    copyConfirmation.setText("JSON OF EVENT #" + id + " DOWNLOADED!");
+                    copyConfirmation.setOpacity(1);
+                } catch (IOException e) {
+                    System.out.println("Error writing JSON file: " + e.getMessage());
+                }
+
+            } else {
+                System.out.println("Error dumping database: " + con.getResponseMessage());
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
-
-
-        return events;
     }
 
     /**
@@ -238,7 +326,9 @@ public class AdminOverviewPageCtrl {
                 in.close();
 
                 // Set the retrieved JSON content to clipboard
-                content.putString(response.toString());
+                String messageJSON = response.toString();
+
+                content.putString(messageJSON);
                 clipboard.setContent(content);
 
                 copyConfirmation.setText("JSON OF EVENT #" + id + " COPIED TO CLIPBOARD!");
@@ -256,6 +346,14 @@ public class AdminOverviewPageCtrl {
      * //todo: remove this when web sockets are implemented
      */
     public void refresh(){
+        copyConfirmation.setOpacity(0);
+
+        events.clear();
+
+        List<EventOverviewDto> updatedEvents = serverUtils.getAllEvents();
+
+        events.addAll(updatedEvents);
+
         loadEvents();
     }
 

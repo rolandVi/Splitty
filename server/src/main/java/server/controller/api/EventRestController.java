@@ -5,14 +5,19 @@ import dto.CreatorToTitleDto;
 import dto.ParticipantCreationDto;
 import dto.view.*;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.DeferredResult;
 import server.exception.FieldValidationException;
 import server.service.EventService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 @RestController
 @RequestMapping("/api/events")
@@ -62,8 +67,12 @@ public class EventRestController {
      */
     @PostMapping("/")
     public ResponseEntity<EventDetailsDto> createEvent(
-            @Valid @RequestBody CreatorToTitleDto creatorToTitleDto) {
-        return ResponseEntity.ok(this.eventService.createEvent(creatorToTitleDto));
+            @Valid @RequestBody CreatorToTitleDto creatorToTitleDto){
+        EventDetailsDto event = this.eventService.createEvent(creatorToTitleDto);
+        ModelMapper modelMapper = new ModelMapper();
+        listeners.forEach((k, l) -> l.accept(modelMapper.map(event, EventOverviewDto.class)));
+        return ResponseEntity.ok(event);
+
     }
 
     /**
@@ -121,6 +130,29 @@ public class EventRestController {
         return ResponseEntity.ok(this.eventService.getAllEvents());
     }
 
+    private Map<Object, Consumer<EventOverviewDto>> listeners = new HashMap<>();
+
+    /**
+     * Get updates
+     * @return all events
+     */
+    @GetMapping("/updates")
+    public DeferredResult<ResponseEntity<EventOverviewDto>> getUpdates(){
+        var noContent = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        var res = new DeferredResult<ResponseEntity<EventOverviewDto>>(5000L, noContent);
+
+        var key = new Object();
+        listeners.put(key, q -> {
+            res.setResult(ResponseEntity.ok(q));
+        });
+
+        res.onCompletion(() -> {
+            listeners.remove(key);
+        });
+
+        return res;
+    }
+
     /**
      * Endpoint to get the participants of an event
      *
@@ -144,6 +176,7 @@ public class EventRestController {
     (@Valid @RequestBody EventDetailsDto eventDetailsDto) {
         EventDetailsDto createdEvent = eventService.saveEvent(eventDetailsDto);
         return new ResponseEntity<>(createdEvent, HttpStatus.CREATED);
+
     }
 
     /**
@@ -189,7 +222,7 @@ public class EventRestController {
      */
     @GetMapping("/{id}/expenses")
     public ResponseEntity<List<ExpenseDetailsDto>>
-        getAllExpensesForEvent(@PathVariable("id") long id) {
+    getAllExpensesForEvent(@PathVariable("id") long id) {
         List<ExpenseDetailsDto> expenses = eventService.getAllExpensesForEvent(id);
         return ResponseEntity.ok(expenses);
     }
