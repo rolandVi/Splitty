@@ -7,7 +7,6 @@ import jakarta.ws.rs.ProcessingException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,15 +26,10 @@ public class StartPageCtrl implements MultiLanguages {
     @FXML
     public TextField serverField;
     @FXML
-    public Text errorMessage;
+    public Text unavailableServerMessage;
+
     @FXML
-    public TextField firstNameField;
-    @FXML
-    public TextField surNameField;
-    @FXML
-    public TextField emailField;
-    @FXML
-    public Label incorrectData;
+    public Text invalidServerMessage;
     @FXML
     public Button connectButton;
     @FXML
@@ -96,6 +90,8 @@ public class StartPageCtrl implements MultiLanguages {
             ResourceBundle lang = mainCtrl.lang;
             connectButton.setText(lang.getString("connect"));
             openAdminButton.setText(lang.getString("open_admin"));
+            unavailableServerMessage.setText(lang.getString("unavailable_server"));
+            invalidServerMessage.setText(lang.getString("invalid_server"));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -106,21 +102,20 @@ public class StartPageCtrl implements MultiLanguages {
      * The button press activates this
      */
     public void connect(){
-        this.errorMessage.setOpacity(0d);
+        this.invalidServerMessage.setOpacity(0d);
+        this.unavailableServerMessage.setOpacity(0d);
 
         String serverInserted = serverField.getText();
 
         if (!serverInserted.equals("http://localhost:8080")) {
-            errorMessage.setText("INCORRECT SERVER URL!");
-            errorMessage.setOpacity(1.0d);
+            invalidServerMessage.setOpacity(1.0d);
             return;
         }
 
         try {
             serverUtils.connect(serverInserted);
         }catch (ProcessingException ex){
-            errorMessage.setText("THE SERVER IS NOT AVAILABLE!");
-            errorMessage.setOpacity(1.0d);
+            unavailableServerMessage.setOpacity(1.0d);
             return;
         }
 

@@ -160,8 +160,8 @@ public class EventOverviewCtrl implements MultiLanguages {
         this.inviteCodeErrorMessage.setVisible(false);
         String inviteCode=this.inviteCodeTextField.getText().trim();
         if (inviteCode.isBlank()){
-           inviteCodeErrorMessage.setVisible(true);
-           return;
+            inviteCodeErrorMessage.setVisible(true);
+            return;
         }
         EventDetailsDto event=this.serverUtils.getEventDetailsByInviteCode(inviteCode);
         if (event.getId()==null){
