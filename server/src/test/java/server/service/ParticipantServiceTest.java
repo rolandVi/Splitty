@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import server.exception.ObjectNotFoundException;
+import server.repository.BankAccountRepository;
 import server.repository.ParticipantRepository;
 
 import java.util.Optional;
@@ -26,6 +27,8 @@ public class ParticipantServiceTest {
     @Mock
     private ModelMapper modelMapper;
 
+    @Mock
+    private BankAccountRepository bankAccountRepository;
     @Mock
     private ParticipantRepository participantRepository;
 
@@ -107,11 +110,13 @@ public class ParticipantServiceTest {
         // Arrange
         BankAccountEntity bankAccountEntity = new BankAccountEntity();
         BankAccountCreationDto bankAccountCreationDto = new BankAccountCreationDto();
+        bankAccountEntity.setHolder("nullnull");
         Long userId = 1L;
         ParticipantEntity mockParticipantEntity = new ParticipantEntity();
         BankAccountEntity mockBankAccountEntity = new BankAccountEntity();
         when(participantRepository.findById(userId)).thenReturn(Optional.of(mockParticipantEntity));
         when(bankAccountService.createBankAccount(bankAccountEntity)).thenReturn(mockBankAccountEntity);
+//        when(bankAccountRepository.save(newEntity)).thenReturn(mockBankAccountEntity);
         when(modelMapper.map(mockBankAccountEntity, BankAccountDto.class)).thenReturn(new BankAccountDto());
 
         // Act

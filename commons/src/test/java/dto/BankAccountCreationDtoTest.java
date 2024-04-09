@@ -10,7 +10,7 @@ class BankAccountCreationDtoTest {
 
     @BeforeEach
     void setUp() {
-        bankAccountCreationDto = new BankAccountCreationDto("IBAN12345", "John Doe", "BIC67890");
+        bankAccountCreationDto = new BankAccountCreationDto("IBAN12345", "BIC67890");
     }
 
     @Test
@@ -37,8 +37,8 @@ class BankAccountCreationDtoTest {
 
     @Test
     void testEquals() {
-        BankAccountCreationDto sameDto = new BankAccountCreationDto("IBAN12345", "John Doe", "BIC67890");
-        BankAccountCreationDto differentDto = new BankAccountCreationDto("DifferentIBAN", "Jane Smith", "DifferentBIC");
+        BankAccountCreationDto sameDto = new BankAccountCreationDto("IBAN12345", "BIC67890");
+        BankAccountCreationDto differentDto = new BankAccountCreationDto("DifferentIBAN", "DifferentBIC");
 
         // Test equality with itself
         Assertions.assertEquals(bankAccountCreationDto, bankAccountCreationDto);
@@ -58,7 +58,7 @@ class BankAccountCreationDtoTest {
 
     @Test
     void testHashCode() {
-        BankAccountCreationDto sameDto = new BankAccountCreationDto("IBAN12345", "John Doe", "BIC67890");
+        BankAccountCreationDto sameDto = new BankAccountCreationDto("IBAN12345", "BIC67890");
 
         // Hash code should be the same for objects with the same content
         Assertions.assertEquals(bankAccountCreationDto.hashCode(), sameDto.hashCode());

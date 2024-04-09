@@ -68,6 +68,7 @@ public class ParticipantService {
         // Checks if there is a user to link the bank account to
         ParticipantEntity currentUser = this.participantRepository.findById(userId)
                 .orElseThrow(()-> new ObjectNotFoundException("No such user found"));
+
         // Create bankAccountEntity
         BankAccountEntity entity;
         if (currentUser.getBankAccount() == null) entity = new BankAccountEntity();
@@ -75,9 +76,9 @@ public class ParticipantService {
         entity.setIban(bankAccountCreationDto.getIban());
         entity.setBic(bankAccountCreationDto.getBic());
         entity.setHolder(currentUser.getFirstName() + currentUser.getLastName());
+
         // Add bankAccountEntity to database using service
-        BankAccountEntity bankAccount = this.bankAccountService
-                .createBankAccount(entity);
+        BankAccountEntity bankAccount = this.bankAccountService.createBankAccount(entity);
 
         currentUser.setBankAccount(bankAccount);
         this.participantRepository.save(currentUser);
@@ -148,6 +149,12 @@ public class ParticipantService {
         this.participantRepository.deleteById(participantId);
     }
 
+    /**
+     * Edit the participant information
+     * @param participantNameDto the participant information
+     * @param userId the participant ID
+     * @return the saved participant info
+     */
     public ParticipantNameDto editParticipant(ParticipantNameDto participantNameDto, Long userId) {
         ParticipantEntity participantEntity = this.participantRepository.findById(userId)
                 .orElseThrow(() -> new ObjectNotFoundException("No such participant found"));

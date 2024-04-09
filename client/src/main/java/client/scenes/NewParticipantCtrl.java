@@ -47,6 +47,11 @@ public class NewParticipantCtrl {
         this.serverUtils = serverUtils;
     }
 
+    /**
+     * Creates a participant by sending an HTTP request.
+     * After retrieving the response, create a bank account by also using an HTTP request.
+     * Lastly show the event again.
+     */
     public void addParticipant(){
         HttpResponse<String> response = createUser().get();
         ObjectMapper o = new ObjectMapper();
@@ -109,6 +114,10 @@ public class NewParticipantCtrl {
         return serverUtils.createUser(url, requestBody, mainCtrl.getEventID());
     }
 
+    /**
+     * Retrieve the filled in data of the textFields and create a dto
+     * @return the dto to be sent as the request body
+     */
     private ParticipantCreationDto getUserEntity() {
         String firstName = firstNameField.getText();
         String surName = surNameField.getText();
@@ -122,21 +131,20 @@ public class NewParticipantCtrl {
                 .setEmail(email);
     }
 
+    /**
+     * Create a bankAccount by sending an HTTP request to the server
+     * @param userId the participant/user ID of which the bank account belongs to
+     * @return HTTP response
+     */
     public Response createBankAccount(long userId) {
         String url = mainCtrl.configManager.getProperty("serverURL");
-        // Prepare user data from text fields
         BankAccountCreationDto bank = getBankEntity();
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        String requestBody = null;
-//        try {
-//            requestBody = objectMapper.writeValueAsString(bank);
-//        } catch (JsonProcessingException e) {
-//            throw new RuntimeException(e);
-//        }
-
         return serverUtils.createBankAccount(userId, bank, url);
     }
-
+    /**
+     * Retrieve the filled in data of the textFields and create a dto
+     * @return the dto to be sent as the request body
+     */
     public BankAccountCreationDto getBankEntity() {
         String iban = ibanField.getText();
         if (iban.isEmpty()) iban = "NA";

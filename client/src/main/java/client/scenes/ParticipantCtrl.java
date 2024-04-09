@@ -98,12 +98,19 @@ public class ParticipantCtrl implements MultiLanguages{
         mainCtrl.showEventDetails(eventId);
     }
 
+    /**
+     * Update the participant of the event using method in ServerUtils
+     */
     public void updateParticipant() {
         String url = mainCtrl.configManager.getProperty("serverURL");
         serverUtils.editParticipant(getParticipantEntity(), url);
         mainCtrl.showEventDetails(eventId);
     }
 
+    /**
+     * Retrieve the filled in data of the textFields and create a dto
+     * @return the dto to be sent as the request body
+     */
     public ParticipantNameDto getParticipantEntity() {
         String firstName = firstNameTextField.getText();
         String lastName = lastNameTextField.getText();
@@ -111,11 +118,19 @@ public class ParticipantCtrl implements MultiLanguages{
         return new ParticipantNameDto(participantId, firstName, lastName, email);
     }
 
+    /**
+     * Update the bank info of the participant
+     */
     public void updateBank() {
         String url = mainCtrl.configManager.getProperty("serverURL");
         serverUtils.editBankAccount(participantId, getBankEntity(), url);
         mainCtrl.showEventDetails(eventId);
     }
+
+    /**
+     * Retrieve the filled in data of the textFields and create a dto
+     * @return the dto to be sent as the request body
+     */
     private BankAccountCreationDto getBankEntity() {
         String iban = ibanTextField.getText();
         String bic = bicTextField.getText();
@@ -124,7 +139,9 @@ public class ParticipantCtrl implements MultiLanguages{
         result.setBic(bic);
         return result;
     }
-
+    /**
+     * Updates the language of the scene using the resource bundle
+     */
     @Override
     public void updateLanguage() {
         try {

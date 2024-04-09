@@ -276,7 +276,8 @@ public class ServerUtils {
     /**
      * Creates the user
      * @param url The url
-     * @param requestBody The request body
+     * @param requestBody The request body (ParticipantCreationDto)
+     * @param eventID The id of the event where the participant belongs to
      * @return The response
      */
     public Optional<HttpResponse<String>> createUser(String url, String requestBody, long eventID) {
@@ -409,6 +410,11 @@ public class ServerUtils {
                 .get(EventDetailsDto.class);
     }
 
+    /**
+     * Edits the information of participant on the server using HTTP request
+     * @param participantNameDto the new information of the participant
+     * @param url the url of the server
+     */
     public void editParticipant(ParticipantNameDto participantNameDto, String url) {
         // Create HTTP request body
         ObjectMapper objectMapper = new ObjectMapper();
