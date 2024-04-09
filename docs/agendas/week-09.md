@@ -22,13 +22,13 @@
 
 - Talking Points: (Brainstorm/ decision-making/ discuss)
     - What has everyone worked on last week? (5 min)
-    - Are we on track? Are we finishig all of the basic requirements? (10 min)
+    - Are we on track? Are we finishig all of the basic requirements? If not, which issues have priority? (15 min)
     - Discuss the languages feature (8 min)
     - Discuss the presentation, how and when will we practice? (10 min)
-    - Plans for next week (5 min)
+    - Plans for the last week  (5 min)
 
 - Summarize action points: Who , what , when? (8 min)
-- Feedback round: What went well and what can be improved next time? (2 min)
+- Feedback round: What went well and what can be improved? (2 min)
 
 
 - Question round: Does anyone have anything to add before the meeting closes? (2 min)
