@@ -85,6 +85,7 @@ public class Main extends Application {
                         eventOverview, paymentPage, eventPage,
                         eventCreationPage, eventItemPage, newParticipant,
                         participantItem, participant, newExpense, eventEmail), serverUtils);
+
     }
 
     /**
@@ -104,6 +105,11 @@ public class Main extends Application {
 
         adminMainCtrl.initialize(adminOverviewStage, adminLoginPage,
                 adminOverviewPage, adminRestorePage);
+
+        adminOverviewStage.setOnCloseRequest(e -> {
+            adminOverviewPage.getKey().stop();
+        });
+
     }
 
 }
