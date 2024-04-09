@@ -64,6 +64,18 @@ public class NewParticipantCtrl {
         }
         createBankAccount(participantId);
         showEvent();
+        clearTextFields();
+    }
+
+    /**
+     * Clear all textFields
+     */
+    private void clearTextFields() {
+        firstNameField.setText("");
+        surNameField.setText("");
+        emailField.setText("");
+        ibanField.setText("");
+        bicField.setText("");
     }
 
     /**
@@ -71,6 +83,7 @@ public class NewParticipantCtrl {
      */
     public void returnToOverview(){
         mainCtrl.showOverview();
+        clearTextFields();
     }
 
     /**
@@ -94,7 +107,7 @@ public class NewParticipantCtrl {
     public void showEvent(){
         mainCtrl.showEventDetails(mainCtrl.getEventID());
     }
-//TODO : We really need to review this class
+
     /**
      * Creates HTTP request to the server using the contents of text fields as user info
      * @return HTTP response from the server
