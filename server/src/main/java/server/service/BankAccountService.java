@@ -74,7 +74,7 @@ public class BankAccountService {
      * @param bankAccountEntity the bank account information
      * @return BankAccountDto + id
      */
-    public BankAccountEntity createBankAccount(BankAccountCreationDto bankAccountEntity) {
+    public BankAccountEntity createBankAccount(BankAccountEntity bankAccountEntity) {
         if (this.ibanExists(bankAccountEntity.getIban())){
             throw new FieldValidationException("Iban should be unique");
         }
@@ -102,8 +102,7 @@ public class BankAccountService {
     public BankAccountEntity editBankAccount(
             BankAccountEntity bankAccount,
             BankAccountCreationDto bankAccountCreationDto) {
-        if (!bankAccount.getIban().equals(bankAccountCreationDto.getIban())
-                && this.bankAccountRepository.existsByIban(bankAccountCreationDto.getIban())){
+        if (this.bankAccountRepository.existsByIban(bankAccountCreationDto.getIban())){
             throw new FieldValidationException("Iban should be unique");
         }
 

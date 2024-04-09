@@ -83,4 +83,18 @@ public class ParticipantRestController {
         return ResponseEntity.ok(this.participantService
                 .editBankAccount(bankAccountCreationDto, userId));
     }
+
+    /**
+     * Edits bank details
+     * @param userId the user id
+     * @param participantNameDto the new bank info
+     * @return the new bank account
+     */
+    @PatchMapping("/{userId}")
+    public ResponseEntity<ParticipantNameDto> editParticipant(
+            @PathVariable(name = "userId") Long userId,
+            @Valid @RequestBody ParticipantNameDto participantNameDto){
+        return ResponseEntity.ok(this.participantService
+                .editParticipant(participantNameDto, userId));
+    }
 }

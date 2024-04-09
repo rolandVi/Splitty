@@ -65,11 +65,20 @@ public class ParticipantService {
      */
     public BankAccountDto createBankAccount(BankAccountCreationDto bankAccountCreationDto,
                                             Long userId) {
-        BankAccountEntity bankAccount=this.bankAccountService
-                .createBankAccount(bankAccountCreationDto);
-        ParticipantEntity currentUser=this.participantRepository.findById(userId)
+        // Checks if there is a user to link the bank account to
+        ParticipantEntity currentUser = this.participantRepository.findById(userId)
                 .orElseThrow(()-> new ObjectNotFoundException("No such user found"));
-        bankAccount.setHolder(currentUser.getFirstName() + currentUser.getLastName());
+        // Create bankAccountEntity
+        BankAccountEntity entity;
+        if (currentUser.getBankAccount() == null) entity = new BankAccountEntity();
+        else entity = currentUser.getBankAccount();
+        entity.setIban(bankAccountCreationDto.getIban());
+        entity.setBic(bankAccountCreationDto.getBic());
+        entity.setHolder(currentUser.getFirstName() + currentUser.getLastName());
+        // Add bankAccountEntity to database using service
+        BankAccountEntity bankAccount = this.bankAccountService
+                .createBankAccount(entity);
+
         currentUser.setBankAccount(bankAccount);
         this.participantRepository.save(currentUser);
         return this.modelMapper.map(bankAccount, BankAccountDto.class);
@@ -100,6 +109,11 @@ public class ParticipantService {
             BankAccountCreationDto bankAccountCreationDto, Long userId) {
         ParticipantEntity user=this.participantRepository.findById(userId)
                 .orElseThrow(() -> new ObjectNotFoundException("No such user found"));
+
+        if (user.getBankAccount() == null) {
+            user.setBankAccount(new BankAccountEntity());
+            user.getBankAccount().setHolder(user.getFirstName()+user.getLastName());
+        }
         BankAccountEntity bankAccount=this.bankAccountService
                 .editBankAccount(user.getBankAccount(), bankAccountCreationDto);
         user.setBankAccount(bankAccount);
@@ -132,5 +146,17 @@ public class ParticipantService {
     @Transactional
     public void deleteParticipant(Long participantId) {
         this.participantRepository.deleteById(participantId);
+    }
+
+    public ParticipantNameDto editParticipant(ParticipantNameDto participantNameDto, Long userId) {
+        ParticipantEntity participantEntity = this.participantRepository.findById(userId)
+                .orElseThrow(() -> new ObjectNotFoundException("No such participant found"));
+
+        participantEntity.setFirstName(participantNameDto.getFirstName());
+        participantEntity.setLastName(participantNameDto.getLastName());
+        participantEntity.setEmail(participantNameDto.getEmail());
+
+        participantEntity = this.participantRepository.save(participantEntity);
+        return this.modelMapper.map(participantEntity, ParticipantNameDto.class);
     }
 }

@@ -105,12 +105,13 @@ public class ParticipantServiceTest {
     @Test
     public void testCreateBankAccount_ValidData_CreatesBankAccountSuccessfully() {
         // Arrange
+        BankAccountEntity bankAccountEntity = new BankAccountEntity();
         BankAccountCreationDto bankAccountCreationDto = new BankAccountCreationDto();
         Long userId = 1L;
         ParticipantEntity mockParticipantEntity = new ParticipantEntity();
         BankAccountEntity mockBankAccountEntity = new BankAccountEntity();
         when(participantRepository.findById(userId)).thenReturn(Optional.of(mockParticipantEntity));
-        when(bankAccountService.createBankAccount(bankAccountCreationDto)).thenReturn(mockBankAccountEntity);
+        when(bankAccountService.createBankAccount(bankAccountEntity)).thenReturn(mockBankAccountEntity);
         when(modelMapper.map(mockBankAccountEntity, BankAccountDto.class)).thenReturn(new BankAccountDto());
 
         // Act
@@ -119,7 +120,7 @@ public class ParticipantServiceTest {
         // Assert
         assertNotNull(result);
         verify(participantRepository, times(1)).findById(userId);
-        verify(bankAccountService, times(1)).createBankAccount(bankAccountCreationDto);
+        verify(bankAccountService, times(1)).createBankAccount(bankAccountEntity);
         verify(participantRepository, times(1)).save(mockParticipantEntity);
     }
 

@@ -82,7 +82,7 @@ class ServerUtilsTest {
 
     @Test
     void getParticipantDetails() {
-        assertDoesNotThrow(() -> serverUtils.getParticipantDetails(123L));
+        assertDoesNotThrow(() -> serverUtils.getParticipantDetails(123L, 1));
     }
 
     @Test

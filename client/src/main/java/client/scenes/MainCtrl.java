@@ -246,4 +246,8 @@ public class MainCtrl {
         primaryStage.setTitle("Event");
         primaryStage.setScene(eventPage);
     }
+
+    protected long getEventID(){
+        return eventCtrl.getEventDetailsDto().getId();
+    }
 }
