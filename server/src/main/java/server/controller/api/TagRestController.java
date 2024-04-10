@@ -2,7 +2,6 @@ package server.controller.api;
 
 import commons.TagEntity;
 import dto.view.TagDto;
-import jakarta.annotation.PostConstruct;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +34,11 @@ public class TagRestController {
         return new ResponseEntity<>(tags, HttpStatus.OK);
     }
 
+    /**
+     * creates a new tag
+     * @param request a tagdto with all info
+     * @return response
+     */
     @PostMapping("/newtag")
     public ResponseEntity<String> createNewTag(@RequestBody TagDto request) {
         String tagName = request.getTagType(); // Assuming tagType holds the tag name
@@ -48,6 +52,12 @@ public class TagRestController {
         }
     }
 
+    /**
+     * edits an existing tag
+     * @param id id of the tag
+     * @param request tagdto
+     * @return response
+     */
     @PutMapping("/{id}")
     public ResponseEntity<String> updateTag(@PathVariable Long id, @RequestBody TagDto request) {
         TagEntity existingTag = tagService.findById(id);
@@ -61,6 +71,11 @@ public class TagRestController {
         }
     }
 
+    /**
+     * deletes tag on id
+     * @param id id
+     * @return response
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteTag(@PathVariable Long id) {
         boolean success = tagService.deleteTagById(id);

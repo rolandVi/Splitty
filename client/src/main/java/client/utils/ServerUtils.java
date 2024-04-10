@@ -506,6 +506,10 @@ public class ServerUtils {
         }
     }
 
+    /**
+     * Creates a new tag
+     * @param tagDto tagdto
+     */
     public void createTag(TagDto tagDto) {
         client.target(SERVER)
                 .path("/api/tags/newtag")
@@ -582,20 +586,33 @@ public class ServerUtils {
 
     }
 
+    /**
+     * updates a tag
+     * @param tagEntity tagEntity
+     */
     public void updateTag(TagEntity tagEntity) {
         client.target(SERVER)
-                .path("/api/tags/" + tagEntity.getId()) // Assuming the endpoint for updating tags is "/api/tags/update/{id}"
+                .path("/api/tags/" + tagEntity.getId())
                 .request(MediaType.APPLICATION_JSON)
                 .put(Entity.entity(tagEntity, MediaType.APPLICATION_JSON));
     }
 
+    /**
+     * Deletes a tag
+     * @param tagId id of the tag
+     */
     public void deleteTag(Long tagId) {
         client.target(SERVER)
-                .path("/api/tags/" + tagId) // Assuming the endpoint for deleting tags is "/api/tags/delete/{id}"
+                .path("/api/tags/" + tagId)
                 .request(MediaType.APPLICATION_JSON)
                 .delete();
     }
 
+    /**
+     * Gets the tagentkty from the type
+     * @param tagType the tagtype
+     * @return the corresponding tagentity
+     */
     public TagEntity getTagByTagType(String tagType) {
         List<TagEntity> allTags = getAllTags();
         for (TagEntity tag : allTags) {

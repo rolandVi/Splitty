@@ -11,6 +11,11 @@ public class CustomTagMainCtrl {
     private Scene customTagScene;
     private CustomTagCtrl customTagCtrl;
 
+    /**
+     * the initialization of the scene of customtag
+     * @param customTagStage the stage for custom tags
+     * @param customTagScene the scene for custom tags
+     */
     public void initialize(Stage customTagStage, Pair<CustomTagCtrl, Parent> customTagScene){
         this.customTagStage =customTagStage;
         this.customTagScene = new Scene(customTagScene.getValue());
@@ -19,6 +24,9 @@ public class CustomTagMainCtrl {
         customTagStage.show();
     }
 
+    /**
+     * shows the custom tag scene
+     */
     public void showCustomTag(){
         customTagStage.setTitle("custom tag");
         customTagStage.setScene(customTagScene);

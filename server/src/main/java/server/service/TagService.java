@@ -1,18 +1,13 @@
 package server.service;
 
-import commons.EventEntity;
+
 import commons.TagEntity;
-import dto.view.EventTitleDto;
-import dto.view.TagDto;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import server.exception.ObjectNotFoundException;
 import server.repository.TagRepository;
-
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -31,10 +26,21 @@ public class TagService {
         this.modelMapper = modelMapper;
     }
 
+    /**
+     * finds tags by tagtypes
+     * @param tagType the tagtype of a tag
+     * @return true/false based on the existance of the tag
+     */
     public boolean tagExists(String tagType) {
         return tagRepository.findByTagType(tagType) != null;
     }
 
+    /**
+     * adds a tag to the database
+     * @param tagType tagtype
+     * @param hex hex
+     * @return true or false based on if it was successful
+     */
     public boolean addTag(String tagType, String hex) {
         if (!tagExists(tagType)) {
             TagEntity tagEntity = new TagEntity(tagType, hex);
@@ -52,6 +58,11 @@ public class TagService {
         return tagRepository.findAll();
     }
 
+    /**
+     * finds tags by id
+     * @param id id
+     * @return the tagentity
+     */
     public TagEntity findById(Long id){
         return this.tagRepository.findById(id)
                 .orElseThrow(()-> new ObjectNotFoundException("No such tag found"));
@@ -68,6 +79,12 @@ public class TagService {
         addTag("travel", "#008000");
     }
 
+    /**
+     * updates a tag
+     * @param tagId the id
+     * @param newTagType the new value for the tagtype
+     * @param newHexValue the new hex
+     */
     @Transactional
     public void updateTag(Long tagId, String newTagType, String newHexValue) {
         tagRepository.findById(tagId).ifPresent(tag -> {
@@ -77,6 +94,11 @@ public class TagService {
         });
     }
 
+    /**
+     * deletes tags on their id
+     * @param tagId the tag id
+     * @return true or false based on succession
+     */
     @Transactional
     public boolean deleteTagById(Long tagId) {
         if (tagRepository.existsById(tagId)) {

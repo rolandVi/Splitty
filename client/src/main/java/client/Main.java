@@ -22,7 +22,6 @@ import client.scenes.admin.AdminOverviewPageCtrl;
 import client.scenes.admin.AdminRestoreCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Injector;
-import dto.view.TagDto;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -118,6 +117,9 @@ public class Main extends Application {
 
     }
 
+    /**
+     * Opens a popup that lets the user create custom tags
+     */
     public static void openCustomtag(){
         Stage customTagStage = new Stage();
         var customTagMainCtrl = INJECTOR.getInstance(CustomTagMainCtrl.class);

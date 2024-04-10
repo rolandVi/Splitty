@@ -43,7 +43,8 @@ public class ExpenseCreationDto {
      * @param tag           the tag of the event
      */
     public ExpenseCreationDto(String title, Double money, Long authorId,
-                              Set<ParticipantNameDto> debtors, Long parentEventId, Date date, TagDto tag){
+                              Set<ParticipantNameDto> debtors,
+                              Long parentEventId, Date date, TagDto tag){
         this.title = title;
         this.money = money;
         this.authorId = authorId;
@@ -69,10 +70,18 @@ public class ExpenseCreationDto {
         this.title = title;
     }
 
+    /**
+     * getter for tagDto
+     * @return a tagDTO
+     */
     public TagDto getTag() {
         return tag;
     }
 
+    /**
+     * setter for the tagDto
+     * @param tag tagDto
+     */
     public void setTag(TagDto tag) {
         this.tag = tag;
     }

@@ -3,7 +3,6 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.TagEntity;
-import dto.view.EventOverviewDto;
 import dto.view.TagDto;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,8 +13,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-
+import javafx.scene.text.Text;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -36,15 +34,27 @@ public class CustomTagCtrl implements Initializable {
     public FlowPane flowPane;
     @FXML
     public ColorPicker colorPick;
+    @FXML
+    public Text errorMessage;
     private String tagTypeSave;
 
+    /**
+     * Injected constructor
+     * @param mainCtrl mainctrl
+     * @param serverUtils serverUtils
+     * @param newExpenseCtrl newExpenseCtrl
+     */
     @Inject
-    public CustomTagCtrl(MainCtrl mainCtrl, ServerUtils serverUtils, NewExpenseCtrl newExpenseCtrl) {
+    public CustomTagCtrl(MainCtrl mainCtrl, ServerUtils serverUtils,
+                         NewExpenseCtrl newExpenseCtrl) {
         this.mainCtrl = mainCtrl;
         this.serverUtils = serverUtils;
         this.newExpenseCtrl = newExpenseCtrl;
     }
 
+    /**
+     * Lets the user create a custom tag
+     */
     public void createCustomTag() {
         String tagType = tagName.getText();
         String hex = colorPick.getValue().toString();
@@ -56,6 +66,9 @@ public class CustomTagCtrl implements Initializable {
         newExpenseCtrl.refreshTags();
     }
 
+    /**
+     * Loads all the tags from the database into the flowpane
+     */
     public void loadtags() {
         List<TagEntity> tagDtos = this.serverUtils.getAllTags();
         Node[] nodes = new Node[tagDtos.size()];
@@ -81,6 +94,10 @@ public class CustomTagCtrl implements Initializable {
         this.flowPane.getChildren().addAll(nodes);
     }
 
+    /**
+     * Handles some functionality in the flowpane
+     * @param tag the selected tag
+     */
     private void handleTagButtonClick(TagEntity tag) {
         // Set tag name to the text field
         tagName.setText(tag.getTagType());
@@ -89,11 +106,24 @@ public class CustomTagCtrl implements Initializable {
         colorPick.setValue(Color.web(tag.getHexValue()));
     }
 
+    /**
+     *
+     * @param location
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resources
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadtags(); // Load events when the scene is opened
     }
 
+    /**
+     * Deletes a tag
+     */
     public void deleteTag() {
         String tagType = tagName.getText();
 
@@ -110,6 +140,9 @@ public class CustomTagCtrl implements Initializable {
         newExpenseCtrl.refreshTags();
     }
 
+    /**
+     * edits a tag
+     */
     public void editTag() {
         String oldTagType = tagTypeSave; // Get the old tag type
         String newTagType = tagName.getText(); // Get the new tag type

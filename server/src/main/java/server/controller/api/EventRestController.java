@@ -101,7 +101,7 @@ public class EventRestController {
      */
     @PatchMapping("/{id}")
     public ResponseEntity<EventTitleDto> updateEventTitleById(@PathVariable(name = "id") long id,
-                                                              @Valid @RequestBody EventTitleDto eventTitle) {
+        @Valid @RequestBody EventTitleDto eventTitle) {
         return ResponseEntity.ok(this.eventService.updateById(id, eventTitle));
     }
 
@@ -222,7 +222,7 @@ public class EventRestController {
      */
     @GetMapping("/{id}/expenses")
     public ResponseEntity<List<ExpenseDetailsDto>>
-    getAllExpensesForEvent(@PathVariable("id") long id) {
+        getAllExpensesForEvent(@PathVariable("id") long id) {
         List<ExpenseDetailsDto> expenses = eventService.getAllExpensesForEvent(id);
         return ResponseEntity.ok(expenses);
     }

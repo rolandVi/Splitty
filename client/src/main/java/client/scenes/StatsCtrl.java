@@ -21,6 +21,11 @@ public class StatsCtrl {
     @FXML
     public Button backBtn;
 
+    /**
+     * Injected constructor
+     * @param mainCtrl mainctrl
+     * @param serverUtils serverutils
+     */
     @Inject
     public StatsCtrl(MainCtrl mainCtrl, ServerUtils serverUtils) {
         this.mainCtrl = mainCtrl;
@@ -28,7 +33,12 @@ public class StatsCtrl {
 
     }
 
+    /**
+     * returns to overview
+     */
     public void retToEventOverview(){
+        //todo:
+        // make it such that it returns to its event and not the general overview
         mainCtrl.showOverview();
     }
 

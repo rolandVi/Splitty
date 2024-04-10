@@ -2,7 +2,6 @@ package server.service;
 
 import commons.ExpenseEntity;
 import commons.ParticipantEntity;
-import commons.TagEntity;
 import dto.ExpenseCreationDto;
 import dto.view.ExpenseDetailsDto;
 import dto.view.ParticipantNameDto;

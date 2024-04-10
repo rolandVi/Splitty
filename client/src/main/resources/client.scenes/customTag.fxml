@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="384.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CustomTagCtrl">
    <children>
@@ -18,10 +19,11 @@
             <HBox prefHeight="33.0" prefWidth="142.0" spacing="11.0">
                <children>
                   <Button fx:id="addCustomTagBtn" mnemonicParsing="false" onAction="#createCustomTag" text="OK" />
-                  <Button fx:id="editTag" mnemonicParsing="false" text="Edit" onAction="#editTag"/>
-                  <Button fx:id="deleteSelectTag" mnemonicParsing="false" text="Delete" onAction="#deleteTag"/>
+                  <Button fx:id="editTag" mnemonicParsing="false" onAction="#editTag" text="Edit" />
+                  <Button fx:id="deleteSelectTag" mnemonicParsing="false" onAction="#deleteTag" text="Delete" />
                </children>
             </HBox>
+            <Text fx:id="errorMessage" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
          </children>
       </VBox>
    </children>

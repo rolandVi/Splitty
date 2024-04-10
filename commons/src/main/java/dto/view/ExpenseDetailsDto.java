@@ -124,10 +124,18 @@ public class ExpenseDetailsDto {
         return this;
     }
 
+    /**
+     * getter for the tagDto
+     * @return tag
+     */
     public TagDto getTag() {
         return tag;
     }
 
+    /**
+     * setter for the tag
+     * @param tag tag
+     */
     public void setTag(TagDto tag) {
         this.tag = tag;
     }

@@ -117,6 +117,9 @@ public class EventCtrl implements MultiLanguages{
         mainCtrl.showOverview();
     }
 
+    /**
+     * shows the statistics scene
+     */
     public void showStats(){
         mainCtrl.showStats();
     }
