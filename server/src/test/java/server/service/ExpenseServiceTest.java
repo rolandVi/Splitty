@@ -200,7 +200,8 @@ class ExpenseServiceTest {
     @Test
     void createExpense_ReturnsCreatedExpenseDto() {
         // Arrange
-        ExpenseCreationDto expenseDto = new ExpenseCreationDto("Test", 10.0, 1L, new HashSet<>(Set.of(new ParticipantNameDto())), 1L, new Date());
+        ExpenseCreationDto expenseDto = new ExpenseCreationDto("Test", 10.0,
+                1L, new HashSet<>(Set.of(new ParticipantNameDto())), 1L, new Date());
         ExpenseEntity expenseEntity = new ExpenseEntity();
         when(expenseRepository.save(any())).thenReturn(expenseEntity);
 
