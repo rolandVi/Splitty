@@ -75,9 +75,6 @@ public class BankAccountService {
      * @return BankAccountDto + id
      */
     public BankAccountEntity createBankAccount(BankAccountEntity bankAccountEntity) {
-        if (this.ibanExists(bankAccountEntity.getIban())){
-            throw new FieldValidationException("Iban should be unique");
-        }
         BankAccountEntity newEntity = this.modelMapper
                 .map(bankAccountEntity, BankAccountEntity.class);
         BankAccountEntity result = this.bankAccountRepository.save(newEntity);
@@ -102,9 +99,6 @@ public class BankAccountService {
     public BankAccountEntity editBankAccount(
             BankAccountEntity bankAccount,
             BankAccountCreationDto bankAccountCreationDto) {
-        if (this.bankAccountRepository.existsByIban(bankAccountCreationDto.getIban())){
-            throw new FieldValidationException("Iban should be unique");
-        }
 
         bankAccount.setBic(bankAccountCreationDto.getBic());
         bankAccount.setIban(bankAccountCreationDto.getIban());

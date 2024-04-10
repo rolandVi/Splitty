@@ -160,9 +160,7 @@ public class NewParticipantCtrl {
      */
     public BankAccountCreationDto getBankEntity() {
         String iban = ibanField.getText();
-        if (iban.isEmpty()) iban = "NA";
         String bic = bicField.getText();
-        if (bic.isEmpty()) bic = "NA";
         return new BankAccountCreationDto()
                 .setIban(iban)
                 .setBic(bic);

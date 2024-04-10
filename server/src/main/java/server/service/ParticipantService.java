@@ -112,6 +112,7 @@ public class ParticipantService {
                 .orElseThrow(() -> new ObjectNotFoundException("No such user found"));
 
         if (user.getBankAccount() == null) {
+            System.out.println("nOT NULL");
             user.setBankAccount(new BankAccountEntity());
             user.getBankAccount().setHolder(user.getFirstName()+user.getLastName());
         }
