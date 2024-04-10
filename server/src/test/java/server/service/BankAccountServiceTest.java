@@ -145,18 +145,6 @@ class BankAccountServiceTest {
         assertEquals(savedEntity, result);
     }
 
-    // Test for createBankAccount method when IBAN exists
-    @Test
-    public void testCreateBankAccount_DuplicateIBAN_ThrowsFieldValidationException() {
-        // Arrange
-        BankAccountEntity bankAccountEntity = new BankAccountEntity();
-        bankAccountEntity.setIban("existingIBAN");
-        when(bankAccountRepository.existsByIban(any())).thenReturn(true);
-
-        // Act & Assert
-        assertThrows(FieldValidationException.class, () -> bankAccountService.createBankAccount(bankAccountEntity));
-    }
-
     // Test for editBankAccount method
     @Test
     public void testEditBankAccount_ValidInput_ReturnsEditedBankAccount() {

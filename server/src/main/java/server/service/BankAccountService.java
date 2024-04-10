@@ -6,7 +6,6 @@ import dto.view.BankAccountDto;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import server.exception.FieldValidationException;
 import server.exception.ObjectNotFoundException;
 import server.repository.BankAccountRepository;
 
