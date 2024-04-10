@@ -39,5 +39,9 @@ dependencies {
 	implementation 'org.openjfx:javafx-fxml:21.0.2'
 
 	testImplementation 'org.testfx:testfx-junit5:4.0.16-alpha'
+	testImplementation 'org.testfx:testfx-core:4.0.16-alpha'
+
+	testImplementation 'org.mockito:mockito-core:5.11.0'
+	testImplementation 'org.mockito:mockito-inline:5.2.0'
 
 }
