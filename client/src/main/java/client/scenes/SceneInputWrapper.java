@@ -15,7 +15,6 @@ public record SceneInputWrapper(Stage primaryStage, Pair<StartPageCtrl, Parent> 
                                 Pair<ParticipantCtrl, Parent> participantPage,
                                 Pair<NewExpenseCtrl, Parent> newExpensePage,
 
-                                Pair<CustomTagCtrl, Parent> customTag,
                                 Pair<StatsCtrl, Parent> stats,
 
                                 Pair<EventEmailCtrl, Parent> eventEmailPage) {

@@ -1,7 +1,12 @@
 package server.service;
 
+import commons.EventEntity;
 import commons.TagEntity;
+import dto.view.EventTitleDto;
+import dto.view.TagDto;
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import server.exception.ObjectNotFoundException;
@@ -61,6 +66,24 @@ public class TagService {
         addTag("food", "#ff0000");
         addTag("entrance fees", "#0000ff");
         addTag("travel", "#008000");
+    }
+
+    @Transactional
+    public void updateTag(Long tagId, String newTagType, String newHexValue) {
+        tagRepository.findById(tagId).ifPresent(tag -> {
+            tag.setTagType(newTagType);
+            tag.setHexValue(newHexValue);
+            tagRepository.save(tag);
+        });
+    }
+
+    @Transactional
+    public boolean deleteTagById(Long tagId) {
+        if (tagRepository.existsById(tagId)) {
+            tagRepository.deleteById(tagId);
+            return true;
+        }
+        return false;
     }
 
 }

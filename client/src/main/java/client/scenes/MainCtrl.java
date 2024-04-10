@@ -93,7 +93,7 @@ public class MainCtrl {
         this.participantCtrl = sceneInputWrapper.participantPage().getKey();
         this.newExpenseCtrl = sceneInputWrapper.newExpensePage().getKey();
 
-        this.customTagCtrl = sceneInputWrapper.customTag().getKey();
+
         this.statsCtrl = sceneInputWrapper.stats().getKey();
 
         this.eventEmailCtrl = sceneInputWrapper.eventEmailPage().getKey();
@@ -109,7 +109,7 @@ public class MainCtrl {
 
         this.newExpensePage = new Scene(sceneInputWrapper.newExpensePage().getValue());
 
-        this.customTag = new Scene(sceneInputWrapper.customTag().getValue());
+
 
         this.eventOverview.getStylesheets().add(
                 Objects.requireNonNull(this.getClass().getClassLoader()
@@ -242,13 +242,6 @@ public class MainCtrl {
         primaryStage.setScene(participantEdit);
     }
 
-    /**
-     * Shows the custom tag scene
-     */
-    public void showCustomTag(){
-        primaryStage.setTitle("Custom tag");
-        primaryStage.setScene(customTag);
-    }
 
     /**
      * Shows the statistics page

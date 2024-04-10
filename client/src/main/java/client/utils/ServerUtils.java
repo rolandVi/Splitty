@@ -581,4 +581,29 @@ public class ServerUtils {
         EXEC.shutdownNow();
 
     }
+
+    public void updateTag(TagEntity tagEntity) {
+        client.target(SERVER)
+                .path("/api/tags/" + tagEntity.getId()) // Assuming the endpoint for updating tags is "/api/tags/update/{id}"
+                .request(MediaType.APPLICATION_JSON)
+                .put(Entity.entity(tagEntity, MediaType.APPLICATION_JSON));
+    }
+
+    public void deleteTag(Long tagId) {
+        client.target(SERVER)
+                .path("/api/tags/" + tagId) // Assuming the endpoint for deleting tags is "/api/tags/delete/{id}"
+                .request(MediaType.APPLICATION_JSON)
+                .delete();
+    }
+
+    public TagEntity getTagByTagType(String tagType) {
+        List<TagEntity> allTags = getAllTags();
+        for (TagEntity tag : allTags) {
+            if (tag.getTagType().equals(tagType)) {
+                return tag;
+            }
+        }
+        return null; // Tag not found
+    }
+
 }

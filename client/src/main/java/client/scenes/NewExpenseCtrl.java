@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.Main;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.TagEntity;
@@ -52,6 +53,12 @@ public class NewExpenseCtrl {
     private Set<ParticipantNameDto> debtors;
 
     private ExpenseDetailsDto expense;
+
+    private String titleState;
+    private String amountState;
+    private ParticipantNameDto authorState;
+    private Set<ParticipantNameDto> debtorsState;
+    private TagEntity tagState;
 
     /**
      * Constructor injection
@@ -263,7 +270,7 @@ public class NewExpenseCtrl {
      * Brings the user to the customtag scene
      */
     public void showCustomTag(){
-        mainCtrl.showCustomTag();
+        Main.openCustomtag();
     }
 
     private static class ParticipantListCell extends ListCell<ParticipantNameDto>{
@@ -317,6 +324,22 @@ public class NewExpenseCtrl {
             }
         }
 
+    }
+
+    /**
+     * Refreshes the tags in the ComboBox
+     */
+    public void refreshTags() {
+        // Fetch all tags from the server
+        List<TagEntity> allTags = serverUtils.getAllTags();
+
+        // Clear the existing items and add fetched tags to the ComboBox
+        tags.getItems().clear();
+        tags.getItems().addAll(allTags);
+
+        // Set the cell factory and converter for proper display of tags
+        tags.setCellFactory(param -> new TagCell());
+        tags.setConverter(new TagStringConverter());
     }
 
     // Define custom cell factory to display tag names in the ComboBox

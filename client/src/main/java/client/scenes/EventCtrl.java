@@ -324,11 +324,16 @@ public class EventCtrl implements MultiLanguages{
                 expenseInfo.setText(item.getTitle() + "\n"
                         + item.getAuthor().toString() + " paid: " + item.getMoney() + " euro");
 
-                tagText.setText(item.getTag().getTagType());
-                tagText.setFill(Color.BLACK);
-                tagBackground.setWidth(tagText.getBoundsInLocal().getWidth() + 10);
-                tagBackground.setHeight(tagText.getBoundsInLocal().getHeight() + 5);
-                tagBackground.setFill(Color.web(item.getTag().getHexValue()));
+                if (item.getTag() != null) {
+                    tagText.setText(item.getTag().getTagType());
+                    tagText.setFill(Color.BLACK);
+                    tagBackground.setWidth(tagText.getBoundsInLocal().getWidth() + 10);
+                    tagBackground.setHeight(tagText.getBoundsInLocal().getHeight() + 5);
+                    tagBackground.setFill(Color.web(item.getTag().getHexValue()));
+                    tagPane.setVisible(true); // Show the tagPane if the tag is not null
+                } else {
+                    tagPane.setVisible(false); // Hide the tagPane if the tag is null
+                }
 
                 setGraphic(hbox);
             }

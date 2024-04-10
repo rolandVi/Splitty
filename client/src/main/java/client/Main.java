@@ -77,8 +77,7 @@ public class Main extends Application {
                 "client.scenes", "Participant.fxml");
         var newExpense = FXML.load(NewExpenseCtrl.class,
                 "client.scenes", "newExpense.fxml");
-        var customTag = FXML.load(CustomTagCtrl.class,
-                "client.scenes", "customTag.fxml");
+
         var stats = FXML.load(StatsCtrl.class,
                 "client.scenes", "statistics.fxml");
 
@@ -91,7 +90,7 @@ public class Main extends Application {
                         eventOverview, paymentPage, eventPage,
                         eventCreationPage, eventItemPage, newParticipant,
 
-                        participantItem, participant, newExpense, customTag, stats, eventEmail), serverUtils);
+                        participantItem, participant, newExpense, stats, eventEmail), serverUtils);
 
     }
 
@@ -118,6 +117,16 @@ public class Main extends Application {
         });
 
     }
+
+    public static void openCustomtag(){
+        Stage customTagStage = new Stage();
+        var customTagMainCtrl = INJECTOR.getInstance(CustomTagMainCtrl.class);
+        var customTagPage = FXML.load(CustomTagCtrl.class, "client.scenes",
+                "customTag.fxml");
+
+        customTagMainCtrl.initialize(customTagStage, customTagPage);
+    }
+
 
 
 }
