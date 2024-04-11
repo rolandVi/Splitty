@@ -262,4 +262,17 @@ public class EventService {
                 EventDetailsDto.class
         );
     }
+
+    /**
+     * Get all expenses for a specific event.
+     *
+     * @param eventId The ID of the event.
+     * @return List of expense details for the event.
+     */
+    public List<ExpenseDetailsDto> getAllExpensesForEvent(long eventId) {
+        EventEntity event = findEntityById(eventId);
+        return event.getExpenses().stream()
+                .map(expense -> modelMapper.map(expense, ExpenseDetailsDto.class))
+                .collect(Collectors.toList());
+    }
 }

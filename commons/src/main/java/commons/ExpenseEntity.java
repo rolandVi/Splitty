@@ -33,6 +33,10 @@ public class ExpenseEntity {
     @Temporal(TemporalType.DATE)
     private Date date;
 
+    @ManyToOne
+    private TagEntity tag;
+
+
     /**
      * Default constructor for JBA
      */
@@ -41,17 +45,19 @@ public class ExpenseEntity {
 
     /**
      * Regular constructor for Expense requiring all fields
-     * @param id unique ID to identify expense
-     * @param money amount of money in the expense
-     * @param author author of the expense
+     *
+     * @param id      unique ID to identify expense
+     * @param money   amount of money in the expense
+     * @param author  author of the expense
      * @param debtors list of debtors
-     * @param title title summarizing the expense
-     * @param date date of the expense
-     * @param event the parent event entitty
+     * @param title   title summarizing the expense
+     * @param date    date of the expense
+     * @param event   the parent event entity
+     * @param tag     the tag for an expense
      */
     public ExpenseEntity(Long id, Double money, ParticipantEntity author,
                          Set<ParticipantEntity> debtors, String title,
-                         Date date, EventEntity event) {
+                         Date date, EventEntity event, TagEntity tag) {
         this.id = id;
         this.money = money;
         this.author = author;
@@ -59,6 +65,7 @@ public class ExpenseEntity {
         this.title = title;
         this.date = date;
         this.event = event;
+        this.tag = tag;
     }
 
     /**
@@ -118,6 +125,14 @@ public class ExpenseEntity {
     }
 
     /**
+     * Getter for the tag of an event
+     * @return the tag of an event
+     */
+    public TagEntity getTag() {
+        return tag;
+    }
+
+    /**
      * Setter for the amount of money for the expense
      * @param money the amount as Double
      */
@@ -166,6 +181,14 @@ public class ExpenseEntity {
     }
 
     /**
+     * Setter for the tag of an event
+     * @param tag the new tag for the expense
+     */
+    public void setTag(TagEntity tag) {
+        this.tag = tag;
+    }
+
+    /**
      * Adds new debtor to the list of debtors
      * @param debtor as UserEntity
      */
@@ -188,6 +211,7 @@ public class ExpenseEntity {
                 && Objects.equals(debtors, expenseEntity.debtors)
                 && Objects.equals(title, expenseEntity.title)
                 && Objects.equals(date, expenseEntity.date)
+                && Objects.equals(tag, expenseEntity.tag)
                 &&Objects.equals(event, expenseEntity.event);
     }
 
@@ -197,6 +221,8 @@ public class ExpenseEntity {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, money, author, debtors, title, date);
+        return Objects.hash(id, money, author, debtors, title, date, tag);
     }
+
+
 }

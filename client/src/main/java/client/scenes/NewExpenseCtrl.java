@@ -1,11 +1,14 @@
 package client.scenes;
 
+import client.Main;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.TagEntity;
 import dto.ExpenseCreationDto;
 import dto.view.EventDetailsDto;
 import dto.view.ExpenseDetailsDto;
 import dto.view.ParticipantNameDto;
+import dto.view.TagDto;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,6 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
 
 import java.util.*;
 
@@ -23,7 +27,8 @@ public class NewExpenseCtrl {
     private final ServerUtils serverUtils;
 
     private EventDetailsDto parentEvent;
-
+    @FXML
+    public ComboBox<TagEntity> tags;
     @FXML
     public TextField titleField;
     @FXML
@@ -48,6 +53,12 @@ public class NewExpenseCtrl {
     private Set<ParticipantNameDto> debtors;
 
     private ExpenseDetailsDto expense;
+
+    private String titleState;
+    private String amountState;
+    private ParticipantNameDto authorState;
+    private Set<ParticipantNameDto> debtorsState;
+    private TagEntity tagState;
 
     /**
      * Constructor injection
@@ -91,7 +102,6 @@ public class NewExpenseCtrl {
         editButton.setVisible(false);
         addExpenseButton.setVisible(true);
 
-
         titleField.clear();
         amountField.clear();
         errorField.setOpacity(0);
@@ -117,6 +127,19 @@ public class NewExpenseCtrl {
             }
         });
         debtorsCheckList.setItems(participants);
+
+
+
+        tags.getItems().clear();
+        // Fetch all tags from the server
+        List<TagEntity> allTags = serverUtils.getAllTags();
+
+        // Add fetched tags to the ComboBox
+        tags.getItems().addAll(allTags);
+
+        // Set the cell factory and converter for proper display of tags
+        tags.setCellFactory(param -> new TagCell());
+        tags.setConverter(new TagStringConverter());
     }
 
     /**
@@ -180,7 +203,7 @@ public class NewExpenseCtrl {
     /**
      * creates new expense based on the input
      */
-    public void  createExpense(){
+    public void createExpense(){
         String title = titleField.getText();
         try {
             double amount = Double.parseDouble(amountField.getText());
@@ -191,8 +214,16 @@ public class NewExpenseCtrl {
                 }
             }
 
+            TagEntity tag = tags.getValue();
+            TagDto newTag = null;
+
+            if (tag != null) {
+                newTag = new TagDto(tag.getId(), tag.getTagType(), tag.getHexValue());
+            }
+
+
             serverUtils.send("/app/expenses/create", new ExpenseCreationDto(title, amount,
-                    author.getId(), debtors, parentEvent.getId(), new Date()));
+                    author.getId(), debtors, parentEvent.getId(), new Date(), newTag));
             mainCtrl.showEventDetails(parentEvent.getId());
         }catch (NumberFormatException e){
             errorField.setText("Enter a valid amount");
@@ -215,6 +246,10 @@ public class NewExpenseCtrl {
             expense.setMoney(Double.parseDouble(amountField.getText()));
             expense.setTitle(titleField.getText());
 
+            TagDto tagDto = new TagDto(tags.getValue().getId(), tags.getValue().getTagType(),
+                    tags.getValue().getHexValue());
+            expense.setTag(tagDto);
+
             serverUtils.editExpense(expense);
             mainCtrl.showEventDetails(parentEvent.getId());
         }catch (NumberFormatException e){
@@ -229,6 +264,13 @@ public class NewExpenseCtrl {
     public void remove(){
         serverUtils.removeExpense(parentEvent.getId(), expense.getId());
         mainCtrl.showEventDetails(parentEvent.getId());
+    }
+
+    /**
+     * Brings the user to the customtag scene
+     */
+    public void showCustomTag(){
+        Main.openCustomtag();
     }
 
     private static class ParticipantListCell extends ListCell<ParticipantNameDto>{
@@ -282,5 +324,46 @@ public class NewExpenseCtrl {
             }
         }
 
+    }
+
+    /**
+     * Refreshes the tags in the ComboBox
+     */
+    public void refreshTags() {
+        // Fetch all tags from the server
+        List<TagEntity> allTags = serverUtils.getAllTags();
+
+        // Clear the existing items and add fetched tags to the ComboBox
+        tags.getItems().clear();
+        tags.getItems().addAll(allTags);
+
+        // Set the cell factory and converter for proper display of tags
+        tags.setCellFactory(param -> new TagCell());
+        tags.setConverter(new TagStringConverter());
+    }
+
+    // Define custom cell factory to display tag names in the ComboBox
+    private static class TagCell extends ListCell<TagEntity> {
+        @Override
+        protected void updateItem(TagEntity item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty || item == null) {
+                setText(null);
+            } else {
+                setText(item.getTagType());
+            }
+        }
+    }
+
+
+    private static class TagStringConverter extends StringConverter<TagEntity> {
+        @Override
+        public String toString(TagEntity tag) {
+            return tag == null ? null : tag.getTagType();
+        }
+        @Override
+        public TagEntity fromString(String tagName) {
+            return null;
+        }
     }
 }

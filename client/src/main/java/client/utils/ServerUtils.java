@@ -4,6 +4,8 @@ package client.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import commons.ExpenseEntity;
+import commons.TagEntity;
 import dto.BankAccountCreationDto;
 import dto.CreatorToTitleDto;
 import dto.ExpenseCreationDto;
@@ -29,6 +31,7 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -379,15 +382,14 @@ public class ServerUtils {
      * Adds a new expense to the event
      * @param eventId the id of the event
      * @param expenseCreationDto the details of the expense
-     * @return the dreated expense details
+     * @return the created expense details
      */
     public ExpenseDetailsDto addExpense(long eventId, ExpenseCreationDto expenseCreationDto) {
-
         Response expenseCreationResponse = client.target(SERVER)
-                .path("api/expenses/")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .post(Entity.entity(expenseCreationDto, APPLICATION_JSON));
+                .path("/api/expenses/new")
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(expenseCreationDto, MediaType.APPLICATION_JSON));
 
         return expenseCreationResponse.readEntity(ExpenseDetailsDto.class);
     }
@@ -485,6 +487,27 @@ public class ServerUtils {
     }
 
     /**
+     * Retrieves all tags from the server.
+     *
+     * @return List of TagEntity objects representing all tags.
+     */
+    public List<TagEntity> getAllTags() {
+        Response response = client
+                .target(SERVER)
+                .path("/api/tags/all")
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .get();
+
+        if (response.getStatus() == Response.Status.OK.getStatusCode()) {
+            return response.readEntity(new GenericType<>() {
+            });
+        } else {
+
+            return Collections.emptyList();
+        }
+    }
+    /**
      * Edits the information of participant on the server using HTTP request
      * @param participantNameDto the new information of the participant
      * @param url the url of the server
@@ -515,10 +538,44 @@ public class ServerUtils {
                     .send(request, HttpResponse.BodyHandlers.ofString()));
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
+
         }
     }
 
     /**
+     * Creates a new tag
+     * @param tagDto tagdto
+     */
+    public void createTag(TagDto tagDto) {
+        client.target(SERVER)
+                .path("/api/tags/newtag")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(tagDto, MediaType.APPLICATION_JSON), String.class);
+    }
+
+    /**
+     * Retrieves all expenses of an event from the server.
+     * @param eventId The ID of the event to retrieve expenses from.
+     * @return List of ExpenseEntity objects representing all expenses of the event.
+     */
+    public List<ExpenseEntity> getAllExpensesOfEvent(long eventId) {
+        Response response = client
+                .target(SERVER)
+                .path("/api/events/" + eventId + "/expenses")
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .get();
+
+        if (response.getStatus() == Response.Status.OK.getStatusCode()) {
+            return response.readEntity(new GenericType<>() {
+            });
+        } else {
+            // Handle other response statuses, such as error responses
+            return Collections.emptyList();
+        }
+    }
+
+     /**
      *
      * @param to the email to which the invite is sent
      * @param inviteCode the invite code of the event
@@ -563,5 +620,44 @@ public class ServerUtils {
      */
     public void stop(){
         EXEC.shutdownNow();
+
     }
+
+    /**
+     * updates a tag
+     * @param tagEntity tagEntity
+     */
+    public void updateTag(TagEntity tagEntity) {
+        client.target(SERVER)
+                .path("/api/tags/" + tagEntity.getId())
+                .request(MediaType.APPLICATION_JSON)
+                .put(Entity.entity(tagEntity, MediaType.APPLICATION_JSON));
+    }
+
+    /**
+     * Deletes a tag
+     * @param tagId id of the tag
+     */
+    public void deleteTag(Long tagId) {
+        client.target(SERVER)
+                .path("/api/tags/" + tagId)
+                .request(MediaType.APPLICATION_JSON)
+                .delete();
+    }
+
+    /**
+     * Gets the tagentkty from the type
+     * @param tagType the tagtype
+     * @return the corresponding tagentity
+     */
+    public TagEntity getTagByTagType(String tagType) {
+        List<TagEntity> allTags = getAllTags();
+        for (TagEntity tag : allTags) {
+            if (tag.getTagType().equals(tagType)) {
+                return tag;
+            }
+        }
+        return null; // Tag not found
+    }
+
 }
