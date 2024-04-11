@@ -1,6 +1,7 @@
 package client.utils;
 
 import dto.exceptions.PasswordExpiredException;
+import dto.view.ParticipantNameDto;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.Invocation;
@@ -11,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.simp.stomp.StompSession;
+
+import java.util.List;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.junit.jupiter.api.Assertions.*;
@@ -86,7 +89,9 @@ class ServerUtilsTest {
 
     @Test
     void getParticipantDetails() {
-        assertDoesNotThrow(() -> serverUtils.getParticipantDetails(123L));
+        ParticipantNameDto dto = new ParticipantNameDto(123L, null, null, null);
+        when(serverUtils.getParticipantsByEvent(1)).thenReturn(List.of(dto));
+        assertDoesNotThrow(() -> serverUtils.getParticipantDetails(123L, 1));
     }
 
     @Test

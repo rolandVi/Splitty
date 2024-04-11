@@ -294,12 +294,13 @@ public class ServerUtils {
 
     /**
      * Get details of a specific participant
-     * @param id id of the participant
+     * @param parId id of the participant
+     * @param eventId id of the event that the participant belongs to
      * @return the participant as UserNameDto
      */
-    public ParticipantNameDto getParticipantDetails(long id) {
-        return null;
-        //TODO
+    public ParticipantNameDto getParticipantDetails(long parId, long eventId) {
+        List<ParticipantNameDto> dtoList = getParticipantsByEvent(eventId);
+        return dtoList.stream().filter(d -> d.getId() == parId).findFirst().get();
     }
 
     /**
@@ -349,13 +350,14 @@ public class ServerUtils {
     /**
      * Creates the user
      * @param url The url
-     * @param requestBody The request body
+     * @param requestBody The request body (ParticipantCreationDto)
+     * @param eventID The id of the event where the participant belongs to
      * @return The response
      */
-    public Optional<HttpResponse<String>> createUser(String url, String requestBody) {
+    public Optional<HttpResponse<String>> createUser(String url, String requestBody, long eventID) {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .uri(URI.create(url + "/api/participants/"))
+                .uri(URI.create(url + "/api/events/" + eventID + "/participants"))
                 .header("Content-Type", "application/json")
                 .build();
 
@@ -424,7 +426,7 @@ public class ServerUtils {
      * @param serverURL the server url
      * @return the bank details
      */
-    public BankAccountDto findBankDetails(String userID, String serverURL) {
+    public BankAccountDto findBankDetails(long userID, String serverURL) {
         return client.target(serverURL)
                 .path("/api/participants/" + userID + "/account")
                 .request(APPLICATION_JSON)
@@ -480,6 +482,40 @@ public class ServerUtils {
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .get(EventDetailsDto.class);
+    }
+
+    /**
+     * Edits the information of participant on the server using HTTP request
+     * @param participantNameDto the new information of the participant
+     * @param url the url of the server
+     */
+    public void editParticipant(ParticipantNameDto participantNameDto, String url) {
+        // Create HTTP request body
+        ObjectMapper objectMapper = new ObjectMapper();
+        String requestBody = null;
+        try {
+            requestBody = objectMapper.writeValueAsString(participantNameDto);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Create HTTP request
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url + "/api/participants/" + participantNameDto.getId()))
+                .header("Content-Type", "application/json")
+                .method("PATCH", HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        // Send HTTP request to server
+        // Return HTTP response from server
+        Optional<HttpResponse<String>> response;
+        try {
+            response = Optional.of(HttpClient
+                    .newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString()));
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

@@ -14,10 +14,9 @@ public class BankAccountCreationDto {
     /**
      * Constructor for the BankAccountCreationDto class.
      * @param iban The International Bank Account Number (IBAN) of the bank account.
-     * @param holder The name of the account holder.
      * @param bic The Bank Identifier Code (BIC) of the bank account.
      */
-    public BankAccountCreationDto(String iban, String holder, String bic) {
+    public BankAccountCreationDto(String iban, String bic) {
         this.iban = iban;
         this.bic = bic;
     }
