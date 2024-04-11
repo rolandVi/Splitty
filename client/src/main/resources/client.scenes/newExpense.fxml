@@ -1,22 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Text?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.NewExpenseCtrl">
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.NewExpenseCtrl">
    <children>
-      <TextField fx:id="titleField" layoutX="27.0" layoutY="96.0" />
-      <TextField fx:id="amountField" layoutX="27.0" layoutY="146.0" />
-      <Label layoutX="184.0" layoutY="206.0" text="Who paid?" />
-      <Label layoutX="201.0" layoutY="100.0" text="Title" />
-      <Label layoutX="191.0" layoutY="150.0" text="Amount" />
       <Button fx:id="addExpenseButton" layoutX="262.0" layoutY="332.0" mnemonicParsing="false" onAction="#createExpense" text="Create" />
       <Button fx:id="returnButton" layoutX="26.0" layoutY="24.0" mnemonicParsing="false" onAction="#returnToEvent" text="Return" />
-      <ComboBox fx:id="authorBox" layoutX="26.0" layoutY="202.0" prefWidth="150.0" />
       <ToggleButton fx:id="splitEquallyButton" layoutX="383.0" layoutY="96.0" mnemonicParsing="false" onAction="#splitEqually" text="SplitEqually" />
       <ListView fx:id="debtorsCheckList" layoutX="321.0" layoutY="132.0" prefHeight="113.0" prefWidth="200.0" />
       <Button fx:id="removeButton" layoutX="495.0" layoutY="332.0" mnemonicParsing="false" onAction="#remove" text="Remove" />
       <Button fx:id="editButton" layoutX="261.0" layoutY="332.0" mnemonicParsing="false" onAction="#editExpense" text="Edit" />
       <Text fx:id="errorField" fill="RED" layoutX="91.0" layoutY="265.0" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+      <VBox fillWidth="false" layoutX="30.0" layoutY="122.0" prefHeight="134.0" prefWidth="145.0" spacing="15.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+               <children>
+                  <ComboBox fx:id="tags" prefHeight="25.0" prefWidth="69.0" />
+                  <Button fx:id="newTag" mnemonicParsing="false" onAction="#showCustomTag" prefHeight="25.0" prefWidth="62.0" text="Custom" />
+               </children>
+            </HBox>
+            <TextField fx:id="titleField" />
+            <TextField fx:id="amountField" />
+            <ComboBox fx:id="authorBox" prefWidth="150.0" />
+         </children>
+      </VBox>
+      <VBox layoutX="187.0" layoutY="124.0" prefHeight="145.0" prefWidth="100.0" spacing="24.0">
+         <children>
+            <Label text="Tag" />
+            <Label text="Title" />
+            <Label text="Amount" />
+            <Label text="Who paid?" />
+         </children>
+      </VBox>
    </children>
 </Pane>

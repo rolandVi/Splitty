@@ -20,6 +20,8 @@ class TransactionEntityTest {
 
     private Date date;
     private TransactionEntity transaction;
+
+    private TagEntity tag;
     @BeforeEach
     void setup() {
         this.date=new Date();
@@ -29,7 +31,7 @@ class TransactionEntityTest {
                 "email@gmail.com", new EventEntity(), new BankAccountEntity());
         this.event=new EventEntity();
         this.expense= new ExpenseEntity(1L, 20d, receiver,
-                new HashSet<>(List.of(this.sender)), "title", date, event);
+                new HashSet<>(List.of(this.sender)), "title", date, event, tag);
         this.transaction = new TransactionEntity(1234L, 19.99, sender, receiver, expense, date);
     }
 

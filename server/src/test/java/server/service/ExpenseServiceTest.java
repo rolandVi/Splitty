@@ -30,23 +30,27 @@ class ExpenseServiceTest {
     @Mock
     private EventService eventService;
     @Mock
+
     private ParticipantService userService;
+    @Mock
+    private TagService tagService;
 
     private ExpenseEntity expectedDto;
     private List<ExpenseEntity> expectedExpenses;
+
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         ModelMapper modelMapper = new ModelMapper();
 
-        expenseService = new ExpenseService(expenseRepository, modelMapper, userService, eventService);
+        expenseService = new ExpenseService(expenseRepository, modelMapper, userService, eventService, tagService);
 
         expectedDto = new ExpenseEntity(1L, 100.0, new ParticipantEntity(),
-                new HashSet<>(), "Expense Title", new Date(), null);
+                new HashSet<>(), "Expense Title", new Date(), null, null);
 
         ExpenseEntity requestDto = new ExpenseEntity(2L, 200.0, new ParticipantEntity(),
-                new HashSet<>(), "Another Expense Title", new Date(), null);
+                new HashSet<>(), "Another Expense Title", new Date(), null, null);
 
         expectedExpenses = new ArrayList<>(Arrays.asList(expectedDto, requestDto));
     }

@@ -77,14 +77,19 @@ public class Main extends Application {
         var newExpense = FXML.load(NewExpenseCtrl.class,
                 "client.scenes", "newExpense.fxml");
 
+        var stats = FXML.load(StatsCtrl.class,
+                "client.scenes", "statistics.fxml");
+
         var eventEmail = FXML.load(EventEmailCtrl.class,
                 "client.scenes", "eventEmailPage.fxml");
+
 
         mainCtrl.initialize(
                 new SceneInputWrapper(primaryStage, startPage,
                         eventOverview, paymentPage, eventPage,
                         eventCreationPage, eventItemPage, newParticipant,
-                        participantItem, participant, newExpense, eventEmail), serverUtils);
+
+                        participantItem, participant, newExpense, stats, eventEmail), serverUtils);
 
     }
 
@@ -111,5 +116,19 @@ public class Main extends Application {
         });
 
     }
+
+    /**
+     * Opens a popup that lets the user create custom tags
+     */
+    public static void openCustomtag(){
+        Stage customTagStage = new Stage();
+        var customTagMainCtrl = INJECTOR.getInstance(CustomTagMainCtrl.class);
+        var customTagPage = FXML.load(CustomTagCtrl.class, "client.scenes",
+                "customTag.fxml");
+
+        customTagMainCtrl.initialize(customTagStage, customTagPage);
+    }
+
+
 
 }
