@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import dto.view.ExpenseDetailsDto;
 import dto.view.ParticipantNameDto;
+import server.exception.ObjectNotFoundException;
 import server.service.EventService;
 import server.service.ExpenseService;
 
@@ -78,6 +79,19 @@ class ExpenseRestControllerTest {
     }
 
     @Test
+    void testGetExpenseByIdException() {
+        // Arrange
+        long expenseId = 1L;
+
+        // Act
+        ResponseEntity<ExpenseDetailsDto> response = expenseRestController.getExpenseById(expenseId);
+
+        // Assert
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(expenseService, times(1)).getById(expenseId);
+    }
+
+    @Test
     void testCreateExpense() {
         // Arrange
         when(expenseService.createExpense(any())).thenReturn(new ExpenseEntity(1L, 100.0,
@@ -111,6 +125,15 @@ class ExpenseRestControllerTest {
     }
 
     @Test
+    void testUpdateExpenseException() {
+        // Act
+        ResponseEntity<ExpenseDetailsDto> response = expenseRestController.updateExpense(detailsDto);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
     void testRemoveById() {
         // Arrange
         long expenseId = 1L;
@@ -123,6 +146,32 @@ class ExpenseRestControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         verify(eventService, times(1)).removeExpense(eventId, expenseService.getEntityById(expenseId));
         verify(expenseService, times(1)).deleteExpense(expenseId);
+    }
+
+    @Test
+    void testRemoveByIdBadRequest() {
+        // Arrange
+        long expenseId = 1L;
+        long eventId = 1L;
+        // Act
+        ResponseEntity<Void> response = expenseRestController.removeById(expenseId, eventId);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
+    void testRemoveByIdNotFound() {
+        // Arrange
+        long expenseId = 1L;
+        long eventId = 1L;
+        when(expenseService.existsById(anyLong())).thenReturn(true);
+        when(expenseService.getEntityById(anyLong())).thenThrow(ObjectNotFoundException.class);
+        // Act
+        ResponseEntity<Void> response = expenseRestController.removeById(expenseId, eventId);
+
+        // Assert
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
 
