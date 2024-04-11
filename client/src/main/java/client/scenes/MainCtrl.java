@@ -270,4 +270,9 @@ public class MainCtrl {
         primaryStage.setScene(eventPage);
     }
 
+
+    protected long getEventID(){
+        return eventCtrl.getEventDetailsDto().getId();
+    }
+
 }
