@@ -485,7 +485,6 @@ public class ServerUtils {
     }
 
     /**
-<<<<<<< HEAD
      * Retrieves all tags from the server.
      * @return List of TagEntity objects representing all tags.
      */

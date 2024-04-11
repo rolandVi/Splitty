@@ -61,6 +61,16 @@ public class CustomTagCtrl implements Initializable {
         TagDto tagDto = new TagDto();
         tagDto.setTagType(tagType);
         tagDto.setHexValue(hex);
+
+
+        TagEntity existingTag = serverUtils.getTagByTagType(tagType);
+        if (existingTag != null) {
+            errorMessage.setText("Tag already exists.");
+            errorMessage.setOpacity(1.0);
+            return;
+        }
+
+
         serverUtils.createTag(tagDto);
         loadtags();
         newExpenseCtrl.refreshTags();
@@ -133,7 +143,9 @@ public class CustomTagCtrl implements Initializable {
             // Tag exists, delete it
             serverUtils.deleteTag(existingTag.getId());
         } else {
-            // Show an error message or handle the case where the tag doesn't exist
+            errorMessage.setText("Could not find tag!");
+            errorMessage.setOpacity(1.0);
+            return;
         }
 
         loadtags();
@@ -144,19 +156,23 @@ public class CustomTagCtrl implements Initializable {
      * edits a tag
      */
     public void editTag() {
-        String oldTagType = tagTypeSave; // Get the old tag type
-        String newTagType = tagName.getText(); // Get the new tag type
-        String hex = colorPick.getValue().toString(); // Get the new hex value
+        String oldTagType = tagTypeSave;
+        String newTagType = tagName.getText();
+        String hex = colorPick.getValue().toString();
 
-        // Check if the tag already exists in the database
+        if (serverUtils.getTagByTagType(newTagType) != null && !oldTagType.equals(newTagType)){
+            errorMessage.setText("Tag already exists!");
+            errorMessage.setOpacity(1.0);
+            return;
+        }
+
         TagEntity existingTag = serverUtils.getTagByTagType(oldTagType);
         if (existingTag != null) {
-            // Tag exists, update its tag type and hex value
             existingTag.setTagType(newTagType);
             existingTag.setHexValue(hex);
             serverUtils.updateTag(existingTag);
         } else {
-            // Show an error message or handle the case where the tag doesn't exist
+            //error handling here
         }
 
         loadtags();
