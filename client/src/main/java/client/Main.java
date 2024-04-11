@@ -73,7 +73,7 @@ public class Main extends Application {
         var participantItem = FXML.load(ParticipantItemCtrl.class,
                 "client.scenes", "participantItem.fxml");
         var participant = FXML.load(ParticipantCtrl.class,
-                "client.scenes", "Participant.fxml");
+                "client.scenes", "participant.fxml");
         var newExpense = FXML.load(NewExpenseCtrl.class,
                 "client.scenes", "newExpense.fxml");
 

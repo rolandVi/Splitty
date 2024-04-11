@@ -12,11 +12,11 @@ public class BankAccountEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long id;
 
-    @Column(nullable = false, unique = true)
+    @Column
     private String iban;
-    @Column(nullable = false)
+    @Column
     private String holder;
-    @Column(nullable = false)
+    @Column
     private String bic;
 
     /**

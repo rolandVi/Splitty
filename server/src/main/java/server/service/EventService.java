@@ -243,7 +243,7 @@ public class EventService {
     /**
      * Deletes a participant of an event
      * @param eventId the eventId
-     * @param participantId
+     * @param participantId the participantId
      */
     @Transactional
     public void deleteParticipant(Long eventId, Long participantId) {
