@@ -1,8 +1,11 @@
 package server.controller.api;
 
+import commons.EventEntity;
 import commons.ExpenseEntity;
 import commons.ParticipantEntity;
+import commons.TagEntity;
 import dto.ExpenseCreationDto;
+import dto.view.TagDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -46,7 +49,7 @@ class ExpenseRestControllerTest {
                 new ParticipantNameDto(),
                 "Expense Title",
                 new HashSet<>(Collections.singletonList(new ParticipantNameDto())),
-                new Date()
+                new Date(), new TagDto()
         );
 
         creationDto = new ExpenseCreationDto(
@@ -55,7 +58,8 @@ class ExpenseRestControllerTest {
                 1L,
                 new HashSet<>(),
                 1L,
-                new Date()
+                new Date(),
+                new TagDto()
         );
 
         expectedTotalSum = 100.0;
@@ -99,7 +103,9 @@ class ExpenseRestControllerTest {
                 new HashSet<>(Set.of(new ParticipantEntity(1L, "", "", "",
                         null, null))),
                 "Expense Title",
-                new Date(), null));
+                new Date(),
+                new EventEntity(),
+                new TagEntity()));
 
         // Act
         ExpenseDetailsDto createdExpense = expenseRestController.createExpense(creationDto);

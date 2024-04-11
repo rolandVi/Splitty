@@ -3,10 +3,11 @@ package server.service;
 import commons.EventEntity;
 import commons.ExpenseEntity;
 import commons.ParticipantEntity;
+import commons.TagEntity;
 import dto.ExpenseCreationDto;
 import dto.view.ExpenseDetailsDto;
 import dto.view.ParticipantNameDto;
-import jakarta.mail.Part;
+import dto.view.TagDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -205,7 +206,7 @@ class ExpenseServiceTest {
     void createExpense_ReturnsCreatedExpenseDto() {
         // Arrange
         ExpenseCreationDto expenseDto = new ExpenseCreationDto("Test", 10.0,
-                1L, new HashSet<>(Set.of(new ParticipantNameDto())), 1L, new Date());
+                1L, new HashSet<>(Set.of(new ParticipantNameDto())), 1L, new Date(), new TagDto());
         ExpenseEntity expenseEntity = new ExpenseEntity();
         when(expenseRepository.save(any())).thenReturn(expenseEntity);
 
@@ -276,15 +277,18 @@ class ExpenseServiceTest {
         expenseDto.setId(1L);
         expenseDto.setAuthor(new ParticipantNameDto(1L, "", "", ""));
         expenseDto.setDebtors(new HashSet<>(Set.of(new ParticipantNameDto())));
+        expenseDto.setTag(new TagDto(1L, "", ""));
         when(expenseService.existsById(expenseDto.getId())).thenReturn(true);
         ExpenseEntity entity = new ExpenseEntity(1L, 200.0,
                 new ParticipantEntity(1L, "", "", "", null, null),
-                new HashSet<>(Set.of(new ParticipantEntity())), "Another Expense Title", new Date(), null);
+                new HashSet<>(Set.of(new ParticipantEntity())), "Another Expense Title", new Date(),
+                new EventEntity(), new TagEntity("", ""));
         when(expenseRepository.findById(expenseDto.getId())).thenReturn(Optional.of(entity));
         when(expenseRepository.save(any())).thenReturn(entity);
         when(userService.findById(any())).thenReturn(new ParticipantEntity());
         when(userService.findById(1L)).thenReturn(
                 new ParticipantEntity(1L, "", "", "", null, null));
+        when(tagService.findById(anyLong())).thenReturn(new TagEntity("", ""));
 
         // Act
         ExpenseDetailsDto result = expenseService.updateExpense(expenseDto);
