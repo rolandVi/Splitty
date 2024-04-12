@@ -170,7 +170,7 @@ public class ExpenseRestController {
      * @param id the ID to check
      * @return true if the ID is valid, false otherwise
      */
-    private boolean checkIdValidity(long id){
+    protected boolean checkIdValidity(long id){
         return id > 0 && expenseService.existsById(id);
     }
 }

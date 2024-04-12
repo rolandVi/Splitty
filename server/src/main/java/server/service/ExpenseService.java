@@ -291,7 +291,7 @@ public class ExpenseService {
      * @param n the numbers after the decimal point
      * @return the rounded number
      */
-    private double roundToNDecimals(double value, int n){
+    protected double roundToNDecimals(double value, int n){
         if (n < 0) throw new IllegalArgumentException();
 
         BigDecimal bd = BigDecimal.valueOf(value);
