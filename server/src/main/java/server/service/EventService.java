@@ -106,6 +106,9 @@ public class EventService {
 
     //TODO: improve generate invite code method
     private String generateInviteCode(String title) {
+        if (title.length()>5){
+            title=title.substring(0, 5);
+        }
         return title + LocalTime.now().getSecond() + LocalTime.now().getNano();
     }
 

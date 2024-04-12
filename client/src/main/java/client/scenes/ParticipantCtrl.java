@@ -6,14 +6,14 @@ import dto.BankAccountCreationDto;
 import dto.view.BankAccountDto;
 import dto.view.ParticipantNameDto;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ResourceBundle;
 
-public class ParticipantCtrl implements MultiLanguages{
+public class ParticipantCtrl implements MultiLanguages {
 
     private final MainCtrl mainCtrl;
     private final ServerUtils serverUtils;
@@ -60,26 +60,28 @@ public class ParticipantCtrl implements MultiLanguages{
 
     /**
      * Injector for Participant Controller
-     * @param mainCtrl The Main Controller
+     *
+     * @param mainCtrl    The Main Controller
      * @param serverUtils The Server Utilities
      */
     @Inject
-    public ParticipantCtrl(MainCtrl mainCtrl, ServerUtils serverUtils){
+    public ParticipantCtrl(MainCtrl mainCtrl, ServerUtils serverUtils) {
         this.mainCtrl = mainCtrl;
-        this.serverUtils=serverUtils;
+        this.serverUtils = serverUtils;
     }
 
     /**
      * Returns to the Event details scene
      */
-    public void returnToEvent(){
+    public void returnToEvent() {
         mainCtrl.showEventDetails(eventId);
     }
 
     /**
      * Updates the view information with the details of the participant with the given id
      * , saves event id
-     * @param parID id of the participant
+     *
+     * @param parID   id of the participant
      * @param eventId id of the event
      */
     public void init(long parID, long eventId) {
@@ -100,7 +102,7 @@ public class ParticipantCtrl implements MultiLanguages{
         accountError.setVisible(false);
     }
 
-    public void onKeyPressedParticipant(KeyEvent e){
+    public void onKeyPressedParticipant(KeyEvent e) {
         switch (e.getCode()) {
             case ENTER:
                 updateParticipant();
@@ -111,7 +113,7 @@ public class ParticipantCtrl implements MultiLanguages{
         onKeyPressed(e);
     }
 
-    public void onKeyPressedAccount(KeyEvent e){
+    public void onKeyPressedAccount(KeyEvent e) {
         switch (e.getCode()) {
             case ENTER:
                 updateBank();
@@ -122,7 +124,7 @@ public class ParticipantCtrl implements MultiLanguages{
         onKeyPressed(e);
     }
 
-    public void onKeyPressed(KeyEvent e){
+    public void onKeyPressed(KeyEvent e) {
         switch (e.getCode()) {
             case ESCAPE:
                 returnToEvent();
@@ -135,9 +137,16 @@ public class ParticipantCtrl implements MultiLanguages{
     /**
      * Deletes a participant from the event
      */
-    public void deleteParticipant(){
-        serverUtils.deleteEventParticipant(eventId, participantId);
-        mainCtrl.showEventDetails(eventId);
+    public void deleteParticipant() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText("Delete participant?");
+        alert.setContentText("Are you aure you want to delete this participant");
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                serverUtils.deleteEventParticipant(eventId, participantId);
+                mainCtrl.showEventDetails(eventId);
+            }
+        });
     }
 
     /**
@@ -145,7 +154,7 @@ public class ParticipantCtrl implements MultiLanguages{
      */
     public void updateParticipant() {
         String url = mainCtrl.configManager.getProperty("serverURL");
-        if (firstNameLabel.getText().trim().isBlank() || lastNameLabel.getText().trim().isBlank()){
+        if (firstNameLabel.getText().trim().isBlank() || lastNameLabel.getText().trim().isBlank()) {
             this.participantError.setVisible(true);
             return;
         }
@@ -155,6 +164,7 @@ public class ParticipantCtrl implements MultiLanguages{
 
     /**
      * Retrieve the filled in data of the textFields and create a dto
+     *
      * @return the dto to be sent as the request body
      */
     public ParticipantNameDto getParticipantEntity() {
@@ -169,9 +179,9 @@ public class ParticipantCtrl implements MultiLanguages{
      */
     public void updateBank() {
         String url = mainCtrl.configManager.getProperty("serverURL");
-        if (ibanTextField.getText()==null || bicTextField.getText()==null
+        if (ibanTextField.getText() == null || bicTextField.getText() == null
                 || ibanTextField.getText().trim().isBlank()
-                || bicTextField.getText().trim().isBlank()){
+                || bicTextField.getText().trim().isBlank()) {
             this.accountError.setVisible(true);
             return;
         }
@@ -179,8 +189,25 @@ public class ParticipantCtrl implements MultiLanguages{
         mainCtrl.showEventDetails(eventId);
     }
 
+    public void deleteBankAccount() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText("Delete bank account?");
+        alert.setContentText("Are you aure you want to delete this bank account");
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try {
+                    this.serverUtils.deleteBankAccountOf(participantId);
+                    returnToEvent();
+                } catch (IOException | URISyntaxException | InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
     /**
      * Retrieve the filled in data of the textFields and create a dto
+     *
      * @return the dto to be sent as the request body
      */
     private BankAccountCreationDto getBankEntity() {
@@ -191,6 +218,7 @@ public class ParticipantCtrl implements MultiLanguages{
         result.setBic(bic);
         return result;
     }
+
     /**
      * Updates the language of the scene using the resource bundle
      */

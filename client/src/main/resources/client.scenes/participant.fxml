@@ -41,6 +41,6 @@
       <Button fx:id="updateBankButton" layoutX="250.0" layoutY="166.0" mnemonicParsing="false" onAction="#updateBank" prefHeight="25.0" prefWidth="149.0" text="Update bank info" />
       <Label fx:id="participantError" alignment="CENTER" layoutX="10.0" layoutY="203.0" prefHeight="17.0" prefWidth="149.0" text="Fill first and last name" textFill="RED" visible="false" />
       <Label fx:id="accountError" alignment="CENTER" layoutX="252.0" layoutY="140.0" prefHeight="17.0" prefWidth="149.0" text="Please fill in the boxes" textFill="RED" visible="false" />
-      <Button fx:id="bankDeleteBtn" layoutX="251.0" layoutY="199.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Delete bank account" />
+      <Button fx:id="bankDeleteBtn" onAction="#deleteBankAccount" layoutX="251.0" layoutY="199.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Delete bank account" />
    </children>
 </AnchorPane>

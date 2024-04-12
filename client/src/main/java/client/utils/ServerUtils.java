@@ -673,4 +673,22 @@ public class ServerUtils {
         return null; // Tag not found
     }
 
+    public void deleteBankAccountOf(long participantId) throws URISyntaxException,
+            IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI(SERVER + "api/participants/" + participantId + "/account"))
+                .header("Content-Type", "application/json")
+                .DELETE()
+                .build();
+
+        // Send HTTP DELETE request to server
+        HttpResponse<Void> response = HttpClient.newHttpClient()
+                .send(request, HttpResponse.BodyHandlers.discarding());
+
+        // Check the response status code
+        if (response.statusCode() != 200) {
+            throw new RuntimeException("Failed to delete event. Server returned status code: "
+                    + response.statusCode());
+        }
+    }
 }

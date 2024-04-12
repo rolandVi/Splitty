@@ -24,7 +24,7 @@ public class ParticipantEntity {
     @ManyToOne(cascade = CascadeType.DETACH)
     private EventEntity event;
 
-    @OneToOne(cascade = CascadeType.DETACH)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private BankAccountEntity bankAccount;
 
     /**

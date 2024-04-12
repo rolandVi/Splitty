@@ -103,4 +103,9 @@ public class BankAccountService {
         bankAccount.setIban(bankAccountCreationDto.getIban());
         return this.bankAccountRepository.save(bankAccount);
     }
+
+    @Transactional
+    public void deleteBankAccount(BankAccountEntity bankAccount) {
+        this.bankAccountRepository.delete(bankAccount);
+    }
 }
