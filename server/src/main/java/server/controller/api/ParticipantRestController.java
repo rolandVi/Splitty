@@ -84,6 +84,11 @@ public class ParticipantRestController {
                 .editBankAccount(bankAccountCreationDto, userId));
     }
 
+    /**
+     * Endpoint for deleting a bank account
+     * @param userId the participant id
+     * @return the response
+     */
     @DeleteMapping("/{userId}/account")
     public ResponseEntity<Void> deleteBankAccount(
             @PathVariable(name = "userId") Long userId){

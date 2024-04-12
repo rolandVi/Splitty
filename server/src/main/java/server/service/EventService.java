@@ -2,10 +2,10 @@ package server.service;
 
 import commons.EventEntity;
 import commons.ExpenseEntity;
-import dto.ExpenseCreationDto;
-import dto.view.*;
 import dto.CreatorToTitleDto;
+import dto.ExpenseCreationDto;
 import dto.ParticipantCreationDto;
+import dto.view.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -16,7 +16,6 @@ import server.repository.EventRepository;
 
 import java.time.LocalTime;
 import java.util.List;
-
 import java.util.stream.Collectors;
 
 @Service

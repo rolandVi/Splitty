@@ -673,6 +673,13 @@ public class ServerUtils {
         return null; // Tag not found
     }
 
+    /**
+     * Deletes the bank account of a participant
+     * @param participantId teh participant id
+     * @throws URISyntaxException if uri is incorrect
+     * @throws IOException if the endpoint is not accessible
+     * @throws InterruptedException if the request has been interrupted
+     */
     public void deleteBankAccountOf(long participantId) throws URISyntaxException,
             IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()

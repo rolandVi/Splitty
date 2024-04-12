@@ -94,7 +94,7 @@ public class NewParticipantCtrl{
      * Will show event overview when the goBack button is pressed
      */
     public void returnToEvent(){
-       mainCtrl.showEventDetails(mainCtrl.getEventID());
+        mainCtrl.showEventDetails(mainCtrl.getEventID());
         clearTextFields();
     }
 
@@ -113,6 +113,10 @@ public class NewParticipantCtrl{
         }
     }
 
+    /**
+     * Checks what keys have been pressed in the participant part
+     * @param e the key
+     */
     public void keyPressedParticipant(KeyEvent e){
         switch (e.getCode()) {
             case ENTER:

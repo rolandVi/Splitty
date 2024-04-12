@@ -102,6 +102,10 @@ public class ParticipantCtrl implements MultiLanguages {
         accountError.setVisible(false);
     }
 
+    /**
+     * If a key presses is pressed in the participant menu
+     * @param e the pressed key
+     */
     public void onKeyPressedParticipant(KeyEvent e) {
         switch (e.getCode()) {
             case ENTER:
@@ -113,6 +117,10 @@ public class ParticipantCtrl implements MultiLanguages {
         onKeyPressed(e);
     }
 
+    /**
+     * If a key is pressed in the account menu
+     * @param e the pressed key
+     */
     public void onKeyPressedAccount(KeyEvent e) {
         switch (e.getCode()) {
             case ENTER:
@@ -124,6 +132,10 @@ public class ParticipantCtrl implements MultiLanguages {
         onKeyPressed(e);
     }
 
+    /**
+     * If a key is pressed in the menu
+     * @param e the pressed key
+     */
     public void onKeyPressed(KeyEvent e) {
         switch (e.getCode()) {
             case ESCAPE:
@@ -189,6 +201,9 @@ public class ParticipantCtrl implements MultiLanguages {
         mainCtrl.showEventDetails(eventId);
     }
 
+    /**
+     * Deletes the bank account of teh current participant
+     */
     public void deleteBankAccount() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText("Delete bank account?");

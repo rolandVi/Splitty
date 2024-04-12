@@ -168,6 +168,10 @@ public class ParticipantService {
         return this.modelMapper.map(participantEntity, ParticipantNameDto.class);
     }
 
+    /**
+     * deletes the bank account of this participant
+     * @param userId the participant id;
+     */
     @Transactional
     public void deleteBankAccount(Long userId) {
         ParticipantEntity participant=this.participantRepository.findById(userId).orElseThrow(
