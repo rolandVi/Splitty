@@ -12,36 +12,37 @@
          </font>
       </Label>
 
-      <Label fx:id="participantsLabel" alignment="TOP_CENTER" layoutX="29.0" layoutY="138.0" text="Participants">
+      <Label fx:id="participantsLabel" alignment="TOP_CENTER" layoutX="29.0" layoutY="127.0" text="Participants">
 
          <font>
             <Font size="15.0" />
          </font>
       </Label>
 
-      <Label fx:id="expensesLabel" alignment="TOP_CENTER" layoutX="320.0" layoutY="138.0" text="Expenses">
+      <Label fx:id="expensesLabel" alignment="TOP_CENTER" layoutX="262.0" layoutY="131.0" text="Expenses">
 
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Button fx:id="addExpenseButton" layoutX="467.0" layoutY="136.0" mnemonicParsing="false" onAction="#addExpense" text="Add Expense" />
-      <Label fx:id="inviteCode" layoutX="28.0" layoutY="101.0" prefHeight="17.0" prefWidth="115.0" />
+      <Button fx:id="addExpenseButton" layoutX="324.0" layoutY="129.0" mnemonicParsing="false" onAction="#addExpense" text="Add Expense" />
+      <Label fx:id="inviteCode" layoutX="324.0" layoutY="63.0" prefHeight="17.0" prefWidth="115.0" />
       <TextField fx:id="changeTextField" layoutX="15.0" layoutY="59.0" promptText="Event name" />
       <Button fx:id="changeButton" layoutX="173.0" layoutY="59.0" mnemonicParsing="false" onAction="#changeEventName" text="Change" />
       <Button fx:id="returnButton" layoutX="534.0" layoutY="14.0" mnemonicParsing="false" onAction="#returnToOverview" text="Return" />
-      <Button fx:id="addParticipant" layoutX="145.0" layoutY="136.0" mnemonicParsing="false" onAction="#newParticipant" text="Add participant" />
-      <ListView fx:id="expenseList" layoutX="295.0" layoutY="236.0" prefHeight="139.0" prefWidth="268.0" />
-      <ScrollPane layoutX="29.0" layoutY="168.0" prefHeight="207.0" prefWidth="218.0">
+      <Button fx:id="addParticipant" layoutX="130.0" layoutY="125.0" mnemonicParsing="false" onAction="#newParticipant" text="Add participant" />
+      <ListView fx:id="expenseList" layoutX="262.0" layoutY="198.0" prefHeight="159.0" prefWidth="293.0" />
+      <ScrollPane layoutX="29.0" layoutY="168.0" prefHeight="194.0" prefWidth="202.0">
          <content>
-            <VBox fx:id="participantsContainer" prefHeight="204.0" prefWidth="212.0" />
+            <VBox fx:id="participantsContainer" prefHeight="193.0" prefWidth="199.0" />
          </content>
       </ScrollPane>
-      <Button fx:id="inviteBtn" layoutX="151.0" layoutY="97.0" mnemonicParsing="false" onAction="#copyInvite" text="Copy" />
-      <Button fx:id="sendInviteButton" layoutX="245.0" layoutY="27.0" mnemonicParsing="false" onAction="#sendInvite" text="Send Invite" />
-      <RadioButton fx:id="filterAllExpenses" layoutX="295.0" layoutY="208.0" mnemonicParsing="false" onAction="#loadExpenseList" prefHeight="17.0" prefWidth="75.0" text="All" />
-      <RadioButton fx:id="filterExpensesByDebtor" layoutX="467.0" layoutY="208.0" mnemonicParsing="false" onAction="#filterExpensesByDebtor" text="By Debtor" />
-      <RadioButton fx:id="filterExpensesByAuthor" layoutX="370.0" layoutY="208.0" mnemonicParsing="false" onAction="#filterExpensesByAuthor" text="By Author" />
-      <ComboBox fx:id="participantSelectionBox" layoutX="295.0" layoutY="168.0" prefWidth="150.0" promptText="Filter by participant" />
+      <Button fx:id="inviteBtn" layoutX="452.0" layoutY="59.0" mnemonicParsing="false" onAction="#copyInvite" text="Copy" />
+      <Button fx:id="sendInviteButton" layoutX="509.0" layoutY="59.0" mnemonicParsing="false" onAction="#sendInvite" text="Send Invite" />
+      <RadioButton fx:id="filterAllExpenses" layoutX="459.0" layoutY="133.0" mnemonicParsing="false" onAction="#loadExpenseList" prefHeight="17.0" prefWidth="75.0" text="All" />
+      <RadioButton fx:id="filterExpensesByDebtor" layoutX="459.0" layoutY="181.0" mnemonicParsing="false" onAction="#filterExpensesByDebtor" text="By Debtor" />
+      <RadioButton fx:id="filterExpensesByAuthor" layoutX="459.0" layoutY="157.0" mnemonicParsing="false" onAction="#filterExpensesByAuthor" text="By Author" />
+      <ComboBox fx:id="participantSelectionBox" layoutX="258.0" layoutY="165.0" prefWidth="150.0" promptText="Filter by participant" />
+      <Button fx:id="statsBtn" layoutX="495.0" layoutY="362.0" mnemonicParsing="false" onAction="#showStats" text="Statistics" />
    </children>
 </Pane>

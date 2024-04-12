@@ -69,8 +69,8 @@ class EventDetailsDtoTest {
     @Test
     void setExpenses() {
         Set<ExpenseDetailsDto> expenses = new HashSet<>();
-        expenses.add(new ExpenseDetailsDto(1L, 100.0, null, "Expense 1", new HashSet<>(), new Date()));
-        expenses.add(new ExpenseDetailsDto(2L, 200.0, null, "Expense 2", new HashSet<>(), new Date()));
+        expenses.add(new ExpenseDetailsDto(1L, 100.0, null, "Expense 1", new HashSet<>(), new Date(), null));
+        expenses.add(new ExpenseDetailsDto(2L, 200.0, null, "Expense 2", new HashSet<>(), new Date(), null));
 
         event.setExpenses(expenses);
 

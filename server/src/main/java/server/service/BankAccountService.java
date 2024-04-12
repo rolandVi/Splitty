@@ -6,7 +6,6 @@ import dto.view.BankAccountDto;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import server.exception.FieldValidationException;
 import server.exception.ObjectNotFoundException;
 import server.repository.BankAccountRepository;
 
@@ -74,10 +73,7 @@ public class BankAccountService {
      * @param bankAccountEntity the bank account information
      * @return BankAccountDto + id
      */
-    public BankAccountEntity createBankAccount(BankAccountCreationDto bankAccountEntity) {
-        if (this.ibanExists(bankAccountEntity.getIban())){
-            throw new FieldValidationException("Iban should be unique");
-        }
+    public BankAccountEntity createBankAccount(BankAccountEntity bankAccountEntity) {
         BankAccountEntity newEntity = this.modelMapper
                 .map(bankAccountEntity, BankAccountEntity.class);
         BankAccountEntity result = this.bankAccountRepository.save(newEntity);
@@ -102,10 +98,6 @@ public class BankAccountService {
     public BankAccountEntity editBankAccount(
             BankAccountEntity bankAccount,
             BankAccountCreationDto bankAccountCreationDto) {
-        if (!bankAccount.getIban().equals(bankAccountCreationDto.getIban())
-                && this.bankAccountRepository.existsByIban(bankAccountCreationDto.getIban())){
-            throw new FieldValidationException("Iban should be unique");
-        }
 
         bankAccount.setBic(bankAccountCreationDto.getBic());
         bankAccount.setIban(bankAccountCreationDto.getIban());

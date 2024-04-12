@@ -14,6 +14,7 @@ public class EventEntityTest {
     private EventEntity event;
     private ParticipantEntity user;
     private ExpenseEntity expense;
+    private TagEntity tag;
 
     @BeforeEach
     public void initEvent() {
@@ -25,7 +26,7 @@ public class EventEntityTest {
                 new EventEntity(), new BankAccountEntity());
 
         expense = new ExpenseEntity(11L, 420.69D, user, new HashSet<>(), "Title",
-                new Date(2024 -1900, Calendar.JANUARY, 24), event);
+                new Date(2024 -1900, Calendar.JANUARY, 24), event, tag);
 
         event = new EventEntity(1L, "test_invite_code",
                 "title", expenses, users, new Date(), new Date());

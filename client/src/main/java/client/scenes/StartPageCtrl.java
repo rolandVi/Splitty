@@ -57,6 +57,7 @@ public class StartPageCtrl implements MultiLanguages {
 
     /**
      * Updates the languages of all scenes (except admin)
+     * and sets the image such that the logo shows
      */
     public void initialize() {
         String locale = configManager.getProperty("language")

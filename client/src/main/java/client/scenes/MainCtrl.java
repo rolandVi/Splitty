@@ -61,8 +61,15 @@ public class MainCtrl {
     private Scene newExpensePage;
     private NewExpenseCtrl newExpenseCtrl;
 
+    private CustomTagCtrl customTagCtrl;
+    private Scene customTag;
+
+    private StatsCtrl statsCtrl;
+    private Scene statistics;
+
     private EventEmailCtrl eventEmailCtrl;
     private Scene eventEmail;
+
 
     private ServerUtils serverUtils;
 
@@ -85,7 +92,12 @@ public class MainCtrl {
         this.newParticipantCtrl = sceneInputWrapper.newParticipant().getKey();
         this.participantCtrl = sceneInputWrapper.participantPage().getKey();
         this.newExpenseCtrl = sceneInputWrapper.newExpensePage().getKey();
+
+
+        this.statsCtrl = sceneInputWrapper.stats().getKey();
+
         this.eventEmailCtrl = sceneInputWrapper.eventEmailPage().getKey();
+
 
         this.startPage = new Scene(sceneInputWrapper.startPage().getValue());
         this.eventOverview = new Scene(sceneInputWrapper.eventOverview().getValue());
@@ -93,8 +105,11 @@ public class MainCtrl {
         this.eventPage = new Scene(sceneInputWrapper.eventPage().getValue());
         this.eventCreationPage = new Scene(sceneInputWrapper.eventCreationPage().getValue());
         this.eventItemPage=new Scene(sceneInputWrapper.eventItemPage().getValue());
+        this.statistics = new Scene(sceneInputWrapper.stats().getValue());
 
         this.newExpensePage = new Scene(sceneInputWrapper.newExpensePage().getValue());
+
+
 
         this.eventOverview.getStylesheets().add(
                 Objects.requireNonNull(this.getClass().getClassLoader()
@@ -234,8 +249,18 @@ public class MainCtrl {
         primaryStage.setScene(participantEdit);
     }
 
+
     /**
-     * Shows the scene to send emails with the invite code
+     * Shows the statistics page
+     */
+    public void showStats(){
+        primaryStage.setTitle("stats page");
+        primaryStage.setScene(statistics);
+    }
+
+
+
+     /** Shows the scene to send emails with the invite code
      * @param inviteCode the invite code of the event to send
      */
     public void showEventEmail(String inviteCode) {
@@ -251,4 +276,10 @@ public class MainCtrl {
         primaryStage.setTitle("Event");
         primaryStage.setScene(eventPage);
     }
+
+
+    protected long getEventID(){
+        return eventCtrl.getEventDetailsDto().getId();
+    }
+
 }

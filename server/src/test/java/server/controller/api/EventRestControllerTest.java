@@ -1,5 +1,8 @@
 package server.controller.api;
 
+import commons.ExpenseEntity;
+import dto.CreatorToTitleDto;
+import dto.ParticipantCreationDto;
 import dto.view.EventDetailsDto;
 import dto.view.EventOverviewDto;
 import dto.view.EventTitleDto;
@@ -10,12 +13,15 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.context.request.async.DeferredResult;
+import server.exception.FieldValidationException;
 import server.service.EventService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class EventRestControllerTest {
@@ -121,7 +127,7 @@ class EventRestControllerTest {
     }
 
     @Test
-    void testCreateEvent() {
+    void testCreateEventRestore() {
         EventDetailsDto requestDto = new EventDetailsDto();
         EventDetailsDto expectedDto = new EventDetailsDto();
         when(eventService.saveEvent(requestDto)).thenReturn(expectedDto);
@@ -164,4 +170,83 @@ class EventRestControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         verify(eventService, times(1)).deleteParticipant(eventId, participantId);
     }
+
+    @Test
+    void testAddExpense() {
+        // Arrange
+        long eventId = 1L;
+        ExpenseEntity expense = new ExpenseEntity();
+
+        // Act
+        ResponseEntity<Void> response = eventRestController.addExpense(eventId, expense);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(eventService, times(1)).addExpense(expense);
+    }
+
+    @Test
+    void testGetUpdates() {
+        // Act
+        DeferredResult<ResponseEntity<EventOverviewDto>> response = eventRestController.getUpdates();
+
+        // Assert
+        assertNull(response.getResult());
+    }
+
+    @Test
+    void testAddParticipant() {
+        // Arrange
+        long eventId = 1L;
+        ParticipantCreationDto participant = new ParticipantCreationDto();
+        BindingResult result = mock(BindingResult.class);
+        when(result.hasErrors()).thenReturn(false);
+        ParticipantNameDto participantNameDto = new ParticipantNameDto();
+        participantNameDto.setId(1L);
+        participantNameDto.setFirstName("John");
+        participantNameDto.setLastName("Doe");
+        when(eventService.addParticipant(eventId, participant)).thenReturn(participantNameDto);
+
+        // Act
+        ResponseEntity<ParticipantNameDto> response = eventRestController.addParticipant(eventId, participant, result);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(participantNameDto, response.getBody());
+        verify(eventService, times(1)).addParticipant(eventId, participant);
+    }
+
+    @Test
+    void testAddParticipantFieldValidationException() {
+        // Arrange
+        long eventId = 1L;
+        ParticipantCreationDto participant = new ParticipantCreationDto();
+        BindingResult result = mock(BindingResult.class);
+        when(result.hasErrors()).thenReturn(true);
+
+        // Act and Assert
+        assertThrows(FieldValidationException.class, () -> {
+            eventRestController.addParticipant(eventId, participant, result);
+        });
+    }
+
+    @Test
+    void testCreateEvent() {
+        // Arrange
+        CreatorToTitleDto creatorToTitleDto = new CreatorToTitleDto();
+        EventDetailsDto createdEvent = new EventDetailsDto();
+
+        when(eventService.createEvent(creatorToTitleDto)).thenReturn(createdEvent);
+
+        // Act
+        ResponseEntity<EventDetailsDto> response = eventRestController.createEvent(creatorToTitleDto);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(createdEvent, response.getBody());
+
+        // Verify that createEvent was called with the correct argument
+        verify(eventService, times(1)).createEvent(creatorToTitleDto);
+    }
+
 }

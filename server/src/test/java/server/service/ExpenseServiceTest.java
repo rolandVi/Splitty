@@ -1,9 +1,13 @@
 package server.service;
 
+import commons.EventEntity;
 import commons.ExpenseEntity;
 import commons.ParticipantEntity;
+import commons.TagEntity;
 import dto.ExpenseCreationDto;
 import dto.view.ExpenseDetailsDto;
+import dto.view.ParticipantNameDto;
+import dto.view.TagDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -27,23 +31,27 @@ class ExpenseServiceTest {
     @Mock
     private EventService eventService;
     @Mock
+
     private ParticipantService userService;
+    @Mock
+    private TagService tagService;
 
     private ExpenseEntity expectedDto;
     private List<ExpenseEntity> expectedExpenses;
+
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         ModelMapper modelMapper = new ModelMapper();
 
-        expenseService = new ExpenseService(expenseRepository, modelMapper, userService, eventService);
+        expenseService = new ExpenseService(expenseRepository, modelMapper, userService, eventService, tagService);
 
         expectedDto = new ExpenseEntity(1L, 100.0, new ParticipantEntity(),
-                new HashSet<>(), "Expense Title", new Date(), null);
+                new HashSet<>(), "Expense Title", new Date(), null, null);
 
         ExpenseEntity requestDto = new ExpenseEntity(2L, 200.0, new ParticipantEntity(),
-                new HashSet<>(), "Another Expense Title", new Date(), null);
+                new HashSet<>(), "Another Expense Title", new Date(), null, null);
 
         expectedExpenses = new ArrayList<>(Arrays.asList(expectedDto, requestDto));
     }
@@ -182,24 +190,6 @@ class ExpenseServiceTest {
         // Assert
         verify(expenseRepository, times(1)).deleteById(expenseId);
     }
-//TODO write the test below
-//    @Test
-//    void updateExpense_WhenExpenseExists_ReturnsUpdatedExpenseDto() {
-//        // Arrange
-//        ExpenseDetailsDto expenseDto = new ExpenseDetailsDto();
-//        expenseDto.setId(1L);
-//        when(expenseService.existsById(expenseDto.getId())).thenReturn(true);
-//        ExpenseEntity entity = new ExpenseEntity(1L, 200.0, new UserEntity(),
-//                new HashSet<>(), "Another Expense Title", new Date(), null);
-//        when(expenseRepository.findById(expenseDto.getId())).thenReturn(Optional.of(entity));
-//        when(userService.findById(any())).thenReturn(new UserEntity());
-//        // Act
-//        ExpenseDetailsDto result = expenseService.updateExpense(expenseDto);
-//
-//        // Assert
-//        assertNotNull(result);
-//        assertEquals(expenseDto.getId(), result.getId());
-//    }
 
     @Test
     void updateExpense_WhenExpenseDoesNotExist_ThrowsObjectNotFoundException() {
@@ -215,7 +205,8 @@ class ExpenseServiceTest {
     @Test
     void createExpense_ReturnsCreatedExpenseDto() {
         // Arrange
-        ExpenseCreationDto expenseDto = new ExpenseCreationDto("Test", 10.0, 1L, new HashSet<>(), 1L, new Date());
+        ExpenseCreationDto expenseDto = new ExpenseCreationDto("Test", 10.0,
+                1L, new HashSet<>(Set.of(new ParticipantNameDto())), 1L, new Date(), new TagDto());
         ExpenseEntity expenseEntity = new ExpenseEntity();
         when(expenseRepository.save(any())).thenReturn(expenseEntity);
 
@@ -253,6 +244,129 @@ class ExpenseServiceTest {
     private ExpenseDetailsDto mapExpenseEntityToDto(ExpenseEntity expenseEntity) {
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(expenseEntity, ExpenseDetailsDto.class);
+    }
+
+    @Test
+    void getEntityById_WhenEntityExists_ReturnsEntity() {
+        // Arrange
+        long entityId = 1L;
+        when(expenseRepository.findById(entityId)).thenReturn(Optional.of(expectedDto));
+
+        // Act
+        ExpenseEntity result = expenseService.getEntityById(entityId);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(expectedDto, result);
+    }
+
+    @Test
+    void getEntityById_WhenEntityDoesNotExist_ThrowsObjectNotFoundException() {
+        // Arrange
+        long entityId = 1L;
+        when(expenseRepository.findById(entityId)).thenReturn(Optional.empty());
+
+        // Act and Assert
+        assertThrows(ObjectNotFoundException.class, () -> expenseService.getEntityById(entityId));
+    }
+
+    @Test
+    void updateExpense_WhenExpenseExists_ReturnsUpdatedExpenseDto() {
+        // Arrange
+        ExpenseDetailsDto expenseDto = new ExpenseDetailsDto();
+        expenseDto.setId(1L);
+        expenseDto.setAuthor(new ParticipantNameDto(1L, "", "", ""));
+        expenseDto.setDebtors(new HashSet<>(Set.of(new ParticipantNameDto())));
+        expenseDto.setTag(new TagDto(1L, "", ""));
+        when(expenseService.existsById(expenseDto.getId())).thenReturn(true);
+        ExpenseEntity entity = new ExpenseEntity(1L, 200.0,
+                new ParticipantEntity(1L, "", "", "", null, null),
+                new HashSet<>(Set.of(new ParticipantEntity())), "Another Expense Title", new Date(),
+                new EventEntity(), new TagEntity("", ""));
+        when(expenseRepository.findById(expenseDto.getId())).thenReturn(Optional.of(entity));
+        when(expenseRepository.save(any())).thenReturn(entity);
+        when(userService.findById(any())).thenReturn(new ParticipantEntity());
+        when(userService.findById(1L)).thenReturn(
+                new ParticipantEntity(1L, "", "", "", null, null));
+        when(tagService.findById(anyLong())).thenReturn(new TagEntity("", ""));
+
+        // Act
+        ExpenseDetailsDto result = expenseService.updateExpense(expenseDto);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(expenseDto.getId(), result.getId());
+    }
+
+    @Test
+    void findExpenseEntityById_WhenExpenseExists_ReturnsExpenseEntity() {
+        // Arrange
+        long expenseId = 1L;
+        when(expenseRepository.findById(expenseId)).thenReturn(Optional.of(expectedDto));
+
+        // Act
+        ExpenseEntity result = expenseService.findExpenseEntityById(expenseId);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(expectedDto, result);
+    }
+
+    @Test
+    void findExpenseEntityById_WhenExpenseDoesNotExist_ThrowsObjectNotFoundException() {
+        // Arrange
+        long expenseId = 1L;
+        when(expenseRepository.findById(expenseId)).thenReturn(Optional.empty());
+
+        // Act and Assert
+        assertThrows(ObjectNotFoundException.class, () -> expenseService.findExpenseEntityById(expenseId));
+    }
+
+    @Test
+    void payDebt_WhenExpenseExists_PaysDebt() {
+        // Arrange
+        long expenseId = 1L;
+        ExpenseEntity expenseEntity = new ExpenseEntity();
+        expenseEntity.setMoney(100.111);
+        expenseEntity.setDebtors(new HashSet<>(Set.of(new ParticipantEntity(),
+                new ParticipantEntity(1L, "", "", "", null, null))));
+        when(expenseRepository.findById(expenseId)).thenReturn(Optional.of(expenseEntity));
+
+        // Act
+        double res = expenseService.payDebt(expenseEntity, new ParticipantEntity(), new ParticipantEntity());
+
+        // Assert
+        verify(expenseRepository, times(1)).save(expenseEntity);
+    }
+
+    @Test
+    void resetDebt_WhenExpenseExists_ResetsDebt() {
+        // Arrange
+        long expenseId = 1L;
+        ExpenseEntity expenseEntity = new ExpenseEntity();
+        expenseEntity.setMoney(100.111);
+        expenseEntity.setDebtors(new HashSet<>(Set.of(new ParticipantEntity(),
+                new ParticipantEntity(1L, "", "", "", null, null))));
+        when(expenseRepository.findById(expenseId)).thenReturn(Optional.of(expenseEntity));
+
+        // Act
+        expenseService.resetDebt(expenseEntity, new ParticipantEntity(), new ParticipantEntity());
+
+        // Assert
+        verify(expenseRepository, times(1)).save(expenseEntity);
+    }
+
+    @Test
+    void roundToNDecimalsTest() {
+        // Arrange
+        double number = 12.3456789;
+        int decimals = 2;
+
+        // Act
+        double result = expenseService.roundToNDecimals(number, decimals);
+
+        // Assert
+        assertEquals(12.35, result);
     }
 
 }

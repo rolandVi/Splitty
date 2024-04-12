@@ -3,6 +3,7 @@ package server.service;
 import commons.EventEntity;
 import commons.ExpenseEntity;
 import commons.ParticipantEntity;
+import commons.TagEntity;
 import dto.CreatorToTitleDto;
 import dto.ParticipantCreationDto;
 import dto.view.EventDetailsDto;
@@ -298,7 +299,7 @@ class EventServiceTest {
     void testAddExpense() {
         // Mocking an ExpenseEntity and an EventEntity
         ExpenseEntity mockExpense = new ExpenseEntity(1L, 1.1, new ParticipantEntity(), new HashSet<>(),
-                "", new Date(), new EventEntity());
+                "", new Date(), new EventEntity(), new TagEntity());
 
         EventEntity mockEvent = new EventEntity(1L, "", "",
                 new HashSet<>(), new HashSet<>(), new Date(), new Date());

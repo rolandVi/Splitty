@@ -53,6 +53,26 @@ class ParticipantRestControllerTest {
         assertSame(HttpStatus.OK, response.getStatusCode());
     }
 
+    @Test
+    public void testUserExists_UserExists_ReturnsNotFound() {
+        // Arrange
+        ParticipantNameDto user = new ParticipantNameDto();
+        user.setId(1L);
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        when(participantService.existsById(anyLong())).thenReturn(true);
+        when(participantService.findById(anyLong())).thenReturn(new ParticipantEntity());
+
+        // Act
+        ParticipantRestController controller = new ParticipantRestController(participantService);
+        ResponseEntity<Void> response = controller.userExists(user);
+
+        // Assert
+        verify(participantService).existsById(1L);
+        verify(participantService).findById(1L);
+        assertSame(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
     // Test for createBankAccount endpoint
     @Test
     public void testCreateBankAccount_ValidInput_ReturnsOk() {
@@ -116,5 +136,23 @@ class ParticipantRestControllerTest {
         // Assert
         verify(participantService).existsById(1L);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    void editParticipant_ValidInput_ReturnsOk() {
+        // Arrange
+        ParticipantNameDto participantNameDto = new ParticipantNameDto();
+        participantNameDto.setId(1L);
+        participantNameDto.setFirstName("Jane");
+        participantNameDto.setLastName("Smith");
+        when(participantService.editParticipant(any(), anyLong())).thenReturn(participantNameDto);
+
+        // Act
+        ResponseEntity<ParticipantNameDto> response = controller.editParticipant(1L, participantNameDto);
+
+        // Assert
+        verify(participantService).editParticipant(eq(participantNameDto), eq(1L));
+        assertSame(HttpStatus.OK, response.getStatusCode());
+        assertEquals(participantNameDto, response.getBody());
     }
 }

@@ -243,7 +243,7 @@ public class EventService {
     /**
      * Deletes a participant of an event
      * @param eventId the eventId
-     * @param participantId
+     * @param participantId the participantId
      */
     @Transactional
     public void deleteParticipant(Long eventId, Long participantId) {
@@ -261,5 +261,18 @@ public class EventService {
                         .orElse(new EventEntity()),
                 EventDetailsDto.class
         );
+    }
+
+    /**
+     * Get all expenses for a specific event.
+     *
+     * @param eventId The ID of the event.
+     * @return List of expense details for the event.
+     */
+    public List<ExpenseDetailsDto> getAllExpensesForEvent(long eventId) {
+        EventEntity event = findEntityById(eventId);
+        return event.getExpenses().stream()
+                .map(expense -> modelMapper.map(expense, ExpenseDetailsDto.class))
+                .collect(Collectors.toList());
     }
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StatsCtrl">
+   <children>
+      <VBox alignment="TOP_CENTER" layoutX="270.0" layoutY="47.0" prefHeight="306.0" prefWidth="302.0">
+         <children>
+            <Label text="What you spend your money on">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <PieChart fx:id="pieChart" prefHeight="277.0" prefWidth="285.0" />
+         </children>
+      </VBox>
+      <VBox alignment="TOP_CENTER" layoutX="23.0" layoutY="47.0" prefHeight="200.0" prefWidth="218.0" spacing="30.0">
+         <children>
+            <Label text="Your total sum of expenses">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Text fx:id="totalSum" strokeType="OUTSIDE" strokeWidth="0.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+         </children>
+      </VBox>
+      <Button fx:id="backBtn" layoutX="528.0" layoutY="14.0" mnemonicParsing="false" onAction="#retToEventOverview" text="return" />
+   </children>
+</AnchorPane>
