@@ -213,6 +213,10 @@ public class NewExpenseCtrl {
         String title = titleField.getText();
         try {
             double amount = Double.parseDouble(amountField.getText());
+            if (amount<0){
+                this.errorField.setText("Enter a valid amount");
+                errorField.setOpacity(1);
+            }
             ParticipantNameDto author = authorBox.getValue();
             for (int i = 0; i < debtorsCheckList.getItems().size(); i++) {
                 if (debtorsCheckList.getSelectionModel().isSelected(i)) {

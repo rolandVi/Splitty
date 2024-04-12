@@ -19,6 +19,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class EventOverviewCtrl implements MultiLanguages {
     private final MainCtrl mainCtrl;
@@ -126,7 +127,10 @@ public class EventOverviewCtrl implements MultiLanguages {
      * Loads the events and displays them on the page
      */
     public void loadEvents() {
-        List<EventOverviewDto> events = this.serverUtils.getAllEvents();
+        List<EventOverviewDto> events = this.serverUtils.getAllEvents()
+                .stream()
+                .sorted((e1, e2) -> e2.getLastModifiedDate().compareTo(e1.getLastModifiedDate()))
+                .toList();
         Node[] nodes=new Node[events.size()];
 
 

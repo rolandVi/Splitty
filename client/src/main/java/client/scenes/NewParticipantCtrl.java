@@ -10,13 +10,14 @@ import dto.view.ParticipantNameDto;
 import jakarta.ws.rs.core.Response;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
 import java.net.http.HttpResponse;
 import java.util.Optional;
 
-public class NewParticipantCtrl {
+public class NewParticipantCtrl{
     private final MainCtrl mainCtrl;
 
     @FXML
@@ -33,6 +34,8 @@ public class NewParticipantCtrl {
     public Button goBackButton;
     @FXML
     public Button addButton;
+    @FXML
+    public Label errorMessage;
 
     private final ServerUtils serverUtils;
 
@@ -53,6 +56,11 @@ public class NewParticipantCtrl {
      * Lastly show the event again.
      */
     public void addParticipant(){
+        if (firstNameField.getText().isBlank() || surNameField.getText().isBlank()){
+            this.errorMessage.setVisible(true);
+            return;
+        }
+
         HttpResponse<String> response = createUser().get();
         ObjectMapper o = new ObjectMapper();
         long participantId;
@@ -62,7 +70,10 @@ public class NewParticipantCtrl {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        createBankAccount(participantId);
+
+        if (!ibanField.getText().isBlank() && !bicField.getText().isBlank()) {
+            createBankAccount(participantId);
+        }
         showEvent();
         clearTextFields();
     }
@@ -76,13 +87,14 @@ public class NewParticipantCtrl {
         emailField.setText("");
         ibanField.setText("");
         bicField.setText("");
+        errorMessage.setVisible(false);
     }
 
     /**
      * Will show event overview when the goBack button is pressed
      */
-    public void returnToOverview(){
-        mainCtrl.showOverview();
+    public void returnToEvent(){
+       mainCtrl.showEventDetails(mainCtrl.getEventID());
         clearTextFields();
     }
 
@@ -93,12 +105,23 @@ public class NewParticipantCtrl {
      */
     public void keyPressed(KeyEvent e) {
         switch (e.getCode()) {
-            case BACK_SPACE:
-                returnToOverview();
+            case ESCAPE:
+                returnToEvent();
                 break;
             default:
                 break;
         }
+    }
+
+    public void keyPressedParticipant(KeyEvent e){
+        switch (e.getCode()) {
+            case ENTER:
+                addParticipant();
+                break;
+            default:
+                break;
+        }
+        keyPressed(e);
     }
 
     /**
@@ -165,5 +188,4 @@ public class NewParticipantCtrl {
                 .setIban(iban)
                 .setBic(bic);
     }
-
 }

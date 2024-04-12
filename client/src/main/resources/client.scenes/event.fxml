@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EventCtrl">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#keyPressed" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EventCtrl">
    <children>
       <Label fx:id="eventNameLabel" alignment="TOP_CENTER" layoutX="14.0" layoutY="14.0" text="[EVENT_NAME]" textAlignment="CENTER">
          <font>
@@ -25,24 +25,24 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <Button fx:id="addExpenseButton" layoutX="324.0" layoutY="129.0" mnemonicParsing="false" onAction="#addExpense" text="Add Expense" />
-      <Label fx:id="inviteCode" layoutX="324.0" layoutY="63.0" prefHeight="17.0" prefWidth="115.0" />
-      <TextField fx:id="changeTextField" layoutX="15.0" layoutY="59.0" promptText="Event name" />
       <Button fx:id="changeButton" layoutX="173.0" layoutY="59.0" mnemonicParsing="false" onAction="#changeEventName" text="Change" />
-      <Button fx:id="returnButton" layoutX="534.0" layoutY="14.0" mnemonicParsing="false" onAction="#returnToOverview" text="Return" />
+      <Label fx:id="inviteCode" layoutX="258.0" layoutY="63.0" onKeyPressed="#triggerNameChange" prefHeight="17.0" prefWidth="117.0" />
+      <Button fx:id="inviteBtn" layoutX="386.0" layoutY="59.0" mnemonicParsing="false" onAction="#copyInvite" text="Copy" />
+      <Button fx:id="sendInviteButton" layoutX="457.0" layoutY="59.0" mnemonicParsing="false" onAction="#sendInvite" text="Send Invite" />
+      <TextField fx:id="changeTextField" layoutX="15.0" layoutY="59.0" promptText="Event name" />
       <Button fx:id="addParticipant" layoutX="130.0" layoutY="125.0" mnemonicParsing="false" onAction="#newParticipant" text="Add participant" />
-      <ListView fx:id="expenseList" layoutX="262.0" layoutY="198.0" prefHeight="159.0" prefWidth="293.0" />
+      <Button fx:id="addExpenseButton" layoutX="324.0" layoutY="129.0" mnemonicParsing="false" onAction="#addExpense" text="Add Expense" />
+      <ListView fx:id="expenseList" layoutX="262.0" layoutY="198.0" prefHeight="159.0" prefWidth="314.0" />
+      <RadioButton fx:id="filterAllExpenses" layoutX="459.0" layoutY="133.0" mnemonicParsing="false" onAction="#loadExpenseList" prefHeight="17.0" prefWidth="75.0" text="All" />
+      <RadioButton fx:id="filterExpensesByAuthor" layoutX="459.0" layoutY="157.0" mnemonicParsing="false" onAction="#filterExpensesByAuthor" text="By Author" />
+      <RadioButton fx:id="filterExpensesByDebtor" layoutX="459.0" layoutY="181.0" mnemonicParsing="false" onAction="#filterExpensesByDebtor" text="By Debtor" />
+      <ComboBox fx:id="participantSelectionBox" layoutX="258.0" layoutY="165.0" prefWidth="150.0" promptText="Filter by participant" />
+      <Button fx:id="statsBtn" layoutX="495.0" layoutY="362.0" mnemonicParsing="false" onAction="#showStats" text="Statistics" />
+      <Button fx:id="returnButton" layoutX="534.0" layoutY="14.0" mnemonicParsing="false" onAction="#returnToOverview" text="Return" />
       <ScrollPane layoutX="29.0" layoutY="168.0" prefHeight="194.0" prefWidth="202.0">
          <content>
             <VBox fx:id="participantsContainer" prefHeight="193.0" prefWidth="199.0" />
          </content>
       </ScrollPane>
-      <Button fx:id="inviteBtn" layoutX="452.0" layoutY="59.0" mnemonicParsing="false" onAction="#copyInvite" text="Copy" />
-      <Button fx:id="sendInviteButton" layoutX="509.0" layoutY="59.0" mnemonicParsing="false" onAction="#sendInvite" text="Send Invite" />
-      <RadioButton fx:id="filterAllExpenses" layoutX="459.0" layoutY="133.0" mnemonicParsing="false" onAction="#loadExpenseList" prefHeight="17.0" prefWidth="75.0" text="All" />
-      <RadioButton fx:id="filterExpensesByDebtor" layoutX="459.0" layoutY="181.0" mnemonicParsing="false" onAction="#filterExpensesByDebtor" text="By Debtor" />
-      <RadioButton fx:id="filterExpensesByAuthor" layoutX="459.0" layoutY="157.0" mnemonicParsing="false" onAction="#filterExpensesByAuthor" text="By Author" />
-      <ComboBox fx:id="participantSelectionBox" layoutX="258.0" layoutY="165.0" prefWidth="150.0" promptText="Filter by participant" />
-      <Button fx:id="statsBtn" layoutX="495.0" layoutY="362.0" mnemonicParsing="false" onAction="#showStats" text="Statistics" />
    </children>
 </Pane>

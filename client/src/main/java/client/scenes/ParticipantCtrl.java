@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 
 import java.util.ResourceBundle;
 
@@ -49,6 +50,13 @@ public class ParticipantCtrl implements MultiLanguages{
     @FXML
     private TextField bicTextField;
 
+    @FXML
+    private Label participantError;
+    @FXML
+    private Label accountError;
+    @FXML
+    private Button bankDeleteBtn;
+
 
     /**
      * Injector for Participant Controller
@@ -64,7 +72,7 @@ public class ParticipantCtrl implements MultiLanguages{
     /**
      * Returns to the Event details scene
      */
-    public void returnToOverview(){
+    public void returnToEvent(){
         mainCtrl.showEventDetails(eventId);
     }
 
@@ -83,11 +91,45 @@ public class ParticipantCtrl implements MultiLanguages{
         firstNameTextField.setText(participant.getFirstName());
         lastNameTextField.setText(participant.getLastName());
         emailTextField.setText(participant.getEmail());
+        participantError.setVisible(false);
 
         String url = mainCtrl.configManager.getProperty("serverURL");
         BankAccountDto bank = serverUtils.findBankDetails(parID, url);
         ibanTextField.setText(bank.getIban());
         bicTextField.setText(bank.getBic());
+        accountError.setVisible(false);
+    }
+
+    public void onKeyPressedParticipant(KeyEvent e){
+        switch (e.getCode()) {
+            case ENTER:
+                updateParticipant();
+                break;
+            default:
+                break;
+        }
+        onKeyPressed(e);
+    }
+
+    public void onKeyPressedAccount(KeyEvent e){
+        switch (e.getCode()) {
+            case ENTER:
+                updateBank();
+                break;
+            default:
+                break;
+        }
+        onKeyPressed(e);
+    }
+
+    public void onKeyPressed(KeyEvent e){
+        switch (e.getCode()) {
+            case ESCAPE:
+                returnToEvent();
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -103,6 +145,10 @@ public class ParticipantCtrl implements MultiLanguages{
      */
     public void updateParticipant() {
         String url = mainCtrl.configManager.getProperty("serverURL");
+        if (firstNameLabel.getText().trim().isBlank() || lastNameLabel.getText().trim().isBlank()){
+            this.participantError.setVisible(true);
+            return;
+        }
         serverUtils.editParticipant(getParticipantEntity(), url);
         mainCtrl.showEventDetails(eventId);
     }
@@ -123,6 +169,12 @@ public class ParticipantCtrl implements MultiLanguages{
      */
     public void updateBank() {
         String url = mainCtrl.configManager.getProperty("serverURL");
+        if (ibanTextField.getText()==null || bicTextField.getText()==null
+                || ibanTextField.getText().trim().isBlank()
+                || bicTextField.getText().trim().isBlank()){
+            this.accountError.setVisible(true);
+            return;
+        }
         serverUtils.editBankAccount(participantId, getBankEntity(), url);
         mainCtrl.showEventDetails(eventId);
     }
