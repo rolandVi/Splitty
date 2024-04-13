@@ -140,7 +140,6 @@ public class NewParticipantCtrl{
      * @return HTTP response from the server
      */
     public Optional<HttpResponse<String>> createUser() {
-        String url = mainCtrl.configManager.getProperty("serverURL");
         // Prepare user data from text fields
         ParticipantCreationDto user = getUserEntity();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -151,7 +150,7 @@ public class NewParticipantCtrl{
             throw new RuntimeException(e);
         }
 
-        return serverUtils.createUser(url, requestBody, mainCtrl.getEventID());
+        return serverUtils.createUser(requestBody, mainCtrl.getEventID());
     }
 
     /**
@@ -177,9 +176,8 @@ public class NewParticipantCtrl{
      * @return HTTP response
      */
     public Response createBankAccount(long userId) {
-        String url = mainCtrl.configManager.getProperty("serverURL");
         BankAccountCreationDto bank = getBankEntity();
-        return serverUtils.createBankAccount(userId, bank, url);
+        return serverUtils.createBankAccount(userId, bank);
     }
     /**
      * Retrieve the filled in data of the textFields and create a dto

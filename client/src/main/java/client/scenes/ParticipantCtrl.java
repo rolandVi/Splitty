@@ -96,7 +96,7 @@ public class ParticipantCtrl implements MultiLanguages {
         participantError.setVisible(false);
 
         String url = mainCtrl.configManager.getProperty("serverURL");
-        BankAccountDto bank = serverUtils.findBankDetails(parID, url);
+        BankAccountDto bank = serverUtils.findBankDetails(parID);
         ibanTextField.setText(bank.getIban());
         bicTextField.setText(bank.getBic());
         accountError.setVisible(false);
@@ -165,12 +165,11 @@ public class ParticipantCtrl implements MultiLanguages {
      * Update the participant of the event using method in ServerUtils
      */
     public void updateParticipant() {
-        String url = mainCtrl.configManager.getProperty("serverURL");
         if (firstNameLabel.getText().trim().isBlank() || lastNameLabel.getText().trim().isBlank()) {
             this.participantError.setVisible(true);
             return;
         }
-        serverUtils.editParticipant(getParticipantEntity(), url);
+        serverUtils.editParticipant(getParticipantEntity());
         mainCtrl.showEventDetails(eventId);
     }
 
@@ -190,14 +189,13 @@ public class ParticipantCtrl implements MultiLanguages {
      * Update the bank info of the participant
      */
     public void updateBank() {
-        String url = mainCtrl.configManager.getProperty("serverURL");
         if (ibanTextField.getText() == null || bicTextField.getText() == null
                 || ibanTextField.getText().trim().isBlank()
                 || bicTextField.getText().trim().isBlank()) {
             this.accountError.setVisible(true);
             return;
         }
-        serverUtils.editBankAccount(participantId, getBankEntity(), url);
+        serverUtils.editBankAccount(participantId, getBankEntity());
         mainCtrl.showEventDetails(eventId);
     }
 

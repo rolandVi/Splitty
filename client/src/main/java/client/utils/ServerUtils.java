@@ -1,6 +1,7 @@
 package client.utils;
 
 
+import client.scenes.MainCtrl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
@@ -11,11 +12,13 @@ import dto.CreatorToTitleDto;
 import dto.ExpenseCreationDto;
 import dto.exceptions.PasswordExpiredException;
 import dto.view.*;
+import jakarta.ws.rs.ProcessingException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import javafx.scene.control.Alert;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
@@ -43,19 +46,22 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class ServerUtils {
 
-    private static final String SERVER = "http://localhost:8080/";
+    private String SERVER = "http://localhost:8080/";
     private StompSession session;
 
     private final Client client;
 
+    private MainCtrl mainCtrl;
+
     /**
      * Constructor injection
      * @param client - instance of Client
+     * @param mainCtrl - the mainCtrl
      */
     @Inject
-    public ServerUtils(Client client){
+    public ServerUtils(Client client, MainCtrl mainCtrl){
         this.client=client;
-        session = connect("ws://localhost:8080/websocket");
+        this.mainCtrl=mainCtrl;
     }
 
     /**
@@ -68,12 +74,30 @@ public class ServerUtils {
         session = stompSession;
     }
 
+
+    /**
+     * Setter for the server
+     * @param serverInserted teh new server
+     */
+    public void setServer(String serverInserted) {
+        this.SERVER=serverInserted;
+    }
+
+    /**
+     * Setter for the session
+     * @param connect the new session
+     */
+    public void setSession(StompSession connect) {
+        this.session=connect;
+    }
+
     /**
      * Validates password
      * @param p - password entered
      * @return - boolean whether password is correct
      */
     public Boolean validatePassword(String p) throws PasswordExpiredException {
+        testConnection(SERVER);
         if (p.isEmpty()) throw new PasswordExpiredException("Password cannot be empty");
 
         Response response = client.target(SERVER).path("api/password/validatePassword")
@@ -96,6 +120,7 @@ public class ServerUtils {
      * Generates new password
      */
     public void generatePassword(){
+        testConnection(SERVER);
         client.target(SERVER).path("api/password/generatePassword")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
@@ -109,6 +134,7 @@ public class ServerUtils {
      * @return HTTP response from the server
      */
     public EventDetailsDto createEvent(CreatorToTitleDto creatorToTitleDto){
+        testConnection(SERVER);
         return client.target(SERVER).path("api/events/")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
@@ -121,7 +147,7 @@ public class ServerUtils {
      * @param url The URL of the endpoint
      * @return A StompSession object
      */
-    private StompSession connect(String url) {
+    public StompSession connect(String url) {
         StandardWebSocketClient client = new StandardWebSocketClient();
         WebSocketStompClient stomp = new WebSocketStompClient(client);
         stomp.setMessageConverter(new MappingJackson2MessageConverter());
@@ -173,6 +199,7 @@ public class ServerUtils {
      * turn the EventTitleDto into Json format string
      */
     public void changeEventName(long id, String newEventName) throws JsonProcessingException {
+        testConnection(SERVER);
         // Create HTTP request body
         ObjectMapper objectMapper = new ObjectMapper();
         EventTitleDto eventTitleDto = new EventTitleDto(newEventName);
@@ -234,6 +261,7 @@ public class ServerUtils {
      * @return the event details
      */
     public EventDetailsDto getEventDetails(long id) {
+        testConnection(SERVER);
         return client
                 .target(SERVER).path("/api/events/" + id)
                 .request(MediaType.APPLICATION_JSON)
@@ -246,6 +274,7 @@ public class ServerUtils {
      * @return all events
      */
     public List<EventOverviewDto> getAllEvents() {
+        testConnection(SERVER);
         return client
                 .target(SERVER).path("/api/events")
                 .request(APPLICATION_JSON)
@@ -336,15 +365,13 @@ public class ServerUtils {
      *
      * @param userId      the user id
      * @param requestBody The request body
-     * @param url         The url
      * @return the response of the request
      */
     public Response createBankAccount(Long userId,
-                                      BankAccountCreationDto requestBody,
-                                      String url) {
+                                      BankAccountCreationDto requestBody) {
 
         return client
-                .target(url).path("/api/participants/" + userId + "/account")
+                .target(SERVER).path("/api/participants/" + userId + "/account")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(requestBody, APPLICATION_JSON));
@@ -352,15 +379,15 @@ public class ServerUtils {
 
     /**
      * Creates the user
-     * @param url The url
      * @param requestBody The request body (ParticipantCreationDto)
      * @param eventID The id of the event where the participant belongs to
      * @return The response
      */
-    public Optional<HttpResponse<String>> createUser(String url, String requestBody, long eventID) {
+    public Optional<HttpResponse<String>> createUser(String requestBody, long eventID) {
+        testConnection(SERVER);
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .uri(URI.create(url + "/api/events/" + eventID + "/participants"))
+                .uri(URI.create(SERVER + "/api/events/" + eventID + "/participants"))
                 .header("Content-Type", "application/json")
                 .build();
 
@@ -426,11 +453,10 @@ public class ServerUtils {
     /**
      * Retreives the bank details of the current user
      * @param userID teh current user id
-     * @param serverURL the server url
      * @return the bank details
      */
-    public BankAccountDto findBankDetails(long userID, String serverURL) {
-        return client.target(serverURL)
+    public BankAccountDto findBankDetails(long userID) {
+        return client.target(SERVER)
                 .path("/api/participants/" + userID + "/account")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
@@ -441,12 +467,10 @@ public class ServerUtils {
      * Edits the bank account details of the current user
      * @param userId the user id
      * @param bankAccount the bank account
-     * @param url the url of the server
      * @return  the response from the server
      */
     public Optional<HttpResponse<String>> editBankAccount(Long userId,
-                                                          BankAccountCreationDto bankAccount,
-                                                          String url) {
+                                                          BankAccountCreationDto bankAccount) {
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody;
         try {
@@ -457,7 +481,7 @@ public class ServerUtils {
 
         // Create HTTP request
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/api/participants/" + userId + "/account"))
+                .uri(URI.create(SERVER + "/api/participants/" + userId + "/account"))
                 .header("Content-Type", "application/json")
                 .method("PATCH", HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
@@ -511,9 +535,8 @@ public class ServerUtils {
     /**
      * Edits the information of participant on the server using HTTP request
      * @param participantNameDto the new information of the participant
-     * @param url the url of the server
      */
-    public void editParticipant(ParticipantNameDto participantNameDto, String url) {
+    public void editParticipant(ParticipantNameDto participantNameDto) {
         // Create HTTP request body
         ObjectMapper objectMapper = new ObjectMapper();
         String requestBody = null;
@@ -525,7 +548,7 @@ public class ServerUtils {
 
         // Create HTTP request
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "/api/participants/" + participantNameDto.getId()))
+                .uri(URI.create(SERVER + "/api/participants/" + participantNameDto.getId()))
                 .header("Content-Type", "application/json")
                 .method("PATCH", HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
@@ -638,13 +661,23 @@ public class ServerUtils {
     /**
      * Tests the connection to the server with the given url
      * @param url the url of the server
+     * @return whether the request was successful
      */
-    public void testConnection(String url)  {
-        client
-                .target(url).path("/api/events/connect")
-                .request(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .get();
+    public boolean testConnection(String url) {
+        try {
+            client
+                    .target(url).path("/api/events/connect")
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .get();
+            return true;
+        }catch (ProcessingException ex){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Server error");
+            alert.setContentText("The server is not available");
+            alert.showAndWait().ifPresent(response -> this.mainCtrl.showStart());
+            return false;
+        }
     }
 
     /**
@@ -698,4 +731,5 @@ public class ServerUtils {
                     + response.statusCode());
         }
     }
+
 }
