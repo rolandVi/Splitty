@@ -165,7 +165,8 @@ public class ParticipantCtrl implements MultiLanguages {
      * Update the participant of the event using method in ServerUtils
      */
     public void updateParticipant() {
-        if (firstNameTextField.getText().trim().isBlank() || lastNameTextField.getText().trim().isBlank()) {
+        if (firstNameTextField.getText().trim().isBlank()
+                || lastNameTextField.getText().trim().isBlank()) {
             this.participantError.setVisible(true);
             return;
         }

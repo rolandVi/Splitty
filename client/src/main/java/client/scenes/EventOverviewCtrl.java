@@ -54,16 +54,22 @@ public class EventOverviewCtrl implements MultiLanguages {
     @FXML
     private Label inviteCodeLabel;
 
+    private final NewExpenseCtrl newExpenseCtrl;
+
 
     /**
      * Injector for EventOverviewCtrl
-     * @param mainCtrl The Main Controller
-     * @param serverUtils the server utilities
+     *
+     * @param mainCtrl       The Main Controller
+     * @param serverUtils    the server utilities
+     * @param newExpenseCtrl new expense controller
      */
     @Inject
-    public EventOverviewCtrl(MainCtrl mainCtrl, ServerUtils serverUtils){
+    public EventOverviewCtrl(MainCtrl mainCtrl, ServerUtils serverUtils,
+                             NewExpenseCtrl newExpenseCtrl){
         this.mainCtrl = mainCtrl;
         this.serverUtils=serverUtils;
+        this.newExpenseCtrl = newExpenseCtrl;
     }
 
     /**
@@ -173,6 +179,7 @@ public class EventOverviewCtrl implements MultiLanguages {
         }
 
         this.mainCtrl.showEventDetails(event.getId());
+        newExpenseCtrl.init(event);
         this.inviteCodeTextField.setText("");
     }
 
