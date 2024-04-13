@@ -78,6 +78,7 @@ public class EventCreationCtrl implements MultiLanguages{
             creatorFirstNameTextField.setPromptText(lang.getString("first_name_placeholder"));
             creatorLastNameTextField.setPromptText(lang.getString("last_name_placeholder"));
             creatorEmailTextField.setPromptText(lang.getString("email_placeholder"));
+            errorMessage.setText(lang.getString("event_creation_error"));
         } catch (Exception e) {
             throw new RuntimeException();
         }

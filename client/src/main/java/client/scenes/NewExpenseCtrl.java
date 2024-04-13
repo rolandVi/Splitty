@@ -22,7 +22,7 @@ import javafx.util.StringConverter;
 import java.util.*;
 
 
-public class NewExpenseCtrl {
+public class NewExpenseCtrl implements MultiLanguages{
     private final MainCtrl mainCtrl;
 
     private final ServerUtils serverUtils;
@@ -48,6 +48,21 @@ public class NewExpenseCtrl {
     public Button addExpenseButton;
     @FXML
     public Text errorField;
+
+    @FXML
+    public ToggleButton splitEquallyButton;
+
+    @FXML
+    public Label tagLabel;
+    @FXML
+    public Label titleLabel;
+    @FXML
+    public Label amountLabel;
+    @FXML
+    public Label paidLabel;
+
+    @FXML
+    public Button newTag;
 
     private List<CheckBox> debtorsCheckBoxes;
 
@@ -214,7 +229,6 @@ public class NewExpenseCtrl {
         try {
             double amount = Double.parseDouble(amountField.getText());
             if (amount<0){
-                this.errorField.setText("Enter a valid amount");
                 errorField.setOpacity(1);
             }
             ParticipantNameDto author = authorBox.getValue();
@@ -241,7 +255,6 @@ public class NewExpenseCtrl {
                 mainCtrl.showEventDetails(parentEvent.getId());
             });
         } catch (NumberFormatException e) {
-            errorField.setText("Enter a valid amount");
             errorField.setOpacity(1);
         }
     }
@@ -325,6 +338,20 @@ public class NewExpenseCtrl {
      */
     public void showCustomTag() {
         Main.openCustomtag();
+    }
+
+    @Override
+    public void updateLanguage() {
+        this.returnButton.setText(mainCtrl.lang.getString("return"));
+        this.splitEquallyButton.setText(mainCtrl.lang.getString("split"));
+        this.editButton.setText(mainCtrl.lang.getString("edit"));
+        this.addExpenseButton.setText(mainCtrl.lang.getString("create"));
+        this.newTag.setText(mainCtrl.lang.getString("new_tag"));
+        this.tagLabel.setText(mainCtrl.lang.getString("tag_label"));
+        this.amountLabel.setText(mainCtrl.lang.getString("amount_label"));
+        this.paidLabel.setText(mainCtrl.lang.getString("paid_label"));
+        this.titleLabel.setText(mainCtrl.lang.getString("title_label"));
+        this.errorField.setText(mainCtrl.lang.getString("error_amount"));
     }
 
     private static class ParticipantListCell extends ListCell<ParticipantNameDto> {

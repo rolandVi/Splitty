@@ -8,11 +8,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StatsCtrl">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" onKeyPressed="#keyPressed" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.StatsCtrl">
    <children>
       <VBox alignment="TOP_CENTER" layoutX="254.0" layoutY="46.0" prefHeight="348.0" prefWidth="318.0">
          <children>
-            <Label prefHeight="26.0" prefWidth="233.0" text="What you spend your money on">
+            <Label fx:id="pieLabel" prefHeight="26.0" prefWidth="233.0" text="What you spend your money on">
                <font>
                   <Font size="16.0" />
                </font>
@@ -22,7 +22,7 @@
       </VBox>
       <VBox alignment="TOP_CENTER" layoutX="23.0" layoutY="47.0" prefHeight="322.0" prefWidth="218.0" spacing="30.0">
          <children>
-            <Label text="Your total sum of expenses">
+            <Label fx:id="moneyLabel" text="Your total sum of expenses">
                <font>
                   <Font size="16.0" />
                </font>
@@ -34,6 +34,6 @@
             </Text>
          </children>
       </VBox>
-      <Button fx:id="backBtn" layoutX="528.0" layoutY="14.0" mnemonicParsing="false" onAction="#retToEventOverview" text="return" />
+      <Button fx:id="backBtn" layoutX="528.0" layoutY="14.0" mnemonicParsing="false" onAction="#retToEvent" text="return" />
    </children>
 </AnchorPane>

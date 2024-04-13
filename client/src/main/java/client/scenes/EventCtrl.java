@@ -79,6 +79,9 @@ public class EventCtrl implements MultiLanguages{
     @FXML
     public Button sendInviteButton;
 
+    @FXML
+    public Button statsBtn;
+
     /**
      * Injector for Event Controller
      * @param mainCtrl The Main Controller
@@ -112,6 +115,7 @@ public class EventCtrl implements MultiLanguages{
             participantSelectionBox.setPromptText(lang.getString("filter"));
             inviteBtn.setText(lang.getString("copy_text"));
             addParticipant.setText(lang.getString("add_participant"));
+            statsBtn.setText(lang.getString("stats"));
 
         } catch (Exception e) {
             throw new RuntimeException();

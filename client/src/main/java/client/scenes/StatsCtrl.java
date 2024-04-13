@@ -9,6 +9,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
 import java.util.HashMap;
@@ -16,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class StatsCtrl{
+public class StatsCtrl implements MultiLanguages{
 
     private final MainCtrl mainCtrl;
 
@@ -29,6 +31,10 @@ public class StatsCtrl{
     public Text totalSum;
     @FXML
     public Button backBtn;
+    @FXML
+    public Label moneyLabel;
+    @FXML
+    public Label pieLabel;
 
 
     /**
@@ -46,10 +52,36 @@ public class StatsCtrl{
         this.eventCtrl = eventCtrl;
     }
 
+
+    /**
+     * Updates the language of the page
+     */
+    @Override
+    public void updateLanguage() {
+        moneyLabel.setText(mainCtrl.lang.getString("money_label"));
+        pieLabel.setText(mainCtrl.lang.getString("pie_label"));
+        backBtn.setText(mainCtrl.lang.getString("return"));
+    }
+
+    /**
+     * Checks for key press
+     *
+     * @param e The key
+     */
+    public void keyPressed(KeyEvent e) {
+        switch (e.getCode()) {
+            case ESCAPE:
+                retToEvent();
+                break;
+            default:
+                break;
+        }
+    }
+
     /**
      * returns to overview
      */
-    public void retToEventOverview(){
+    public void retToEvent(){
         mainCtrl.showEventDetails(mainCtrl.getEventID());
     }
 
@@ -99,6 +131,5 @@ public class StatsCtrl{
         sumToString.append(sum.toString()).append("€");
         totalSum.setText(sumToString.toString());
     }
-
 
 }

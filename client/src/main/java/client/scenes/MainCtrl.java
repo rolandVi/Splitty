@@ -149,6 +149,8 @@ public class MainCtrl {
         startPageCtrl.updateLanguage();
         eventEmailCtrl.updateLanguage();
         newParticipantCtrl.updateLanguage();
+        statsCtrl.updateLanguage();
+        newExpenseCtrl.updateLanguage();
     }
 
     /**
