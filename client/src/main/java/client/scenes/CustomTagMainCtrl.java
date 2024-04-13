@@ -5,6 +5,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.nio.file.Path;
+import java.util.Objects;
+
 public class CustomTagMainCtrl {
 
     private Stage customTagStage;
@@ -20,6 +23,14 @@ public class CustomTagMainCtrl {
         this.customTagStage =customTagStage;
         this.customTagScene = new Scene(customTagScene.getValue());
         this.customTagCtrl= customTagScene.getKey();
+
+        this.customTagScene.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets",
+                                        "customTag.css").toString()))
+                        .toExternalForm());
+
+
         showCustomTag();
         customTagStage.show();
     }

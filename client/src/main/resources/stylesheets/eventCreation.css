@@ -9,20 +9,8 @@
     -fx-font-family: sans-serif;
 }
 
-
 .pane{
     -fx-background-color: #FFDE72;
-    font-family: sans-serif;
-}
-
-.eventBtn:hover{
-    -fx-background-color: #AADF51;
-    -fx-font-family: sans-serif;
-}
-
-.eventBtn{
-    -fx-border-color: #AADF51;
-    -fx-font-family: sans-serif;
 }
 
 .buttons{
@@ -30,8 +18,9 @@
     -fx-font-family: sans-serif;
 }
 
+
 .buttons:hover{
     -fx-background-color: #3060CF;
-    -fx-text-fill: white;
     -fx-font-family: sans-serif;
 }
+

@@ -1,15 +1,16 @@
-/*#313B72*/
-/*#62A87C*/
-/*#462255*/
-/*#C3F3C0*/
-/*#7EE081*/
+/*Inchworm: #AADF51*/
+/*Lavender Indigo: #8C51E6*/
+/*Aqua: #00E7FE*/
+/*Magic Potion: #F84B62*/
+/*Crayola's Dandelion: #FFDE72*/
+/*Celtic Blue: #3060CF*/
 
 .pane{
-    -fx-background-color: #C3F3C0;
+    -fx-background-color: #FFDE72;
 }
 
 .restoreBtn{
-    -fx-background-color: #62A87C;
+    -fx-background-color: #00E7FE;
     -fx-alignment: center-left;
     -fx-background-image: url('https://cdn4.iconfinder.com/data/icons/programing-apps-websites-4/24/database-refresh--reload-RAID-storage-code-disk-database-programming-array-refresh-hard-disc-128.png');
     -fx-background-repeat: no-repeat;
@@ -18,13 +19,13 @@
 }
 
 .restoreBtn:hover{
-    -fx-background-color: #313B72;
+    -fx-background-color: #3060CF;
     -fx-text-fill: white;
 }
 
 
 .refreshBtn{
-    -fx-background-color: #62A87C;
+    -fx-background-color: #00E7FE;
     -fx-alignment: center-left;
     -fx-background-image: url('https://seekicon.com/free-icon-download/refresh_14.png');
     -fx-background-repeat: no-repeat;
@@ -34,7 +35,7 @@
 }
 
 .refreshBtn:hover{
-    -fx-background-color: #313B72;
+    -fx-background-color: #3060CF;
     -fx-text-fill: white;
 }
 
@@ -43,5 +44,10 @@
 }
 
 .order{
-    -fx-background-color: #62A87C;
+    -fx-background-color: #00E7FE;
+}
+
+.order:hover{
+    -fx-background-color: #3060CF;
+    -fx-text-fill: white;
 }
