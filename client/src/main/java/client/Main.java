@@ -23,10 +23,7 @@ import client.scenes.admin.AdminRestoreCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Injector;
 import javafx.application.Application;
-import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-
-import java.net.ConnectException;
 
 import static com.google.inject.Guice.createInjector;
 

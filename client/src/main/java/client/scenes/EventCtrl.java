@@ -111,6 +111,7 @@ public class EventCtrl implements MultiLanguages{
             filterExpensesByDebtor.setText(lang.getString("debtor_criterion"));
             participantSelectionBox.setPromptText(lang.getString("filter"));
             inviteBtn.setText(lang.getString("copy_text"));
+            addParticipant.setText(lang.getString("add_participant"));
 
         } catch (Exception e) {
             throw new RuntimeException();

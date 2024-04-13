@@ -165,7 +165,7 @@ public class ParticipantCtrl implements MultiLanguages {
      * Update the participant of the event using method in ServerUtils
      */
     public void updateParticipant() {
-        if (firstNameLabel.getText().trim().isBlank() || lastNameLabel.getText().trim().isBlank()) {
+        if (firstNameTextField.getText().trim().isBlank() || lastNameTextField.getText().trim().isBlank()) {
             this.participantError.setVisible(true);
             return;
         }
@@ -246,6 +246,8 @@ public class ParticipantCtrl implements MultiLanguages {
             emailLabel.setText(lang.getString("email"));
 //            ibanLabel.setText(lang.getString(""));
 //            bicLabel.setText(lang.getString(""));
+            participantError.setText(lang.getString("participant_update_error"));
+            accountError.setText(lang.getString("account_update_error"));
         } catch (Exception e) {
             throw new RuntimeException();
         }

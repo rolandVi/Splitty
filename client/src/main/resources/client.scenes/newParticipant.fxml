@@ -10,7 +10,7 @@
       <TextField fx:id="emailField" layoutX="221.0" layoutY="167.0" promptText="Email" onKeyPressed="#keyPressedParticipant"/>
       <TextField fx:id="ibanField" layoutX="221.0" layoutY="200.0" promptText="IBAN" onKeyPressed="#keyPressedParticipant"/>
       <TextField fx:id="bicField" layoutX="221.0" layoutY="234.0" promptText="BIC" onKeyPressed="#keyPressedParticipant"/>
-      <Label layoutX="208.0" layoutY="43.0" text="Add participant">
+      <Label fx:id="headLabel" layoutX="208.0" layoutY="43.0" text="Add participant">
          <font>
             <Font size="27.0" />
          </font>

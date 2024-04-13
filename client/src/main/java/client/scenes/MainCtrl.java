@@ -29,7 +29,7 @@ import java.util.ResourceBundle;
 
 public class MainCtrl {
     public static final String CONFIG_FILE_PATH = "client/src/main/resources/config.properties";
-    protected ResourceBundle lang;
+    public ResourceBundle lang;
     protected ConfigManager configManager;
     private StartPageCtrl startPageCtrl;
 
@@ -148,6 +148,7 @@ public class MainCtrl {
         paymentPageCtrl.updateLanguage();
         startPageCtrl.updateLanguage();
         eventEmailCtrl.updateLanguage();
+        newParticipantCtrl.updateLanguage();
     }
 
     /**

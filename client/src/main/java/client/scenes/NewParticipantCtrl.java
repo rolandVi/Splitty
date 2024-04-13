@@ -17,9 +17,11 @@ import javafx.scene.input.KeyEvent;
 import java.net.http.HttpResponse;
 import java.util.Optional;
 
-public class NewParticipantCtrl{
+public class NewParticipantCtrl implements MultiLanguages{
     private final MainCtrl mainCtrl;
 
+    @FXML
+    public Label headLabel;
     @FXML
     public TextField firstNameField;
     @FXML
@@ -48,6 +50,21 @@ public class NewParticipantCtrl{
     public NewParticipantCtrl(MainCtrl mainCtrl, ServerUtils serverUtils){
         this.mainCtrl = mainCtrl;
         this.serverUtils = serverUtils;
+    }
+
+
+    /**
+     * Sets the languages
+     */
+    @Override
+    public void updateLanguage() {
+        headLabel.setText(mainCtrl.lang.getString("add_participant"));
+        firstNameField.setPromptText(mainCtrl.lang.getString("first_name_placeholder"));
+        surNameField.setPromptText(mainCtrl.lang.getString("last_name_placeholder"));
+        emailField.setPromptText(mainCtrl.lang.getString("email_placeholder"));
+        ibanField.setPromptText(mainCtrl.lang.getString("iban_placeholder"));
+        bicField.setPromptText(mainCtrl.lang.getString("bic_placeholder"));
+        errorMessage.setText(mainCtrl.lang.getString("participant_error"));
     }
 
     /**
@@ -190,4 +207,5 @@ public class NewParticipantCtrl{
                 .setIban(iban)
                 .setBic(bic);
     }
+
 }
