@@ -249,6 +249,8 @@ public class MainCtrl {
     public void showStats(){
         primaryStage.setTitle("stats page");
         primaryStage.setScene(statistics);
+        statsCtrl.setPieChart();
+        statsCtrl.displayTotalMoney();
     }
 
 
