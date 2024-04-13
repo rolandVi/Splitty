@@ -5,6 +5,7 @@ import dto.CreatorToTitleDto;
 import dto.view.EventDetailsDto;
 import jakarta.inject.Inject;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -37,6 +38,12 @@ public class EventCreationCtrl implements MultiLanguages{
     @FXML
     public Button returnButton;
 
+    @FXML
+    private Label creatorLabel;
+
+    @FXML
+    private Label eventLabel;
+
     /**
      * Injector for Event Controller
      * @param mainCtrl The Main Controller
@@ -46,6 +53,13 @@ public class EventCreationCtrl implements MultiLanguages{
     public EventCreationCtrl(MainCtrl mainCtrl, ServerUtils serverUtils) {
         this.mainCtrl = mainCtrl;
         this.serverUtils = serverUtils;
+    }
+
+    /**
+     * Sets the initial state of the page
+     */
+    public void init(){
+        invalidateFields();
     }
 
     /**
@@ -59,6 +73,12 @@ public class EventCreationCtrl implements MultiLanguages{
             returnButton.setText(lang.getString("return"));
             eventNameTextField.setPromptText(lang.getString("event_name"));
             createButton.setText(lang.getString("create"));
+            creatorLabel.setText(lang.getString("event_details_label"));
+            eventLabel.setText(lang.getString("creator_details_label"));
+            creatorFirstNameTextField.setPromptText(lang.getString("first_name_placeholder"));
+            creatorLastNameTextField.setPromptText(lang.getString("last_name_placeholder"));
+            creatorEmailTextField.setPromptText(lang.getString("email_placeholder"));
+            errorMessage.setText(lang.getString("event_creation_error"));
         } catch (Exception e) {
             throw new RuntimeException();
         }
@@ -88,7 +108,12 @@ public class EventCreationCtrl implements MultiLanguages{
                 creatorEmailTextField.getText(),
                 eventNameTextField.getText()));
 
-        this.mainCtrl.showEventDetails(newEvent.getId());
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(mainCtrl.lang.getString("add_event_alert_header"));
+        alert.setContentText(mainCtrl.lang.getString("add_event_alert_content")
+                + " " + eventNameTextField.getText());
+        alert.showAndWait().ifPresent(response -> this.mainCtrl.showEventDetails(newEvent.getId()));
+
 
         this.errorMessage.setVisible(false);
         this.eventNameTextField.setText("");
@@ -108,8 +133,21 @@ public class EventCreationCtrl implements MultiLanguages{
             case ENTER:
                 createEvent();
                 break;
+            case ESCAPE:
+                returnToOverView();
+                break;
             default:
                 break;
         }
+    }
+
+    /**
+     * Resets the text fields
+     */
+    private void invalidateFields(){
+        this.eventNameTextField.setText("");
+        this.creatorEmailTextField.setText("");
+        this.creatorFirstNameTextField.setText("");
+        this.creatorLastNameTextField.setText("");
     }
 }

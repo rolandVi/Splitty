@@ -5,8 +5,11 @@ import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+
+import java.io.IOException;
 
 public class AdminRestoreCtrl {
     private final AdminMainCtrl adminMainCtrl;
@@ -59,6 +62,24 @@ public class AdminRestoreCtrl {
     }
 
     /**
+     * Checks for key press
+     *
+     * @param e The key
+     */
+    public void keyPressed(KeyEvent e) throws IOException, InterruptedException {
+        switch (e.getCode()) {
+            case ENTER:
+                restoreData();
+                break;
+            case ESCAPE:
+                returnOverview();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
      * Method to ensure that when the scene is left and re-entered the text field will be cleared
      */
     @FXML
@@ -81,4 +102,6 @@ public class AdminRestoreCtrl {
             }
         });
     }
+
+
 }

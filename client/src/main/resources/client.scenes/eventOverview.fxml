@@ -11,41 +11,41 @@
             <Font size="40.0" />
          </font>
       </Label>
-      <Label fx:id="newEventLabel" layoutX="57.0" layoutY="362.0" prefHeight="25.0" prefWidth="87.0" text="Add event">
+      <Label fx:id="newEventLabel" alignment="CENTER" layoutX="41.0" layoutY="362.0" prefHeight="28.0" prefWidth="206.0" text="Add event" textAlignment="CENTER">
          <font>
             <Font size="19.0" />
          </font>
       </Label>
-      <Button fx:id="newEventButton" layoutX="51.0" layoutY="319.0" mnemonicParsing="false" onAction="#newEvent" prefHeight="39.0" prefWidth="99.0" text="+">
+      <Button fx:id="newEventButton" layoutX="94.0" layoutY="322.0" mnemonicParsing="false" onAction="#newEvent" prefHeight="39.0" prefWidth="99.0" text="+">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Label fx:id="paymentLabel" contentDisplay="CENTER" layoutX="173.0" layoutY="354.0" prefHeight="39.0" prefWidth="87.0" text="Payments">
+      <Label fx:id="paymentLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="309.0" layoutY="356.0" prefHeight="39.0" prefWidth="120.0" text="Payments" textAlignment="CENTER">
          <font>
             <Font size="19.0" />
          </font>
       </Label>
-      <Button fx:id="paymentButton" layoutX="163.0" layoutY="319.0" mnemonicParsing="false" onAction="#payment" prefHeight="39.0" prefWidth="99.0" text="⇋">
+      <Button fx:id="paymentButton" layoutX="319.0" layoutY="322.0" mnemonicParsing="false" onAction="#payment" prefHeight="39.0" prefWidth="99.0" text="⇋">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
 
-      <ComboBox fx:id="languageBox" layoutX="534.0" layoutY="18.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#uponSelectionLanguage" />
+      <ComboBox fx:id="languageBox" layoutX="499.0" layoutY="59.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#uponSelectionLanguage" />
 
-      <ScrollPane layoutX="44.0" layoutY="110.0" prefHeight="185.0" prefWidth="406.0">
+      <ScrollPane layoutX="44.0" layoutY="136.0" prefHeight="181.0" prefWidth="424.0">
          <content>
-            <VBox fx:id="eventContainer" prefHeight="180.0" prefWidth="400.0">
+            <VBox fx:id="eventContainer" prefHeight="178.0" prefWidth="420.0">
                <children>
 
                </children>
             </VBox>
          </content>
       </ScrollPane>
-      <TextField fx:id="inviteCodeTextField" layoutX="187.0" layoutY="79.0" />
-      <Label layoutX="57.0" layoutY="82.0" prefHeight="19.0" prefWidth="149.0" text="Enter invite code here:" />
-      <Button fx:id="enterButton" layoutX="347.0" layoutY="79.0" mnemonicParsing="false" onAction="#loadEventDetails" text="Enter" />
-      <Label fx:id="inviteCodeErrorMessage" visible="false" layoutX="420.0" layoutY="83.0" text="INVALID!!!" textFill="RED" />
+      <TextField fx:id="inviteCodeTextField" layoutX="228.0" layoutY="79.0" onKeyPressed="#enterWithInvite" prefHeight="25.0" prefWidth="143.0" />
+      <Label fx:id="inviteCodeLabel" alignment="CENTER" layoutX="39.0" layoutY="82.0" prefHeight="19.0" prefWidth="195.0" text="Enter invite code here:" textAlignment="CENTER" />
+      <Button fx:id="enterButton" layoutX="381.0" layoutY="79.0" mnemonicParsing="false" onAction="#loadEventDetails" prefHeight="25.0" prefWidth="73.0" text="Enter" />
+      <Label fx:id="inviteCodeErrorMessage" alignment="CENTER" layoutX="228.0" layoutY="111.0" prefHeight="17.0" prefWidth="221.0" text="Please enter valid invite code" textFill="RED" visible="false" />
    </children>
 </AnchorPane>
