@@ -328,6 +328,9 @@ public class NewExpenseCtrl implements MultiLanguages{
             case ENTER:
                 createExpense();
                 break;
+            case ESCAPE:
+                returnToEvent();
+                break;
             default:
                 break;
         }
@@ -355,6 +358,7 @@ public class NewExpenseCtrl implements MultiLanguages{
         this.paidLabel.setText(mainCtrl.lang.getString("paid_label"));
         this.titleLabel.setText(mainCtrl.lang.getString("title_label"));
         this.errorField.setText(mainCtrl.lang.getString("error_amount"));
+        this.returnButton.setText(mainCtrl.lang.getString("remove"));
     }
 
     private static class ParticipantListCell extends ListCell<ParticipantNameDto> {

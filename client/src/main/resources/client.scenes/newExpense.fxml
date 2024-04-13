@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.NewExpenseCtrl">
+<Pane onKeyPressed="#keyPressedEdit" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.NewExpenseCtrl">
    <children>
       <Button fx:id="addExpenseButton" layoutX="262.0" layoutY="332.0" mnemonicParsing="false" onAction="#createExpense" text="Create" />
       <Button fx:id="returnButton" layoutX="521.0" layoutY="27.0" mnemonicParsing="false" onAction="#returnToEvent" text="Return" />
