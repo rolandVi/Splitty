@@ -340,6 +340,9 @@ public class NewExpenseCtrl implements MultiLanguages{
         Main.openCustomtag();
     }
 
+    /**
+     * Updates the language on switch
+     */
     @Override
     public void updateLanguage() {
         this.returnButton.setText(mainCtrl.lang.getString("return"));
