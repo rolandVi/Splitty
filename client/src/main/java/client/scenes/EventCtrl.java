@@ -149,6 +149,7 @@ public class EventCtrl implements MultiLanguages{
      * @param id the id of the event
      */
     public void init(long id) {
+        serverUtils.openSocketConnection();
         filterAllExpenses.setToggleGroup(filterGroup);
         filterExpensesByAuthor.setToggleGroup(filterGroup);
         filterExpensesByDebtor.setToggleGroup(filterGroup);
@@ -420,8 +421,8 @@ public class EventCtrl implements MultiLanguages{
             Button participantButton = (Button) currentNode.lookup("#participantName");
             participantButton.setText(participants.get(i).getFirstName() + " "
                     + participants.get(i).getLastName());
-
-            participantButton.setOnAction(e -> showParticipantEdit(participant.getId(), eventId));
+            participantButton.setOnAction(e -> mainCtrl.
+                    showParticipantDetails(participant.getId(), eventId));
         }
         this.participantsContainer.getChildren().clear();
         this.participantsContainer.getChildren().addAll(nodes);

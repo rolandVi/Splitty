@@ -14,17 +14,12 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class StartPageCtrl implements MultiLanguages {
 
     private final MainCtrl mainCtrl;
 
     private final ServerUtils serverUtils;
-
-    private final Pattern pattern=Pattern.compile(
-            "^(([^:\\/?#]+):)?(\\/\\/([^\\/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
 
     @FXML
     public TextField serverField;
@@ -134,11 +129,7 @@ public class StartPageCtrl implements MultiLanguages {
 
         configManager.setProperty("serverURL", serverInserted);
         this.serverUtils.setServer(serverInserted);
-        Matcher matcher=pattern.matcher(serverInserted);
-        if (matcher.matches()){
-            String url=matcher.group(4);
-            serverUtils.setSession(serverUtils.connect("ws://"+ url +"/websocket"));
-        }
+        this.serverUtils.openSocketConnection();
 
         mainCtrl.showOverview();
     }
@@ -147,6 +138,23 @@ public class StartPageCtrl implements MultiLanguages {
      * Open new admin overview window through Main
      */
     public void enterAdmin() {
+
+        this.invalidServerMessage.setOpacity(0d);
+        this.unavailableServerMessage.setOpacity(0d);
+
+        String serverInserted = serverField.getText();
+
+        try {
+            serverUtils.testConnection(serverInserted);
+        }catch (ProcessingException ex){
+            unavailableServerMessage.setOpacity(1.0d);
+            return;
+        }
+
+
+        this.serverUtils.setServer(serverInserted);
+        this.serverUtils.openSocketConnection();
+
         Main.openAdminOverview();
     }
 

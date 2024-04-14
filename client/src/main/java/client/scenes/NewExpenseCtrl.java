@@ -358,7 +358,7 @@ public class NewExpenseCtrl implements MultiLanguages{
         this.paidLabel.setText(mainCtrl.lang.getString("paid_label"));
         this.titleLabel.setText(mainCtrl.lang.getString("title_label"));
         this.errorField.setText(mainCtrl.lang.getString("error_amount"));
-        this.returnButton.setText(mainCtrl.lang.getString("remove"));
+        this.returnButton.setText(mainCtrl.lang.getString("return"));
     }
 
     private static class ParticipantListCell extends ListCell<ParticipantNameDto> {
