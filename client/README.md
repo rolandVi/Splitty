@@ -18,5 +18,6 @@ Tip: Double check that the path is correct. You will receive abstract error mess
 (Optional) If desired, a flag can be added. Drag and move the image to the **flags resource folder**.
 Make sure it is a png image and change the file name into this format: `flag_[abbreviation of the language]_[abbreviation of the country].png`
 
-**language resources folder**: client/src/main/resources/languages
+NOTE: The application requires a restart after adding a new language
+**resources folder**: client/src/main/resources/languages
 **flag resources folder**: client/src/main/resources/images/flags
