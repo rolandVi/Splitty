@@ -24,7 +24,7 @@ import java.time.ZoneId;
 import java.util.*;
 
 
-public class NewExpenseCtrl implements MultiLanguages{
+public class NewExpenseCtrl implements MultiLanguages {
     private final MainCtrl mainCtrl;
 
     private final ServerUtils serverUtils;
@@ -67,6 +67,9 @@ public class NewExpenseCtrl implements MultiLanguages{
 
     @FXML
     public Button newTag;
+
+    @FXML
+    public Label emptyError;
 
     private List<CheckBox> debtorsCheckBoxes;
 
@@ -130,6 +133,7 @@ public class NewExpenseCtrl implements MultiLanguages{
         titleField.clear();
         amountField.clear();
         errorField.setOpacity(0);
+        emptyError.setVisible(false);
 
         ObservableList<ParticipantNameDto> participants = FXCollections.
                 observableArrayList(parentEvent.getParticipants());
@@ -184,6 +188,7 @@ public class NewExpenseCtrl implements MultiLanguages{
         titleField.setText(expense.getTitle());
         amountField.setText(expense.getMoney().toString());
         errorField.setOpacity(0);
+        emptyError.setVisible(false);
 
         ObservableList<ParticipantNameDto> participants = FXCollections.
                 observableArrayList(parentEvent.getParticipants());
@@ -232,21 +237,40 @@ public class NewExpenseCtrl implements MultiLanguages{
      * creates new expense based on the input
      */
     public void createExpense() {
+        this.emptyError.setVisible(false);
+        this.errorField.setOpacity(0);
         String title = titleField.getText();
+        if (title.trim().isBlank()) {
+            this.emptyError.setVisible(true);
+            return;
+        }
+
         try {
             double amount = Double.parseDouble(amountField.getText());
-            if (amount<0){
+            if (amount < 0) {
                 errorField.setOpacity(1);
             }
             ParticipantNameDto author = authorBox.getValue();
+            if (author == null) {
+                emptyError.setVisible(true);
+                return;
+            }
             for (int i = 0; i < debtorsCheckList.getItems().size(); i++) {
                 if (debtorsCheckList.getSelectionModel().isSelected(i)) {
                     debtors.add(debtorsCheckList.getItems().get(i));
                 }
             }
+            if (debtors.isEmpty()) {
+                emptyError.setVisible(true);
+                return;
+            }
 
             TagEntity tag = tags.getValue();
             TagDto newTag = null;
+            if (tag == null) {
+                emptyError.setVisible(true);
+                return;
+            }
 
             if (tag != null) {
                 newTag = new TagDto(tag.getId(), tag.getTagType(), tag.getHexValue());
@@ -254,7 +278,7 @@ public class NewExpenseCtrl implements MultiLanguages{
 
             LocalDate localDate = datePicker.getValue();
             Date date = new Date();
-            if (localDate!=null){
+            if (localDate != null) {
                 date = Date.from(localDate.atStartOfDay(ZoneId.of("Europe/Amsterdam")).toInstant());
             }
 
@@ -276,23 +300,46 @@ public class NewExpenseCtrl implements MultiLanguages{
      * Control for the edit button
      */
     public void editExpense() {
+        this.emptyError.setVisible(false);
+        this.errorField.setOpacity(0);
         try {
+            if (authorBox.getValue() == null) {
+                emptyError.setVisible(true);
+                return;
+            }
             expense.setAuthor(authorBox.getValue());
+
             for (int i = 0; i < debtorsCheckList.getItems().size(); i++) {
                 if (debtorsCheckList.getSelectionModel().isSelected(i)) {
                     debtors.add(debtorsCheckList.getItems().get(i));
                 }
             }
+
+            if (debtors.size()==0){
+                emptyError.setVisible(true);
+                return;
+            }
             expense.setDebtors(debtors);
+            if (Double.parseDouble(amountField.getText()) < 0) {
+                errorField.setOpacity(1);
+            }
             expense.setMoney(Double.parseDouble(amountField.getText()));
+            if (titleField.getText().trim().isBlank()) {
+                emptyError.setVisible(true);
+                return;
+            }
             expense.setTitle(titleField.getText());
+            if (tags.getValue() == null) {
+                emptyError.setVisible(true);
+                return;
+            }
             TagDto tagDto = new TagDto(tags.getValue().getId(), tags.getValue().getTagType(),
                     tags.getValue().getHexValue());
             expense.setTag(tagDto);
 
             LocalDate localDate = datePicker.getValue();
             Date date = new Date();
-            if (localDate!=null){
+            if (localDate != null) {
                 date = Date.from(localDate.atStartOfDay(ZoneId.of("Europe/Amsterdam")).toInstant());
             }
             expense.setDate(date);
@@ -378,6 +425,8 @@ public class NewExpenseCtrl implements MultiLanguages{
         this.paidLabel.setText(mainCtrl.lang.getString("paid_label"));
         this.titleLabel.setText(mainCtrl.lang.getString("title_label"));
         this.errorField.setText(mainCtrl.lang.getString("error_amount"));
+        this.emptyError.setText(mainCtrl.lang.getString("empty_fields"));
+        this.removeButton.setText(mainCtrl.lang.getString("remove"));
         this.returnButton.setText(mainCtrl.lang.getString("return"));
     }
 

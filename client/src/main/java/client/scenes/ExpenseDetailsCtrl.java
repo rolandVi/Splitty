@@ -10,11 +10,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 
+import java.io.IOException;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -105,6 +107,21 @@ public class ExpenseDetailsCtrl {
             }
         });
         debtorsList.setItems(participants);
+    }
+
+    /**
+     * Checks for key press
+     *
+     * @param e The key
+     */
+    public void keyPressed(KeyEvent e) throws IOException, InterruptedException {
+        switch (e.getCode()) {
+            case ESCAPE:
+                returnToOverview();
+                break;
+            default:
+                break;
+        }
     }
 
     /**
