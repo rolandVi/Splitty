@@ -37,7 +37,10 @@ This repository contains team 37's take on the Splitty assignment
 3. Long polling
 - long-polling is implemented for the events of the admin
 - when an event is created the admin can immediately see the new events
-- The implementation can be found in `ServerUtils`
+- The implementation can be found in `AdminOverviewPageCtrl`, `ServerUtils` and `EventRestController`
+- In `AdminOverviewPageCtrl` the connection is established and the client is 'registered' for updates
+- In the `ServerUtils` the requests are sent
+- In the `EventRestController`, `createEvent()` updates all the listener's information
 
 4. WebSockets
 - web socket has been implemented for the expenses of the events
@@ -52,8 +55,7 @@ This repository contains team 37's take on the Splitty assignment
 - When you hover on the event buttons in admin, text is also displayed
 - There are error messages for every invalid input
 - There are pop-ups for creation, deletion etc.
-- There labels when an invite code is copied, an event is restored, email is sent (teh email is invalid), etc.
-- 
+- There labels when an invite code is copied, an event is restored, email is sent (the email is invalid), etc.
 
 
 
