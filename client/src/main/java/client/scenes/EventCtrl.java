@@ -149,6 +149,7 @@ public class EventCtrl implements MultiLanguages{
      * @param id the id of the event
      */
     public void init(long id) {
+        serverUtils.openSocketConnection();
         filterAllExpenses.setToggleGroup(filterGroup);
         filterExpensesByAuthor.setToggleGroup(filterGroup);
         filterExpensesByDebtor.setToggleGroup(filterGroup);

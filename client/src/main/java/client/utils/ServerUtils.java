@@ -41,6 +41,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
@@ -52,6 +54,9 @@ public class ServerUtils {
     private final Client client;
 
     private MainCtrl mainCtrl;
+
+    private final Pattern pattern=Pattern.compile(
+            "^(([^:\\/?#]+):)?(\\/\\/([^\\/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
 
     /**
      * Constructor injection
@@ -89,6 +94,18 @@ public class ServerUtils {
      */
     public void setSession(StompSession connect) {
         this.session=connect;
+    }
+
+
+    /**
+     * Opens a web socket connection
+     */
+    public void openSocketConnection() {
+        Matcher matcher=pattern.matcher(server);
+        if (matcher.matches()){
+            String url=matcher.group(4);
+            this.setSession(this.connect("ws://"+ url +"/websocket"));
+        }
     }
 
     /**
@@ -731,5 +748,4 @@ public class ServerUtils {
                     + response.statusCode());
         }
     }
-
 }
