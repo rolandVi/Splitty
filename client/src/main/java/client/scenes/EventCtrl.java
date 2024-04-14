@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class EventCtrl implements MultiLanguages{
@@ -82,6 +84,9 @@ public class EventCtrl implements MultiLanguages{
 
     @FXML
     public Button statsBtn;
+
+    @FXML
+    public Label copyLabel;
 
     /**
      * Injector for Event Controller
@@ -161,6 +166,7 @@ public class EventCtrl implements MultiLanguages{
         eventNameLabel.setText(eventDetailsDto.getTitle());
         inviteCode.setText(eventDetailsDto.getInviteCode());
         this.changeTextField.setText("");
+        this.copyLabel.setVisible(false);
         loadExpenseList();
         loadParticipants();
 
@@ -335,6 +341,10 @@ public class EventCtrl implements MultiLanguages{
         ClipboardContent content = new ClipboardContent();
         content.putString(this.inviteCode.getText());
         clipboard.setContent(content);
+        copyLabel.setVisible(true);
+        CompletableFuture.delayedExecutor(3, TimeUnit.SECONDS).execute(() -> {
+            copyLabel.setVisible(false);
+        });
     }
 
     private static class ExpenseListCell extends ListCell<ExpenseDetailsDto>{
