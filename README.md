@@ -33,6 +33,12 @@ This repository contains team 37's take on the Splitty assignment
 - There is a change event name text field
 - When you click on the 'Send invite' button you are redirected to a page for sending emails
 - There you can enter all the emails you want to send the invite code of the event to
+- In an event you can create an expense. While creating an expense you can select tags.
+- The way tags work is you can create a custom one which works by filling in the field and selecting a color and hitting OK. It will show up on the page.
+- By then again clicking on the tag you can edit it by changing the text or color and hitting the edit button or you can delete it by hitting delete.
+- After you have added or edited the tags to your desire you can freely close the page and the tags will show up in the expense creation menu.
+- You can create an expense by filling in the required fields and hitting the create button
+- From the event you can access the statistics by hitting the statistics button
 
 3. Long polling
 - long-polling is implemented for the events of the admin
@@ -55,7 +61,7 @@ This repository contains team 37's take on the Splitty assignment
 - When you hover on the event buttons in admin, text is also displayed
 - There are error messages for every invalid input
 - There are pop-ups for creation, deletion etc.
-- There labels when an invite code is copied, an event is restored, email is sent (the email is invalid), etc.
+- There are labels when an invite code is copied, an event is restored, email is sent (the email is invalid), etc.
 
 
 
