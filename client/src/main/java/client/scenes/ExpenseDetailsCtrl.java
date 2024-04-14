@@ -75,9 +75,17 @@ public class ExpenseDetailsCtrl {
         authorLabel.setText(expense.getAuthor().toString());
         titleLabel.setText("Expense details");
         expenseTitleLabel.setText(expense.getTitle());
-        tagText.setText(expense.getTag().getTagType());
-        tagText.setFill(Color.BLACK);
-        tagBackground.setFill(Color.web(expense.getTag().getHexValue()));
+        if (expense.getTag() != null){
+            tagText.setText(expense.getTag().getTagType());
+            tagText.setFill(Color.BLACK);
+            tagBackground.setFill(Color.web(expense.getTag().getHexValue()));
+            tagText.setOpacity(1);
+            tagBackground.setOpacity(1);
+        }else {
+            tagText.setOpacity(0);
+            tagBackground.setOpacity(0);
+        }
+
 
         Date date = expense.getDate();
         Format formatter = new SimpleDateFormat("dd-MM-yyyy");
