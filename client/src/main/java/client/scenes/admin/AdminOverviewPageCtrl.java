@@ -85,7 +85,8 @@ public class AdminOverviewPageCtrl implements Initializable {
      * @param serverUtils the server utilities
      * @param test here just to differentiate between constructors
      */
-    public AdminOverviewPageCtrl(AdminMainCtrl adminMainCtrl, ServerUtils serverUtils, String test) {
+    public AdminOverviewPageCtrl(AdminMainCtrl adminMainCtrl,
+                                 ServerUtils serverUtils, String test) {
         this.adminMainCtrl = adminMainCtrl;
         this.serverUtils=serverUtils;
         this.config = null;
