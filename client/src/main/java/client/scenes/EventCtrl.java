@@ -71,6 +71,7 @@ public class EventCtrl implements MultiLanguages{
     private EventDetailsDto eventDetailsDto;
 
     private NewExpenseCtrl newExpenseCtrl;
+    private ExpenseDetailsCtrl expenseDetailsCtrl;
 
     private final EventCtrl self = this;
 
@@ -87,12 +88,15 @@ public class EventCtrl implements MultiLanguages{
      * @param mainCtrl The Main Controller
      * @param serverUtils The Server Utilities
      * @param newExpenseCtrl The new expense page controller
+     * @param expenseDetailsCtrl The expense details page controller
      */
     @Inject
-    public EventCtrl(MainCtrl mainCtrl, ServerUtils serverUtils, NewExpenseCtrl newExpenseCtrl) {
+    public EventCtrl(MainCtrl mainCtrl, ServerUtils serverUtils,
+                     NewExpenseCtrl newExpenseCtrl, ExpenseDetailsCtrl expenseDetailsCtrl) {
         this.mainCtrl = mainCtrl;
         this.serverUtils = serverUtils;
         this.newExpenseCtrl = newExpenseCtrl;
+        this.expenseDetailsCtrl = expenseDetailsCtrl;
         filterGroup = new ToggleGroup();
     }
     /**
@@ -335,6 +339,7 @@ public class EventCtrl implements MultiLanguages{
 
     private static class ExpenseListCell extends ListCell<ExpenseDetailsDto>{
         private final Button editButton;
+        private final Button viewButton;
         private final Text expenseInfo;
         private final StackPane tagPane;
         private final Rectangle tagBackground;
@@ -343,12 +348,20 @@ public class EventCtrl implements MultiLanguages{
 
         public ExpenseListCell(EventCtrl ctrl) {
             editButton = new Button("Edit");
+            viewButton = new Button("View");
             editButton.setStyle("-fx-background-color: #00E7FE;");
+            viewButton.setStyle("-fx-background-color: #00E7FE;");
             editButton.setOnAction(event -> {
                 ExpenseDetailsDto item = getItem();
                 if (item != null) {
                     ctrl.newExpenseCtrl.initEdit(ctrl.eventDetailsDto, item);
                     ctrl.mainCtrl.showEditExpense();
+                }
+            });
+            viewButton.setOnAction(event -> {
+                ExpenseDetailsDto item = getItem();
+                if (item != null) {
+                    ctrl.mainCtrl.showExpenseDetails(item.getId(), ctrl.eventDetailsDto.getId());
                 }
             });
 
@@ -362,7 +375,7 @@ public class EventCtrl implements MultiLanguages{
             tagPane = new StackPane(tagBackground, tagText);
             tagPane.setAlignment(Pos.CENTER); // Center the text within the stack pane
 
-            hbox = new HBox(expenseInfo, tagPane, editButton);
+            hbox = new HBox(expenseInfo, tagPane, editButton, viewButton);
             hbox.setSpacing(10);
             hbox.setAlignment(Pos.CENTER_LEFT);
 
@@ -376,8 +389,8 @@ public class EventCtrl implements MultiLanguages{
             if (empty || item == null) {
                 setGraphic(null);
             } else {
-                expenseInfo.setText(item.getTitle() + "\n"
-                        + item.getAuthor().toString() + " paid: " + item.getMoney() + " euro");
+                expenseInfo.setText(item.getTitle() + " €" + item.getMoney()
+                        + "\nby: " + item.getAuthor().toString());
 
                 if (item.getTag() != null) {
                     tagText.setText(item.getTag().getTagType());

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ExpenseDetailsCtrl">
+   <children>
+      <Label fx:id="titleLabel" layoutX="30.0" layoutY="27.0" text="Title">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <VBox layoutX="30.0" layoutY="83.0" prefHeight="70.0" prefWidth="260.0">
+         <children>
+            <HBox prefHeight="20.0" prefWidth="200.0">
+               <children>
+                  <Label text="Title: ">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="expenseTitleLabel" text="Label">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="15.0" />
+                     </HBox.margin>
+                  </Label>
+                  <StackPane alignment="TOP_CENTER" prefHeight="0.0" prefWidth="47.0">
+                     <children>
+                        <Rectangle fx:id="tagBackground" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="19.0" stroke="BLACK" strokeType="INSIDE" width="42.0" />
+                        <Text fx:id="tagText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="29.515625">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <StackPane.margin>
+                              <Insets />
+                           </StackPane.margin>
+                        </Text>
+                     </children>
+                     <HBox.margin>
+                        <Insets top="3.0" />
+                     </HBox.margin>
+                  </StackPane>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="20.0" prefWidth="200.0">
+               <children>
+                  <Label text="Who paid: ">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="authorLabel" text="author">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="20.0" prefWidth="200.0">
+               <children>
+                  <Label text="Date: ">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="dateLabel" text="Label">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+      <ListView fx:id="debtorsList" layoutX="346.0" layoutY="114.0" prefHeight="200.0" prefWidth="200.0" />
+      <Label layoutX="346.0" layoutY="83.0" text="Participants involved">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Button fx:id="returnButton" layoutX="520.0" layoutY="27.0" mnemonicParsing="false" onAction="#returnToOverview" text="Return" />
+      <VBox alignment="TOP_CENTER" layoutX="52.0" layoutY="200.0" prefHeight="161.0" prefWidth="165.0">
+         <children>
+            <Label text="Cost:">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="costLabel" text="Label">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+   </children>
+</Pane>
