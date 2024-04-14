@@ -167,4 +167,19 @@ public class ParticipantService {
         participantEntity = this.participantRepository.save(participantEntity);
         return this.modelMapper.map(participantEntity, ParticipantNameDto.class);
     }
+
+    /**
+     * deletes the bank account of this participant
+     * @param userId the participant id;
+     */
+    @Transactional
+    public void deleteBankAccount(Long userId) {
+        ParticipantEntity participant=this.participantRepository.findById(userId).orElseThrow(
+                () -> new ObjectNotFoundException("No such participant."));
+        if (participant.getBankAccount()!=null){
+            BankAccountEntity bank=participant.getBankAccount();
+            participant.setBankAccount(null);
+            this.bankAccountService.deleteBankAccount(bank);
+        }
+    }
 }

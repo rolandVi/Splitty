@@ -15,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -78,6 +79,9 @@ public class EventCtrl implements MultiLanguages{
     @FXML
     public Button sendInviteButton;
 
+    @FXML
+    public Button statsBtn;
+
     /**
      * Injector for Event Controller
      * @param mainCtrl The Main Controller
@@ -105,6 +109,14 @@ public class EventCtrl implements MultiLanguages{
             expensesLabel.setText(lang.getString("expenses"));
             addExpenseButton.setText(lang.getString("add_expense"));
             sendInviteButton.setText(lang.getString("send_invite"));
+            filterAllExpenses.setText(lang.getString("all_criterion"));
+            filterExpensesByAuthor.setText(lang.getString("author_criterion"));
+            filterExpensesByDebtor.setText(lang.getString("debtor_criterion"));
+            participantSelectionBox.setPromptText(lang.getString("filter"));
+            inviteBtn.setText(lang.getString("copy_text"));
+            addParticipant.setText(lang.getString("add_participant"));
+            statsBtn.setText(lang.getString("stats"));
+
         } catch (Exception e) {
             throw new RuntimeException();
         }
@@ -143,6 +155,8 @@ public class EventCtrl implements MultiLanguages{
         this.eventDetailsDto=serverUtils.getEventDetails(id);
         eventNameLabel.setText(eventDetailsDto.getTitle());
         inviteCode.setText(eventDetailsDto.getInviteCode());
+        this.changeTextField.setText("");
+        loadExpenseList();
         loadParticipants();
 
         ObservableList<ParticipantNameDto> participants = eventDetailsDto.getParticipants().stream()
@@ -152,6 +166,36 @@ public class EventCtrl implements MultiLanguages{
         // because websockets introduce a small delay and sometimes it doesn't update in time
         this.eventDetailsDto=serverUtils.getEventDetails(id);
         loadExpenseList();
+    }
+
+    /**
+     * Checks for key press
+     *
+     * @param e The key
+     */
+    public void keyPressed(KeyEvent e) throws IOException, InterruptedException {
+        switch (e.getCode()) {
+            case ESCAPE:
+                returnToOverview();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Checks for key press in the event name change
+     *
+     * @param e The key
+     */
+    public void triggerNameChange(KeyEvent e) throws IOException{
+        switch (e.getCode()) {
+            case ENTER:
+                changeEventName();
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -228,8 +272,14 @@ public class EventCtrl implements MultiLanguages{
      */
     public void changeEventName() throws JsonProcessingException {
         serverUtils.changeEventName(eventDetailsDto.getId(), changeTextField.getText());
-        this.eventNameLabel.setText(this.changeTextField.getText());
-        this.changeTextField.setText("");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(mainCtrl.lang.getString("change_name_alert_header"));
+        alert.setContentText(mainCtrl.lang.getString("change_name_alert_content")
+                + " " + changeTextField.getText());
+        alert.showAndWait().ifPresent( r -> {
+            this.eventNameLabel.setText(this.changeTextField.getText());
+            this.changeTextField.setText("");
+        });
     }
 
     /**
@@ -292,6 +342,7 @@ public class EventCtrl implements MultiLanguages{
 
         public ExpenseListCell(EventCtrl ctrl) {
             editButton = new Button("Edit");
+            editButton.setStyle("-fx-background-color: #00E7FE;");
             editButton.setOnAction(event -> {
                 ExpenseDetailsDto item = getItem();
                 if (item != null) {

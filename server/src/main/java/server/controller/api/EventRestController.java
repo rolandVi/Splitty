@@ -130,6 +130,17 @@ public class EventRestController {
         return ResponseEntity.ok(this.eventService.getAllEvents());
     }
 
+
+    /**
+     * Endpoint used for testing connection
+     * @return response
+     */
+
+    @GetMapping("/connect")
+    public ResponseEntity<Void> connectTest(){
+        return ResponseEntity.ok().build();
+    }
+
     private Map<Object, Consumer<EventOverviewDto>> listeners = new HashMap<>();
 
     /**

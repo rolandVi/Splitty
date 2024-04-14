@@ -6,21 +6,27 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EventCreationCtrl">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="pane" stylesheets="@../stylesheets/eventCreation.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EventCreationCtrl">
    <children>
       <TextField fx:id="creatorFirstNameTextField" layoutX="226.0" layoutY="110.0" onKeyPressed="#keyPressed" promptText="First name" />
       <TextField fx:id="creatorLastNameTextField" layoutX="226.0" layoutY="150.0" onKeyPressed="#keyPressed" promptText="Last name" />
       <TextField fx:id="creatorEmailTextField" layoutX="226.0" layoutY="190.0" onKeyPressed="#keyPressed" promptText="Email (Not required)" />
       <TextField fx:id="eventNameTextField" layoutX="226.0" layoutY="260.0" onKeyPressed="#keyPressed" promptText="Name of event" />
-      <Label fx:id="titleLabel" layoutX="186.0" layoutY="20.0" text="Create new event">
+      <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="106.0" layoutY="20.0" prefHeight="45.0" prefWidth="391.0" styleClass="texts" text="Create new event">
          <font>
             <Font size="30.0" />
          </font>
       </Label>
-      <Button fx:id="createButton" layoutX="276.0" layoutY="334.0" mnemonicParsing="false" onAction="#createEvent" text="Create" />
-      <Button fx:id="returnButton" layoutX="534.0" layoutY="30.0" mnemonicParsing="false" onAction="#returnToOverView" text="Return" />
-      <Label layoutX="259.0" layoutY="79.0" prefHeight="17.0" prefWidth="83.0" text="Creator Details" />
-      <Label layoutX="265.0" layoutY="230.0" prefHeight="17.0" prefWidth="72.0" text="Event Details" />
-      <Label fx:id="errorMessage" layoutX="212.0" layoutY="303.0" prefHeight="17.0" prefWidth="178.0" text="Please fill in all the required fields" textFill="RED" visible="false" />
+      <Button fx:id="createButton" layoutX="261.0" layoutY="320.0" mnemonicParsing="false" onAction="#createEvent" prefHeight="37.0" prefWidth="77.0" styleClass="buttons" text="Create" />
+      <Button fx:id="returnButton" layoutX="524.0" layoutY="30.0" mnemonicParsing="false" onAction="#returnToOverView" prefHeight="25.0" prefWidth="62.0" styleClass="buttons" text="Return" />
+      <Label fx:id="creatorLabel" alignment="CENTER" layoutX="240.0" layoutY="83.0" prefHeight="17.0" prefWidth="121.0" styleClass="texts" text="Creator Details">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <Label fx:id="eventLabel" alignment="CENTER" layoutX="241.0" layoutY="231.0" prefHeight="17.0" prefWidth="121.0" styleClass="texts" text="Event Details">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <Label fx:id="errorMessage" alignment="CENTER" layoutX="212.0" layoutY="303.0" prefHeight="17.0" prefWidth="178.0" text="Please fill in all the required fields" textFill="RED" visible="false" />
    </children>
 </Pane>

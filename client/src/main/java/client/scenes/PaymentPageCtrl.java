@@ -71,7 +71,7 @@ public class PaymentPageCtrl implements MultiLanguages {
      */
     public void keyPressed(KeyEvent e) {
         switch (e.getCode()) {
-            case BACK_SPACE:
+            case ESCAPE:
                 returnToOverview();
                 break;
             default:
