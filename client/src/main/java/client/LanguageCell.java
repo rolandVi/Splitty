@@ -19,6 +19,7 @@ public class LanguageCell extends ListCell<String> {
         setGraphic(null);
         setText(null);
         if (item!=null){
+            // Set image
             String flagPath = "/images/flags/flag_" + item + ".png";
             Image flagImage = null;
             try {
@@ -31,6 +32,9 @@ public class LanguageCell extends ListCell<String> {
                         40, 40, true, true);
             }
             setGraphic(new ImageView(flagImage));
+
+            // Set text
+            setText(item.replace("_", " - "));
         }
     }
 }

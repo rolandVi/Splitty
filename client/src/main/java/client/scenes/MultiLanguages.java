@@ -6,8 +6,10 @@ import javafx.collections.FXCollections;
 import javafx.scene.control.ComboBox;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Locale;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.*;
 
 public interface MultiLanguages {
     ConfigManager configManager = new ConfigManager("client/src/main/resources/config.properties");
@@ -20,9 +22,35 @@ public interface MultiLanguages {
     void updateLanguage();
 
     /**
+     * Create a template properties file to add a new language.
+     * The generated file is based on the default file, which is lang.properties
+     */
+    default void createNewLanguage(){
+        FileWriter fileWriter;
+        FileReader fileReader;
+        Properties properties = new Properties();
+        try {
+            fileWriter = new FileWriter(LANGUAGE_PATH + "/lang_language_country.properties");
+            fileReader = new FileReader(LANGUAGE_PATH + "/lang.properties");
+            properties.load(fileReader);
+
+            Set<String> set = properties.stringPropertyNames();
+            for (String s : set){
+                fileWriter.write(s + "=\n");
+            }
+
+            fileWriter.flush();
+            fileWriter.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * A method that updates the scene.
      * This means the language and possible the language dropbox
-     * @param path
+     * @param path path to directory with properties files
      * @return arraylist with the names of all languages that are supported
      */
     default ArrayList<String> getListOfSupportedLanguages(String path) {
@@ -56,6 +84,9 @@ public interface MultiLanguages {
         comboBox.setButtonCell(new LanguageCell());
         // Creates the list of possible languages
         ArrayList<String> locales = getListOfSupportedLanguages(LANGUAGE_PATH);
+        // Add create new language option string
+        // Language cell class will do the rest
+        locales.add("Add language");
         // Save it into comboBox
         comboBox.setItems(FXCollections.observableArrayList(locales));
         // Set starting value
