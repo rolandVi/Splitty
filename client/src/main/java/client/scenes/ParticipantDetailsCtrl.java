@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import java.util.List;
 
 import javafx.scene.control.Label;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
 public class ParticipantDetailsCtrl {
@@ -22,7 +23,9 @@ public class ParticipantDetailsCtrl {
     @FXML
     public Label titleLabel;
     @FXML
-    public Text nameText;
+    public Label firstNameLabel;
+    @FXML
+    public Label lastNameLabel;
     @FXML
     public Text emailText;
     @FXML
@@ -63,7 +66,8 @@ public class ParticipantDetailsCtrl {
         this.eventId = eventId;
 
         ParticipantNameDto participant = serverUtils.getParticipantDetails(parId, eventId);
-        nameText.setText(participant.getFirstName() + " " + participant.getLastName());
+        firstNameLabel.setText(participant.getFirstName());
+        lastNameLabel.setText(participant.getLastName());
         if (participant.getEmail() != null && !participant.getEmail().equals("")){
             emailText.setText(participant.getEmail());
         }else {
@@ -88,6 +92,20 @@ public class ParticipantDetailsCtrl {
         paidTotalLabel.setText(participant.getFirstName() + " has paid:");
         paidTotalAmountLabel.setText(String.valueOf(getSharePaidByParticipant()));
 
+        double debt = getDebtToTheGroup();
+        if (debt > 0){
+            owesIsOwedLabel.setText(participant.getFirstName() + " owes");
+            owesIsOwedAmountLabel.setText("€" + String.valueOf(debt));
+            owesIsOwedAmountLabel.setTextFill(Paint.valueOf("red"));
+        }else if (debt < 0){
+            owesIsOwedLabel.setText(participant.getFirstName() + " is owned");
+            owesIsOwedAmountLabel.setText("€" + String.valueOf(debt));
+            owesIsOwedAmountLabel.setTextFill(Paint.valueOf("green"));
+        }else {
+            owesIsOwedLabel.setText(participant.getFirstName() + " does not owe anything!");
+            owesIsOwedAmountLabel.setText(String.valueOf(0.0));
+            owesIsOwedAmountLabel.setTextFill(Paint.valueOf("black"));
+        }
     }
 
     private double getSharePaidByParticipant(){
@@ -99,6 +117,24 @@ public class ParticipantDetailsCtrl {
             }
         }
         return share;
+    }
+
+    /**
+     * Calculates how much does a particular participant own to the group
+     * @return amount that the participant owes
+     */
+    private double getDebtToTheGroup(){
+        List<ExpenseEntity> expenses = serverUtils.getAllExpensesOfEvent(eventId);
+        double debt = 0.0;
+        for (ExpenseEntity e : expenses){
+            if (e.getAuthor().getId().equals(this.participantId)){
+                debt -= e.getMoney();
+            }
+            if (e.getDebtors().stream().map(x -> x.getId()).toList().contains(this.participantId)){
+                debt += e.getMoney()/e.getDebtors().size();
+            }
+        }
+        return debt;
     }
 
     /**
