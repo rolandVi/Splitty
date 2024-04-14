@@ -65,6 +65,8 @@ public class NewParticipantCtrl implements MultiLanguages{
         ibanField.setPromptText(mainCtrl.lang.getString("iban_placeholder"));
         bicField.setPromptText(mainCtrl.lang.getString("bic_placeholder"));
         errorMessage.setText(mainCtrl.lang.getString("participant_error"));
+        addButton.setText(mainCtrl.lang.getString("add_participant"));
+        goBackButton.setText(mainCtrl.lang.getString("return"));
     }
 
     /**
