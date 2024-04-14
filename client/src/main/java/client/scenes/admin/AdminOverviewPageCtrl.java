@@ -80,6 +80,19 @@ public class AdminOverviewPageCtrl implements Initializable {
     }
 
     /**
+     * Constructor for testing
+     * @param adminMainCtrl the admin controller
+     * @param serverUtils the server utilities
+     * @param test here just to differentiate between constructors
+     */
+    public AdminOverviewPageCtrl(AdminMainCtrl adminMainCtrl,
+                                 ServerUtils serverUtils, String test) {
+        this.adminMainCtrl = adminMainCtrl;
+        this.serverUtils=serverUtils;
+        this.config = null;
+    }
+
+    /**
      * Initialize method
      * @param location
      * The location used to resolve relative paths for the root object, or
