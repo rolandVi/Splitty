@@ -19,10 +19,12 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 
-public class NewExpenseCtrl implements MultiLanguages{
+public class NewExpenseCtrl implements MultiLanguages {
     private final MainCtrl mainCtrl;
 
     private final ServerUtils serverUtils;
@@ -36,6 +38,8 @@ public class NewExpenseCtrl implements MultiLanguages{
     public TextField amountField;
     @FXML
     public ComboBox<ParticipantNameDto> authorBox;
+    @FXML
+    public DatePicker datePicker;
     @FXML
     public ListView<ParticipantNameDto> debtorsCheckList;
     @FXML
@@ -198,6 +202,9 @@ public class NewExpenseCtrl implements MultiLanguages{
         });
         authorBox.setItems(participants);
 
+        datePicker.setValue(expense.getDate().toInstant()
+                .atZone(ZoneId.of("Europe/Amsterdam")).toLocalDate());
+
         debtors = new HashSet<>();
         debtorsCheckList.setCellFactory(new Callback<ListView<ParticipantNameDto>,
                 ListCell<ParticipantNameDto>>() {
@@ -233,18 +240,18 @@ public class NewExpenseCtrl implements MultiLanguages{
         this.emptyError.setVisible(false);
         this.errorField.setOpacity(0);
         String title = titleField.getText();
-        if (title.trim().isBlank()){
+        if (title.trim().isBlank()) {
             this.emptyError.setVisible(true);
             return;
         }
 
         try {
             double amount = Double.parseDouble(amountField.getText());
-            if (amount<0){
+            if (amount < 0) {
                 errorField.setOpacity(1);
             }
             ParticipantNameDto author = authorBox.getValue();
-            if (author==null){
+            if (author == null) {
                 emptyError.setVisible(true);
                 return;
             }
@@ -253,20 +260,30 @@ public class NewExpenseCtrl implements MultiLanguages{
                     debtors.add(debtorsCheckList.getItems().get(i));
                 }
             }
-            if (debtors.isEmpty()){
+            if (debtors.isEmpty()) {
                 emptyError.setVisible(true);
                 return;
             }
 
             TagEntity tag = tags.getValue();
             TagDto newTag = null;
+            if (tag == null) {
+                emptyError.setVisible(true);
+                return;
+            }
 
             if (tag != null) {
                 newTag = new TagDto(tag.getId(), tag.getTagType(), tag.getHexValue());
             }
 
+            LocalDate localDate = datePicker.getValue();
+            Date date = new Date();
+            if (localDate != null) {
+                date = Date.from(localDate.atStartOfDay(ZoneId.of("Europe/Amsterdam")).toInstant());
+            }
+
             serverUtils.send("/app/expenses/create", new ExpenseCreationDto(title, amount,
-                    author.getId(), debtors, parentEvent.getId(), new Date(), newTag));
+                    author.getId(), debtors, parentEvent.getId(), date, newTag));
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(mainCtrl.lang.getString("add_expense_alert_header"));
             alert.setContentText(mainCtrl.lang.getString("add_expense_alert_content") +
@@ -283,19 +300,49 @@ public class NewExpenseCtrl implements MultiLanguages{
      * Control for the edit button
      */
     public void editExpense() {
+        this.emptyError.setVisible(false);
+        this.errorField.setOpacity(0);
         try {
+            if (authorBox.getValue() == null) {
+                emptyError.setVisible(true);
+                return;
+            }
             expense.setAuthor(authorBox.getValue());
+
             for (int i = 0; i < debtorsCheckList.getItems().size(); i++) {
                 if (debtorsCheckList.getSelectionModel().isSelected(i)) {
                     debtors.add(debtorsCheckList.getItems().get(i));
                 }
             }
+
+            if (debtors.size()==0){
+                emptyError.setVisible(true);
+                return;
+            }
             expense.setDebtors(debtors);
+            if (Double.parseDouble(amountField.getText()) < 0) {
+                errorField.setOpacity(1);
+            }
             expense.setMoney(Double.parseDouble(amountField.getText()));
+            if (titleField.getText().trim().isBlank()) {
+                emptyError.setVisible(true);
+                return;
+            }
             expense.setTitle(titleField.getText());
+            if (tags.getValue() == null) {
+                emptyError.setVisible(true);
+                return;
+            }
             TagDto tagDto = new TagDto(tags.getValue().getId(), tags.getValue().getTagType(),
                     tags.getValue().getHexValue());
             expense.setTag(tagDto);
+
+            LocalDate localDate = datePicker.getValue();
+            Date date = new Date();
+            if (localDate != null) {
+                date = Date.from(localDate.atStartOfDay(ZoneId.of("Europe/Amsterdam")).toInstant());
+            }
+            expense.setDate(date);
 
             serverUtils.editExpense(expense);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);

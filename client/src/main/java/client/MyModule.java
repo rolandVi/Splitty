@@ -30,5 +30,6 @@ public class MyModule implements Module {
         binder.bind(Client.class).toProvider(ClientProvider.class);
         binder.bind(NewExpenseCtrl.class).in(Scopes.SINGLETON);
         binder.bind(ParticipantDetailsCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(ExpenseDetailsCtrl.class).in(Scopes.SINGLETON);
     }
 }
