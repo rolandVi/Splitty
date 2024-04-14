@@ -86,6 +86,9 @@ public class Main extends Application {
         var participantDetails = FXML.load(ParticipantDetailsCtrl.class,
                 "client.scenes", "participantDetails.fxml");
 
+        var expenseDetails = FXML.load(ExpenseDetailsCtrl.class,
+                "client.scenes", "expenseDetails.fxml");
+
 
         mainCtrl.initialize(
                 new SceneInputWrapper(primaryStage, startPage,
@@ -93,7 +96,7 @@ public class Main extends Application {
                         eventCreationPage, eventItemPage, newParticipant,
 
                         participantItem, participant, newExpense, stats,
-                        eventEmail, participantDetails), serverUtils);
+                        eventEmail, participantDetails, expenseDetails), serverUtils);
 
     }
 

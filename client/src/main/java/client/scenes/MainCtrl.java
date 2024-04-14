@@ -72,6 +72,9 @@ public class MainCtrl {
     private EventEmailCtrl eventEmailCtrl;
     private Scene eventEmail;
 
+    private ExpenseDetailsCtrl expenseDetailsCtrl;
+    private Scene expenseDetails;
+
 
     private ServerUtils serverUtils;
 
@@ -106,6 +109,7 @@ public class MainCtrl {
         this.participantCtrl = sceneInputWrapper.participantPage().getKey();
         this.newExpenseCtrl = sceneInputWrapper.newExpensePage().getKey();
         this.participantDetailsCtrl = sceneInputWrapper.participantDetails().getKey();
+        this.expenseDetailsCtrl = sceneInputWrapper.expenseDetails().getKey();
     }
 
     private void initScenes(SceneInputWrapper sceneInputWrapper){
@@ -124,6 +128,7 @@ public class MainCtrl {
         this.participantItem = new Scene(sceneInputWrapper.participantItemPage().getValue());
         this.participantEdit = new Scene(sceneInputWrapper.participantPage().getValue());
         this.eventEmail = new Scene(sceneInputWrapper.eventEmailPage().getValue());
+        this.expenseDetails = new Scene(sceneInputWrapper.expenseDetails().getValue());
     }
 
     private void initStylesheets(){
@@ -250,6 +255,16 @@ public class MainCtrl {
         });
         newExpenseCtrl.init(eventCtrl.getEventDetailsDto());
         primaryStage.setScene(newExpensePage);
+    }
+    /**
+     * Shows the expense details page
+     * @param expenseId ID of the expense
+     * @param eventId ID of the event
+     */
+    public void showExpenseDetails(Long expenseId, Long eventId){
+        primaryStage.setTitle("Expense details");
+        expenseDetailsCtrl.init(expenseId, eventId);
+        primaryStage.setScene(expenseDetails);
     }
 
     /**

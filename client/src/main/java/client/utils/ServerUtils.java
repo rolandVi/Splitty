@@ -468,6 +468,19 @@ public class ServerUtils {
     }
 
     /**
+     * Get expenseDetailsDto by id
+     * @param expenseId ID of the expense
+     * @return the expense details
+     */
+    public ExpenseDetailsDto getExpenseDetailsById(Long expenseId){
+        return client.target(server)
+                .path("api/expenses/" + expenseId)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get().readEntity(ExpenseDetailsDto.class);
+    }
+
+    /**
      * Retreives the bank details of the current user
      * @param userID teh current user id
      * @return the bank details
