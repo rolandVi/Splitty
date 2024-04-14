@@ -75,59 +75,82 @@ public class MainCtrl {
 
     /**
      * The initialize method
+     *
      * @param sceneInputWrapper Wrapper for the inputs because of high number of parameters
-     * @param serverUtils The server utilities
+     * @param serverUtils       The server utilities
      */
-    public void initialize(SceneInputWrapper sceneInputWrapper, ServerUtils serverUtils){
+    public void initialize(SceneInputWrapper sceneInputWrapper, ServerUtils serverUtils) {
         this.configManager = new ConfigManager(CONFIG_FILE_PATH);
-
         this.primaryStage = sceneInputWrapper.primaryStage();
-
         this.startPageCtrl = sceneInputWrapper.startPage().getKey();
         this.eventOverviewCtrl = sceneInputWrapper.eventOverview().getKey();
         this.paymentPageCtrl = sceneInputWrapper.paymentPage().getKey();
         this.eventCtrl = sceneInputWrapper.eventPage().getKey();
         this.eventCreationCtrl = sceneInputWrapper.eventCreationPage().getKey();
-        this.eventItemCtrl= sceneInputWrapper.eventItemPage().getKey();
+        this.eventItemCtrl = sceneInputWrapper.eventItemPage().getKey();
         this.newParticipantCtrl = sceneInputWrapper.newParticipant().getKey();
         this.participantCtrl = sceneInputWrapper.participantPage().getKey();
         this.newExpenseCtrl = sceneInputWrapper.newExpensePage().getKey();
-
-
         this.statsCtrl = sceneInputWrapper.stats().getKey();
-
         this.eventEmailCtrl = sceneInputWrapper.eventEmailPage().getKey();
-
-
         this.startPage = new Scene(sceneInputWrapper.startPage().getValue());
         this.eventOverview = new Scene(sceneInputWrapper.eventOverview().getValue());
         this.paymentPage = new Scene(sceneInputWrapper.paymentPage().getValue());
         this.eventPage = new Scene(sceneInputWrapper.eventPage().getValue());
         this.eventCreationPage = new Scene(sceneInputWrapper.eventCreationPage().getValue());
-        this.eventItemPage=new Scene(sceneInputWrapper.eventItemPage().getValue());
+        this.eventItemPage = new Scene(sceneInputWrapper.eventItemPage().getValue());
         this.statistics = new Scene(sceneInputWrapper.stats().getValue());
-
         this.newExpensePage = new Scene(sceneInputWrapper.newExpensePage().getValue());
-
-
-
+        this.newParticipant = new Scene(sceneInputWrapper.newParticipant().getValue());
+        this.participantItem = new Scene(sceneInputWrapper.participantItemPage().getValue());
+        this.participantEdit = new Scene(sceneInputWrapper.participantPage().getValue());
+        this.eventEmail = new Scene(sceneInputWrapper.eventEmailPage().getValue());
         this.eventOverview.getStylesheets().add(
                 Objects.requireNonNull(this.getClass().getClassLoader()
-                        .getResource(Path.of("stylesheets", "eventOverview.css").toString()))
+                                .getResource(Path.of("stylesheets",
+                                        "eventOverview.css").toString()))
                         .toExternalForm());
-
         this.startPage.getStylesheets().add(
                 Objects.requireNonNull(this.getClass().getClassLoader()
                                 .getResource(Path.of("stylesheets", "startPage.css").toString()))
                         .toExternalForm());
-
-        this.newParticipant = new Scene(sceneInputWrapper.newParticipant().getValue());
-        this.participantItem = new Scene(sceneInputWrapper.participantItemPage().getValue());
-        this.participantEdit = new Scene(sceneInputWrapper.participantPage().getValue());
-
-        this.eventEmail = new Scene(sceneInputWrapper.eventEmailPage().getValue());
+        this.eventItemPage.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                .getResource(Path.of("stylesheets", "eventItem.css").toString()))
+                        .toExternalForm());
+        this.eventCreationPage.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                .getResource(Path.of("stylesheets", "eventCreation.css").toString()))
+                        .toExternalForm());
+        this.eventPage.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets", "event.css").toString()))
+                        .toExternalForm());
+        this.statistics.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets", "stats.css").toString()))
+                        .toExternalForm());
+        this.participantItem.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets",
+                                        "participantItem.css").toString()))
+                        .toExternalForm());
+        this.participantEdit.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets",
+                                        "participant.css").toString()))
+                        .toExternalForm());
+        this.eventEmail.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets",
+                                        "email.css").toString()))
+                        .toExternalForm());
+        this.newExpensePage.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets",
+                                        "newExpense.css").toString()))
+                        .toExternalForm());
         showStart();
-
         sceneInputWrapper.primaryStage().show();
         updateLanguagesOfScenes();
     }

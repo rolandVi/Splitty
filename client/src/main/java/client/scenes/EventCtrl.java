@@ -342,6 +342,7 @@ public class EventCtrl implements MultiLanguages{
 
         public ExpenseListCell(EventCtrl ctrl) {
             editButton = new Button("Edit");
+            editButton.setStyle("-fx-background-color: #00E7FE;");
             editButton.setOnAction(event -> {
                 ExpenseDetailsDto item = getItem();
                 if (item != null) {
