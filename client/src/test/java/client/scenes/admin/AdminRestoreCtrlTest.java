@@ -16,7 +16,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-class AdminRestoreCtrlTest extends ApplicationTest {
+class AdminRestoreCtrlTest extends ApplicationTest{
 
     private AdminRestoreCtrl adminRestoreCtrl;
     private ServerUtils serverUtils;

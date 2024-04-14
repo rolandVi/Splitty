@@ -16,6 +16,10 @@ javafx {
     modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
+test {
+	forkEvery = 1
+}
+
 java {
 	sourceCompatibility = '21'
 }
