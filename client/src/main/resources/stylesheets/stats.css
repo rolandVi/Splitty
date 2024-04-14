@@ -15,23 +15,12 @@
     font-family: sans-serif;
 }
 
-.eventBtn:hover{
-    -fx-background-color: #AADF51;
-    -fx-font-family: sans-serif;
-}
-
-.eventBtn{
-    -fx-border-color: #AADF51;
+.buttons:hover{
+    -fx-background-color: #3060CF;
     -fx-font-family: sans-serif;
 }
 
 .buttons{
     -fx-background-color: #00E7FE;
-    -fx-font-family: sans-serif;
-}
-
-.buttons:hover{
-    -fx-background-color: #3060CF;
-    -fx-text-fill: white;
     -fx-font-family: sans-serif;
 }

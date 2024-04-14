@@ -29,7 +29,7 @@ import java.util.ResourceBundle;
 
 public class MainCtrl {
     public static final String CONFIG_FILE_PATH = "client/src/main/resources/config.properties";
-    protected ResourceBundle lang;
+    public ResourceBundle lang;
     protected ConfigManager configManager;
     private StartPageCtrl startPageCtrl;
 
@@ -77,21 +77,21 @@ public class MainCtrl {
 
     /**
      * The initialize method
+     *
      * @param sceneInputWrapper Wrapper for the inputs because of high number of parameters
-     * @param serverUtils The server utilities
+     * @param serverUtils       The server utilities
      */
-    public void initialize(SceneInputWrapper sceneInputWrapper, ServerUtils serverUtils){
+    public void initialize(SceneInputWrapper sceneInputWrapper, ServerUtils serverUtils) {
         this.configManager = new ConfigManager(CONFIG_FILE_PATH);
         this.serverUtils=serverUtils;
 
         this.primaryStage = sceneInputWrapper.primaryStage();
-
         this.startPageCtrl = sceneInputWrapper.startPage().getKey();
         this.eventOverviewCtrl = sceneInputWrapper.eventOverview().getKey();
         this.paymentPageCtrl = sceneInputWrapper.paymentPage().getKey();
         this.eventCtrl = sceneInputWrapper.eventPage().getKey();
         this.eventCreationCtrl = sceneInputWrapper.eventCreationPage().getKey();
-        this.eventItemCtrl= sceneInputWrapper.eventItemPage().getKey();
+        this.eventItemCtrl = sceneInputWrapper.eventItemPage().getKey();
         this.newParticipantCtrl = sceneInputWrapper.newParticipant().getKey();
         this.participantCtrl = sceneInputWrapper.participantPage().getKey();
         this.newExpenseCtrl = sceneInputWrapper.newExpensePage().getKey();
@@ -99,40 +99,67 @@ public class MainCtrl {
 
 
         this.statsCtrl = sceneInputWrapper.stats().getKey();
-
         this.eventEmailCtrl = sceneInputWrapper.eventEmailPage().getKey();
-
-
         this.startPage = new Scene(sceneInputWrapper.startPage().getValue());
         this.eventOverview = new Scene(sceneInputWrapper.eventOverview().getValue());
         this.paymentPage = new Scene(sceneInputWrapper.paymentPage().getValue());
         this.eventPage = new Scene(sceneInputWrapper.eventPage().getValue());
         this.eventCreationPage = new Scene(sceneInputWrapper.eventCreationPage().getValue());
-        this.eventItemPage=new Scene(sceneInputWrapper.eventItemPage().getValue());
+        this.eventItemPage = new Scene(sceneInputWrapper.eventItemPage().getValue());
         this.statistics = new Scene(sceneInputWrapper.stats().getValue());
         this.participantDetails = new Scene(sceneInputWrapper.participantDetails().getValue());
 
         this.newExpensePage = new Scene(sceneInputWrapper.newExpensePage().getValue());
-
-
-
+        this.newParticipant = new Scene(sceneInputWrapper.newParticipant().getValue());
+        this.participantItem = new Scene(sceneInputWrapper.participantItemPage().getValue());
+        this.participantEdit = new Scene(sceneInputWrapper.participantPage().getValue());
+        this.eventEmail = new Scene(sceneInputWrapper.eventEmailPage().getValue());
         this.eventOverview.getStylesheets().add(
                 Objects.requireNonNull(this.getClass().getClassLoader()
-                        .getResource(Path.of("stylesheets", "eventOverview.css").toString()))
+                                .getResource(Path.of("stylesheets",
+                                        "eventOverview.css").toString()))
                         .toExternalForm());
-
         this.startPage.getStylesheets().add(
                 Objects.requireNonNull(this.getClass().getClassLoader()
                                 .getResource(Path.of("stylesheets", "startPage.css").toString()))
                         .toExternalForm());
-
-        this.newParticipant = new Scene(sceneInputWrapper.newParticipant().getValue());
-        this.participantItem = new Scene(sceneInputWrapper.participantItemPage().getValue());
-        this.participantEdit = new Scene(sceneInputWrapper.participantPage().getValue());
-
-        this.eventEmail = new Scene(sceneInputWrapper.eventEmailPage().getValue());
+        this.eventItemPage.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                .getResource(Path.of("stylesheets", "eventItem.css").toString()))
+                        .toExternalForm());
+        this.eventCreationPage.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                .getResource(Path.of("stylesheets", "eventCreation.css").toString()))
+                        .toExternalForm());
+        this.eventPage.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets", "event.css").toString()))
+                        .toExternalForm());
+        this.statistics.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets", "stats.css").toString()))
+                        .toExternalForm());
+        this.participantItem.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets",
+                                        "participantItem.css").toString()))
+                        .toExternalForm());
+        this.participantEdit.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets",
+                                        "participant.css").toString()))
+                        .toExternalForm());
+        this.eventEmail.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets",
+                                        "email.css").toString()))
+                        .toExternalForm());
+        this.newExpensePage.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets",
+                                        "newExpense.css").toString()))
+                        .toExternalForm());
         showStart();
-
         sceneInputWrapper.primaryStage().show();
         updateLanguagesOfScenes();
     }
@@ -153,6 +180,9 @@ public class MainCtrl {
         paymentPageCtrl.updateLanguage();
         startPageCtrl.updateLanguage();
         eventEmailCtrl.updateLanguage();
+        newParticipantCtrl.updateLanguage();
+        statsCtrl.updateLanguage();
+        newExpenseCtrl.updateLanguage();
     }
 
     /**
@@ -187,6 +217,7 @@ public class MainCtrl {
      * Shows the new event scene
      */
     public void showNewEvent(){
+        eventCreationCtrl.init();
         primaryStage.setTitle("New Event");
         primaryStage.setScene(eventCreationPage);
     }
@@ -204,6 +235,9 @@ public class MainCtrl {
      */
     public void showNewExpense(){
         primaryStage.setTitle("New Expense");
+        newExpensePage.setOnKeyPressed(e -> {
+            newExpenseCtrl.keyPressedCreate(e);
+        });
         newExpenseCtrl.init(eventCtrl.getEventDetailsDto());
         primaryStage.setScene(newExpensePage);
     }
@@ -213,6 +247,9 @@ public class MainCtrl {
      */
     public void showEditExpense(){
         primaryStage.setTitle("Edit Expense");
+        newExpensePage.setOnKeyPressed(e -> {
+            newExpenseCtrl.keyPressedEdit(e);
+        });
         newExpenseCtrl.initEdit(eventCtrl.getEventDetailsDto(), newExpenseCtrl.getExpenseDetails());
         primaryStage.setScene(newExpensePage);
     }

@@ -5,24 +5,14 @@
 /*Crayola's Dandelion: #FFDE72*/
 /*Celtic Blue: #3060CF*/
 
+
 .texts{
     -fx-font-family: sans-serif;
 }
 
-
 .pane{
     -fx-background-color: #FFDE72;
     font-family: sans-serif;
-}
-
-.eventBtn:hover{
-    -fx-background-color: #AADF51;
-    -fx-font-family: sans-serif;
-}
-
-.eventBtn{
-    -fx-border-color: #AADF51;
-    -fx-font-family: sans-serif;
 }
 
 .buttons{
@@ -34,4 +24,17 @@
     -fx-background-color: #3060CF;
     -fx-text-fill: white;
     -fx-font-family: sans-serif;
+}
+
+.radioBtn{
+    -fx-font-family: sans-serif;
+    -fx-background-color: #00E7FE;
+}
+
+.radioBtn:selected{
+    -fx-background-color: #3060CF;
+}
+
+.bg{
+    -fx-background-color: #FFDE72;
 }

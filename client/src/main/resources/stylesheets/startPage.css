@@ -1,11 +1,12 @@
-/*#313B72*/
-/*#62A87C*/
-/*#462255*/
-/*#C3F3C0*/
-/*#7EE081*/
+/*Inchworm: #AADF51*/
+/*Lavender Indigo: #8C51E6*/
+/*Aqua: #00E7FE*/
+/*Magic Potion: #F84B62*/
+/*Crayola's Dandelion: #FFDE72*/
+/*Celtic Blue: #3060CF*/
 
 .anchorPane{
-    -fx-background-color: #C3F3C0;
+    -fx-background-color: #FFDE72;
 }
 
 .text-field{
@@ -14,7 +15,7 @@
 
 
 .adminBtn{
-    -fx-background-color: #62A87C;
+    -fx-background-color: #00E7FE;
     -fx-alignment: center-left;
     -fx-background-image: url('https://icon-library.com/images/admin-icon-png/admin-icon-png-28.jpg');
     -fx-background-repeat: no-repeat;
@@ -22,13 +23,18 @@
     -fx-background-size: contain;
 }
 
+.adminBtn:hover{
+    -fx-text-fill: white;
+    -fx-background-color: #3060CF;
+}
+
 .connectBtn{
-    -fx-background-color: #62A87C;
+    -fx-background-color: #00E7FE;
 }
 
 .connectBtn:hover{
     -fx-text-fill: white;
-    -fx-background-color: #313B72;
+    -fx-background-color: #3060CF;
 }
 
 .emptyLabel{
@@ -39,21 +45,24 @@
 }
 
 .serverField{
-    -fx-background-color: #62A87C;
+    -fx-background-color: #00E7FE;
 }
 
+.serverField:focused{
+    -fx-background-color: #3060CF;
+}
 .ball1{
-    -fx-fill: #62A87C;
+    -fx-fill: #F84B62;
 }
 
 .ball2{
-    -fx-fill: #7EE081;
+    -fx-fill: #AADF51;
 }
 
 .ball3{
-    -fx-fill: #313B72;
+    -fx-fill: #3060CF;
 }
 
 .euro{
-    -fx-text-fill: #C3F3C0 ;
+    -fx-text-fill: #FFDE72 ;
 }
