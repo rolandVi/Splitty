@@ -7,8 +7,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TransactionEntityTest {
     private ParticipantEntity sender;
@@ -82,5 +81,21 @@ class TransactionEntityTest {
     void testEmptyConstructor() {
         TransactionEntity emptyTransaction = new TransactionEntity();
         assertNotNull(emptyTransaction);
+    }
+
+    @Test
+    void testSetDate(){
+        TransactionEntity emptyTransaction = new TransactionEntity();
+        emptyTransaction.setDate(new Date());
+
+        assertNotNull(emptyTransaction.getDate());
+    }
+
+    @Test
+    void testSetId(){
+        TransactionEntity emptyTransaction = new TransactionEntity();
+        emptyTransaction.setId(1L);
+
+        assertEquals(1L, (long) emptyTransaction.getId());
     }
 }

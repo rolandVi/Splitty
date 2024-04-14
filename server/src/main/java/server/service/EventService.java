@@ -277,4 +277,14 @@ public class EventService {
                 .map(expense -> modelMapper.map(expense, ExpenseDetailsDto.class))
                 .collect(Collectors.toList());
     }
+
+    /**
+     * Returns all the invite codes in the database
+     * @return the invite codes as a list of strings
+     */
+    public List<String> getAllInvites() {
+        return this.eventRepository.findAll().stream()
+                .map(EventEntity::getInviteCode)
+                .collect(Collectors.toList());
+    }
 }

@@ -2,6 +2,7 @@ package client.scenes.admin;
 
 
 import client.ConfigManager;
+import client.scenes.MultiLanguages;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import dto.view.EventOverviewDto;
@@ -36,9 +37,13 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 
-public class AdminOverviewPageCtrl implements Initializable {
+public class AdminOverviewPageCtrl implements Initializable, MultiLanguages {
     private final AdminMainCtrl adminMainCtrl;
     private final ServerUtils serverUtils;
+    @FXML
+    public Label titleLabel;
+    @FXML
+    public Button refreshButton;
     @FXML
     public MenuButton orderButton;
     @FXML
@@ -80,6 +85,19 @@ public class AdminOverviewPageCtrl implements Initializable {
     }
 
     /**
+     * Constructor for testing
+     * @param adminMainCtrl the admin controller
+     * @param serverUtils the server utilities
+     * @param test here just to differentiate between constructors
+     */
+    public AdminOverviewPageCtrl(AdminMainCtrl adminMainCtrl,
+                                 ServerUtils serverUtils, String test) {
+        this.adminMainCtrl = adminMainCtrl;
+        this.serverUtils=serverUtils;
+        this.config = null;
+    }
+
+    /**
      * Initialize method
      * @param location
      * The location used to resolve relative paths for the root object, or
@@ -114,6 +132,21 @@ public class AdminOverviewPageCtrl implements Initializable {
 
         loadOrder();
         loadEvents();
+    }
+    /**
+     * Updates the language of the scene using the resource bundle
+     */
+    @Override
+    public void updateLanguage() {
+        try {
+            ResourceBundle lang = adminMainCtrl.lang;
+            titleLabel.setText(lang.getString("event_overview"));
+            refreshButton.setText(lang.getString("refresh"));
+            restore.setText(lang.getString("restore"));
+            orderButton.setText(lang.getString("order_by"));
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -378,5 +411,4 @@ public class AdminOverviewPageCtrl implements Initializable {
     public void showRestore(){
         adminMainCtrl.showRestore();
     }
-
 }

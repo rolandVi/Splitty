@@ -431,8 +431,8 @@ public class EventCtrl implements MultiLanguages{
             Button participantButton = (Button) currentNode.lookup("#participantName");
             participantButton.setText(participants.get(i).getFirstName() + " "
                     + participants.get(i).getLastName());
-
-            participantButton.setOnAction(e -> showParticipantEdit(participant.getId(), eventId));
+            participantButton.setOnAction(e -> mainCtrl.
+                    showParticipantDetails(participant.getId(), eventId));
         }
         this.participantsContainer.getChildren().clear();
         this.participantsContainer.getChildren().addAll(nodes);
