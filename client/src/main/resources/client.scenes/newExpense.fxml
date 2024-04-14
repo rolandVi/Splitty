@@ -34,6 +34,6 @@
             <Label fx:id="paidLabel" text="Who paid?" />
          </children>
       </VBox>
-      <Label fx:id="emptyError" alignment="CENTER" layoutX="170.0" layoutY="297.0" prefHeight="17.0" prefWidth="218.0" text="No empty fields are allowed" textFill="RED" />
+      <Label fx:id="emptyError" alignment="CENTER" layoutX="170.0" layoutY="297.0" prefHeight="17.0" prefWidth="218.0" text="No empty fields are allowed" textFill="RED" visible="false" />
    </children>
 </Pane>

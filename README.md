@@ -28,7 +28,7 @@ This repository contains team 37's take on the Splitty assignment
 - When you enter the invite code in the text field on the top and click the button (or click enter on the keyboard) you are redirected to the event
 - In the event details you have access to participants, expenses, statistics
 - You can see/edit every participant by clicking on them
-- You can see every expense in the box on the right. And they can also be filtered.
+- You can see every expense in the box on the right. And they can also be filtered and ordered.
 - There are buttons for both adding and expense and a participants
 - There is a change event name text field
 - When you click on the 'Send invite' button you are redirected to a page for sending emails

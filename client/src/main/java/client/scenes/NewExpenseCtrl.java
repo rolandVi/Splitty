@@ -129,6 +129,7 @@ public class NewExpenseCtrl implements MultiLanguages{
         titleField.clear();
         amountField.clear();
         errorField.setOpacity(0);
+        emptyError.setVisible(false);
 
         ObservableList<ParticipantNameDto> participants = FXCollections.
                 observableArrayList(parentEvent.getParticipants());
@@ -183,6 +184,7 @@ public class NewExpenseCtrl implements MultiLanguages{
         titleField.setText(expense.getTitle());
         amountField.setText(expense.getMoney().toString());
         errorField.setOpacity(0);
+        emptyError.setVisible(false);
 
         ObservableList<ParticipantNameDto> participants = FXCollections.
                 observableArrayList(parentEvent.getParticipants());
@@ -228,17 +230,32 @@ public class NewExpenseCtrl implements MultiLanguages{
      * creates new expense based on the input
      */
     public void createExpense() {
+        this.emptyError.setVisible(false);
+        this.errorField.setOpacity(0);
         String title = titleField.getText();
+        if (title.trim().isBlank()){
+            this.emptyError.setVisible(true);
+            return;
+        }
+
         try {
             double amount = Double.parseDouble(amountField.getText());
             if (amount<0){
                 errorField.setOpacity(1);
             }
             ParticipantNameDto author = authorBox.getValue();
+            if (author==null){
+                emptyError.setVisible(true);
+                return;
+            }
             for (int i = 0; i < debtorsCheckList.getItems().size(); i++) {
                 if (debtorsCheckList.getSelectionModel().isSelected(i)) {
                     debtors.add(debtorsCheckList.getItems().get(i));
                 }
+            }
+            if (debtors.isEmpty()){
+                emptyError.setVisible(true);
+                return;
             }
 
             TagEntity tag = tags.getValue();
@@ -361,6 +378,8 @@ public class NewExpenseCtrl implements MultiLanguages{
         this.paidLabel.setText(mainCtrl.lang.getString("paid_label"));
         this.titleLabel.setText(mainCtrl.lang.getString("title_label"));
         this.errorField.setText(mainCtrl.lang.getString("error_amount"));
+        this.emptyError.setText(mainCtrl.lang.getString("empty_fields"));
+        this.removeButton.setText(mainCtrl.lang.getString("remove"));
         this.returnButton.setText(mainCtrl.lang.getString("return"));
     }
 
