@@ -37,7 +37,7 @@
          </font>
       </Button>
 
-      <ComboBox fx:id="languageBox" layoutX="463.0" layoutY="17.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#uponSelectionLanguage" />
+      <ComboBox fx:id="languageBox" layoutX="455.0" layoutY="30.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#uponSelectionLanguage" styleClass="buttons" />
 
       <ScrollPane layoutX="44.0" layoutY="110.0" prefHeight="185.0" prefWidth="406.0">
          <content>

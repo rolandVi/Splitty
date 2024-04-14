@@ -1,18 +1,23 @@
 package client.scenes.admin;
 
+import client.scenes.MultiLanguages;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.util.ResourceBundle;
 
-public class AdminRestoreCtrl {
+public class AdminRestoreCtrl implements MultiLanguages {
     private final AdminMainCtrl adminMainCtrl;
+    @FXML
+    public Label titleLabel;
     @FXML
     public Button restoreBtn;
     @FXML
@@ -38,6 +43,21 @@ public class AdminRestoreCtrl {
     public AdminRestoreCtrl(AdminMainCtrl adminMainCtrl, ServerUtils serverUtils) {
         this.adminMainCtrl = adminMainCtrl;
         this.serverUtils = serverUtils;
+    }
+    /**
+     * Updates the language of the scene using the resource bundle
+     */
+    @Override
+    public void updateLanguage() {
+        try {
+            ResourceBundle lang = adminMainCtrl.lang;
+            titleLabel.setText(lang.getString("restore_title"));
+            restoreBtn.setText(lang.getString("restore"));
+            textField.setPromptText(lang.getString("restore_body"));
+            restoreMessage.setText(lang.getString("restore_message"));
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -102,6 +122,5 @@ public class AdminRestoreCtrl {
             }
         });
     }
-
 
 }

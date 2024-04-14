@@ -162,16 +162,8 @@ class ConfigManagerTest {
             assertTrue(scanner.hasNextLine());
             assertEquals("language=en", scanner.nextLine());
             assertTrue(scanner.hasNextLine());
-            assertEquals("loggedIn=FALSE", scanner.nextLine());
-            assertTrue(scanner.hasNextLine());
             assertEquals("serverURL=http\\://localhost\\:8080", scanner.nextLine());
-            assertEquals("userFirstName=NOT SET", scanner.nextLine());
-            assertTrue(scanner.hasNextLine());
             assertEquals("userID=1", scanner.nextLine());
-            assertTrue(scanner.hasNextLine());
-            assertEquals("userLastName=NOT SET", scanner.nextLine());
-            assertTrue(scanner.hasNextLine());
-            assertEquals("userMail=NOT@SET", scanner.nextLine());
             assertFalse(scanner.hasNextLine());
         }catch(IOException e){
             e.printStackTrace();

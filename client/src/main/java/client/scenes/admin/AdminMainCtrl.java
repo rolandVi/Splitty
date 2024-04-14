@@ -56,6 +56,8 @@ public class AdminMainCtrl {
                            Pair<AdminOverviewPageCtrl, Parent> overviewPage,
                            Pair<AdminRestoreCtrl, Parent> restorePage) {
         this.config = new ConfigManager("client/src/main/resources/config.properties");
+        Locale.setDefault(getLocalFromConfig());
+        lang = ResourceBundle.getBundle("languages.lang");
         this.adminOverviewStage = adminOverviewStage;
 
         this.loginPageCtrl = loginPage.getKey();
@@ -96,6 +98,8 @@ public class AdminMainCtrl {
         Locale.setDefault(getLocalFromConfig());
         lang = ResourceBundle.getBundle("languages.lang");
         loginPageCtrl.updateLanguage();
+        overviewPageCtrl.updateLanguage();
+        adminRestoreCtrl.updateLanguage();
     }
 
     /**
