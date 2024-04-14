@@ -7,7 +7,6 @@ import com.google.inject.Inject;
 import dto.exceptions.PasswordExpiredException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -23,9 +22,6 @@ public class AdminLoginPageCtrl implements MultiLanguages {
 
     @FXML
     public TextField passwordField;
-
-    @FXML
-    public Label passwordLabel;
 
     @FXML
     public Text incorrectPasswordError;
@@ -86,7 +82,7 @@ public class AdminLoginPageCtrl implements MultiLanguages {
     public void updateLanguage() {
         try {
             ResourceBundle lang = adminMainCtrl.lang;
-            passwordLabel.setText(lang.getString("enter_password"));
+            passwordField.setPromptText(lang.getString("password"));
             loginButton.setText(lang.getString("login"));
             incorrectPasswordError.setText(lang.getString("incorrect_password"));
             generateButton.setText(lang.getString("generate_password"));

@@ -5,9 +5,7 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import jakarta.ws.rs.ProcessingException;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -72,9 +70,23 @@ public class StartPageCtrl implements MultiLanguages {
      * Update the config file
      * Update all scenes with the new languages
      */
-    public void uponSelectionLanguage() {
-        String[] selection = languageBox.getValue().split("_");
-        MultiLanguages.setLocaleFromConfig(selection[0], selection[1]);
+    public void uponSelectionLanguage() throws IOException {
+        if (!languageBox.getValue().contains("_")) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(mainCtrl.lang.getString("add_language_header"));
+            alert.setContentText(mainCtrl.lang.getString("add_language_body"));
+            alert.showAndWait().ifPresent(response -> createNewLanguage());
+        } else {
+            String[] selection = languageBox.getValue().split("_");
+            if (checkLanguageValidity(languageBox.getValue()))
+                MultiLanguages.setLocaleFromConfig(selection[0], selection[1]);
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText(mainCtrl.lang.getString("add_language_error_header"));
+                alert.setContentText(mainCtrl.lang.getString("add_language_error_body"));
+                alert.showAndWait().ifPresent(response -> createNewLanguage());
+            }
+        }
         mainCtrl.updateLanguagesOfScenes();
     }
 
