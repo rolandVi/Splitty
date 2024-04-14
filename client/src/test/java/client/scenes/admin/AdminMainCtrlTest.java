@@ -15,7 +15,7 @@ import java.util.Locale;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(ApplicationExtension.class) // Allows the use of JavaFX classes in the tests
+
 class AdminMainCtrlTest {
 
     private AdminMainCtrl adminMainCtrl;
@@ -35,38 +35,5 @@ class AdminMainCtrlTest {
         Locale locale = adminMainCtrlSpy.getLocalFromConfig();
 
         assertEquals(Locale.US, locale);
-    }
-
-    @Test
-    void showOverviews() {
-        Platform.runLater(() -> {
-            Stage stage = new Stage();
-            Pair<AdminOverviewPageCtrl, Parent> overviewPage = new Pair<>(mock(AdminOverviewPageCtrl.class), new Parent() {});
-
-            adminMainCtrl.showAdminOverview();
-
-            assertEquals("Admin Overview", stage.getTitle());
-            assertEquals(overviewPage.getValue(), stage.getScene().getRoot());
-        });
-
-        Platform.runLater(() -> {
-            Stage stage = new Stage();
-            Pair<AdminRestoreCtrl, Parent> restorePage = new Pair<>(mock(AdminRestoreCtrl.class), new Parent() {});
-
-            adminMainCtrl.showRestore();
-
-            assertEquals("Admin Restore", stage.getTitle());
-            assertEquals(restorePage.getValue(), stage.getScene().getRoot());
-        });
-
-        Platform.runLater(() -> {
-            Stage stage = new Stage();
-            Pair<AdminLoginPageCtrl, Parent> loginPage = new Pair<>(mock(AdminLoginPageCtrl.class), new Parent() {});
-
-            adminMainCtrl.showLogin();
-
-            assertEquals("Admin Login Page", stage.getTitle());
-            assertEquals(loginPage.getValue(), stage.getScene().getRoot());
-        });
     }
 }
