@@ -21,8 +21,6 @@ public class ParticipantDetailsCtrl {
     private Long eventId;
 
     @FXML
-    public Label titleLabel;
-    @FXML
     public Label firstNameLabel;
     @FXML
     public Label lastNameLabel;
@@ -90,7 +88,7 @@ public class ParticipantDetailsCtrl {
         }
 
         paidTotalLabel.setText(participant.getFirstName() + " has paid:");
-        paidTotalAmountLabel.setText(String.valueOf(getSharePaidByParticipant()));
+        paidTotalAmountLabel.setText("€" + String.valueOf(getSharePaidByParticipant()));
 
         double debt = getDebtToTheGroup();
         if (debt > 0){
@@ -102,8 +100,8 @@ public class ParticipantDetailsCtrl {
             owesIsOwedAmountLabel.setText("€" + String.valueOf(debt));
             owesIsOwedAmountLabel.setTextFill(Paint.valueOf("green"));
         }else {
-            owesIsOwedLabel.setText(participant.getFirstName() + " does not owe anything!");
-            owesIsOwedAmountLabel.setText(String.valueOf(0.0));
+            owesIsOwedLabel.setText(participant.getFirstName() + " owes");
+            owesIsOwedAmountLabel.setText("€" + String.valueOf(0.0));
             owesIsOwedAmountLabel.setTextFill(Paint.valueOf("black"));
         }
     }
