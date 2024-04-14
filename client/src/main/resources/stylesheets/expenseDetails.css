@@ -1,0 +1,50 @@
+/*Inchworm: #AADF51*/
+/*Lavender Indigo: #8C51E6*/
+/*Aqua: #00E7FE*/
+/*Magic Potion: #F84B62*/
+/*Crayola's Dandelion: #FFDE72*/
+/*Celtic Blue: #3060CF*/
+
+.loginButton{
+    -fx-background-color: #00E7FE;
+    -fx-font-family:sans-serif;
+}
+
+.loginButton:hover{
+    -fx-background-color: #3060CF;
+    -fx-text-fill: white;
+}
+
+.generateButton{
+    -fx-background-color: #00E7FE;
+    -fx-font-family:sans-serif;
+}
+
+.generateButton:hover{
+    -fx-background-color: #3060CF;
+    -fx-text-fill: white;
+}
+
+.anchorpane{
+    -fx-background-color: #FFDE72;
+}
+
+.password-field{
+    -fx-background-image: url('https://icon-library.com/images/admin-icon-png/admin-icon-png-28.jpg');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: right center;
+    -fx-background-size: contain;
+}
+
+.password-field:focused {
+    -fx-background-image: none;
+}
+
+.label{
+    -fx-font-family:sans-serif;
+}
+
+
+
+
+
