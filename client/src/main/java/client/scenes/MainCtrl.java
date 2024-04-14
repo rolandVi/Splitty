@@ -177,6 +177,22 @@ public class MainCtrl {
                                 .getResource(Path.of("stylesheets",
                                         "newExpense.css").toString()))
                         .toExternalForm());
+        this.expenseDetails.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets",
+                                        "expenseDetails.css").toString()))
+                        .toExternalForm());
+        this.newParticipant.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets",
+                                        "newParticipant.css").toString()))
+                        .toExternalForm());
+        this.participantDetails.getStylesheets().add(
+                Objects.requireNonNull(this.getClass().getClassLoader()
+                                .getResource(Path.of("stylesheets",
+                                        "participantDetails.css").toString()))
+                        .toExternalForm());
+
     }
 
 
@@ -190,7 +206,7 @@ public class MainCtrl {
 
         // Update the language of each scene
         eventCtrl.updateLanguage();
-        eventOverviewCtrl.updateLanguage();
+//        eventOverviewCtrl.updateLanguage();
         eventCreationCtrl.updateLanguage();
         paymentPageCtrl.updateLanguage();
         startPageCtrl.updateLanguage();

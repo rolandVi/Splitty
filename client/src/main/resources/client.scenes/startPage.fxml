@@ -34,7 +34,7 @@
          </font></Text>
 
       <Button fx:id="openAdminButton" layoutX="512.0" layoutY="356.0" mnemonicParsing="false" onAction="#enterAdmin" prefHeight="25.0" prefWidth="72.0" styleClass="adminBtn" text="admin" />
-      <ComboBox fx:id="languageBox" layoutX="512.0" layoutY="31.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#uponSelectionLanguage" styleClass="connectBtn" />
+      <ComboBox fx:id="languageBox" layoutX="512.0" layoutY="32.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#uponSelectionLanguage" styleClass="connectBtn" />
       <Circle fill="DODGERBLUE" layoutX="94.0" layoutY="275.0" opacity="0.8" radius="85.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="ball2" />
       <Label layoutX="74.0" layoutY="205.0" prefHeight="85.0" prefWidth="40.0" styleClass="euro" text="€">
          <font>
