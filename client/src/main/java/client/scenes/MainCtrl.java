@@ -57,9 +57,11 @@ public class MainCtrl {
     private Scene participantItem;
     private Scene participantEdit;
     private ParticipantCtrl participantCtrl;
+    private ParticipantDetailsCtrl participantDetailsCtrl;
 
     private Scene newExpensePage;
     private NewExpenseCtrl newExpenseCtrl;
+    private Scene participantDetails;
 
     private CustomTagCtrl customTagCtrl;
     private Scene customTag;
@@ -80,6 +82,7 @@ public class MainCtrl {
      */
     public void initialize(SceneInputWrapper sceneInputWrapper, ServerUtils serverUtils){
         this.configManager = new ConfigManager(CONFIG_FILE_PATH);
+        this.serverUtils=serverUtils;
 
         this.primaryStage = sceneInputWrapper.primaryStage();
 
@@ -92,6 +95,7 @@ public class MainCtrl {
         this.newParticipantCtrl = sceneInputWrapper.newParticipant().getKey();
         this.participantCtrl = sceneInputWrapper.participantPage().getKey();
         this.newExpenseCtrl = sceneInputWrapper.newExpensePage().getKey();
+        this.participantDetailsCtrl = sceneInputWrapper.participantDetails().getKey();
 
 
         this.statsCtrl = sceneInputWrapper.stats().getKey();
@@ -106,6 +110,7 @@ public class MainCtrl {
         this.eventCreationPage = new Scene(sceneInputWrapper.eventCreationPage().getValue());
         this.eventItemPage=new Scene(sceneInputWrapper.eventItemPage().getValue());
         this.statistics = new Scene(sceneInputWrapper.stats().getValue());
+        this.participantDetails = new Scene(sceneInputWrapper.participantDetails().getValue());
 
         this.newExpensePage = new Scene(sceneInputWrapper.newExpensePage().getValue());
 
@@ -275,6 +280,18 @@ public class MainCtrl {
 
     protected long getEventID(){
         return eventCtrl.getEventDetailsDto().getId();
+    }
+
+    /**
+     * Displays the overview of participant's details
+     * @param parId ID of the participant
+     * @param eventId ID of the event that the participant is part of
+     */
+    public void showParticipantDetails(long parId, long eventId){
+        primaryStage.setTitle(serverUtils.getParticipantDetails(parId, eventId)
+                .getFirstName() + " 's details");
+        participantDetailsCtrl.init(parId, eventId);
+        primaryStage.setScene(participantDetails);
     }
 
 }

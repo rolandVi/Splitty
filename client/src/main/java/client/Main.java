@@ -83,13 +83,17 @@ public class Main extends Application {
         var eventEmail = FXML.load(EventEmailCtrl.class,
                 "client.scenes", "eventEmailPage.fxml");
 
+        var participantDetails = FXML.load(ParticipantDetailsCtrl.class,
+                "client.scenes", "participantDetails.fxml");
+
 
         mainCtrl.initialize(
                 new SceneInputWrapper(primaryStage, startPage,
                         eventOverview, paymentPage, eventPage,
                         eventCreationPage, eventItemPage, newParticipant,
 
-                        participantItem, participant, newExpense, stats, eventEmail), serverUtils);
+                        participantItem, participant, newExpense, stats,
+                        eventEmail, participantDetails), serverUtils);
 
     }
 

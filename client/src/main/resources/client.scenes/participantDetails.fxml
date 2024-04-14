@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.ParticipantDetailsCtrl">
+   <children>
+      <Button fx:id="returnButton" layoutX="508.0" layoutY="27.0" mnemonicParsing="false" onAction="#returnToOverview" text="Return" />
+      <Button fx:id="editButton" layoutX="492.0" layoutY="327.0" mnemonicParsing="false" onAction="#edit" prefHeight="39.0" prefWidth="67.0" text="Edit" />
+      <Label fx:id="titleLabel" layoutX="25.0" layoutY="26.0" text="Title">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <VBox alignment="TOP_CENTER" layoutX="25.0" layoutY="190.0" prefHeight="200.0" prefWidth="200.0" style="-: center;">
+         <children>
+            <Label fx:id="paidTotalLabel" text="paidTotal">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="paidTotalAmountLabel" text="amountTotal">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <VBox alignment="TOP_CENTER" layoutX="260.0" layoutY="190.0" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="owesIsOwedLabel" text="Owes/Is Owed">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="owesIsOwedAmountLabel" text="Label">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <VBox layoutX="25.0" layoutY="75.0" prefHeight="85.0" prefWidth="269.0">
+         <children>
+            <Label text="Personal details">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </Label>
+            <HBox prefHeight="20.0" prefWidth="200.0">
+               <children>
+                  <Label text="Name:">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Text fx:id="nameText" strokeType="OUTSIDE" strokeWidth="0.0" text="name">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Text>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="20.0" prefWidth="165.0">
+               <children>
+                  <Label prefWidth="40.6" text="Email:">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Text fx:id="emailText" strokeType="OUTSIDE" strokeWidth="0.0" text="email">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox layoutX="300.0" layoutY="75.0" prefHeight="85.0" prefWidth="295.0">
+         <children>
+            <Label text="Bank account">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </Label>
+            <HBox prefHeight="20.0" prefWidth="200.0">
+               <children>
+                  <Label text="Iban:">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Text fx:id="ibanText" strokeType="OUTSIDE" strokeWidth="0.0" text="iban">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Text>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="20.0" prefWidth="200.0">
+               <children>
+                  <Label prefWidth="30.6" text="BIC:">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Text fx:id="bicText" strokeType="OUTSIDE" strokeWidth="0.0" text="bic">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</Pane>
