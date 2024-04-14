@@ -53,6 +53,11 @@ This repository contains team 37's take on the Splitty assignment
 - when a new expense is created the change is immediately visible (unless the connection has timed-out)
 - The implementation of it can be seen in `ExpenseRestController` and `ServerUtils`
 
+5. Controller
+- there is a InviteController in the serve/api folder
+- if you access localhost:8080/invites (the server and port could be different) through the browser you can access all the available invite codes
+- we used thymeleaf as our template engine
+
 ### HCI
 - there is an `ESC` shortcut for all scenes, that lets you go back to the previou page
 - All "forms" have `Enter` shortcut for "submitting" it
