@@ -377,7 +377,7 @@ public class EventCtrl implements MultiLanguages{
                 setGraphic(null);
             } else {
                 expenseInfo.setText(item.getTitle() + "\n"
-                        + item.getAuthor().toString() + " paid: " + item.getMoney() + " euro");
+                        + item.getAuthor().toString() + " paid: €" + item.getMoney());
 
                 if (item.getTag() != null) {
                     tagText.setText(item.getTag().getTagType());
