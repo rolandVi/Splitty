@@ -102,7 +102,7 @@ public class AdminMainCtrl {
      * Retrieves the locale based on the saved config file
      * @return language locale
      */
-    private Locale getLocalFromConfig(){
+    protected Locale getLocalFromConfig(){
         String language = config.getProperty("language");
         String country = config.getProperty("country");
         return Locale.of(language, country);

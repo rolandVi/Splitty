@@ -24,7 +24,7 @@ public class AdminRestoreCtrl {
     public Text restoreMessage;
 
     @FXML
-    private AnchorPane rootPane;
+    protected AnchorPane rootPane;
 
     private final ServerUtils serverUtils;
 
