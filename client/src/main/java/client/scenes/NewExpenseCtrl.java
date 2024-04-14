@@ -64,6 +64,9 @@ public class NewExpenseCtrl implements MultiLanguages{
     @FXML
     public Button newTag;
 
+    @FXML
+    public Label emptyError;
+
     private List<CheckBox> debtorsCheckBoxes;
 
     private Set<ParticipantNameDto> debtors;
