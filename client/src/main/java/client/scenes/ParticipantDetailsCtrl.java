@@ -73,8 +73,7 @@ public class ParticipantDetailsCtrl {
         }
 
 
-        String url = mainCtrl.configManager.getProperty("serverURL");
-        BankAccountDto bank = serverUtils.findBankDetails(parId, url);
+        BankAccountDto bank = serverUtils.findBankDetails(parId);
         if (bank.getIban() != null){
             ibanText.setText(bank.getIban());
         }else {

@@ -85,6 +85,16 @@ public class MainCtrl {
         this.configManager = new ConfigManager(CONFIG_FILE_PATH);
         this.serverUtils=serverUtils;
 
+        initCtrl(sceneInputWrapper);
+        initScenes(sceneInputWrapper);
+        initStylesheets();
+
+        showStart();
+        sceneInputWrapper.primaryStage().show();
+        updateLanguagesOfScenes();
+    }
+
+    private void initCtrl(SceneInputWrapper sceneInputWrapper){
         this.primaryStage = sceneInputWrapper.primaryStage();
         this.startPageCtrl = sceneInputWrapper.startPage().getKey();
         this.eventOverviewCtrl = sceneInputWrapper.eventOverview().getKey();
@@ -96,8 +106,9 @@ public class MainCtrl {
         this.participantCtrl = sceneInputWrapper.participantPage().getKey();
         this.newExpenseCtrl = sceneInputWrapper.newExpensePage().getKey();
         this.participantDetailsCtrl = sceneInputWrapper.participantDetails().getKey();
+    }
 
-
+    private void initScenes(SceneInputWrapper sceneInputWrapper){
         this.statsCtrl = sceneInputWrapper.stats().getKey();
         this.eventEmailCtrl = sceneInputWrapper.eventEmailPage().getKey();
         this.startPage = new Scene(sceneInputWrapper.startPage().getValue());
@@ -108,12 +119,14 @@ public class MainCtrl {
         this.eventItemPage = new Scene(sceneInputWrapper.eventItemPage().getValue());
         this.statistics = new Scene(sceneInputWrapper.stats().getValue());
         this.participantDetails = new Scene(sceneInputWrapper.participantDetails().getValue());
-
         this.newExpensePage = new Scene(sceneInputWrapper.newExpensePage().getValue());
         this.newParticipant = new Scene(sceneInputWrapper.newParticipant().getValue());
         this.participantItem = new Scene(sceneInputWrapper.participantItemPage().getValue());
         this.participantEdit = new Scene(sceneInputWrapper.participantPage().getValue());
         this.eventEmail = new Scene(sceneInputWrapper.eventEmailPage().getValue());
+    }
+
+    private void initStylesheets(){
         this.eventOverview.getStylesheets().add(
                 Objects.requireNonNull(this.getClass().getClassLoader()
                                 .getResource(Path.of("stylesheets",
@@ -125,12 +138,12 @@ public class MainCtrl {
                         .toExternalForm());
         this.eventItemPage.getStylesheets().add(
                 Objects.requireNonNull(this.getClass().getClassLoader()
-                .getResource(Path.of("stylesheets", "eventItem.css").toString()))
+                                .getResource(Path.of("stylesheets", "eventItem.css").toString()))
                         .toExternalForm());
         this.eventCreationPage.getStylesheets().add(
                 Objects.requireNonNull(this.getClass().getClassLoader()
-                .getResource(Path.of("stylesheets", "eventCreation.css").toString()))
-                        .toExternalForm());
+                                .getResource(Path.of("stylesheets",
+                                        "eventCreation.css").toString())).toExternalForm());
         this.eventPage.getStylesheets().add(
                 Objects.requireNonNull(this.getClass().getClassLoader()
                                 .getResource(Path.of("stylesheets", "event.css").toString()))
@@ -159,9 +172,6 @@ public class MainCtrl {
                                 .getResource(Path.of("stylesheets",
                                         "newExpense.css").toString()))
                         .toExternalForm());
-        showStart();
-        sceneInputWrapper.primaryStage().show();
-        updateLanguagesOfScenes();
     }
 
 
