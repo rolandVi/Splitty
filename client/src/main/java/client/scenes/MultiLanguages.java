@@ -5,10 +5,7 @@ import client.LanguageCell;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ComboBox;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public interface MultiLanguages {
@@ -20,6 +17,30 @@ public interface MultiLanguages {
      * according to the locale.
      */
     void updateLanguage();
+
+    /**
+     * Checks if all keys have a value assigned of a properties file
+     * An empty value returns false.
+     * @param locale the properties file to check
+     * @return true iff all keys have a non-null and non-empty value
+     */
+    default boolean checkLanguageValidity(String locale) {
+        try {
+            Properties prop = new Properties();
+            FileReader fileReader = new FileReader(LANGUAGE_PATH
+                    + "/lang_" + locale + ".properties");
+            prop.load(fileReader);
+            Set<String> set = prop.stringPropertyNames();
+            String value;
+            for (String key : set){
+                value = prop.getProperty(key);
+                if (value == null || value.isEmpty()) return false;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return true;
+    }
 
     /**
      * Create a template properties file to add a new language.

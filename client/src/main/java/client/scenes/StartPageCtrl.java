@@ -83,7 +83,14 @@ public class StartPageCtrl implements MultiLanguages {
             alert.showAndWait().ifPresent(response -> createNewLanguage());
         } else {
             String[] selection = languageBox.getValue().split("_");
-            MultiLanguages.setLocaleFromConfig(selection[0], selection[1]);
+            if (checkLanguageValidity(languageBox.getValue()))
+                MultiLanguages.setLocaleFromConfig(selection[0], selection[1]);
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText(mainCtrl.lang.getString("add_language_error_header"));
+                alert.setContentText(mainCtrl.lang.getString("add_language_error_body"));
+                alert.showAndWait().ifPresent(response -> createNewLanguage());
+            }
         }
         mainCtrl.updateLanguagesOfScenes();
     }
