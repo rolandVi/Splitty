@@ -3,10 +3,7 @@ package server.controller.api;
 import commons.ExpenseEntity;
 import dto.CreatorToTitleDto;
 import dto.ParticipantCreationDto;
-import dto.view.EventDetailsDto;
-import dto.view.EventOverviewDto;
-import dto.view.EventTitleDto;
-import dto.view.ParticipantNameDto;
+import dto.view.*;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -30,6 +27,7 @@ public class EventRestController {
 
     /**
      * Constructor injection
+     *
      * @param eventService the Service for the Event Entity
      */
     public EventRestController(EventService eventService) {
@@ -38,29 +36,32 @@ public class EventRestController {
 
     /**
      * Access the event with the given id
+     *
      * @param id the id of the event
      * @return ResponseEntity with badRequest status if invalid id was presented
-     *         or ResponseEntity with the requested event as body
+     * or ResponseEntity with the requested event as body
      */
     @GetMapping(value = "/{id}")
     public ResponseEntity<EventDetailsDto> getById(
-            @PathVariable("id") Long id){
+            @PathVariable("id") Long id) {
         return ResponseEntity.ok(this.eventService.getById(id));
     }
 
     /**
      * Returns the event details of an event with the given invite code
+     *
      * @param code the invite code
      * @return the event
      */
     @GetMapping("/invites/{inviteCode}")
     public ResponseEntity<EventDetailsDto> getByInviteCode(
-            @PathVariable("inviteCode") String code){
+            @PathVariable("inviteCode") String code) {
         return ResponseEntity.ok(this.eventService.getByInviteCode(code));
     }
 
     /**
      * Creates an event with the given title
+     *
      * @param creatorToTitleDto the title of the new event along with the id of the creator
      * @return the newly created event title and id
      */
@@ -71,17 +72,19 @@ public class EventRestController {
         ModelMapper modelMapper = new ModelMapper();
         listeners.forEach((k, l) -> l.accept(modelMapper.map(event, EventOverviewDto.class)));
         return ResponseEntity.ok(event);
+
     }
 
     /**
      * Delete an event with the given id
+     *
      * @param id the id of the event to access
      * @return ResponseEntity with badRequest status if invalid id was presented
-     *         or ok status if it was deleted successfully
+     * or ok status if it was deleted successfully
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> removeById(@PathVariable(name = "id") long id){
-        if (!checkIdValidity(id)){
+    public ResponseEntity<Void> removeById(@PathVariable(name = "id") long id) {
+        if (!checkIdValidity(id)) {
             return ResponseEntity.badRequest().build();
         }
         this.eventService.removeById(id);
@@ -90,39 +93,52 @@ public class EventRestController {
 
     /**
      * Update the title of the event
-     * @param id the id of the wanted event
+     *
+     * @param id         the id of the wanted event
      * @param eventTitle the new title
      * @return ResponseEntity with badRequest status if invalid id was presented
-     *       or ResponseEntity with the requested event as body
+     * or ResponseEntity with the requested event as body
      */
     @PatchMapping("/{id}")
     public ResponseEntity<EventTitleDto> updateEventTitleById(@PathVariable(name = "id") long id,
-                                                   @Valid @RequestBody EventTitleDto eventTitle){
+        @Valid @RequestBody EventTitleDto eventTitle) {
         return ResponseEntity.ok(this.eventService.updateById(id, eventTitle));
     }
 
 
-
     /**
      * Adding an expense to an event
+     *
      * @param eventId the event id
      * @param expense the expense creation details
      * @return the response entity, defining whether the operation was successful
      */
     @PatchMapping("/{id}/add_expense")
     public ResponseEntity<Void> addExpense(@PathVariable(name = "id") long eventId,
-                                           @RequestBody ExpenseEntity expense){
+                                           @RequestBody ExpenseEntity expense) {
         this.eventService.addExpense(expense);
         return ResponseEntity.ok().build();
     }
 
     /**
      * Get all events endpoint
+     *
      * @return all events
      */
     @GetMapping(value = {"", "/"})
-    public ResponseEntity<List<EventOverviewDto>> getAllEvents(){
+    public ResponseEntity<List<EventOverviewDto>> getAllEvents() {
         return ResponseEntity.ok(this.eventService.getAllEvents());
+    }
+
+
+    /**
+     * Endpoint used for testing connection
+     * @return response
+     */
+
+    @GetMapping("/connect")
+    public ResponseEntity<Void> connectTest(){
+        return ResponseEntity.ok().build();
     }
 
     private Map<Object, Consumer<EventOverviewDto>> listeners = new HashMap<>();
@@ -150,17 +166,19 @@ public class EventRestController {
 
     /**
      * Endpoint to get the participants of an event
+     *
      * @param eventId the event id
      * @return the participants
      */
     @GetMapping("/{id}/participants")
     public ResponseEntity<List<ParticipantNameDto>> getEventParticipants(
-            @PathVariable(name = "id") long eventId){
+            @PathVariable(name = "id") long eventId) {
         return ResponseEntity.ok(this.eventService.getEventParticipants(eventId));
     }
 
     /**
      * Create a new event and persist it in the database
+     *
      * @param eventDetailsDto JSON object representing the event details
      * @return ResponseEntity with the created event details
      */
@@ -174,9 +192,10 @@ public class EventRestController {
 
     /**
      * creates a user with the given parameters
+     *
      * @param eventId the id of the event - path variable
-     * @param user user
-     * @param result the validation result
+     * @param user    user
+     * @param result  the validation result
      * @return the newly created user and id
      */
     @PostMapping("/{eventId}/participants")
@@ -192,7 +211,8 @@ public class EventRestController {
 
     /**
      * Delete a participant
-     * @param eventId the event id
+     *
+     * @param eventId       the event id
      * @param participantId the participantId
      * @return whether the request was successful
      */
@@ -206,13 +226,28 @@ public class EventRestController {
 
 
     /**
+     * Get all expenses for a specific event.
+     *
+     * @param id The ID of the event.
+     * @return ResponseEntity containing the list of expenses for the event.
+     */
+    @GetMapping("/{id}/expenses")
+    public ResponseEntity<List<ExpenseDetailsDto>>
+        getAllExpensesForEvent(@PathVariable("id") long id) {
+        List<ExpenseDetailsDto> expenses = eventService.getAllExpensesForEvent(id);
+        return ResponseEntity.ok(expenses);
+    }
+
+
+    /**
      * Helper method to check if and id is valid
+     *
      * @param id the id to check
      * @return true if it is valid
-     *      and false if it is invalid
+     * and false if it is invalid
      */
-    private boolean checkIdValidity(long id){
-        return id>0 && this.eventService.existsById(id);
+    private boolean checkIdValidity(long id) {
+        return id > 0 && this.eventService.existsById(id);
     }
 
 

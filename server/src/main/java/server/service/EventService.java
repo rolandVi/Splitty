@@ -2,10 +2,10 @@ package server.service;
 
 import commons.EventEntity;
 import commons.ExpenseEntity;
-import dto.ExpenseCreationDto;
-import dto.view.*;
 import dto.CreatorToTitleDto;
+import dto.ExpenseCreationDto;
 import dto.ParticipantCreationDto;
+import dto.view.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -16,7 +16,6 @@ import server.repository.EventRepository;
 
 import java.time.LocalTime;
 import java.util.List;
-
 import java.util.stream.Collectors;
 
 @Service
@@ -106,6 +105,9 @@ public class EventService {
 
     //TODO: improve generate invite code method
     private String generateInviteCode(String title) {
+        if (title.length()>5){
+            title=title.substring(0, 5);
+        }
         return title + LocalTime.now().getSecond() + LocalTime.now().getNano();
     }
 
@@ -243,7 +245,7 @@ public class EventService {
     /**
      * Deletes a participant of an event
      * @param eventId the eventId
-     * @param participantId
+     * @param participantId the participantId
      */
     @Transactional
     public void deleteParticipant(Long eventId, Long participantId) {
@@ -261,5 +263,18 @@ public class EventService {
                         .orElse(new EventEntity()),
                 EventDetailsDto.class
         );
+    }
+
+    /**
+     * Get all expenses for a specific event.
+     *
+     * @param eventId The ID of the event.
+     * @return List of expense details for the event.
+     */
+    public List<ExpenseDetailsDto> getAllExpensesForEvent(long eventId) {
+        EventEntity event = findEntityById(eventId);
+        return event.getExpenses().stream()
+                .map(expense -> modelMapper.map(expense, ExpenseDetailsDto.class))
+                .collect(Collectors.toList());
     }
 }

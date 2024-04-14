@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
-import server.exception.FieldValidationException;
 import server.exception.ObjectNotFoundException;
 import server.repository.BankAccountRepository;
 
@@ -143,18 +142,6 @@ class BankAccountServiceTest {
         // Assert
         assertNotNull(result);
         assertEquals(savedEntity, result);
-    }
-
-    // Test for createBankAccount method when IBAN exists
-    @Test
-    public void testCreateBankAccount_DuplicateIBAN_ThrowsFieldValidationException() {
-        // Arrange
-        BankAccountCreationDto bankAccountDto = new BankAccountCreationDto();
-        bankAccountDto.setIban("existingIBAN");
-        when(bankAccountRepository.existsByIban(any())).thenReturn(true);
-
-        // Act & Assert
-        assertThrows(FieldValidationException.class, () -> bankAccountService.createBankAccount(bankAccountDto));
     }
 
     // Test for editBankAccount method

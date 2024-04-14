@@ -36,6 +36,7 @@ public class Main extends Application {
 
     /**
      * Main function
+     *
      * @param args the args
      */
     public static void main(String[] args) {
@@ -45,11 +46,10 @@ public class Main extends Application {
     }
 
     /**
-     *
      * @param primaryStage the primary stage for this application, onto which
-     * the application scene can be set.
-     * Applications may create other stages, if needed, but they will not be
-     * primary stages.
+     *                     the application scene can be set.
+     *                     Applications may create other stages, if needed, but they will not be
+     *                     primary stages.
      */
     @Override
     public void start(Stage primaryStage) {
@@ -65,7 +65,7 @@ public class Main extends Application {
         var eventPage = FXML.load(EventCtrl.class, "client.scenes", "event.fxml");
         var eventCreationPage = FXML.load(EventCreationCtrl.class,
                 "client.scenes", "eventCreation.fxml");
-        var eventItemPage=FXML.load(EventItemCtrl.class,
+        var eventItemPage = FXML.load(EventItemCtrl.class,
                 "client.scenes", "eventItem.fxml");
         var newParticipant = FXML.load(NewParticipantCtrl.class,
                 "client.scenes", "newParticipant.fxml");
@@ -73,25 +73,30 @@ public class Main extends Application {
         var participantItem = FXML.load(ParticipantItemCtrl.class,
                 "client.scenes", "participantItem.fxml");
         var participant = FXML.load(ParticipantCtrl.class,
-                "client.scenes", "Participant.fxml");
+                "client.scenes", "participant.fxml");
         var newExpense = FXML.load(NewExpenseCtrl.class,
                 "client.scenes", "newExpense.fxml");
 
+        var stats = FXML.load(StatsCtrl.class,
+                "client.scenes", "statistics.fxml");
+
         var eventEmail = FXML.load(EventEmailCtrl.class,
                 "client.scenes", "eventEmailPage.fxml");
+
 
         mainCtrl.initialize(
                 new SceneInputWrapper(primaryStage, startPage,
                         eventOverview, paymentPage, eventPage,
                         eventCreationPage, eventItemPage, newParticipant,
-                        participantItem, participant, newExpense, eventEmail), serverUtils);
+
+                        participantItem, participant, newExpense, stats, eventEmail), serverUtils);
 
     }
 
     /**
      * Creates a new stage for admin overview
      */
-    public static void openAdminOverview(){
+    public static void openAdminOverview() {
 
         Stage adminOverviewStage = new Stage();
         var adminMainCtrl = INJECTOR.getInstance(AdminMainCtrl.class);
@@ -111,5 +116,18 @@ public class Main extends Application {
         });
 
     }
+
+    /**
+     * Opens a popup that lets the user create custom tags
+     */
+    public static void openCustomtag() {
+        Stage customTagStage = new Stage();
+        var customTagMainCtrl = INJECTOR.getInstance(CustomTagMainCtrl.class);
+        var customTagPage = FXML.load(CustomTagCtrl.class, "client.scenes",
+                "customTag.fxml");
+
+        customTagMainCtrl.initialize(customTagStage, customTagPage);
+    }
+
 
 }

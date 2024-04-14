@@ -3,12 +3,13 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
-
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -70,6 +71,21 @@ public class EventEmailCtrl implements MultiLanguages{
         errorMessage.setOpacity(0);
         inputTextArea.clear();
         mainCtrl.showEvent();
+    }
+
+    /**
+     * Checks for key press
+     *
+     * @param e The key
+     */
+    public void keyPressed(KeyEvent e) throws IOException, InterruptedException {
+        switch (e.getCode()) {
+            case ESCAPE:
+                returnToOverview();
+                break;
+            default:
+                break;
+        }
     }
 
     /**

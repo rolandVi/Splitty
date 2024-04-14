@@ -1,0 +1,18 @@
+/*Inchworm: #AADF51*/
+/*Lavender Indigo: #8C51E6*/
+/*Aqua: #00E7FE*/
+/*Magic Potion: #F84B62*/
+/*Crayola's Dandelion: #FFDE72*/
+/*Celtic Blue: #3060CF*/
+
+.bg{
+    -fx-background-color: #FFDE72;
+}
+
+.btn{
+    -fx-background-color: #AADF51;
+}
+
+.btn:hover{
+    -fx-background-color: #8C51E6;
+}

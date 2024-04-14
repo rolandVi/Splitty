@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="384.0" prefWidth="431.0" styleClass="pane" stylesheets="@../stylesheets/customTag.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CustomTagCtrl">
+   <children>
+      <FlowPane fx:id="flowPane" hgap="10.0" layoutX="20.0" layoutY="112.0" prefHeight="160.0" prefWidth="200.0" vgap="10.0" />
+      <VBox alignment="TOP_CENTER" layoutX="255.0" layoutY="144.0" prefHeight="154.0" prefWidth="156.0" spacing="15.0">
+         <children>
+            <TextField fx:id="tagName" promptText="Your custom tag" styleClass="texts" />
+            <ColorPicker fx:id="colorPick" prefHeight="25.0" prefWidth="151.0" />
+            <HBox prefHeight="33.0" prefWidth="142.0" spacing="11.0">
+               <children>
+                  <Button fx:id="addCustomTagBtn" mnemonicParsing="false" onAction="#createCustomTag" prefHeight="23.0" prefWidth="40.0" styleClass="buttons" text="OK" />
+                  <Button fx:id="editTag" mnemonicParsing="false" onAction="#editTag" styleClass="buttons" text="Edit" />
+                  <Button fx:id="deleteSelectTag" mnemonicParsing="false" onAction="#deleteTag" styleClass="buttons" text="Delete" />
+               </children>
+            </HBox>
+            <Text fx:id="errorMessage" fill="#fa0707" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import server.exception.ObjectNotFoundException;
+import server.repository.BankAccountRepository;
 import server.repository.ParticipantRepository;
 
 import java.util.Optional;
@@ -26,6 +27,8 @@ public class ParticipantServiceTest {
     @Mock
     private ModelMapper modelMapper;
 
+    @Mock
+    private BankAccountRepository bankAccountRepository;
     @Mock
     private ParticipantRepository participantRepository;
 
@@ -105,12 +108,15 @@ public class ParticipantServiceTest {
     @Test
     public void testCreateBankAccount_ValidData_CreatesBankAccountSuccessfully() {
         // Arrange
+        BankAccountEntity bankAccountEntity = new BankAccountEntity();
         BankAccountCreationDto bankAccountCreationDto = new BankAccountCreationDto();
+        bankAccountEntity.setHolder("nullnull");
         Long userId = 1L;
         ParticipantEntity mockParticipantEntity = new ParticipantEntity();
         BankAccountEntity mockBankAccountEntity = new BankAccountEntity();
         when(participantRepository.findById(userId)).thenReturn(Optional.of(mockParticipantEntity));
-        when(bankAccountService.createBankAccount(bankAccountCreationDto)).thenReturn(mockBankAccountEntity);
+        when(bankAccountService.createBankAccount(bankAccountEntity)).thenReturn(mockBankAccountEntity);
+//        when(bankAccountRepository.save(newEntity)).thenReturn(mockBankAccountEntity);
         when(modelMapper.map(mockBankAccountEntity, BankAccountDto.class)).thenReturn(new BankAccountDto());
 
         // Act
@@ -119,7 +125,7 @@ public class ParticipantServiceTest {
         // Assert
         assertNotNull(result);
         verify(participantRepository, times(1)).findById(userId);
-        verify(bankAccountService, times(1)).createBankAccount(bankAccountCreationDto);
+        verify(bankAccountService, times(1)).createBankAccount(bankAccountEntity);
         verify(participantRepository, times(1)).save(mockParticipantEntity);
     }
 
@@ -242,242 +248,37 @@ public class ParticipantServiceTest {
         assertNotNull(result);
         verify(participantRepository, times(1)).save(any());
     }
+    @Test
+    public void testDeleteParticipant_ParticipantExists_DeletesSuccessfully() {
+        // Arrange
+        Long participantId = 1L;
 
-//    @Mock
-//    private ParticipantRepository userRepository;
-//
-//    @Mock
-//    private EventService eventService;
-//
-//    private ParticipantService userService;
-//
-//    @Mock
-//    private BankAccountService bankAccountService;
-//
-//
-//    @BeforeEach
-//    void setUp(){
-//        MockitoAnnotations.openMocks(this);
-//        ModelMapper mapper=new ModelMapper();
-//        this.userService=new ParticipantService(mapper,userRepository, bankAccountService);
-//    }
-//
-//    @Test
-//    void existsById_ShouldExist(){
-//        long id=1L;
-//        when(userRepository.existsById(id)).thenReturn(true);
-//
-//        assertTrue(this.userService.existsById(id));
-//    }
-//
-//    @Test
-//    void existsById_ShouldNotExist(){
-//        long id=1L;
-//        when(userRepository.existsById(id)).thenReturn(false);
-//
-//        assertFalse(this.userService.existsById(id));
-//    }
-//
-//    @Test
-//    void findById_ReturnsUser(){
-//        // Arrange
-//        long id = 1L;
-//        ParticipantEntity user = new ParticipantEntity(id, "vwv", "vwer", "vwer@fewr",
-//                new HashSet<>(), new BankAccountEntity("12345", "vwve", "1324"));
-//        when(userRepository.findById(id)).thenReturn(Optional.of(user));
-//
-//        // Act
-//        ParticipantEntity result = userService.findById(id);
-//
-//        // Assert
-//        assertNotNull(result);
-//        assertEquals(user.getId(), result.getId());
-//        assertEquals(user.getFirstName(), result.getFirstName());
-//        assertEquals(user.getLastName(), result.getLastName());
-//        assertEquals(user.getEmail(), result.getEmail());
-//        assertEquals(user.getEvents(), result.getEvents());
-//        assertEquals(user.getBankAccount(), result.getBankAccount());
-//    }
-//
-//    @Test
-//    void getUserEvents(){
-//        long id = 1L;
-//        HashSet<EventEntity> events=new HashSet<>();
-//        for (long i = 0L; i < 5; i++) {
-//            events.add(new EventEntity(i, "invCode"+i, "title"+i,
-//                    new HashSet<>(), new HashSet<>(), new Date(), new Date()));
-//        }
-//        ParticipantEntity user = new ParticipantEntity(id, "vwv", "vwer", "vwer@fewr",
-//                events, new BankAccountEntity("12345", "vwve", "1324"));
-//
-//        when(this.userRepository.getEventByUserId(id)).thenReturn(events);
-//
-//        List<EventOverviewDto> modifiedEvents= events.stream()
-//                .map(e-> new EventOverviewDto()
-//                        .setId(e.getId())
-//                        .setTitle(e.getTitle())
-//                        .setInviteCode(e.getInviteCode()))
-//                .collect(Collectors.toList());
-//
-//        assertEquals(modifiedEvents, this.userService.getUserEvents(id));
-//    }
-//
-//
-//
-//    @Test
-//    void createUser_ReturnsUserNameDto() {
-//        // Arrange
-//        ParticipantCreationDto userCreationDto = new ParticipantCreationDto("John", "Doe", "john@example.com");
-//        ParticipantEntity savedUserEntity = new ParticipantEntity(1L, "John", "Doe", "john@example.com",
-//                new HashSet<>(), new BankAccountEntity("12345", "vwve", "1324"));
-//
-//        when(userRepository.save(any(ParticipantEntity.class))).thenReturn(savedUserEntity);
-//
-//        // Act
-//        ParticipantNameDto createdUser = userService.createUser(userCreationDto);
-//
-//        // Assert
-//        assertNotNull(createdUser);
-//        assertEquals(savedUserEntity.getFirstName(), createdUser.getFirstName());
-//        assertEquals(savedUserEntity.getLastName(), createdUser.getLastName());
-//    }
-//
-//    @Test
-//    void createEvent_ReturnsCreatedEventTitleDto() {
-//        // Arrange
-//        String eventTitle = "New Event";
-//        EventEntity eventEntity = new EventEntity(1L, "", eventTitle,
-//                new HashSet<>(), new HashSet<>(), new Date(), new Date());
-//        ParticipantEntity user= new ParticipantEntity(1L, "first","last", "email@gmai.com",
-//                new HashSet<>(), new BankAccountEntity("12345", "vwve", "1324"));
-//        eventEntity.setTitle(eventTitle);
-//
-//        when(eventService.createEvent(any())).thenReturn(eventEntity);
-//        when(eventService.findEntityByInviteCode(eventEntity.getInviteCode())).thenReturn(eventEntity);
-//        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
-//
-//        // Act
-//        EventTitleDto createdEvent = userService.createEvent(eventTitle, 1L);
-//
-//        // Assert
-//        assertNotNull(createdEvent);
-//        assertEquals(eventEntity.getId(), createdEvent.getId());
-//        assertEquals(eventEntity.getTitle(), createdEvent.getTitle());
-//    }
-//
-//    @Test
-//    void leave_WhenEventAndUserExist_LeavesEvent() {
-//        // Arrange
-//        long eventId = 1L;
-//        long userId = 2L;
-//        EventEntity eventEntity = new EventEntity(eventId, "inviteCode", "Test Event",
-//                new HashSet<>(), new HashSet<>(), new Date(), new Date());
-//        ParticipantEntity userEntity = new ParticipantEntity(userId, "John", "Doe", "john@example.com",
-//                new HashSet<>(), new BankAccountEntity("12345", "vwve", "1324"));
-//
-//        when(eventService.findEntityById(eventId)).thenReturn(eventEntity);
-//        when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity));
-//
-//        // Act
-//        boolean left = userService.leave(eventId, userId);
-//
-//        // Assert
-//        assertTrue(left);
-//        assertFalse(eventEntity.getParticipants().contains(userEntity));
-//        assertFalse(userEntity.getEvents().contains(eventEntity));
-//        verify(userRepository, times(1)).saveAndFlush(userEntity);
-//    }
-//
-//    @Test
-//    void leave_WhenEventDoesNotExist_ThrowsObjectNotFoundException() {
-//        // Arrange
-//        long eventId = 1L;
-//        long userId = 2L;
-//        when(eventService.findEntityById(eventId)).thenThrow(ObjectNotFoundException.class);
-//
-//        // Act and Assert
-//        assertThrows(ObjectNotFoundException.class, () -> userService.leave(eventId, userId));
-//
-//        // Verify
-//        verify(userRepository, never()).saveAndFlush(any());
-//    }
-//
-//    @Test
-//    void leave_WhenUserDoesNotExist_ThrowsIllegalArgumentException() {
-//        // Arrange
-//        long eventId = 1L;
-//        long userId = 2L;
-//        EventEntity eventEntity = new EventEntity(eventId, "inviteCode", "Test Event",
-//                new HashSet<>(), new HashSet<>(), new Date(), new Date());
-//
-//        when(eventService.findEntityById(eventId)).thenReturn(eventEntity);
-//        when(userRepository.findById(userId)).thenReturn(Optional.empty());
-//
-//        // Act and Assert
-//        assertThrows(IllegalArgumentException.class, () -> userService.leave(eventId, userId));
-//
-//        // Verify
-//        verify(userRepository, never()).saveAndFlush(any());
-//    }
-//
-//    @Test
-//    void join_WhenUserAndEventExist_JoinsEvent() {
-//        // Arrange
-//        long userId = 1L;
-//        String inviteCode = "abc123";
-//        ParticipantEntity userEntity = new ParticipantEntity(userId, "John", "Doe", "john@example.com",
-//                new HashSet<>(), new BankAccountEntity("12345", "vwve", "1324"));
-//        EventEntity eventEntity = new EventEntity(1L, inviteCode, "Test Event",
-//                new HashSet<>(), new HashSet<>(), new Date(), new Date());
-//
-//        when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity));
-//        when(eventService.findEntityByInviteCode(inviteCode)).thenReturn(eventEntity);
-//
-//        // Act
-//        boolean joined = userService.join(inviteCode, userId);
-//
-//        // Assert
-//        assertTrue(joined);
-//        assertTrue(eventEntity.getParticipants().contains(userEntity));
-//        assertTrue(userEntity.getEvents().contains(eventEntity));
-//        verify(userRepository, times(1)).save(userEntity);
-//    }
-//
-//    @Test
-//    void join_WhenUserDoesNotExist_ThrowsObjectNotFoundException() {
-//        // Arrange
-//        long userId = 1L;
-//        String inviteCode = "abc123";
-//        when(userRepository.findById(userId)).thenReturn(Optional.empty());
-//
-//        // Act and Assert
-//        assertThrows(ObjectNotFoundException.class, () -> userService.join(inviteCode, userId));
-//
-//        // Verify
-//        verify(eventService, never()).findEntityByInviteCode(anyString());
-//    }
-//
-//    @Test
-//    void join_WhenEventDoesNotExist_ThrowsObjectNotFoundException() {
-//        // Arrange
-//        long userId = 1L;
-//        String inviteCode = "abc123";
-//        ParticipantEntity userEntity = new ParticipantEntity(userId, "John", "Doe", "john@example.com",
-//                new HashSet<>(), new BankAccountEntity("12345", "vwve", "1324"));
-//        when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity));
-//        when(eventService.findEntityByInviteCode(inviteCode)).thenThrow(ObjectNotFoundException.class);
-//
-//        // Act and Assert
-//        assertThrows(ObjectNotFoundException.class, () -> userService.join(inviteCode, userId));
-//
-//        // Verify
-//        verify(userRepository, never()).save(any());
-//    }
-//
-//    @Test
-//    void findIdByEmail() {
-//        String email = "email@mail.com";
-//        when(this.userRepository.getUserIdByUserEmail(email)).thenReturn(1L);
-//        assertEquals(1L, userService.findIdByEmail(email));
-//    }
+        // Act
+        participantService.deleteParticipant(participantId);
+
+        // Assert
+        verify(participantRepository, times(1)).deleteById(participantId);
+    }
+
+    @Test
+    public void testEditParticipant_ValidData_EditsParticipantSuccessfully() {
+        // Arrange
+        Long userId = 1L;
+        ParticipantNameDto participantNameDto = new ParticipantNameDto(1L, "John", "Doe", "johndoe@example.com");
+        ParticipantEntity mockParticipantEntity = new ParticipantEntity();
+        when(participantRepository.findById(userId)).thenReturn(Optional.of(mockParticipantEntity));
+        when(participantRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        when(modelMapper.map(any(), eq(ParticipantNameDto.class))).thenReturn(participantNameDto);
+
+        // Act
+        ParticipantNameDto result = participantService.editParticipant(participantNameDto, userId);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(participantNameDto.getFirstName(), result.getFirstName());
+        assertEquals(participantNameDto.getLastName(), result.getLastName());
+        assertEquals(participantNameDto.getEmail(), result.getEmail());
+        verify(participantRepository, times(1)).findById(userId);
+        verify(participantRepository, times(1)).save(mockParticipantEntity);
+    }
 }

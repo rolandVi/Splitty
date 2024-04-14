@@ -2,9 +2,11 @@ package server.controller.api;
 
 import commons.ExpenseEntity;
 import commons.ParticipantEntity;
+import commons.TagEntity;
 import dto.ExpenseCreationDto;
 import dto.view.ExpenseDetailsDto;
 import dto.view.ParticipantNameDto;
+import dto.view.TagDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -76,12 +78,18 @@ public class ExpenseRestController {
                     u.getEmail()));
         }
 
+        TagDto tagDto = null;
+        TagEntity tagEntity = createdExpense.getTag();
+        if (tagEntity != null) {
+            tagDto = new TagDto(tagEntity.getId(), tagEntity.getTagType(), tagEntity.getHexValue());
+        }
+
         ExpenseDetailsDto details = new ExpenseDetailsDto(createdExpense.getId(),
                 createdExpense.getMoney(),
                 author,
                 createdExpense.getTitle(),
                 debtors,
-                createdExpense.getDate());
+                createdExpense.getDate(), tagDto);
 
         return details;
     }
@@ -162,7 +170,7 @@ public class ExpenseRestController {
      * @param id the ID to check
      * @return true if the ID is valid, false otherwise
      */
-    private boolean checkIdValidity(long id){
+    protected boolean checkIdValidity(long id){
         return id > 0 && expenseService.existsById(id);
     }
 }

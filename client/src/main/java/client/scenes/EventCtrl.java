@@ -10,12 +10,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 
@@ -74,6 +79,9 @@ public class EventCtrl implements MultiLanguages{
     @FXML
     public Button sendInviteButton;
 
+    @FXML
+    public Button statsBtn;
+
     /**
      * Injector for Event Controller
      * @param mainCtrl The Main Controller
@@ -101,6 +109,14 @@ public class EventCtrl implements MultiLanguages{
             expensesLabel.setText(lang.getString("expenses"));
             addExpenseButton.setText(lang.getString("add_expense"));
             sendInviteButton.setText(lang.getString("send_invite"));
+            filterAllExpenses.setText(lang.getString("all_criterion"));
+            filterExpensesByAuthor.setText(lang.getString("author_criterion"));
+            filterExpensesByDebtor.setText(lang.getString("debtor_criterion"));
+            participantSelectionBox.setPromptText(lang.getString("filter"));
+            inviteBtn.setText(lang.getString("copy_text"));
+            addParticipant.setText(lang.getString("add_participant"));
+            statsBtn.setText(lang.getString("stats"));
+
         } catch (Exception e) {
             throw new RuntimeException();
         }
@@ -111,6 +127,13 @@ public class EventCtrl implements MultiLanguages{
      */
     public void returnToOverview(){
         mainCtrl.showOverview();
+    }
+
+    /**
+     * shows the statistics scene
+     */
+    public void showStats(){
+        mainCtrl.showStats();
     }
 
     /**
@@ -126,12 +149,15 @@ public class EventCtrl implements MultiLanguages{
      * @param id the id of the event
      */
     public void init(long id) {
+        serverUtils.openSocketConnection();
         filterAllExpenses.setToggleGroup(filterGroup);
         filterExpensesByAuthor.setToggleGroup(filterGroup);
         filterExpensesByDebtor.setToggleGroup(filterGroup);
         this.eventDetailsDto=serverUtils.getEventDetails(id);
         eventNameLabel.setText(eventDetailsDto.getTitle());
         inviteCode.setText(eventDetailsDto.getInviteCode());
+        this.changeTextField.setText("");
+        loadExpenseList();
         loadParticipants();
 
         ObservableList<ParticipantNameDto> participants = eventDetailsDto.getParticipants().stream()
@@ -141,6 +167,36 @@ public class EventCtrl implements MultiLanguages{
         // because websockets introduce a small delay and sometimes it doesn't update in time
         this.eventDetailsDto=serverUtils.getEventDetails(id);
         loadExpenseList();
+    }
+
+    /**
+     * Checks for key press
+     *
+     * @param e The key
+     */
+    public void keyPressed(KeyEvent e) throws IOException, InterruptedException {
+        switch (e.getCode()) {
+            case ESCAPE:
+                returnToOverview();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Checks for key press in the event name change
+     *
+     * @param e The key
+     */
+    public void triggerNameChange(KeyEvent e) throws IOException{
+        switch (e.getCode()) {
+            case ENTER:
+                changeEventName();
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -217,8 +273,14 @@ public class EventCtrl implements MultiLanguages{
      */
     public void changeEventName() throws JsonProcessingException {
         serverUtils.changeEventName(eventDetailsDto.getId(), changeTextField.getText());
-        this.eventNameLabel.setText(this.changeTextField.getText());
-        this.changeTextField.setText("");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(mainCtrl.lang.getString("change_name_alert_header"));
+        alert.setContentText(mainCtrl.lang.getString("change_name_alert_content")
+                + " " + changeTextField.getText());
+        alert.showAndWait().ifPresent( r -> {
+            this.eventNameLabel.setText(this.changeTextField.getText());
+            this.changeTextField.setText("");
+        });
     }
 
     /**
@@ -272,39 +334,63 @@ public class EventCtrl implements MultiLanguages{
     }
 
     private static class ExpenseListCell extends ListCell<ExpenseDetailsDto>{
-        private final Button button;
+        private final Button editButton;
+        private final Text expenseInfo;
+        private final StackPane tagPane;
+        private final Rectangle tagBackground;
+        private final Text tagText;
+        private final HBox hbox;
 
-        public ExpenseListCell(EventCtrl ctrl){
-            button = new Button("Edit");
-
-            button.setOnAction(event -> {
+        public ExpenseListCell(EventCtrl ctrl) {
+            editButton = new Button("Edit");
+            editButton.setStyle("-fx-background-color: #00E7FE;");
+            editButton.setOnAction(event -> {
                 ExpenseDetailsDto item = getItem();
-                if (item!=null){
+                if (item != null) {
                     ctrl.newExpenseCtrl.initEdit(ctrl.eventDetailsDto, item);
                     ctrl.mainCtrl.showEditExpense();
                 }
             });
 
-            HBox hBox = new HBox();
+            expenseInfo = new Text();
 
-            hBox.getChildren().add(new Text());
-            hBox.setSpacing(10);
+            tagText = new Text();
+            tagBackground = new Rectangle();
+            tagBackground.setFill(Color.LIGHTGRAY); // Default background color for the tag
+            tagBackground.setArcWidth(10); // Set arc width for rounded corners
+            tagBackground.setArcHeight(10); // Set arc height for rounded corners
+            tagPane = new StackPane(tagBackground, tagText);
+            tagPane.setAlignment(Pos.CENTER); // Center the text within the stack pane
 
-            setGraphic(hBox);
+            hbox = new HBox(expenseInfo, tagPane, editButton);
+            hbox.setSpacing(10);
+            hbox.setAlignment(Pos.CENTER_LEFT);
+
+            setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+            setGraphic(hbox);
         }
 
         @Override
-        protected void updateItem(ExpenseDetailsDto item, boolean empty){
+        protected void updateItem(ExpenseDetailsDto item, boolean empty) {
             super.updateItem(item, empty);
-            if (empty || item==null){
-                setText(null);
-            }else {
-                ((Text) ((HBox) getGraphic()).getChildren().get(0)).setText(item.getTitle() + "\n"
-                    + item.getAuthor().toString() + " paid: " + item.getMoney() + " euro");
-                // I'm using the if statement, due to a weird error
-                if (((HBox) getGraphic()).getChildren().size()<2){
-                    ((HBox) getGraphic()).getChildren().add(button);
+            if (empty || item == null) {
+                setGraphic(null);
+            } else {
+                expenseInfo.setText(item.getTitle() + "\n"
+                        + item.getAuthor().toString() + " paid: " + item.getMoney() + " euro");
+
+                if (item.getTag() != null) {
+                    tagText.setText(item.getTag().getTagType());
+                    tagText.setFill(Color.BLACK);
+                    tagBackground.setWidth(tagText.getBoundsInLocal().getWidth() + 10);
+                    tagBackground.setHeight(tagText.getBoundsInLocal().getHeight() + 5);
+                    tagBackground.setFill(Color.web(item.getTag().getHexValue()));
+                    tagPane.setVisible(true); // Show the tagPane if the tag is not null
+                } else {
+                    tagPane.setVisible(false); // Hide the tagPane if the tag is null
                 }
+
+                setGraphic(hbox);
             }
         }
     }
@@ -332,11 +418,11 @@ public class EventCtrl implements MultiLanguages{
             Node currentNode=nodes[i];
             final ParticipantNameDto participant=participants.get(i);
 
-            Button eventButton = (Button) currentNode.lookup("#participantName");
-            eventButton.setText(participants.get(i).getFirstName() + " "
+            Button participantButton = (Button) currentNode.lookup("#participantName");
+            participantButton.setText(participants.get(i).getFirstName() + " "
                     + participants.get(i).getLastName());
 
-            eventButton.setOnAction(e -> showParticipantEdit(participant.getId(), eventId));
+            participantButton.setOnAction(e -> showParticipantEdit(participant.getId(), eventId));
         }
         this.participantsContainer.getChildren().clear();
         this.participantsContainer.getChildren().addAll(nodes);
