@@ -1,6 +1,5 @@
-# OOPP Splitty
+# Splitty
 
-This repository contains team 37's take on the Splitty assignment
 ### Execution of the project:
 1. If you run the server first:
 - you can run the client, connect to the url of the server and operate freely
