@@ -1,5 +1,10 @@
 # Splitty
 
+### Run project from terminal
+1. `./gradlew.bat build`
+2. `./gradlew.bat bootRun`
+3. `./gradlew.bat run`
+
 ### Execution of the project:
 1. If you run the server first:
 - you can run the client, connect to the url of the server and operate freely
